@@ -1,0 +1,14 @@
+title: "London Bills of Mortality"
+baseURL: "https://deathbynumbers.org"
+
+permalinks:
+  blog: "/:section/:slug/"
+  page: "/:slug/"
+
+taxonomies: false
+pluralizelisttitles: false
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true

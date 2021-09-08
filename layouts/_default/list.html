@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+{{- partial "head.html" . -}}
+
+<body>
+    {{- partial "header.html" . -}}
+    {{.Content}}
+    <div id="content" class="posts">
+        {{ range .Pages }}
+        <div class="grid-x grid-padding-x post">
+            <div class="medium-2 cell post-meta">
+                <div class="date">{{.Date.Format "2 Jan 2006"}}</div>
+            </div>
+            <div class="medium-7 cell post-abstract">
+                <h2><a href="{{.Permalink}}">{{.Title}}</a></h2>
+                <div class="author">{{.Params.author}}</div>
+                <p>{{.Params.abstract}}</p>
+            </div>
+            <div class="medium-3 cell post-thumbnail">
+                <img src="{{.Params.image}}" alt="{{.Params.imagealt}}">
+            </div>
+        </div>
+        {{end}}
+    </div>
+    {{- partial "footer.html" . -}}
+</body>
+
+</html>
