@@ -15,12 +15,12 @@ parishes <- read_csv("datascribe/weekly_plague.csv")
 # Types of death table
 # ----------------------------
 deaths_long <- deaths %>% 
-  select(!1:4) %>%
+  select(!1:5) %>%
   select(!`Drowned (Descriptive Text)`) %>% 
   select(!`Killed (Descriptive Text)`) %>% 
   select(!`Suicide (Descriptive Text)`) %>% 
   select(!`Other Casualties (Descriptive Text)`) %>% 
-  pivot_longer(8:109, 
+  pivot_longer(9:109, 
                names_to = 'death', 
                values_to = 'count')
 
@@ -33,7 +33,7 @@ write_csv(deaths_long, "data/deaths.csv")
 # Parish list
 # ----------------------------
 parishes_long <- parishes %>% 
-  select(!1:4) %>% 
+  select(!1:5) %>% 
   pivot_longer(7:284,
                names_to = 'parish_name',
                values_to = 'count')
