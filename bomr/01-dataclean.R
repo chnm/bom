@@ -28,7 +28,7 @@ deaths_long <- deaths %>%
 names(deaths_long) <- tolower(names(deaths_long))
 names(deaths_long) <- gsub(" ", "_", names(deaths_long))
 
-write_csv(deaths_long, "data/deaths.csv")
+write_csv(deaths_long, "data/deaths.csv", na = "")
 
 # Parish list
 # ----------------------------
@@ -41,11 +41,12 @@ parishes_long <- parishes %>%
 # Lowercase column names and replace spaces with underscores
 names(parishes_long) <- tolower(names(parishes_long))
 names(parishes_long) <- gsub(" ", "_", names(parishes_long))
+parishes_long$year <- paste0(1669)
 
 # Separate out a parish name from the count type (plague vs. burial)
 parishes_long <- parishes_long %>% separate(parish_name, c("parish_name", "count_type"), sep = "[-]")
 
-write_csv(parishes_long, "data/parishes.csv")
+write_csv(parishes_long, "data/parishes.csv", na = "")
 
 # TODO: Separate dataframes for christenings and foodstuffs
 # ----------------------------
