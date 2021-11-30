@@ -39,13 +39,16 @@ parishes_long <- parishes %>%
                names_to = 'parish_name',
                values_to = 'count')
 
-# Lowercase column names and replace spaces with underscores
+# Lowercase column names and replace spaces with underscores.
 names(parishes_long) <- tolower(names(parishes_long))
 names(parishes_long) <- gsub(" ", "_", names(parishes_long))
 parishes_long$year <- str_sub(parishes_long$unique_identifier, 1, 4)
 
 # Separate out a parish name from the count type (plague vs. burial)
+# Remove whitespace with str_trim().
 parishes_long <- parishes_long %>% separate(parish_name, c("parish_name", "count_type"), sep = "[-]")
+parishes_long <- parishes_long %>%
+  mutate(count_type = str_trim(count_type))
 
 # Find all unique values for parish name, week, and year. These will be 
 # referenced as foreign keys in PostgreSQL.
