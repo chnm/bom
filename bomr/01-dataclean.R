@@ -4,7 +4,7 @@
 # 
 # Jason A. Heppler | jason@jasonheppler.org
 # Roy Rosenzweig Center for History and New Media
-# Updated: 2021-11-22
+# Updated: 2021-11-30
 
 library(tidyverse)
 
@@ -21,9 +21,13 @@ deaths_long <- deaths %>%
   select(!`Killed (Descriptive Text)`) %>% 
   select(!`Suicide (Descriptive Text)`) %>% 
   select(!`Other Casualties (Descriptive Text)`) %>% 
-  pivot_longer(9:109, 
+  pivot_longer(8:109, 
                names_to = 'death', 
-               values_to = 'count')
+               values_to = 'count') %>% 
+  mutate(idtmp = row_number()) %>% 
+  mutate(death_id = str_pad(idtmp, 3, pad = "0")) %>% 
+  mutate(death_id = str_replace(death_id,"(\\d{1})(\\d{1})(\\d{1})$","\\1-\\2-\\3")) %>% 
+  select(-idtmp)
 
 # Lowercase column names and replace spaces with underscores
 names(deaths_long) <- tolower(names(deaths_long))
