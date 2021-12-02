@@ -23,11 +23,7 @@ deaths_long <- deaths %>%
   select(!`Other Casualties (Descriptive Text)`) %>% 
   pivot_longer(8:109, 
                names_to = 'death', 
-               values_to = 'count') %>% 
-  mutate(idtmp = row_number()) %>% 
-  mutate(death_id = str_pad(idtmp, 3, pad = "0")) %>% 
-  mutate(death_id = str_replace(death_id,"(\\d{1})(\\d{1})(\\d{1})$","\\1-\\2-\\3")) %>% 
-  select(-idtmp)
+               values_to = 'count')
 
 # Lowercase column names and replace spaces with underscores
 names(deaths_long) <- tolower(names(deaths_long))
@@ -74,12 +70,30 @@ week_unique <- parishes_long %>%
   select(-id)
 
 year_unique <- parishes_long %>% 
-  select(year) %>% 
+  select(year, week) %>% 
+  distinct() %>% 
+  arrange() %>% 
+  mutate(year = as.integer(year)) %>% 
+  mutate(week = as.integer(week)) %>% 
+  mutate(name = year) %>% 
+  mutate(year_id = ifelse(week < 15,
+    paste0(
+      year - 1, '-', year, '-', week 
+    ),
+    paste0(
+      year, '-', year + 1, '-', week 
+    )
+    )
+  ) %>% 
+  select(-week)
+
+death_unique <- deaths_long %>% 
+  select(death) %>% 
   distinct() %>% 
   arrange() %>% 
   mutate(id = row_number()) %>% 
-  mutate(year_id = str_pad(id, 3, pad = "0")) %>% 
-  mutate(year_id = str_replace(year_id,"(\\d{1})(\\d{1})(\\d{1})$","\\1-\\2-\\3")) %>% 
+  mutate(death_id = str_pad(id, 3, pad = "0")) %>% 
+  mutate(death_id = str_replace(death_id,"(\\d{1})(\\d{1})(\\d{1})$","\\1-\\2-\\3")) %>% 
   select(-id)
 
 # Match unique parish IDs with the long parish table, and drop the parish
