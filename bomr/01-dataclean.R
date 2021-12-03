@@ -4,7 +4,7 @@
 # 
 # Jason A. Heppler | jason@jasonheppler.org
 # Roy Rosenzweig Center for History and New Media
-# Updated: 2021-11-30
+# Updated: 2021-12-03
 
 library(tidyverse)
 
@@ -62,12 +62,24 @@ parishes_unique <- parishes_long %>%
   select(-id)
 
 week_unique <- parishes_long %>% 
-  select(week, start_day, end_day, start_month, end_month, unique_identifier) %>% 
+  select(year, week, start_day, end_day, start_month, end_month, unique_identifier) %>% 
   distinct() %>% 
-  mutate(id = row_number()) %>% 
-  mutate(week_id = str_pad(id, 3, pad = "0")) %>% 
-  mutate(week_id = str_replace(week_id,"(\\d{1})(\\d{1})(\\d{1})$","\\1-\\2-\\3")) %>% 
-  select(-id)
+  mutate(year = as.integer(year)) %>% 
+  # To get a leading zero and not mess with the math below, we create a temporary
+  # column to pad the week number with a leading zero and use that for 
+  # creating the week ID string.
+  mutate(week_tmp = str_pad(week, 2, pad = "0")) %>% 
+  mutate(week = as.integer(week)) %>%
+  mutate(week_id = ifelse(week < 15,
+                          paste0(
+                            year - 1, '-', year, '-', week_tmp
+                          ),
+                          paste0(
+                            year, '-', year + 1, '-', week_tmp
+                          )
+  )
+  ) %>% 
+  select(-week_tmp)
 
 year_unique <- parishes_long %>% 
   select(year, week) %>% 
@@ -130,5 +142,23 @@ write_csv(parishes_unique, "data/parishes_unique.csv", na = "")
 write_csv(week_unique, "data/week_unique.csv", na = "")
 write_csv(year_unique, "data/year_unique.csv", na = "")
 
-# TODO: Separate dataframes for christenings and foodstuffs
+# Separate dataframes for christenings, births, plague, and foodstuffs
 # ----------------------------
+
+parishes_long$christening_detect <- str_detect(parishes_long$parish_name, "Christened")
+parishes_long$burials_detect <- str_detect(parishes_long$parish_name, "Buried")
+parishes_long$plague_detect <- str_detect(parishes_long$parish_name, "Plague in")
+
+christenings <- parishes_long %>% 
+  dplyr::filter(christening_detect == TRUE) %>% 
+  select(-christening_detect, -burials_detect, -plague_detect)
+burials <- parishes_long %>% 
+  dplyr::filter(burials_detect == TRUE) %>% 
+  select(-christening_detect, -burials_detect, -plague_detect)
+plague <- parishes_long %>% 
+  dplyr::filter(plague_detect == TRUE) %>% 
+  select(-christening_detect, -burials_detect, -plague_detect)
+
+parishes_long <- parishes_long %>% 
+  dplyr::filter(christening_detect == FALSE, burials_detect == FALSE, plague_detect == FALSE) %>% 
+  select(-christening_detect, -burials_detect, -plague_detect)
