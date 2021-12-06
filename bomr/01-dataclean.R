@@ -82,22 +82,14 @@ week_unique <- parishes_long %>%
   select(-week_tmp)
 
 year_unique <- parishes_long %>% 
-  select(year, week) %>% 
+  select(year) %>% 
   distinct() %>% 
   arrange() %>% 
+  mutate(id = row_number()) %>% 
+  mutate(year_id = str_pad(id, 3, pad = "0")) %>% 
+  mutate(year_id = str_replace(year_id,"(\\d{1})(\\d{1})(\\d{1})$","\\1-\\2-\\3")) %>% 
   mutate(year = as.integer(year)) %>% 
-  mutate(week = as.integer(week)) %>% 
-  mutate(name = year) %>% 
-  mutate(year_id = ifelse(week < 15,
-    paste0(
-      year - 1, '-', year, '-', week 
-    ),
-    paste0(
-      year, '-', year + 1, '-', week 
-    )
-    )
-  ) %>% 
-  select(-week)
+  select(-id)
 
 death_unique <- deaths_long %>% 
   select(death) %>% 
@@ -118,7 +110,7 @@ parishes_long <- dplyr::inner_join(parishes_long, parishes_unique, by = "parish_
 # start and end months and days from long_parish so they're only referenced
 # through the unique week ID.
 parishes_long <- parishes_long %>% 
-  select(-week, -start_day, -end_day, -start_month, -end_month) %>% 
+  select(-week, -start_day, -end_day, -start_month, -end_month, -year) %>% 
   dplyr::left_join(week_unique, by = "unique_identifier") %>% 
   select(-week, -start_day, -end_day, -start_month, -end_month, -unique_identifier)
 
@@ -133,6 +125,7 @@ parishes_long <- parishes_long %>%
 # unique weeks and parishes_long. 
 week_unique <- week_unique %>% 
   mutate(year = str_sub(week_unique$unique_identifier, 1, 4)) %>% 
+  mutate(year = as.integer(year)) %>% 
   dplyr::left_join(year_unique, by = "year") %>% 
   select(-year)
   
@@ -144,21 +137,24 @@ write_csv(year_unique, "data/year_unique.csv", na = "")
 
 # Separate dataframes for christenings, births, plague, and foodstuffs
 # ----------------------------
+parishes_filtering <- parishes %>% 
+  select(!1:5) %>% 
+  pivot_longer(7:284,
+               names_to = 'parish_name',
+               values_to = 'count')
 
-parishes_long$christening_detect <- str_detect(parishes_long$parish_name, "Christened")
-parishes_long$burials_detect <- str_detect(parishes_long$parish_name, "Buried")
-parishes_long$plague_detect <- str_detect(parishes_long$parish_name, "Plague in")
+parishes_filtering$christening_detect <- str_detect(parishes_filtering$parish_name, "Christened")
+parishes_filtering$burials_detect <- str_detect(parishes_filtering$parish_name, "Buried")
+parishes_filtering$plague_detect <- str_detect(parishes_filtering$parish_name, "Plague in")
 
-christenings <- parishes_long %>% 
+christenings <- parishes_filtering %>% 
   dplyr::filter(christening_detect == TRUE) %>% 
   select(-christening_detect, -burials_detect, -plague_detect)
-burials <- parishes_long %>% 
+burials <- parishes_filtering %>% 
   dplyr::filter(burials_detect == TRUE) %>% 
   select(-christening_detect, -burials_detect, -plague_detect)
-plague <- parishes_long %>% 
+plague <- parishes_filtering %>% 
   dplyr::filter(plague_detect == TRUE) %>% 
   select(-christening_detect, -burials_detect, -plague_detect)
 
-parishes_long <- parishes_long %>% 
-  dplyr::filter(christening_detect == FALSE, burials_detect == FALSE, plague_detect == FALSE) %>% 
-  select(-christening_detect, -burials_detect, -plague_detect)
+rm(parishes_filtering)
