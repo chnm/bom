@@ -52,13 +52,13 @@ parishes_long <- parishes_long %>%
 
 # Find all unique values for parish name, week, and year. These will be 
 # referenced as foreign keys in PostgreSQL.
+## TODO: Drop parish names that include 'Christened' 'Buried' 'Plague'
 parishes_unique <- parishes_long %>% 
   select(parish_name) %>% 
   distinct() %>% 
   arrange() %>% 
   mutate(id = row_number()) %>% 
-  mutate(parish_id = str_pad(id, 3, pad = "0")) %>% 
-  mutate(parish_id = str_replace(parish_id,"(\\d{1})(\\d{1})(\\d{1})$","\\1-\\2-\\3")) %>% 
+  mutate(parish_id = str_pad(id, 4, pad = "0")) %>% 
   select(-id)
 
 week_unique <- parishes_long %>% 
@@ -70,11 +70,13 @@ week_unique <- parishes_long %>%
   # creating the week ID string.
   mutate(week_tmp = str_pad(week, 2, pad = "0")) %>% 
   mutate(week = as.integer(week)) %>%
-  mutate(week_id = ifelse(week < 15,
+  mutate(week_id = ifelse(week > 15,
                           paste0(
+                            #year - 1, '-', year, '-', week_tmp
                             year - 1, '-', year, '-', week_tmp
                           ),
                           paste0(
+                            #year, '-', year + 1, '-', week_tmp
                             year, '-', year + 1, '-', week_tmp
                           )
   )
@@ -85,11 +87,8 @@ year_unique <- parishes_long %>%
   select(year) %>% 
   distinct() %>% 
   arrange() %>% 
-  mutate(id = row_number()) %>% 
-  mutate(year_id = str_pad(id, 3, pad = "0")) %>% 
-  mutate(year_id = str_replace(year_id,"(\\d{1})(\\d{1})(\\d{1})$","\\1-\\2-\\3")) %>% 
-  mutate(year = as.integer(year)) %>% 
-  select(-id)
+  mutate(year_id = as.integer(year)) %>% 
+  mutate(year = as.integer(year))
 
 death_unique <- deaths_long %>% 
   select(death) %>% 
@@ -114,7 +113,7 @@ parishes_long <- parishes_long %>%
   dplyr::left_join(week_unique, by = "unique_identifier") %>% 
   select(-week, -start_day, -end_day, -start_month, -end_month, -unique_identifier)
 
-# Match unique week IDs to the long parish table, and drop the existing
+# Match unique year IDs to the long parish table, and drop the existing
 # year column from long_parishes so they're only referenced
 # through the unique year ID.
 parishes_long <- parishes_long %>% 
