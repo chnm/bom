@@ -52,7 +52,6 @@ parishes_long <- parishes_long %>%
 
 # Find all unique values for parish name, week, and year. These will be 
 # referenced as foreign keys in PostgreSQL.
-## TODO: Drop parish names that include 'Christened' 'Buried' 'Plague'
 parishes_unique <- parishes_long %>% 
   select(parish_name) %>% 
   distinct() %>% 
@@ -61,6 +60,31 @@ parishes_unique <- parishes_long %>%
   mutate(parish_id = str_pad(id, 4, pad = "0")) %>% 
   select(-id)
 
+# We want to clean up our distinct parish names by removing any mentions of 
+# christenings, burials, or plague. The following detects the presence of specific 
+# strings and simply assigns a bool. We then use those TRUE and FALSE values 
+# to filter the data and remove the matching TRUE statements.
+parishes_unique$christening_detect <- str_detect(parishes_unique$parish_name, "Christened")
+parishes_unique$burials_detect <- str_detect(parishes_unique$parish_name, "Buried")
+parishes_unique$plague_detect <- str_detect(parishes_unique$parish_name, "Plague in")
+
+christenings_tmp <- parishes_unique %>% 
+  dplyr::filter(christening_detect == TRUE) %>% 
+  select(-christening_detect, -burials_detect, -plague_detect)
+burials_tmp <- parishes_unique %>% 
+  dplyr::filter(burials_detect == TRUE) %>% 
+  select(-christening_detect, -burials_detect, -plague_detect)
+plague_tmp <- parishes_unique %>% 
+  dplyr::filter(plague_detect == TRUE) %>% 
+  select(-christening_detect, -burials_detect, -plague_detect)
+parishes_unique <- parishes_unique %>% 
+  dplyr::filter(christening_detect == FALSE, burials_detect == FALSE, plague_detect == FALSE)
+
+parishes_unique <- parishes_unique %>% 
+  select(-christening_detect, -burials_detect, -plague_detect)
+rm(christenings_tmp, burials_tmp, plague_tmp)
+
+# Unique week values
 week_unique <- parishes_long %>% 
   select(year, week, start_day, end_day, start_month, end_month, unique_identifier) %>% 
   distinct() %>% 
@@ -83,6 +107,7 @@ week_unique <- parishes_long %>%
   ) %>% 
   select(-week_tmp)
 
+# Unique year values
 year_unique <- parishes_long %>% 
   select(year) %>% 
   distinct() %>% 
@@ -90,6 +115,7 @@ year_unique <- parishes_long %>%
   mutate(year_id = as.integer(year)) %>% 
   mutate(year = as.integer(year))
 
+# Unique death strings
 death_unique <- deaths_long %>% 
   select(death) %>% 
   distinct() %>% 
@@ -157,3 +183,7 @@ plague <- parishes_filtering %>%
   select(-christening_detect, -burials_detect, -plague_detect)
 
 rm(parishes_filtering)
+
+write_csv(christenings, "data/christenings_counts.csv")
+write_csv(burials, "data/burials_counts.csv")
+write_csv(plague, "data/plague_counts.csv")
