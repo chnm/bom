@@ -24,11 +24,13 @@ deaths_long <- raw_deaths %>%
   select(!`Other Casualties (Descriptive Text)`) %>% 
   pivot_longer(8:109, 
                names_to = 'death', 
-               values_to = 'count')
+               values_to = 'count') %>% 
+  mutate(death = str_trim(death))
 
 # Lowercase column names and replace spaces with underscores
 names(deaths_long) <- tolower(names(deaths_long))
 names(deaths_long) <- gsub(" ", "_", names(deaths_long))
+ 
 
 write_csv(deaths_long, "data/deaths.csv", na = "")
 
@@ -106,8 +108,16 @@ week_unique <- parishes_long %>%
                           )
   )
   ) %>% 
-  select(-week_tmp)
+  mutate(year_range = str_sub(week_id, 1, 9)) %>% 
+  select(-week_tmp, -year)
 
+# Assign unique week IDs to the deaths long table. 
+# Currently commented away because we don't have all of this data yet and it
+# returns an empty dataframe.
+#deaths_long <- deaths_long %>% 
+#  select(death, count, unique_identifier) %>% 
+#  dplyr::inner_join(deaths_long, week_unique, by = "unique_identifier")
+  
 # Unique year values
 year_unique <- parishes_long %>% 
   select(year) %>% 
