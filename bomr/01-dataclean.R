@@ -1,21 +1,22 @@
 # This exists for the purpose of cleaning up and rearranging a DataScribe export
-# for the Bills of Mortality. It creates two CSV files of long tables for the 
-# parishes and types of death.
-# 
+# for the Bills of Mortality. It creates CSV files of long tables for the 
+# parishes and types of death as well as extracting burials, christenings, and 
+# plague numbers from the transcriptions.
+#
 # Jason A. Heppler | jason@jasonheppler.org
 # Roy Rosenzweig Center for History and New Media
-# Updated: 2021-12-03
+# Updated: 2021-12-07
 
 library(tidyverse)
 
 # Data sources
 # ----------------------------
-deaths <- read_csv("datascribe/weekly_deaths.csv")
-parishes <- read_csv("datascribe/weekly_plague.csv")
+raw_deaths <- read_csv("datascribe/weekly_deaths.csv")
+raw_parishes <- read_csv("datascribe/weekly_plague.csv")
 
 # Types of death table
 # ----------------------------
-deaths_long <- deaths %>% 
+deaths_long <- raw_deaths %>% 
   select(!1:5) %>%
   select(!`Drowned (Descriptive Text)`) %>% 
   select(!`Killed (Descriptive Text)`) %>% 
@@ -33,7 +34,7 @@ write_csv(deaths_long, "data/deaths.csv", na = "")
 
 # Parish list
 # ----------------------------
-parishes_long <- parishes %>% 
+parishes_long <- raw_parishes %>% 
   select(!1:5) %>% 
   pivot_longer(7:284,
                names_to = 'parish_name',
@@ -48,17 +49,16 @@ parishes_long$year <- str_sub(parishes_long$unique_identifier, 1, 4)
 # Remove whitespace with str_trim().
 parishes_long <- parishes_long %>% separate(parish_name, c("parish_name", "count_type"), sep = "[-]")
 parishes_long <- parishes_long %>%
-  mutate(count_type = str_trim(count_type))
+  mutate(count_type = str_trim(count_type)) %>% 
+  mutate(parish_name = str_trim(parish_name))
 
 # Find all unique values for parish name, week, and year. These will be 
 # referenced as foreign keys in PostgreSQL.
 parishes_unique <- parishes_long %>% 
   select(parish_name) %>% 
   distinct() %>% 
-  arrange() %>% 
-  mutate(id = row_number()) %>% 
-  mutate(parish_id = str_pad(id, 4, pad = "0")) %>% 
-  select(-id)
+  arrange(parish_name) %>% 
+  mutate(parish_name = str_trim(parish_name))
 
 # We want to clean up our distinct parish names by removing any mentions of 
 # christenings, burials, or plague. The following detects the presence of specific 
@@ -81,7 +81,8 @@ parishes_unique <- parishes_unique %>%
   dplyr::filter(christening_detect == FALSE, burials_detect == FALSE, plague_detect == FALSE)
 
 parishes_unique <- parishes_unique %>% 
-  select(-christening_detect, -burials_detect, -plague_detect)
+  select(-christening_detect, -burials_detect, -plague_detect) %>% 
+  mutate(parish_id = row_number())
 rm(christenings_tmp, burials_tmp, plague_tmp)
 
 # Unique week values
@@ -119,11 +120,8 @@ year_unique <- parishes_long %>%
 death_unique <- deaths_long %>% 
   select(death) %>% 
   distinct() %>% 
-  arrange() %>% 
-  mutate(id = row_number()) %>% 
-  mutate(death_id = str_pad(id, 3, pad = "0")) %>% 
-  mutate(death_id = str_replace(death_id,"(\\d{1})(\\d{1})(\\d{1})$","\\1-\\2-\\3")) %>% 
-  select(-id)
+  arrange(death) %>% 
+  mutate(death_id = row_number())
 
 # Match unique parish IDs with the long parish table, and drop the parish
 # name from the long table. We'll use SQL foreign keys to keep the relationship
@@ -162,7 +160,7 @@ write_csv(year_unique, "data/year_unique.csv", na = "")
 
 # Separate dataframes for christenings, births, plague, and foodstuffs
 # ----------------------------
-parishes_filtering <- parishes %>% 
+parishes_filtering <- raw_parishes %>% 
   select(!1:5) %>% 
   pivot_longer(7:284,
                names_to = 'parish_name',
