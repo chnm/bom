@@ -1,134 +1,134 @@
 parish_name,parish_id
-St Alban Woodstreet ,0001
-Alhallows Barking ,0002
-Alhallows Breadstreet ,0003
-Alhallows Great ,0004
-Alhallows Honylane ,0005
-Alhallows Lesse ,0006
-Alhallows Lumbardstreet ,0007
-Alhallows Stayning ,0008
-Alhallows the Wall ,0009
-St Alphage ,0010
-St Andrew Hubbard ,0011
-St Andrew Undershaft ,0012
-St Andrew Wardrobe ,0013
-St Ann Aldersgate ,0014
-St Ann Blackfryers ,0015
-St Antholins Parish ,0016
-St Austins Parish ,0017
-St Bartholomew Exchange ,0018
-St Bennet Fynck ,0019
-St Bennet Gracechurch ,0020
-St Bennet Paulswharf ,0021
-St Bennet Sherehog ,0022
-St Botolph Billingsgate ,0023
-Christ Church ,0024
-St Christophers ,0025
-St Clement Eastcheap ,0026
-St Dionis Backchurch ,0027
-St Dunstan East ,0028
-St Edmund Lumbardstr. ,0029
-St Ethelborough ,0030
-St Faith ,0031
-St Foster ,0032
-St Gabriel Fenchurch ,0033
-St George Botolphlane ,0034
-St Gregory by St Pauls ,0035
-St Hellen ,0036
-St James Dukes place ,0037
-St James Garlickhithe ,0038
-St John Baptist ,0039
-St John Evangelist ,0040
-St John Zachary ,0041
-St Katharine Coleman ,0042
-St Katharine Creechurch ,0043
-St Lawrence Jewry ,0044
-St Lawrence Pountney ,0045
-St Leonard Eastcheap ,0046
-St Leonard Fosterlane ,0047
-St Magnus Parish ,0048
-St Margaret Lothbury ,0049
-St Margaret Moses ,0050
-St Margaret Newfishstreet ,0051
-St Margaret Pattons ,0052
-St Mary Abchurch ,0053
-St Mary Aldermanbury ,0054
-St Mary Aldermary ,0055
-St Mary le Bow ,0056
-St Mary Bothaw ,0057
-St Mary Colechurch ,0058
-St Mary Hill ,0059
-St Mary Mounthaw ,0060
-St Mary Sommerset ,0061
-St Mary Stayning ,0062
-St Mary Woolchurch ,0063
-St Mary Woolnoth ,0064
-St Martin Iremongerlane ,0065
-St Martin Ludgate ,0066
-St Martin Orgars ,0067
-St Martin Outwich ,0068
-St Martin Vintrey ,0069
-St Matthew Fridaystreet ,0070
-St Maudlin Milkstreet ,0071
-St Maudlin Oldfishstreet ,0072
-St Michael Bassishaw ,0073
-St Michael Cornhil ,0074
-St Michael Crookedlane ,0075
-St Michael Queenhithe ,0076
-St Michael Quern ,0077
-St Michael Royal ,0078
-St Michael Woodstreet ,0079
-St Mildred Breadstreet ,0080
-St Mildred Poultrey ,0081
-St Nicholas Acons ,0082
-St Nicholas Coleabby ,0083
-St Nicholas Olaves ,0084
-St Olave Hartstreet ,0085
-St Olave Jewry ,0086
-St Olave Silverstreet ,0087
-St Pancras Soperlane ,0088
-St Peter Cheap ,0089
-St Peter Cornhil ,0090
-St Peter Paulswharf ,0091
-St Peter Poor ,0092
-St Steven Colemanstreet ,0093
-St Steven Walbrook ,0094
-St Swithin ,0095
-St Thomas Apostles ,0096
-Trinity Parish ,0097
-St Andrew Holborn ,0101
-St Bartholomew Great ,0102
-St Bartholomew Less ,0103
-St Bridget ,0104
-Bridewel Precinct ,0105
-St Botolph Aldersgate ,0106
-St Botolph Aldgate ,0107
-St Botolph Bishopsgate ,0108
-St Dunstan West ,0109
-St George Southwark ,0110
-St Giles Cripplegate ,0111
-St Olave Southwark ,0112
-Saviours Southwark ,0113
-S Sepulchres Parish ,0114
-St Thomas Southwark ,0115
-Trinity Minories ,0116
-At the Pesthouse ,0117
-St Giles in the Field ,0121
-Hackney Parish ,0122
-St James Clerkenwel ,0123
-St Katharine Tower ,0124
-Lambeth Parish ,0125
-St Leonard Shoreditch ,0126
-St Magdalen Bermondsey ,0127
-St Mary Islington ,0128
-St Mary Newington ,0129
-St Mary Whitechappel ,0130
-St Pauls Shadwel ,0131
-Rothorith Parish ,0132
-Stepney Parish ,0133
-St Clement Danes ,0137
-St Paul Covent Garden ,0138
-St Martin in the fields ,0139
-St Mary Savoy ,0140
-St Margaret Westminster ,0141
-Whereof at the Pesthouse ,0142
+Alhallows Barking,1
+Alhallows Breadstreet,2
+Alhallows Great,3
+Alhallows Honylane,4
+Alhallows Lesse,5
+Alhallows Lumbardstreet,6
+Alhallows Stayning,7
+Alhallows the Wall,8
+At the Pesthouse,9
+Bridewel Precinct,10
+Christ Church,11
+Hackney Parish,12
+Lambeth Parish,13
+Rothorith Parish,14
+S Sepulchres Parish,15
+Saviours Southwark,16
+St Alban Woodstreet,17
+St Alphage,18
+St Andrew Holborn,19
+St Andrew Hubbard,20
+St Andrew Undershaft,21
+St Andrew Wardrobe,22
+St Ann Aldersgate,23
+St Ann Blackfryers,24
+St Antholins Parish,25
+St Austins Parish,26
+St Bartholomew Exchange,27
+St Bartholomew Great,28
+St Bartholomew Less,29
+St Bennet Fynck,30
+St Bennet Gracechurch,31
+St Bennet Paulswharf,32
+St Bennet Sherehog,33
+St Botolph Aldersgate,34
+St Botolph Aldgate,35
+St Botolph Billingsgate,36
+St Botolph Bishopsgate,37
+St Bridget,38
+St Christophers,39
+St Clement Danes,40
+St Clement Eastcheap,41
+St Dionis Backchurch,42
+St Dunstan East,43
+St Dunstan West,44
+St Edmund Lumbardstr.,45
+St Ethelborough,46
+St Faith,47
+St Foster,48
+St Gabriel Fenchurch,49
+St George Botolphlane,50
+St George Southwark,51
+St Giles Cripplegate,52
+St Giles in the Field,53
+St Gregory by St Pauls,54
+St Hellen,55
+St James Clerkenwel,56
+St James Dukes place,57
+St James Garlickhithe,58
+St John Baptist,59
+St John Evangelist,60
+St John Zachary,61
+St Katharine Coleman,62
+St Katharine Creechurch,63
+St Katharine Tower,64
+St Lawrence Jewry,65
+St Lawrence Pountney,66
+St Leonard Eastcheap,67
+St Leonard Fosterlane,68
+St Leonard Shoreditch,69
+St Magdalen Bermondsey,70
+St Magnus Parish,71
+St Margaret Lothbury,72
+St Margaret Moses,73
+St Margaret Newfishstreet,74
+St Margaret Pattons,75
+St Margaret Westminster,76
+St Martin in the fields,77
+St Martin Iremongerlane,78
+St Martin Ludgate,79
+St Martin Orgars,80
+St Martin Outwich,81
+St Martin Vintrey,82
+St Mary Abchurch,83
+St Mary Aldermanbury,84
+St Mary Aldermary,85
+St Mary Bothaw,86
+St Mary Colechurch,87
+St Mary Hill,88
+St Mary Islington,89
+St Mary le Bow,90
+St Mary Mounthaw,91
+St Mary Newington,92
+St Mary Savoy,93
+St Mary Sommerset,94
+St Mary Stayning,95
+St Mary Whitechappel,96
+St Mary Woolchurch,97
+St Mary Woolnoth,98
+St Matthew Fridaystreet,99
+St Maudlin Milkstreet,100
+St Maudlin Oldfishstreet,101
+St Michael Bassishaw,102
+St Michael Cornhil,103
+St Michael Crookedlane,104
+St Michael Queenhithe,105
+St Michael Quern,106
+St Michael Royal,107
+St Michael Woodstreet,108
+St Mildred Breadstreet,109
+St Mildred Poultrey,110
+St Nicholas Acons,111
+St Nicholas Coleabby,112
+St Nicholas Olaves,113
+St Olave Hartstreet,114
+St Olave Jewry,115
+St Olave Silverstreet,116
+St Olave Southwark,117
+St Pancras Soperlane,118
+St Paul Covent Garden,119
+St Pauls Shadwel,120
+St Peter Cheap,121
+St Peter Cornhil,122
+St Peter Paulswharf,123
+St Peter Poor,124
+St Steven Colemanstreet,125
+St Steven Walbrook,126
+St Swithin,127
+St Thomas Apostles,128
+St Thomas Southwark,129
+Stepney Parish,130
+Trinity Minories,131
+Trinity Parish,132
+Whereof at the Pesthouse,133
