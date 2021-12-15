@@ -5,7 +5,7 @@
 #
 # Jason A. Heppler | jason@jasonheppler.org
 # Roy Rosenzweig Center for History and New Media
-# Updated: 2021-12-07
+# Updated: 2021-12-08
 
 library(tidyverse)
 
@@ -30,7 +30,6 @@ deaths_long <- raw_deaths %>%
 # Lowercase column names and replace spaces with underscores
 names(deaths_long) <- tolower(names(deaths_long))
 names(deaths_long) <- gsub(" ", "_", names(deaths_long))
- 
 
 write_csv(deaths_long, "data/deaths.csv", na = "")
 
@@ -95,15 +94,14 @@ week_unique <- parishes_long %>%
   # To get a leading zero and not mess with the math below, we create a temporary
   # column to pad the week number with a leading zero and use that for 
   # creating the week ID string.
+  mutate(id = row_number()) %>% 
   mutate(week_tmp = str_pad(week, 2, pad = "0")) %>% 
   mutate(week = as.integer(week)) %>%
   mutate(week_id = ifelse(week > 15,
                           paste0(
-                            #year - 1, '-', year, '-', week_tmp
                             year - 1, '-', year, '-', week_tmp
                           ),
                           paste0(
-                            #year, '-', year + 1, '-', week_tmp
                             year, '-', year + 1, '-', week_tmp
                           )
   )
@@ -112,7 +110,7 @@ week_unique <- parishes_long %>%
   select(-week_tmp, -year)
 
 # Assign unique week IDs to the deaths long table. 
-# Currently commented away because we don't have all of this data yet and it
+# Currently commented away because we don't have this data yet and it
 # returns an empty dataframe.
 #deaths_long <- deaths_long %>% 
 #  select(death, count, unique_identifier) %>% 
@@ -124,7 +122,16 @@ year_unique <- parishes_long %>%
   distinct() %>% 
   arrange() %>% 
   mutate(year_id = as.integer(year)) %>% 
-  mutate(year = as.integer(year))
+  mutate(year = as.integer(year)) %>% 
+  mutate(split_year = ifelse(year > 15,
+                          paste0(
+                            year - 1, '/', year
+                          ),
+                          paste0(
+                            year, '/', year + 1
+                          )
+  )
+  )
 
 # Unique death strings
 death_unique <- deaths_long %>% 
@@ -143,7 +150,7 @@ parishes_long <- dplyr::inner_join(parishes_long, parishes_unique, by = "parish_
 # start and end months and days from long_parish so they're only referenced
 # through the unique week ID.
 parishes_long <- parishes_long %>% 
-  select(-week, -start_day, -end_day, -start_month, -end_month, -year) %>% 
+  select(-week, -start_day, -end_day, -start_month, -end_month) %>% 
   dplyr::left_join(week_unique, by = "unique_identifier") %>% 
   select(-week, -start_day, -end_day, -start_month, -end_month, -unique_identifier)
 
@@ -151,8 +158,14 @@ parishes_long <- parishes_long %>%
 # year column from long_parishes so they're only referenced
 # through the unique year ID.
 parishes_long <- parishes_long %>% 
+  mutate(year = as.integer(year))
+
+parishes_long <- parishes_long %>% 
   dplyr::left_join(year_unique, by = "year") %>% 
   select(-year)
+
+parishes_long <- parishes_long %>% 
+  mutate(id = row_number())
 
 # After we have unique years, we need to join the year ID to the 
 # unique weeks and parishes_long. 
