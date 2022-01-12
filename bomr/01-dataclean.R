@@ -190,7 +190,7 @@ parishes_filtering <- raw_parishes %>%
                values_to = 'count')
 
 parishes_filtering$christening_detect <- str_detect(parishes_filtering$parish_name, "Christened")
-parishes_filtering$burials_detect <- str_detect(parishes_filtering$parish_name, "Buried")
+parishes_filtering$burials_detect <- str_detect(parishes_filtering$parish_name, "Buried in")
 parishes_filtering$plague_detect <- str_detect(parishes_filtering$parish_name, "Plague in")
 
 christenings <- parishes_filtering %>% 
@@ -203,8 +203,33 @@ plague <- parishes_filtering %>%
   dplyr::filter(plague_detect == TRUE) %>% 
   select(-christening_detect, -burials_detect, -plague_detect)
 
+names(christenings) <- tolower(names(christenings))
+names(christenings) <- gsub(" ", "_", names(christenings))
+
+christenings <- christenings %>% 
+  select(-week, -start_day, -end_day, -start_month, -end_month) %>% 
+  dplyr::left_join(week_unique, by = "unique_identifier") %>% 
+  select(-week, -start_day, -end_day, -start_month, -end_month, -unique_identifier, -id, -year_range, -split_year)
+
 rm(parishes_filtering)
 
 write_csv(christenings, "data/christenings_counts.csv")
 write_csv(burials, "data/burials_counts.csv")
 write_csv(plague, "data/plague_counts.csv")
+
+## Foodstuffs
+parishes_filtering <- raw_parishes %>% 
+  select(!1:5) %>% 
+  pivot_longer(7:284,
+               names_to = 'parish_name',
+               values_to = 'count')
+
+parishes_filtering$food_detect <- str_detect(parishes_filtering, "bread")
+
+foodstuffs <- parishes_filtering %>% 
+  dplyr::filter(christening_detect == TRUE) %>% 
+  select(-christening_detect, -burials_detect, -plague_detect)
+
+rm(parishes_filtering)
+
+write_csv(foodstuffs, "data/foodstuffs_count.csv")
