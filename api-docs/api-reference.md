@@ -55,7 +55,7 @@ The current API has three endpoints, one for serving user interfaces and two for
 **Unique parish names**
 
 ```
-GET /parish
+GET /parishes
 ```
 
 Parameters: 
