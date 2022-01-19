@@ -28,7 +28,7 @@ The web application currently has four ways of interacting with the table of dat
 
 - The table itself has a few built-in tools for interacting with the data. You can change the rows per page (to view 25, 50, or 100 rows at a time), you can page through the results, or you can search for parish names using the "Search for parish name" box in the Parish column.
 - Parishes checkboxes: Displayed above the table, these allow you to select or unselect specific parishes you'd like to display within the table. 
-Years slider: This adjusts the years that are displayed by the table. By default the full extent of years is selected. As you drag the nodes for start and end years, you can see the year value tooltip change. After you let up on your mouse, the new value is then passed to the API and new data fetched for display. 
+- Years slider: This adjusts the years that are displayed by the table. By default the full extent of years is selected. As you drag the nodes for start and end years, you can see the year value tooltip change. After you let up on your mouse, the new value is then passed to the API and new data fetched for display. 
 - Count type: This allows you to filter the data based on either the number of burials or number of those infected with the plague. The options are "All" (to display all data regardless of count type), "Buried" (to display burial counts), and "Plague" (to display infection counts).
 
 ## Technical Specifications
@@ -82,8 +82,10 @@ GET /bills
 ```
 
 Parameters: 
-- startYear
-- endYear
+- startYear (required): A four digit number representing the start year.
+- endYear (required): A four digit number representing the end year.
+
+The `startYear` and `endYear` parameters are required and return the range of rows in the database that fall between the two years. 
 
 <http://data.chnm.org/bom/bills?startYear=1669&endYear=1754>
 
@@ -110,8 +112,10 @@ GET /christenings
 ```
 
 Parameters: 
-- startYear
-- endYear
+- startYear (required): A four digit number representing the start year.
+- endYear (required): A four digit number representing the end year.
+
+The `startYear` and `endYear` parameters are required and return the range of rows in the database that fall between the two years.
 
 <http://data.chnm.org/bom/christenings?startYear=1669&endYear=1754>
 
