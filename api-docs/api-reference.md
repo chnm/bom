@@ -40,6 +40,7 @@ The BoM API uses conventional HTTP response codes to indicate the success or fai
 HTTP Status Code Summary 
 
 | Code  | Summary |
+| ----- | ------- |
 | 200 - OK | Everything worked as expected. |
 | 400 - Bad Request | The request was not accepted due to a missing required parameter. |
 | 402 - Request Failed | The parameters were valid but the request failed.
