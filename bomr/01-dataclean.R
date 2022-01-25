@@ -13,6 +13,7 @@ library(tidyverse)
 # ----------------------------
 raw_deaths <- read_csv("datascribe/weekly_deaths.csv")
 raw_parishes <- read_csv("datascribe/weekly_plague.csv")
+raw_millar <- read_csv("datascribe/millar.csv")
 
 # Types of death table
 # ----------------------------
@@ -41,10 +42,21 @@ parishes_long <- raw_parishes %>%
                names_to = 'parish_name',
                values_to = 'count')
 
+millar_long <- raw_millar %>% 
+  select(!1:4) %>% 
+  pivot_longer(8:167,
+               names_to = 'parish_name',
+               values_to = 'count') %>% 
+  mutate(week = 90)
+
 # Lowercase column names and replace spaces with underscores.
 names(parishes_long) <- tolower(names(parishes_long))
 names(parishes_long) <- gsub(" ", "_", names(parishes_long))
 parishes_long$year <- str_sub(parishes_long$unique_identifier, 1, 4)
+
+names(millar_long) <- tolower(names(millar_long))
+names(millar_long) <- gsub(" ", "_", names(millar_long))
+millar_long$year <- str_sub(millar_long$unique_identifier, 8, 11)
 
 # Separate out a parish name from the count type (plague vs. burial)
 # Remove whitespace with str_trim().
@@ -52,6 +64,9 @@ parishes_long <- parishes_long %>% separate(parish_name, c("parish_name", "count
 parishes_long <- parishes_long %>%
   mutate(count_type = str_trim(count_type)) %>% 
   mutate(parish_name = str_trim(parish_name))
+
+millar_long <- millar_long %>% 
+  mutate(count_type = "General")
 
 # Find all unique values for parish name, week, and year. These will be 
 # referenced as foreign keys in PostgreSQL.
@@ -86,8 +101,10 @@ parishes_unique <- parishes_unique %>%
   mutate(parish_id = row_number())
 rm(christenings_tmp, burials_tmp, plague_tmp)
 
+bills_combined <- rbind(parishes_long, millar_long %>% select(-start_year, -end_year))
+
 # Unique week values
-week_unique <- parishes_long %>% 
+week_unique <- bills_combined %>% 
   select(year, week, start_day, end_day, start_month, end_month, unique_identifier) %>% 
   distinct() %>% 
   mutate(year = as.integer(year)) %>% 
@@ -117,7 +134,7 @@ week_unique <- parishes_long %>%
 #  dplyr::inner_join(deaths_long, week_unique, by = "unique_identifier")
   
 # Unique year values
-year_unique <- parishes_long %>% 
+year_unique <- bills_combined %>% 
   select(year) %>% 
   distinct() %>% 
   arrange() %>% 
@@ -143,13 +160,13 @@ death_unique <- deaths_long %>%
 # Match unique parish IDs with the long parish table, and drop the parish
 # name from the long table. We'll use SQL foreign keys to keep the relationship
 # by parish_id in parishes_long and parishes_unique.
-parishes_long <- dplyr::inner_join(parishes_long, parishes_unique, by = "parish_name") %>% 
+bills_combined <- dplyr::inner_join(bills_combined, parishes_unique, by = "parish_name") %>% 
   select(-parish_name)
 
 # Match unique week IDs to the long parish table, and drop the existing 
 # start and end months and days from long_parish so they're only referenced
 # through the unique week ID.
-parishes_long <- parishes_long %>% 
+bills_combined <- bills_combined %>% 
   select(-week, -start_day, -end_day, -start_month, -end_month) %>% 
   dplyr::left_join(week_unique, by = "unique_identifier") %>% 
   select(-week, -start_day, -end_day, -start_month, -end_month, -unique_identifier)
@@ -157,14 +174,14 @@ parishes_long <- parishes_long %>%
 # Match unique year IDs to the long parish table, and drop the existing
 # year column from long_parishes so they're only referenced
 # through the unique year ID.
-parishes_long <- parishes_long %>% 
+bills_combined <- bills_combined %>% 
   mutate(year = as.integer(year))
 
-parishes_long <- parishes_long %>% 
+bills_combined <- bills_combined %>% 
   dplyr::left_join(year_unique, by = "year") %>% 
   select(-year)
 
-parishes_long <- parishes_long %>% 
+bills_combined <- bills_combined %>% 
   mutate(id = row_number())
 
 # After we have unique years, we need to join the year ID to the 
@@ -180,6 +197,7 @@ write_csv(parishes_long, "data/parishes.csv", na = "")
 write_csv(parishes_unique, "data/parishes_unique.csv", na = "")
 write_csv(week_unique, "data/week_unique.csv", na = "")
 write_csv(year_unique, "data/year_unique.csv", na = "")
+write_csv(bills_combined, "data/bills.csv", na = "")
 
 # Separate dataframes for christenings, births, plague, and foodstuffs
 # ----------------------------
