@@ -52,7 +52,9 @@ HTTP Status Code Summary
 
 The current API has three endpoints, one for serving user interfaces and two for returning the data to an interactive table.
 
-**Unique parish names**
+#### Unique parish names
+
+This serves the user interface by populating the checkboxes for filtering parish names selected by a user.
 
 ```
 GET /parishes
@@ -75,7 +77,9 @@ Response JSON (indexed by parish ID):
 }
 ```
 
-**Individual bills**
+#### Individual bills
+
+This endpoint returns the entirety of the Bills data and populates the table under the `Parishes` tab.
 
 ```
 GET /bills
@@ -105,7 +109,9 @@ Response JSON:
 ]
 ```
 
-**Christenings data**
+#### Christenings data
+
+This endpoint returns the christenings data and populates the table under the `Christenings` tab.
 
 ```
 GET /christenings
