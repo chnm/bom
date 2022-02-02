@@ -44,7 +44,7 @@ parishes_long <- raw_parishes %>%
 
 millar_long <- raw_millar %>% 
   select(!1:4) %>% 
-  pivot_longer(8:167,
+  pivot_longer(8:168,
                names_to = 'parish_name',
                values_to = 'count') %>% 
   mutate(week = 90)
@@ -66,11 +66,19 @@ parishes_long <- parishes_long %>%
   mutate(parish_name = str_trim(parish_name))
 
 millar_long <- millar_long %>% 
-  mutate(count_type = "General")
+  mutate(count_type = "General") %>% 
+  mutate(parish_name = str_trim(parish_name))
 
 # Find all unique values for parish name, week, and year. These will be 
 # referenced as foreign keys in PostgreSQL.
 parishes_unique <- parishes_long %>% 
+  select(parish_name) %>% 
+  distinct() %>% 
+  arrange(parish_name) %>% 
+  mutate(parish_name = str_trim(parish_name))
+
+parishes_tmp <- left_join(parishes_unique, millar_long, by = 'parish_name')
+parishes_unique <- parishes_tmp %>% 
   select(parish_name) %>% 
   distinct() %>% 
   arrange(parish_name) %>% 
