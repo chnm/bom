@@ -51,18 +51,32 @@ write_csv(deaths_unique, "data/deaths_unique.csv", na = "")
 # Weekly Bills
 # ---------------------------------------------------------------------- 
 
-weekly_bills <- raw_parishes %>% 
+laxton_weekly <- raw_laxton_weekly %>% 
+  select(!1:5) %>% 
+  pivot_longer(7:166,
+               names_to = 'parish_name',
+               values_to = 'count')
+
+wellcome_weekly <- raw_wellcome_weekly %>% 
   select(!1:5) %>% 
   pivot_longer(7:284,
                names_to = 'parish_name',
                values_to = 'count')
-weekly_bills <- weekly_bills %>% 
-  mutate(bill_type = "Weekly")
 
 # Lowercase column names and replace spaces with underscores.
-names(weekly_bills) <- tolower(names(weekly_bills))
-names(weekly_bills) <- gsub(" ", "_", names(weekly_bills))
-weekly_bills$year <- str_sub(weekly_bills$unique_identifier, 1, 4)
+names(laxton_weekly) <- tolower(names(laxton_weekly))
+names(laxton_weekly) <- gsub(" ", "_", names(laxton_weekly))
+laxton_weekly$year <- str_sub(laxton_weekly$unique_id, 1, 4) 
+# the unique ID column is mis-named so we fix it here
+names(laxton_weekly)[2] <- "unique_identifier"
+
+names(wellcome_weekly) <- tolower(names(wellcome_weekly))
+names(wellcome_weekly) <- gsub(" ", "_", names(wellcome_weekly))
+wellcome_weekly$year <- str_sub(wellcome_weekly$unique_identifier, 1, 4)
+
+weekly_bills <- rbind(wellcome_weekly, laxton_weekly)
+weekly_bills <- weekly_bills %>% 
+  mutate(bill_type = "Weekly")
 
 # Separate out a parish name from the count type (plague vs. burial)
 # Remove whitespace with str_trim().
