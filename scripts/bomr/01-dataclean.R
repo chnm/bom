@@ -5,19 +5,23 @@
 #
 # Jason A. Heppler | jason@jasonheppler.org
 # Roy Rosenzweig Center for History and New Media
-# Updated: 2022-02-04
+# Updated: 2022-03-09
 
 library(tidyverse)
 
+# ---------------------------------------------------------------------- 
 # Data sources
-# ----------------------------
-raw_deaths <- read_csv("datascribe/weekly_deaths.csv")
-raw_parishes <- read_csv("datascribe/weekly_plague.csv")
-raw_millar <- read_csv("datascribe/millar.csv")
+# ---------------------------------------------------------------------- 
+raw_laxton_weekly <- read_csv("datascribe/Laxton-weekly-parishes.csv")
+raw_wellcome_causes <- read_csv("datascribe/Wellcome-weekly-causes.csv")
+raw_wellcome_weekly <- read_csv("datascribe/Wellcome-weekly-parishes.csv")
+raw_millar_general <- read_csv("datascribe/Millar-general-postplague-parishes-COMPLETE.csv")
+raw_laxton_general <- read_csv("datascribe/Laxton-general-parishes.csv")
 
+# ---------------------------------------------------------------------- 
 # Types of death table
-# ----------------------------
-deaths_long <- raw_deaths %>% 
+# ---------------------------------------------------------------------- 
+wellcome_causes_long <- raw_wellcome_causes %>% 
   select(!1:5) %>%
   select(!`Drowned (Descriptive Text)`) %>% 
   select(!`Killed (Descriptive Text)`) %>% 
@@ -29,62 +33,105 @@ deaths_long <- raw_deaths %>%
   mutate(death = str_trim(death))
 
 # Lowercase column names and replace spaces with underscores
-names(deaths_long) <- tolower(names(deaths_long))
-names(deaths_long) <- gsub(" ", "_", names(deaths_long))
+names(wellcome_causes_long) <- tolower(names(wellcome_causes_long))
+names(wellcome_causes_long) <- gsub(" ", "_", names(wellcome_causes_long))
 
-write_csv(deaths_long, "data/deaths.csv", na = "")
+# Types of death with unique ID
+deaths_unique <- wellcome_causes_long %>% 
+  select(death) %>% 
+  distinct() %>% 
+  arrange(death) %>% 
+  mutate(death_id = row_number())
 
-# Parish list
-# ----------------------------
+# Write data
+write_csv(wellcome_causes_long, "data/wellcome_causes.csv", na = "")
+write_csv(deaths_unique, "data/deaths_unique.csv", na = "")
 
-# Weekly bills
-parishes_long <- raw_parishes %>% 
+# ---------------------------------------------------------------------- 
+# Weekly Bills
+# ---------------------------------------------------------------------- 
+
+weekly_bills <- raw_parishes %>% 
   select(!1:5) %>% 
   pivot_longer(7:284,
                names_to = 'parish_name',
                values_to = 'count')
-parishes_long <- parishes_long %>% 
+weekly_bills <- weekly_bills %>% 
   mutate(bill_type = "Weekly")
 
-# General bills
-millar_long <- raw_millar %>% 
-  select(!1:4) %>% 
-  pivot_longer(8:168,
-               names_to = 'parish_name',
-               values_to = 'count') %>% 
-  mutate(week = 90)
-millar_long <- millar_long %>% 
-  mutate(bill_type = "General") %>% 
-  mutate(count_type = "General")
-
 # Lowercase column names and replace spaces with underscores.
-names(parishes_long) <- tolower(names(parishes_long))
-names(parishes_long) <- gsub(" ", "_", names(parishes_long))
-parishes_long$year <- str_sub(parishes_long$unique_identifier, 1, 4)
-
-names(millar_long) <- tolower(names(millar_long))
-names(millar_long) <- gsub(" ", "_", names(millar_long))
-millar_long$year <- str_sub(millar_long$unique_identifier, 8, 11)
+names(weekly_bills) <- tolower(names(weekly_bills))
+names(weekly_bills) <- gsub(" ", "_", names(weekly_bills))
+weekly_bills$year <- str_sub(weekly_bills$unique_identifier, 1, 4)
 
 # Separate out a parish name from the count type (plague vs. burial)
 # Remove whitespace with str_trim().
-parishes_long <- parishes_long %>% separate(parish_name, c("parish_name", "count_type"), sep = "[-]")
-parishes_long <- parishes_long %>%
+weekly_bills <- weekly_bills %>% separate(parish_name, c("parish_name", "count_type"), sep = "[-]")
+weekly_bills <- weekly_bills %>%
   mutate(count_type = str_trim(count_type)) %>% 
-  mutate(parish_name = str_trim(parish_name))
-
-millar_long <- millar_long %>% 
   mutate(parish_name = str_trim(parish_name))
 
 # Find all unique values for parish name, week, and year. These will be 
 # referenced as foreign keys in PostgreSQL.
-parishes_unique <- parishes_long %>% 
+parishes_unique <- weekly_bills %>% 
   select(parish_name) %>% 
   distinct() %>% 
   arrange(parish_name) %>% 
   mutate(parish_name = str_trim(parish_name))
 
-parishes_tmp <- left_join(parishes_unique, millar_long, by = 'parish_name')
+# ---------------------------------------------------------------------- 
+# General Bills
+# ---------------------------------------------------------------------- 
+
+millar_long <- raw_millar_general %>% 
+  select(!1:4) %>% 
+  pivot_longer(8:168,
+               names_to = 'parish_name',
+               values_to = 'count') %>% 
+  # We use a nonexistant week to help with some math below
+  mutate(week = 90)
+
+millar_long <- millar_long %>% 
+  mutate(count_type = "Total")
+
+laxton_long <- raw_laxton_general %>% 
+  select(!1:4) %>% 
+  pivot_longer(8:155,
+               names_to = 'parish_name',
+               values_to = 'count') %>% 
+  # We use a nonexistant week to help with some math below
+  mutate(week = 90)
+
+laxton_long <- laxton_long %>% separate(parish_name, c("parish_name", "count_type"), sep = "[-]")
+laxton_long <- laxton_long %>%
+  mutate(count_type = str_trim(count_type)) %>% 
+  mutate(parish_name = str_trim(parish_name))
+
+# Lowercase column names and replace spaces with underscores.
+names(laxton_long) <- tolower(names(laxton_long))
+names(laxton_long) <- gsub(" ", "_", names(laxton_long))
+laxton_long$year <- str_sub(laxton_long$unique_identifier, 8, 11)
+
+names(millar_long) <- tolower(names(millar_long))
+names(millar_long) <- gsub(" ", "_", names(millar_long))
+millar_long$year <- str_sub(millar_long$unique_identifier, 8, 11)
+
+# Combine the general bills together 
+general_bills <- rbind(millar_long, laxton_long)
+general_bills <- general_bills |> 
+  mutate(bill_type = "General")
+
+# Remove whitespace with str_trim().
+general_bills <- general_bills %>% 
+  mutate(parish_name = str_trim(parish_name))
+
+# ---------------------------------------------------------------------- 
+# Unique values with IDs
+# ---------------------------------------------------------------------- 
+
+# Unique parish names
+# -------------------
+parishes_tmp <- left_join(parishes_unique, general_bills, by = 'parish_name')
 parishes_unique <- parishes_tmp %>% 
   select(parish_name) %>% 
   distinct() %>% 
@@ -98,6 +145,7 @@ parishes_unique <- parishes_tmp %>%
 parishes_unique$christening_detect <- str_detect(parishes_unique$parish_name, "Christened")
 parishes_unique$burials_detect <- str_detect(parishes_unique$parish_name, "Buried")
 parishes_unique$plague_detect <- str_detect(parishes_unique$parish_name, "Plague in")
+#parishes_unique$pesthouse_detect <- str_detect(parishes_unique$parish_name, "Pesthouse")
 
 christenings_tmp <- parishes_unique %>% 
   dplyr::filter(christening_detect == TRUE) %>% 
@@ -108,18 +156,42 @@ burials_tmp <- parishes_unique %>%
 plague_tmp <- parishes_unique %>% 
   dplyr::filter(plague_detect == TRUE) %>% 
   select(-christening_detect, -burials_detect, -plague_detect)
+#pesthouse_tmp <- parishes_unique %>% 
+#  dplyr::filter(pesthouse_detect == TRUE) %>% 
+#  select(-christening_detect, -burials_detect, -plague_detect, -pesthouse_detect)
+
 parishes_unique <- parishes_unique %>% 
-  dplyr::filter(christening_detect == FALSE, burials_detect == FALSE, plague_detect == FALSE)
+  dplyr::filter(christening_detect == FALSE,
+                burials_detect == FALSE,
+                plague_detect == FALSE, 
+                #pesthouse_detect == FALSE
+  )
 
 parishes_unique <- parishes_unique %>% 
   select(-christening_detect, -burials_detect, -plague_detect) %>% 
   mutate(parish_id = row_number())
 rm(christenings_tmp, burials_tmp, plague_tmp)
 
-bills_combined <- rbind(parishes_long, millar_long %>% select(-start_year, -end_year))
+# Combine unique parishes with the canonical Parish name list.
+parish_canonical <- read_csv("~/Downloads/London Parish Authority File.csv") |> 
+  select(`Canonical DBN Name`, `Omeka Parish Name`) |> 
+  mutate(canonical_name = `Canonical DBN Name`, parish_name = `Omeka Parish Name`) |> 
+  select(canonical_name, parish_name)
+
+parishes_unique <- parishes_unique |> 
+  left_join(parish_canonical, by = "parish_name")
+
+# Find all unique values for parish name, week, and year. These will be 
+# referenced as foreign keys in PostgreSQL.
+#parishes_unique <- weekly_bills %>% 
+#  select(parish_name) %>% 
+#  distinct() %>% 
+#  arrange(parish_name) %>% 
+#  mutate(parish_name = str_trim(parish_name))
 
 # Unique week values
-week_unique <- bills_combined %>% 
+# ------------------
+week_unique_weekly <- weekly_bills %>% 
   select(year, week, start_day, end_day, start_month, end_month, unique_identifier) %>% 
   distinct() %>% 
   mutate(year = as.integer(year)) %>% 
@@ -139,7 +211,31 @@ week_unique <- bills_combined %>%
   )
   ) %>% 
   mutate(year_range = str_sub(week_id, 1, 9)) %>% 
-  select(-week_tmp, -year)
+  select(-week_tmp)
+
+week_unique_general <- general_bills %>% 
+  select(year, week, start_day, end_day, start_month, end_month, unique_identifier) %>% 
+  distinct() %>% 
+  mutate(year = as.integer(year)) %>% 
+  # To get a leading zero and not mess with the math below, we create a temporary
+  # column to pad the week number with a leading zero and use that for 
+  # creating the week ID string.
+  mutate(id = row_number()) %>% 
+  mutate(week_tmp = str_pad(week, 2, pad = "0")) %>% 
+  mutate(week = as.integer(week)) %>%
+  mutate(week_id = ifelse(week > 15,
+                          paste0(
+                            year - 1, '-', year, '-', week_tmp
+                          ),
+                          paste0(
+                            year, '-', year + 1, '-', week_tmp
+                          )
+  )
+  ) %>% 
+  mutate(year_range = str_sub(week_id, 1, 9)) %>% 
+  select(-week_tmp)
+
+week_unique <- rbind(week_unique_general, week_unique_weekly)
 
 # Assign unique week IDs to the deaths long table. 
 # Currently commented away because we don't have this data yet and it
@@ -149,7 +245,8 @@ week_unique <- bills_combined %>%
 #  dplyr::inner_join(deaths_long, week_unique, by = "unique_identifier")
   
 # Unique year values
-year_unique <- bills_combined %>% 
+# ------------------
+year_unique <- week_unique %>% 
   select(year) %>% 
   distinct() %>% 
   arrange() %>% 
@@ -165,67 +262,65 @@ year_unique <- bills_combined %>%
   )
   )
 
-# Unique death strings
-death_unique <- deaths_long %>% 
-  select(death) %>% 
-  distinct() %>% 
-  arrange(death) %>% 
-  mutate(death_id = row_number())
-
 # Match unique parish IDs with the long parish table, and drop the parish
 # name from the long table. We'll use SQL foreign keys to keep the relationship
-# by parish_id in parishes_long and parishes_unique.
-bills_combined <- dplyr::inner_join(bills_combined, parishes_unique, by = "parish_name") %>% 
+# by parish_id in weekly_bills and parishes_unique.
+weekly_bills <- dplyr::inner_join(weekly_bills, parishes_unique, by = "parish_name") %>% 
+  select(-parish_name)
+
+general_bills <- dplyr::inner_join(general_bills, parishes_unique, by = "parish_name") %>% 
   select(-parish_name)
 
 # Match unique week IDs to the long parish table, and drop the existing 
 # start and end months and days from long_parish so they're only referenced
 # through the unique week ID.
-bills_combined <- bills_combined %>% 
-  select(-week, -start_day, -end_day, -start_month, -end_month) %>% 
+weekly_bills <- weekly_bills %>% 
+  select(-week, -start_day, -end_day, -start_month, -end_month, -year) %>% 
+  dplyr::left_join(week_unique, by = "unique_identifier") %>% 
+  select(-week, -start_day, -end_day, -start_month, -end_month, -unique_identifier)
+
+general_bills <- general_bills %>% 
+  select(-week, -start_day, -end_day, -start_month, -end_month, -year) %>% 
   dplyr::left_join(week_unique, by = "unique_identifier") %>% 
   select(-week, -start_day, -end_day, -start_month, -end_month, -unique_identifier)
 
 # Match unique year IDs to the long parish table, and drop the existing
 # year column from long_parishes so they're only referenced
 # through the unique year ID.
-bills_combined <- bills_combined %>% 
+weekly_bills <- weekly_bills %>% 
   mutate(year = as.integer(year))
 
-bills_combined <- bills_combined %>% 
+general_bills <- general_bills %>% 
+  mutate(year = as.integer(year))
+
+weekly_bills <- weekly_bills %>% 
   dplyr::left_join(year_unique, by = "year") %>% 
-  select(-year)
+  select(-year, -canonical_name)
+
+general_bills <- general_bills %>% 
+  dplyr::left_join(year_unique, by = "year") %>% 
+  select(-year, -canonical_name)
 
 # After we have unique years, we need to join the year ID to the 
-# unique weeks and parishes_long. 
+# unique weeks and weekly_bills. 
 week_unique <- week_unique %>% 
   mutate(year = str_sub(week_unique$unique_identifier, 1, 4)) %>% 
   mutate(year = as.integer(year)) %>% 
   dplyr::left_join(year_unique, by = "year") %>% 
   select(-year)
 
-# Separate bills into Weekly and General, drop temporary columns, 
-# and assign an ID to each row.
-general_bills <- bills_combined %>% 
-  filter(bill_type == "General") %>% 
-  select(-count_type, -bill_type) %>% 
-  mutate(id = row_number())
-
-weekly_bills <- bills_combined %>% 
-  filter(bill_type == "Weekly") %>% 
-  select(-bill_type) %>% 
-  mutate(id = row_number())
- 
-# Write to CSV
+# Write data to csv
 write_csv(weekly_bills, "data/bills_weekly.csv", na = "")
 write_csv(general_bills, "data/bills_general.csv", na = "")
-write_csv(bills_combined, "data/bills_combined.csv", na = "")
 write_csv(parishes_unique, "data/parishes_unique.csv", na = "")
 write_csv(week_unique, "data/week_unique.csv", na = "")
 write_csv(year_unique, "data/year_unique.csv", na = "")
 
-# Separate dataframes for christenings, births, plague, and foodstuffs
-# ----------------------------
+# ---------------------------------------------------------------------- 
+# Christenings, births, plague, and foodstuffs
+# ---------------------------------------------------------------------- 
+
+# Christenings
 parishes_filtering <- raw_parishes %>% 
   select(!1:5) %>% 
   pivot_longer(7:284,
@@ -260,7 +355,9 @@ write_csv(christenings, "data/christenings_counts.csv")
 write_csv(burials, "data/burials_counts.csv")
 write_csv(plague, "data/plague_counts.csv")
 
-## Foodstuffs
+# Foodstuffs
+# ----------
+# TODO: This section isn't working yet. The code here is only scaffolding.
 parishes_filtering <- raw_parishes %>% 
   select(!1:5) %>% 
   pivot_longer(7:284,
@@ -270,8 +367,8 @@ parishes_filtering <- raw_parishes %>%
 parishes_filtering$food_detect <- str_detect(parishes_filtering, "bread")
 
 foodstuffs <- parishes_filtering %>% 
-  dplyr::filter(christening_detect == TRUE) %>% 
-  select(-christening_detect, -burials_detect, -plague_detect)
+  dplyr::filter(food_detect == TRUE) %>% 
+  select(-food_detect)
 
 rm(parishes_filtering)
 
