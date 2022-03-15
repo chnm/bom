@@ -67,7 +67,8 @@ wellcome_weekly <- raw_wellcome_weekly %>%
 names(laxton_weekly) <- tolower(names(laxton_weekly))
 names(laxton_weekly) <- gsub(" ", "_", names(laxton_weekly))
 laxton_weekly$year <- str_sub(laxton_weekly$unique_id, 1, 4) 
-# the unique ID column is mis-named so we fix it here
+
+# The unique ID column is mis-named in the Laxton data so we fix it here
 names(laxton_weekly)[2] <- "unique_identifier"
 
 names(wellcome_weekly) <- tolower(names(wellcome_weekly))
@@ -84,6 +85,10 @@ weekly_bills <- weekly_bills %>% separate(parish_name, c("parish_name", "count_t
 weekly_bills <- weekly_bills %>%
   mutate(count_type = str_trim(count_type)) %>% 
   mutate(parish_name = str_trim(parish_name))
+
+# Replace the alternate spelling of "Alhallows"
+weekly_bills <- weekly_bills |> 
+  mutate_at("parish_name", str_replace, "Allhallows", "Alhallows")
 
 # Find all unique values for parish name, week, and year. These will be 
 # referenced as foreign keys in PostgreSQL.
@@ -139,6 +144,10 @@ general_bills <- general_bills |>
 general_bills <- general_bills %>% 
   mutate(parish_name = str_trim(parish_name))
 
+# Replace the alternate spelling of "Alhallows"
+general_bills <- general_bills |> 
+  mutate_at("parish_name", str_replace, "Allhallows", "Alhallows")
+
 # ---------------------------------------------------------------------- 
 # Unique values with IDs
 # ---------------------------------------------------------------------- 
@@ -187,13 +196,19 @@ parishes_unique <- parishes_unique %>%
 rm(christenings_tmp, burials_tmp, plague_tmp)
 
 # Combine unique parishes with the canonical Parish name list.
-parish_canonical <- read_csv("~/Downloads/London Parish Authority File.csv") |> 
+parish_canonical <- read_csv("data/London Parish Authority File.csv") |> 
   select(`Canonical DBN Name`, `Omeka Parish Name`) |> 
   mutate(canonical_name = `Canonical DBN Name`, parish_name = `Omeka Parish Name`) |> 
   select(canonical_name, parish_name)
 
 parishes_unique <- parishes_unique |> 
   left_join(parish_canonical, by = "parish_name")
+
+parishes_unique <- parishes_unique |> 
+  mutate(canonical = coalesce(canonical_name, parish_name)) |> 
+  select(-canonical_name) |> 
+  mutate(canonical_name = canonical) |> 
+  select(-canonical)
 
 # Find all unique values for parish name, week, and year. These will be 
 # referenced as foreign keys in PostgreSQL.
