@@ -13,6 +13,7 @@ The `bills` data returns the following information:
 - Count type: There are two records for the weekly bills: how many people were buried and how many had the plague. This column indicates the `count` value for each of these.
 - Count: These values correspond to the *Count Type* column. 
 - Week Number: This is the week number for a given bill.
+- Start Day and End Day / Start Month and End Month: This is the date range for a given period.
 - Year: This is the year for a given bill.
 
 The second endpoint is `christenings`, which powers the *Christenings* tab of the web application. Currently, this endpoint returns the following: 
@@ -54,7 +55,7 @@ The current API has three endpoints, one for serving user interfaces and two for
 
 #### Unique parish names
 
-This serves the user interface by populating the checkboxes for filtering parish names selected by a user.
+This serves the user interface by populating the checkboxes for filtering parish names selected by a user. These are unique values each with their own unique ID, name as recorded from the primary sources, and the canonical name.
 
 ```
 GET /parishes
@@ -68,18 +69,19 @@ Parameters:
 Response JSON (indexed by parish ID):
 
 ```
-{
-    [
-        "id": 3
-        "name": "St. Thomas Southwark"
+[
+    {
+        "id": 1,
+        "name": "Alhallows Barking",
+        "canonical_name": "All Hallows Barking"
         . . .
-    ],
-}
+    },
+]
 ```
 
 #### Individual bills
 
-This endpoint returns the entirety of the Bills data and populates the table under the `Parishes` tab.
+This endpoint returns the entirety of the Bills data and populates the table under the `Parishes` tab. This endpoint is the primary way for viewing and interacting with the full dataset.
 
 ```
 GET /bills
@@ -98,12 +100,16 @@ Response JSON:
 ```
 [
     {
-        "name":"Alhallows Barking",
-        "count_type":"Buried",
-        "count":2,
-        "year":1669,
-        "week_no":40,
-        "week_id":"1668-1669-40"
+        "name": "Alhallows Barking",
+        "count_type": "Buried",
+        "count": 2,
+        "year": 1669,
+        "start_month": "January",
+        "start_day": "4",
+        "end_month": "January",
+        "end_day": "11"
+        "week_no": 40,
+        "week_id": "1668-1669-40"
     },
     . . .
 ]
@@ -130,11 +136,11 @@ Response JSON:
 ```
 [
     {
-        "christenings_desc":"Christened in the 97 Parishes within the Walls",
-        "count":4,
-        "week_no":50,
-        "week_id":"1668-1669-50",
-        "year":1669
+        "christenings_desc": "Christened in the 97 Parishes within the Walls",
+        "count": 4,
+        "week_no": 50,
+        "week_id": "1668-1669-50",
+        "year": 1669
     },
     . . .
 ]
