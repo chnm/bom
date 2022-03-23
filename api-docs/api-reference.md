@@ -4,8 +4,7 @@ The Bills of Mortality API is organized around [REST](https://en.wikipedia.org/w
 JSON-encoded responses from our PostgreSQL database using standard HTTP
 response codes and verbs. 
 
-The API currently provides two endpoints for returning data. The first
-endpoint, `bills`, accepts two required parameters: the start year and the end year. This is built this way to operate the range slider that controls the table view on the web application. As you adjust the slider, the new year values are passed to the endpoint and new data is fetched and then displayed in the table. 
+The API currently provides three endpoints for returning data. The first endpoint, `bills`, accepts two required parameters: the start year and the end year. This is built this way to operate the range slider that controls the table view on the web application. As you adjust the slider, the new year values are passed to the endpoint and new data is fetched and then displayed in the table. 
 
 The `bills` data returns the following information: 
 
@@ -16,7 +15,16 @@ The `bills` data returns the following information:
 - Start Day and End Day / Start Month and End Month: This is the date range for a given period.
 - Year: This is the year for a given bill.
 
-The second endpoint is `christenings`, which powers the *Christenings* tab of the web application. Currently, this endpoint returns the following: 
+The second endpoint, `generalbills`, accepts two required parameters: the start year and the end year. This is built this way to operate the range slider that controls the table view on the web application. As you adjust the slider, the new year values are passed to the endpoint and new data is fetched and then displayed in the table. The `generalbills` endpoint returns the following information: 
+
+- Parish name: The name of the parish as recorded for a given date on a given bill. 
+- Count type: There are three records for the general bills: total annual values for the number of people buried, how many people had plague, or simply the sum of people who died of plague.
+- Count: These values correspond to the *Count Type* column. 
+- Week Number: This is the week number for a given bill.
+- Start Day and End Day / Start Month and End Month: This is the date range for a given period.
+- Year: This is the year for a given bill.
+
+The final endpoint is `christenings`, which powers the *Christenings* tab of the web application. Currently, this endpoint returns the following: 
 
 - Description: A description as transcribed from the bills.
 - Count: The number of christenings for a given parish.
@@ -57,7 +65,7 @@ The current API has three endpoints, one for serving user interfaces and two for
 
 This serves the user interface by populating the checkboxes for filtering parish names selected by a user. These are unique values each with their own unique ID, name as recorded from the primary sources, and the canonical name.
 
-```
+```js
 GET /parishes
 ```
 
@@ -68,7 +76,7 @@ Parameters:
 
 Response JSON (indexed by parish ID):
 
-```
+```js
 [
     {
         "id": 1,
@@ -79,11 +87,11 @@ Response JSON (indexed by parish ID):
 ]
 ```
 
-#### Individual bills
+#### Weekly bills
 
-This endpoint returns the entirety of the Bills data and populates the table under the `Parishes` tab. This endpoint is the primary way for viewing and interacting with the full dataset.
+This endpoint returns the entirety of the Weekly Bills data and populates the table under the `Weekly Bills` tab. This endpoint is the primary way for viewing and interacting with the full weekly dataset.
 
-```
+```js
 GET /bills
 ```
 
@@ -97,7 +105,7 @@ The `startYear` and `endYear` parameters are required and return the range of ro
 
 Response JSON: 
 
-```
+```js
 [
     {
         "name": "Alhallows Barking",
@@ -115,11 +123,45 @@ Response JSON:
 ]
 ```
 
+#### General bills
+
+This endpoint returns the entirety of the General Bills data and populates the table under the `General Bills` tab. This endpoint is the primary way for viewing and interacting with the full annual dataset.
+
+```js
+GET /generalbills
+```
+
+Parameters: 
+- startYear (required): A four digit number representing the start year.
+- endYear (required): A four digit number representing the end year.
+
+The `startYear` and `endYear` parameters are required and return the range of rows in the database that fall between the two years. 
+
+<http://data.chnm.org/bom/generalbills?startYear=1669&endYear=1754>
+
+Response JSON: 
+
+```js
+[
+    {
+        "name": "All Hallows Barking",
+        "count_type": "Total",
+        "count": 57,
+        "start_day": "",
+        "start_month": "",
+        "end_day": "",
+        "end_month": "",
+        "year":1749,
+        "week_id": "1748-1749-90"},
+    . . .
+]
+```
+
 #### Christenings data
 
 This endpoint returns the christenings data and populates the table under the `Christenings` tab.
 
-```
+```js
 GET /christenings
 ```
 
@@ -133,7 +175,7 @@ The `startYear` and `endYear` parameters are required and return the range of ro
 
 Response JSON:
 
-```
+```js
 [
     {
         "christenings_desc": "Christened in the 97 Parishes within the Walls",
