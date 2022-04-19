@@ -293,9 +293,10 @@ week_unique <- rbind(week_unique_general, week_unique_weekly, week_unique_wellco
 deaths_long <- wellcome_causes_long |> 
   select(-week_number, -start_day, -end_day, -start_month, -end_month, -year) |> 
   dplyr::left_join(week_unique, by = "unique_identifier") |> 
-  select(-week, -start_day, -end_day, -start_month, -end_month, -unique_identifier)
+  select(-week, -start_day, -end_day, -start_month, -end_month, -unique_identifier) |> 
+  mutate(id = row_number())
 
-write_csv(deaths_long, "data/causes_of_death.csv")
+write_csv(deaths_long, na ="", "data/causes_of_death.csv")
   
 # Unique year values
 # ------------------
