@@ -5,14 +5,14 @@
 #
 # Jason A. Heppler | jason@jasonheppler.org
 # Roy Rosenzweig Center for History and New Media
-# Updated: 2022-03-09
+# Updated: 2022-05-03
 
 library(tidyverse)
 
 # ---------------------------------------------------------------------- 
 # Data sources
 # ---------------------------------------------------------------------- 
-raw_laxton_weekly <- read_csv("datascribe/Laxton-weekly-parishes.csv")
+raw_laxton_weekly <- read_csv("../../datascribe-exports/2022-04-21-Laxton-weeklybills-parishes.csv")
 raw_wellcome_causes <- read_csv("datascribe/Wellcome-weekly-causes.csv")
 raw_wellcome_weekly <- read_csv("datascribe/Wellcome-weekly-parishes.csv")
 raw_millar_general <- read_csv("datascribe/Millar-general-postplague-parishes-COMPLETE.csv")
@@ -63,10 +63,15 @@ wellcome_weekly <- raw_wellcome_weekly |>
                names_to = 'parish_name',
                values_to = 'count')
 
+laxton_weekly <- laxton_weekly |> 
+  filter(!str_detect(`Unique ID`, "e.g. Laxton-1706-27-recto")) |> 
+  filter(!grepl("Laxton$$", `Unique ID`))
+
+
 # Lowercase column names and replace spaces with underscores.
 names(laxton_weekly) <- tolower(names(laxton_weekly))
 names(laxton_weekly) <- gsub(" ", "_", names(laxton_weekly))
-laxton_weekly$year <- str_sub(laxton_weekly$unique_id, 1, 4) 
+laxton_weekly$year <- str_sub(laxton_weekly$unique_id, 8, 11) 
 
 # The unique ID column is mis-named in the Laxton data so we fix it here
 names(laxton_weekly)[2] <- "unique_identifier"
@@ -78,6 +83,11 @@ wellcome_weekly$year <- str_sub(wellcome_weekly$unique_identifier, 1, 4)
 weekly_bills <- rbind(wellcome_weekly, laxton_weekly)
 weekly_bills <- weekly_bills |> 
   mutate(bill_type = "Weekly")
+
+weekly_bills <- weekly_bills |> 
+  mutate(start_day = as.integer(start_day)) |> 
+  mutate(end_day = as.integer(end_day)) |> 
+  mutate(week = as.integer(week))
 
 # Separate out a parish name from the count type (plague vs. burial)
 # Remove whitespace with str_trim().
@@ -210,6 +220,7 @@ parishes_unique <- parishes_unique |>
   mutate(canonical_name = canonical) |> 
   select(-canonical)
 
+rm(parishes_tmp)
 # Find all unique values for parish name, week, and year. These will be 
 # referenced as foreign keys in PostgreSQL.
 #parishes_unique <- weekly_bills |> 
@@ -293,7 +304,7 @@ week_unique <- rbind(week_unique_general, week_unique_weekly, week_unique_wellco
 deaths_long <- wellcome_causes_long |> 
   select(-week_number, -start_day, -end_day, -start_month, -end_month, -year) |> 
   dplyr::left_join(week_unique, by = "unique_identifier") |> 
-  select(-week, -start_day, -end_day, -start_month, -end_month, -unique_identifier) |> 
+  select(-week, -start_day, -end_day, -start_month, -end_month) |> 
   mutate(id = row_number())
 
 write_csv(deaths_long, na ="", "data/causes_of_death.csv")
@@ -358,7 +369,6 @@ general_bills <- general_bills |>
 # After we have unique years, we need to join the year ID to the 
 # unique weeks and weekly_bills. 
 week_unique <- week_unique |> 
-  mutate(year = str_sub(week_unique$unique_identifier, 1, 4)) |> 
   mutate(year = as.integer(year)) |> 
   dplyr::left_join(year_unique, by = "year") |> 
   select(-year)
@@ -411,7 +421,8 @@ write_csv(plague, "data/plague_counts.csv")
 
 # Foodstuffs
 # ----------
-# TODO: This section isn't working yet. The code here is only scaffolding.
+# TODO: This section isn't working yet because we don't have this data yet. 
+# The code here is only scaffolding.
 parishes_filtering <- raw_parishes |> 
   select(!1:5) |> 
   pivot_longer(7:284,
