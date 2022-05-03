@@ -50,7 +50,6 @@ write_csv(deaths_unique, "data/deaths_unique.csv", na = "")
 # ---------------------------------------------------------------------- 
 # Weekly Bills
 # ---------------------------------------------------------------------- 
-
 laxton_weekly <- raw_laxton_weekly |> 
   select(!1:5) |> 
   pivot_longer(7:166,
@@ -66,7 +65,6 @@ wellcome_weekly <- raw_wellcome_weekly |>
 laxton_weekly <- laxton_weekly |> 
   filter(!str_detect(`Unique ID`, "e.g. Laxton-1706-27-recto")) |> 
   filter(!grepl("Laxton$$", `Unique ID`))
-
 
 # Lowercase column names and replace spaces with underscores.
 names(laxton_weekly) <- tolower(names(laxton_weekly))
@@ -89,9 +87,54 @@ weekly_bills <- weekly_bills |>
   mutate(end_day = as.integer(end_day)) |> 
   mutate(week = as.integer(week))
 
-# Separate out a parish name from the count type (plague vs. burial)
-# Remove whitespace with str_trim().
+# Separate out a parish name from the count type (plague vs. burial). If there's
+# no notation for plague or burial, we assume burial.
+# Whitespace is removed with str_trim().
+filtered_entries <- weekly_bills |> 
+  filter(!str_detect(parish_name, '-'))
+
+# We want to clean up our distinct parish names by removing any mentions of 
+# christenings, burials, or plague. The following detects the presence of specific 
+# strings and simply assigns a bool. We then use those TRUE and FALSE values 
+# to filter the data and remove the matching TRUE statements.
+filtered_entries$christening_detect <- str_detect(filtered_entries$parish_name, "Christened")
+filtered_entries$burials_detect <- str_detect(filtered_entries$parish_name, "Buried")
+filtered_entries$plague_detect <- str_detect(filtered_entries$parish_name, "Plague in")
+
+christenings_tmp <- filtered_entries |> 
+  dplyr::filter(christening_detect == TRUE) |> 
+  select(-christening_detect, -burials_detect, -plague_detect)
+burials_tmp <- filtered_entries |> 
+  dplyr::filter(burials_detect == TRUE) |> 
+  select(-christening_detect, -burials_detect, -plague_detect)
+plague_tmp <- filtered_entries |> 
+  dplyr::filter(plague_detect == TRUE) |> 
+  select(-christening_detect, -burials_detect, -plague_detect)
+#pesthouse_tmp <- parishes_unique |> 
+#  dplyr::filter(pesthouse_detect == TRUE) |> 
+#  select(-christening_detect, -burials_detect, -plague_detect, -pesthouse_detect)
+
+filtered_entries <- filtered_entries |> 
+  dplyr::filter(christening_detect == FALSE,
+                burials_detect == FALSE,
+                plague_detect == FALSE 
+  )
+
+filtered_entries <- filtered_entries |> 
+  select(-christening_detect, -burials_detect, -plague_detect)# |> 
+  #mutate(parish_id = row_number())
+rm(christenings_tmp, burials_tmp, plague_tmp)
+
+filtered_entries <- filtered_entries |> 
+  mutate(count_type = "Buried")
+
+weekly_bills <- weekly_bills |> 
+  filter(!filtered_entries$parish_name == weekly_bills$parish_name)
+
 weekly_bills <- weekly_bills |> separate(parish_name, c("parish_name", "count_type"), sep = "[-]")
+ 
+weekly_bills <- rbind(weekly_bills, filtered_entries)
+
 weekly_bills <- weekly_bills |>
   mutate(count_type = str_trim(count_type)) |> 
   mutate(parish_name = str_trim(parish_name))
@@ -171,39 +214,6 @@ parishes_unique <- parishes_tmp |>
   arrange(parish_name) |> 
   mutate(parish_name = str_trim(parish_name))
 
-# We want to clean up our distinct parish names by removing any mentions of 
-# christenings, burials, or plague. The following detects the presence of specific 
-# strings and simply assigns a bool. We then use those TRUE and FALSE values 
-# to filter the data and remove the matching TRUE statements.
-parishes_unique$christening_detect <- str_detect(parishes_unique$parish_name, "Christened")
-parishes_unique$burials_detect <- str_detect(parishes_unique$parish_name, "Buried")
-parishes_unique$plague_detect <- str_detect(parishes_unique$parish_name, "Plague in")
-#parishes_unique$pesthouse_detect <- str_detect(parishes_unique$parish_name, "Pesthouse")
-
-christenings_tmp <- parishes_unique |> 
-  dplyr::filter(christening_detect == TRUE) |> 
-  select(-christening_detect, -burials_detect, -plague_detect)
-burials_tmp <- parishes_unique |> 
-  dplyr::filter(burials_detect == TRUE) |> 
-  select(-christening_detect, -burials_detect, -plague_detect)
-plague_tmp <- parishes_unique |> 
-  dplyr::filter(plague_detect == TRUE) |> 
-  select(-christening_detect, -burials_detect, -plague_detect)
-#pesthouse_tmp <- parishes_unique |> 
-#  dplyr::filter(pesthouse_detect == TRUE) |> 
-#  select(-christening_detect, -burials_detect, -plague_detect, -pesthouse_detect)
-
-parishes_unique <- parishes_unique |> 
-  dplyr::filter(christening_detect == FALSE,
-                burials_detect == FALSE,
-                plague_detect == FALSE, 
-                #pesthouse_detect == FALSE
-  )
-
-parishes_unique <- parishes_unique |> 
-  select(-christening_detect, -burials_detect, -plague_detect) |> 
-  mutate(parish_id = row_number())
-rm(christenings_tmp, burials_tmp, plague_tmp)
 
 # Combine unique parishes with the canonical Parish name list.
 parish_canonical <- read_csv("data/London Parish Authority File.csv") |> 
@@ -299,6 +309,8 @@ week_unique_wellcome <- wellcome_causes_long |>
   select(-week_tmp)
 
 week_unique <- rbind(week_unique_general, week_unique_weekly, week_unique_wellcome)
+# Ensure we have unique week ID and no duplicates
+week_unique <- week_unique |> distinct(week_id, .keep_all = TRUE)
 
 # Assign unique week IDs to the deaths long table. 
 deaths_long <- wellcome_causes_long |> 
@@ -325,7 +337,10 @@ year_unique <- week_unique |>
                             year, '/', year + 1
                           )
   )
-  )
+  ) |> 
+  mutate(id = row_number())
+
+year_unique <- year_unique |> mutate(id = row_number())
 
 # Match unique parish IDs with the long parish table, and drop the parish
 # name from the long table. We'll use SQL foreign keys to keep the relationship
@@ -364,7 +379,7 @@ weekly_bills <- weekly_bills |>
 
 general_bills <- general_bills |> 
   dplyr::left_join(year_unique, by = "year") |> 
-  select(-year, -canonical_name)
+  select(-year, -canonical_name, -start_year, -end_year)
 
 # After we have unique years, we need to join the year ID to the 
 # unique weeks and weekly_bills. 
@@ -373,9 +388,13 @@ week_unique <- week_unique |>
   dplyr::left_join(year_unique, by = "year") |> 
   select(-year)
 
+all_bills <- rbind(weekly_bills, general_bills)
+all_bills <- all_bills |> mutate(id = row_number())
+
 # Write data to csv
 write_csv(weekly_bills, "data/bills_weekly.csv", na = "")
 write_csv(general_bills, "data/bills_general.csv", na = "")
+write_csv(all_bills, "data/all_bills.csv", na = "")
 write_csv(parishes_unique, "data/parishes_unique.csv", na = "")
 write_csv(week_unique, "data/week_unique.csv", na = "")
 write_csv(year_unique, "data/year_unique.csv", na = "")
