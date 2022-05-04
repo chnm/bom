@@ -110,9 +110,6 @@ burials_tmp <- filtered_entries |>
 plague_tmp <- filtered_entries |> 
   dplyr::filter(plague_detect == TRUE) |> 
   select(-christening_detect, -burials_detect, -plague_detect)
-#pesthouse_tmp <- parishes_unique |> 
-#  dplyr::filter(pesthouse_detect == TRUE) |> 
-#  select(-christening_detect, -burials_detect, -plague_detect, -pesthouse_detect)
 
 filtered_entries <- filtered_entries |> 
   dplyr::filter(christening_detect == FALSE,
@@ -121,23 +118,56 @@ filtered_entries <- filtered_entries |>
   )
 
 filtered_entries <- filtered_entries |> 
-  select(-christening_detect, -burials_detect, -plague_detect)# |> 
-  #mutate(parish_id = row_number())
+  select(-christening_detect, -burials_detect, -plague_detect)
+
+# We do the same for the weekly bills.
+weekly_bills$christening_detect <- str_detect(weekly_bills$parish_name, "Christened")
+weekly_bills$burials_detect <- str_detect(weekly_bills$parish_name, "Buried")
+weekly_bills$plague_detect <- str_detect(weekly_bills$parish_name, "Plague in")
+
+christenings_tmp <- weekly_bills |> 
+  dplyr::filter(christening_detect == TRUE) |> 
+  select(-christening_detect, -burials_detect, -plague_detect)
+burials_tmp <- weekly_bills |> 
+  dplyr::filter(burials_detect == TRUE) |> 
+  select(-christening_detect, -burials_detect, -plague_detect)
+plague_tmp <- weekly_bills |> 
+  dplyr::filter(plague_detect == TRUE) |> 
+  select(-christening_detect, -burials_detect, -plague_detect)
+
+weekly_bills <- weekly_bills |> 
+  dplyr::filter(christening_detect == FALSE,
+                burials_detect == FALSE,
+                plague_detect == FALSE 
+  )
+
+weekly_bills <- weekly_bills |> 
+  select(-christening_detect, -burials_detect, -plague_detect)
+
+# Remove the temp files
 rm(christenings_tmp, burials_tmp, plague_tmp)
 
+# Add count type for the filtered entries
 filtered_entries <- filtered_entries |> 
   mutate(count_type = "Buried")
 
-weekly_bills <- weekly_bills |> 
-  filter(!filtered_entries$parish_name == weekly_bills$parish_name)
-
 weekly_bills <- weekly_bills |> separate(parish_name, c("parish_name", "count_type"), sep = "[-]")
- 
-weekly_bills <- rbind(weekly_bills, filtered_entries)
 
 weekly_bills <- weekly_bills |>
   mutate(count_type = str_trim(count_type)) |> 
   mutate(parish_name = str_trim(parish_name))
+
+filtered_entries <- filtered_entries |>
+  mutate(count_type = str_trim(count_type)) |> 
+  mutate(parish_name = str_trim(parish_name))
+
+# Remove the missing data from weekly bills before we add the corrected information
+# back in.
+weekly_bills <- weekly_bills |> 
+  filter(!weekly_bills$parish_name %in% filtered_entries$parish_name)
+
+# Combine our dataframes
+weekly_bills <- rbind(weekly_bills, filtered_entries)
 
 # Replace the alternate spelling of "Alhallows"
 weekly_bills <- weekly_bills |> 
@@ -228,7 +258,8 @@ parishes_unique <- parishes_unique |>
   mutate(canonical = coalesce(canonical_name, parish_name)) |> 
   select(-canonical_name) |> 
   mutate(canonical_name = canonical) |> 
-  select(-canonical)
+  select(-canonical) |> 
+  mutate(parish_id = row_number())
 
 rm(parishes_tmp)
 # Find all unique values for parish name, week, and year. These will be 
