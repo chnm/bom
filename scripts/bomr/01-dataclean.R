@@ -371,28 +371,29 @@ year_unique <- week_unique |>
   ) |> 
   mutate(id = row_number())
 
-year_unique <- year_unique |> mutate(id = row_number())
-
-# Match unique parish IDs with the long parish table, and drop the parish
+# Match unique parish IDs with the long parish tables, and drop the parish
 # name from the long table. We'll use SQL foreign keys to keep the relationship
-# by parish_id in weekly_bills and parishes_unique.
+# by parish_id in all_bills and parishes_unique.
 weekly_bills <- dplyr::inner_join(weekly_bills, parishes_unique, by = "parish_name") |> 
   select(-parish_name)
 
 general_bills <- dplyr::inner_join(general_bills, parishes_unique, by = "parish_name") |> 
   select(-parish_name)
 
-# Match unique week IDs to the long parish table, and drop the existing 
+# Match unique week IDs to the long parish tables, and drop the existing 
 # start and end months and days from long_parish so they're only referenced
 # through the unique week ID.
+# TODO: Something here breaks: we lose years.
 weekly_bills <- weekly_bills |> 
   select(-week, -start_day, -end_day, -start_month, -end_month, -year) |> 
   dplyr::left_join(week_unique, by = "unique_identifier") |> 
+  drop_na(year) |> 
   select(-week, -start_day, -end_day, -start_month, -end_month, -unique_identifier)
 
 general_bills <- general_bills |> 
   select(-week, -start_day, -end_day, -start_month, -end_month, -year) |> 
   dplyr::left_join(week_unique, by = "unique_identifier") |> 
+  drop_na(year) |> 
   select(-week, -start_day, -end_day, -start_month, -end_month, -unique_identifier)
 
 # Match unique year IDs to the long parish table, and drop the existing
