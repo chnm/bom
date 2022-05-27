@@ -5,14 +5,14 @@
 #
 # Jason A. Heppler | jason@jasonheppler.org
 # Roy Rosenzweig Center for History and New Media
-# Updated: 2022-05-03
+# Updated: 2022-05-27
 
 library(tidyverse)
 
 # ---------------------------------------------------------------------- 
 # Data sources
 # ---------------------------------------------------------------------- 
-raw_laxton_weekly <- read_csv("../../datascribe-exports/2022-04-21-Laxton-weeklybills-parishes.csv")
+raw_laxton_weekly <- read_csv("../../datascribe-exports/2022-05-18-Laxton-weeklybills-parishes.csv")
 raw_wellcome_causes <- read_csv("datascribe/Wellcome-weekly-causes.csv")
 raw_wellcome_weekly <- read_csv("datascribe/Wellcome-weekly-parishes.csv")
 raw_millar_general <- read_csv("datascribe/Millar-general-postplague-parishes-COMPLETE.csv")
@@ -98,7 +98,7 @@ filtered_entries <- weekly_bills |>
 # strings and simply assigns a bool. We then use those TRUE and FALSE values 
 # to filter the data and remove the matching TRUE statements.
 filtered_entries$christening_detect <- str_detect(filtered_entries$parish_name, "Christened")
-filtered_entries$burials_detect <- str_detect(filtered_entries$parish_name, "Buried")
+filtered_entries$burials_detect <- str_detect(filtered_entries$parish_name, "Buried in")
 filtered_entries$plague_detect <- str_detect(filtered_entries$parish_name, "Plague in")
 
 christenings_tmp <- filtered_entries |> 
@@ -122,7 +122,7 @@ filtered_entries <- filtered_entries |>
 
 # We do the same for the weekly bills.
 weekly_bills$christening_detect <- str_detect(weekly_bills$parish_name, "Christened")
-weekly_bills$burials_detect <- str_detect(weekly_bills$parish_name, "Buried")
+weekly_bills$burials_detect <- str_detect(weekly_bills$parish_name, "Buried in")
 weekly_bills$plague_detect <- str_detect(weekly_bills$parish_name, "Plague in")
 
 christenings_tmp <- weekly_bills |> 
@@ -383,7 +383,6 @@ general_bills <- dplyr::inner_join(general_bills, parishes_unique, by = "parish_
 # Match unique week IDs to the long parish tables, and drop the existing 
 # start and end months and days from long_parish so they're only referenced
 # through the unique week ID.
-# TODO: Something here breaks: we lose years.
 weekly_bills <- weekly_bills |> 
   select(-week, -start_day, -end_day, -start_month, -end_month, -year) |> 
   dplyr::left_join(week_unique, by = "unique_identifier") |> 
@@ -436,6 +435,8 @@ write_csv(year_unique, "data/year_unique.csv", na = "")
 # ---------------------------------------------------------------------- 
 
 # Christenings
+# TODO: This needs to be fixed, or moved up to where some of this happens already
+# during the filtering of the data.
 parishes_filtering <- raw_parishes |> 
   select(!1:5) |> 
   pivot_longer(7:284,
