@@ -5,18 +5,29 @@
 #
 # Jason A. Heppler | jason@jasonheppler.org
 # Roy Rosenzweig Center for History and New Media
-# Updated: 2022-05-27
+# Updated: 2022-08-23
 
 library(tidyverse)
 
 # ---------------------------------------------------------------------- 
 # Data sources
 # ---------------------------------------------------------------------- 
-raw_laxton_weekly <- read_csv("../../datascribe-exports/2022-05-18-Laxton-weeklybills-parishes.csv")
-raw_wellcome_causes <- read_csv("datascribe/Wellcome-weekly-causes.csv")
-raw_wellcome_weekly <- read_csv("datascribe/Wellcome-weekly-parishes.csv")
-raw_millar_general <- read_csv("datascribe/Millar-general-postplague-parishes-COMPLETE.csv")
-raw_laxton_general <- read_csv("datascribe/Laxton-general-parishes.csv")
+# 1. Wellcome Weekly Bills Parishes contains mortality information from weekly bills published in the late 17th century. It contains parish-by-parish counts of plague mortality and total mortality for the parish, along with subtotals and totals of christenings (births registered within the Church of England) and burials (deaths registered within the Church of England).
+raw_wellcome_weekly <- read_csv("../../datascribe-exports/2022-04-06-Wellcome-weeklybills-parishes.csv")
+# 2. Wellcome Weekly Bills Causes contains mortality information from weekly bills published in the late 17th century. It contains city-wide (including local suburbs) death counts for various causes of death, along with information about christenings (births registered within the Church of England), burials (deaths registered within the Church of England), plague deaths, and bread prices.
+raw_wellcome_causes <- read_csv("../../datascribe-exports/2022-04-06-Wellcome-weeklybills-causes.csv")
+# 3. Laxton Weekly Bills Parishes contains mortality information from weekly bills published in the early 18th century. It contains parish-by-parish counts of total mortality for the parish along with subtotals and totals of christenings (births registered within the Church of England) and burials (deaths registered within the Church of England).
+raw_laxton_weekly <- read_csv("../../datascribe-exports/2022-08-10-Laxton-weeklybills-parishes.csv")
+# 4. Millar General Bills PostPlague Parishes contains mortality information from "general" or annual summary bills published in the early 18th century. It contains parish-by-parish counts of total mortality for the parish along with subtotals and totals of christenings (births registered within the Church of England) and burials (deaths registered within the Church of England).
+raw_millar_general <- read_csv("../../datascribe-exports/2022-04-06-millar-generalbills-postplague-parishes.csv")
+# 5. Laxton 1700 Weekly Bills Causes contains mortality information from weekly bills published in the year 1700. It contains city-wide (including local suburbs) death counts for various causes of death.
+raw_laxton_1700_weekly <- read_csv("../../datascribe-exports/2022-06-15-Laxton-1700-weeklybills-causes.csv")
+# 6. Laxton Weekly Bills Causes contains mortality information from weekly bills published in the early eighteenth century. It contains city-wide (including local suburbs) death counts for various causes of death.
+raw_laxton_1700_causes <- read_csv("../../datascribe-exports/2022-06-15-Laxton-1700-weeklybills-causes.csv")
+# 7. Laxton 1700 Weekly Bills Foodstuffs contains food prices from weekly bills published in the early eighteenth century. There are various types of bread and also salt.
+raw_laxton_1700_foodstuffs <- read_csv("../../datascribe-exports/2022-07-27-Laxton-1700-weeklybills-foodstuffs.csv")
+# 8. Laxton Weekly Bills Foodstuffs contains food prices from weekly bills published in the early eighteenth century. There are various types of bread and also salt.
+raw_laxton_foodstuffs <- read_csv("../../datascribe-exports/2022-07-27-Laxton-weeklybills-foodstuffs.csv")
 
 # ---------------------------------------------------------------------- 
 # Types of death table
@@ -198,7 +209,7 @@ millar_long <- millar_long |>
 
 laxton_long <- raw_laxton_general |> 
   select(!1:4) |> 
-  pivot_longer(8:155,
+  pivot_longer(8:167,
                names_to = 'parish_name',
                values_to = 'count') |> 
   # We use a nonexistant week to help with some math below
@@ -212,7 +223,8 @@ laxton_long <- laxton_long |>
 # Lowercase column names and replace spaces with underscores.
 names(laxton_long) <- tolower(names(laxton_long))
 names(laxton_long) <- gsub(" ", "_", names(laxton_long))
-laxton_long$year <- str_sub(laxton_long$unique_identifier, 8, 11)
+# The following is probably not necessary anymore:
+#laxton_long$year <- str_sub(laxton_long$unique_id, 8, 11)
 
 names(millar_long) <- tolower(names(millar_long))
 names(millar_long) <- gsub(" ", "_", names(millar_long))
