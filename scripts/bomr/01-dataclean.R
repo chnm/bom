@@ -549,10 +549,37 @@ wellcome_christenings_long <- wellcome_christenings |>
 christenings <- rbind(wellcome_christenings_long, laxton_christenings_long)
 
 # Write data
-write_csv(wellcome_christenings_long, "data/wellcome_christenings.csv")
-write_csv(laxton_christenings, "data/laxton_christenings.csv")
-write_csv(christenings, "data/all_christenings.csv")
+write_csv(wellcome_christenings_long, "data/wellcome_christenings.csv", na = "")
+write_csv(laxton_christenings, "data/laxton_christenings.csv", na = "")
+write_csv(christenings, "data/all_christenings.csv", na = "")
 
 # ---------------------------------------------------------------------- 
 # Foodstuffs
 # ---------------------------------------------------------------------- 
+
+foodstuffs_laxton <- raw_laxton_foodstuffs |> 
+  select(!1:4) |> 
+  pivot_longer(8:29,
+               names_to = 'item',
+               values_to = 'value')
+
+foodstuffs_laxton <- foodstuffs_laxton |> separate(item, c("item", "value_type"), sep = "[-]")
+
+names(foodstuffs_laxton) <- tolower(names(foodstuffs_laxton))
+names(foodstuffs_laxton) <- gsub(" ", "_", names(foodstuffs_laxton))
+
+
+foodstuffs_laxton_1700 <- raw_laxton_1700_foodstuffs |> 
+  select(!1:4) |> 
+  pivot_longer(8:29,
+               names_to = 'item',
+               values_to = 'value')
+
+foodstuffs_laxton_1700 <- foodstuffs_laxton_1700 |> separate(item, c("item", "value_type"), sep = "[-]")
+
+names(foodstuffs_laxton_1700) <- tolower(names(foodstuffs_laxton_1700))
+names(foodstuffs_laxton_1700) <- gsub(" ", "_", names(foodstuffs_laxton_1700))
+
+foodstuffs <- rbind(foodstuffs_laxton, foodstuffs_laxton_1700)
+
+write_csv(foodstuffs, "data/foodstuffs.csv", na = "")
