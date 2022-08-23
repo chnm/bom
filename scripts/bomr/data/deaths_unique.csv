@@ -7,97 +7,84 @@ Bed-ridden,5
 Blasted,6
 Bleeding,7
 Bloody-flux,8
-Buried (All),9
-Buried (Female),10
-Buried (Male),11
-Calenture,12
-Cancer,13
-Canker,14
-Child-Bed,15
-Chrisoms,16
-Christened (Female),17
-Christened (In All),18
-Christened (Male),19
-Cold,20
-Colick,21
-Consumption,22
-Convulsion,23
-Cough,24
-Cramp,25
-Diabetes,26
-Dropsie,27
-Drowned,28
-Falling-sickness,29
-Fever,30
-Fistula,31
-Flox and Small-Pox,32
-Flux,33
-French-Pox,34
-Frets,35
-Gangreen,36
-Gout,37
-Grief,38
-Griping in the Guts,39
-Headache,40
-Headmouldshot,41
-Hiccough,42
-Impostume,43
-Increase/Decrease in Burials,44
-Increase/Decrease in Plague Deaths,45
-Infants,46
-Itch,47
-Jaundies,48
-Jaw-fallen,49
-Killed,50
-Kings Evil,51
-Leprosie,52
-Lethargy,53
-Liver-grown,54
-Lunatick,55
-Meagrim,56
-Measles,57
-Mother,58
-Noli me tangere,59
-Other Casualties,60
-Ounces in Penny Wheaten Loaf,61
-Ounces in Three Half-Penny White Loaf,62
-Overlaid,63
-Palsie,64
-Parishes Clear of the Plague,65
-Parishes Infected (with Plague),66
-Plague,67
-Plague Deaths,68
-Plurisie,69
-Purples,70
-Quinsie,71
-Rheumatism,72
-Rickets,73
-Rising of the Lights,74
-Running of the Reins,75
-Rupture,76
-Scald Head,77
-Sciatica,78
-Scowring,79
-Scurvy,80
-Shingles,81
-Spleen,82
-Spotted-Fever,83
-St. Anthony's Fire,84
-Still-born,85
-Stone,86
-Stopping of the Stomach,87
-Strangury,88
-Suddenly,89
-Suicide,90
-Surfeit,91
-Swine-Pox,92
-Teeth,93
-Thrush,94
-Tissick,95
-Tympany,96
-Ulcer,97
-Vomiting,98
-Wen,99
-Wind,100
-Wolf,101
-Worms,102
+Calenture,9
+Cancer,10
+Canker,11
+Child-Bed,12
+Chrisoms,13
+Cold,14
+Colick,15
+Consumption,16
+Convulsion,17
+Cough,18
+Cramp,19
+Diabetes,20
+Dropsie,21
+Drowned,22
+Falling-sickness,23
+Fever,24
+Fistula,25
+Flox and Small-Pox,26
+Flux,27
+French-Pox,28
+Frets,29
+Gangreen,30
+Gout,31
+Grief,32
+Griping in the Guts,33
+Headache,34
+Headmouldshot,35
+Hiccough,36
+Impostume,37
+Infants,38
+Itch,39
+Jaundies,40
+Jaw-fallen,41
+Killed,42
+Kings Evil,43
+Leprosie,44
+Lethargy,45
+Liver-grown,46
+Lunatick,47
+Meagrim,48
+Measles,49
+Mother,50
+Noli me tangere,51
+Other Casualties,52
+Overlaid,53
+Palsie,54
+Plague,55
+Plurisie,56
+Purples,57
+Quinsie,58
+Rheumatism,59
+Rickets,60
+Rising of the Lights,61
+Running of the Reins,62
+Rupture,63
+Scald Head,64
+Sciatica,65
+Scowring,66
+Scurvy,67
+Shingles,68
+Spleen,69
+Spotted-Fever,70
+St. Anthony's Fire,71
+Still-born,72
+Stone,73
+Stopping of the Stomach,74
+Strangury,75
+Suddenly,76
+Suicide,77
+Surfeit,78
+Swine-Pox,79
+Teeth,80
+Thrush,81
+Tissick,82
+Tympany,83
+Ulcer,84
+Vomiting,85
+Wen,86
+Wind,87
+Wolf,88
+Worms,89

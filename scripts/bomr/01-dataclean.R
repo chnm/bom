@@ -34,10 +34,7 @@ raw_laxton_foodstuffs <- read_csv("../../datascribe-exports/2022-07-27-Laxton-we
 # ---------------------------------------------------------------------- 
 wellcome_causes_long <- raw_wellcome_causes |> 
   select(!1:5) |>
-  select(!`Drowned (Descriptive Text)`) |> 
-  select(!`Killed (Descriptive Text)`) |> 
-  select(!`Suicide (Descriptive Text)`) |> 
-  select(!`Other Casualties (Descriptive Text)`) |> 
+  select(!contains("(Descriptive")) |> 
   pivot_longer(8:109, 
                names_to = 'death', 
                values_to = 'count') |> 
@@ -47,15 +44,45 @@ wellcome_causes_long <- raw_wellcome_causes |>
 names(wellcome_causes_long) <- tolower(names(wellcome_causes_long))
 names(wellcome_causes_long) <- gsub(" ", "_", names(wellcome_causes_long))
 
+laxton_causes_long <- raw_laxton_1700_causes |> 
+  select(!1:5) |> 
+  select(!contains("(Descriptive")) |> 
+  pivot_longer(8:124,
+               names_to = 'death',
+               values_to = 'count') |> 
+  mutate(death = str_trim(death))
+  
+# Lowercase column names and replace spaces with underscores
+names(laxton_causes_long) <- tolower(names(laxton_causes_long))
+names(laxton_causes_long) <- gsub(" ", "_", names(laxton_causes_long))
+
 # Types of death with unique ID
-deaths_unique <- wellcome_causes_long |> 
+deaths_unique_wellcome <- wellcome_causes_long |> 
   select(death) |> 
   distinct() |> 
+  filter(!str_detect(death, regex("\\bBuried ", ignore_case = FALSE) )) |> 
+  filter(!str_detect(death, regex("\\bChristened ", ignore_case = FALSE) )) |> 
+  filter(!str_detect(death, regex("\\bPlague Deaths", ignore_case = FALSE) )) |> 
+  filter(!str_detect(death, regex("\\bOunces in", ignore_case = FALSE)  )) |> 
+  filter(!str_detect(death, regex("\\bIncrease/Decrease", ignore_case = FALSE) )) |> 
+  filter(!str_detect(death, regex("\\bParishes Clear", ignore_case = FALSE) )) |> 
+  filter(!str_detect(death, regex("\\bParishes Infected", ignore_case = FALSE)))
+
+deaths_unique_laxton <- laxton_causes_long |> 
+  select(death) |> 
+  distinct() |> 
+  filter(!str_detect(death, regex("\\bBuried ", ignore_case = FALSE) )) |> 
+  filter(!str_detect(death, regex("\\bChristened ", ignore_case = FALSE) )) |> 
+  filter(!str_detect(death, regex("\\bIncrease/Decrease", ignore_case = FALSE) ))
+ 
+deaths_unique <- left_join(deaths_unique_wellcome, deaths_unique_laxton)
+deaths_unique <- deaths_unique |> 
   arrange(death) |> 
   mutate(death_id = row_number())
-
+  
 # Write data
 write_csv(wellcome_causes_long, "data/wellcome_causes.csv", na = "")
+write_csv(laxton_causes_long, "data/laxton_causes.csv", na = "")
 write_csv(deaths_unique, "data/deaths_unique.csv", na = "")
 
 # ---------------------------------------------------------------------- 
