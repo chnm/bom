@@ -21,9 +21,9 @@ raw_laxton_weekly <- read_csv("../../datascribe-exports/2022-08-10-Laxton-weekly
 # 4. Millar General Bills PostPlague Parishes contains mortality information from "general" or annual summary bills published in the early 18th century. It contains parish-by-parish counts of total mortality for the parish along with subtotals and totals of christenings (births registered within the Church of England) and burials (deaths registered within the Church of England).
 raw_millar_general <- read_csv("../../datascribe-exports/2022-04-06-millar-generalbills-postplague-parishes.csv")
 # 5. Laxton 1700 Weekly Bills Causes contains mortality information from weekly bills published in the year 1700. It contains city-wide (including local suburbs) death counts for various causes of death.
-raw_laxton_1700_weekly <- read_csv("../../datascribe-exports/2022-06-15-Laxton-1700-weeklybills-causes.csv")
-# 6. Laxton Weekly Bills Causes contains mortality information from weekly bills published in the early eighteenth century. It contains city-wide (including local suburbs) death counts for various causes of death.
 raw_laxton_1700_causes <- read_csv("../../datascribe-exports/2022-06-15-Laxton-1700-weeklybills-causes.csv")
+# 6. Laxton Weekly Bills Causes contains mortality information from weekly bills published in the early eighteenth century. It contains city-wide (including local suburbs) death counts for various causes of death.
+raw_laxton_causes <- read_csv("../../datascribe-exports/2022-08-10-Laxton-weeklybills-causes.csv")
 # 7. Laxton 1700 Weekly Bills Foodstuffs contains food prices from weekly bills published in the early eighteenth century. There are various types of bread and also salt.
 raw_laxton_1700_foodstuffs <- read_csv("../../datascribe-exports/2022-07-27-Laxton-1700-weeklybills-foodstuffs.csv")
 # 8. Laxton Weekly Bills Foodstuffs contains food prices from weekly bills published in the early eighteenth century. There are various types of bread and also salt.
@@ -44,7 +44,7 @@ wellcome_causes_long <- raw_wellcome_causes |>
 names(wellcome_causes_long) <- tolower(names(wellcome_causes_long))
 names(wellcome_causes_long) <- gsub(" ", "_", names(wellcome_causes_long))
 
-laxton_causes_long <- raw_laxton_1700_causes |> 
+laxton_causes_1700_long <- raw_laxton_1700_causes |> 
   select(!1:5) |> 
   select(!contains("(Descriptive")) |> 
   pivot_longer(8:124,
@@ -53,8 +53,17 @@ laxton_causes_long <- raw_laxton_1700_causes |>
   mutate(death = str_trim(death))
   
 # Lowercase column names and replace spaces with underscores
-names(laxton_causes_long) <- tolower(names(laxton_causes_long))
-names(laxton_causes_long) <- gsub(" ", "_", names(laxton_causes_long))
+names(laxton_causes_1700_long) <- tolower(names(laxton_causes_1700_long))
+names(laxton_causes_1700_long) <- gsub(" ", "_", names(laxton_causes_1700_long))
+
+laxton_causes_long <- raw_laxton_causes |> 
+  select(!1:5) |> 
+  select(!contains("(Descriptive")) |> 
+  select(!contains("Christened (")) |> 
+  pivot_longer(8:121,
+               names_to = 'death',
+               values_to = 'count') |> 
+  mutate(death = str_trim(death))
 
 # Types of death with unique ID
 deaths_unique_wellcome <- wellcome_causes_long |> 
@@ -68,14 +77,21 @@ deaths_unique_wellcome <- wellcome_causes_long |>
   filter(!str_detect(death, regex("\\bParishes Clear", ignore_case = FALSE) )) |> 
   filter(!str_detect(death, regex("\\bParishes Infected", ignore_case = FALSE)))
 
-deaths_unique_laxton <- laxton_causes_long |> 
+deaths_unique_laxton_1700 <- laxton_causes_1700_long |> 
   select(death) |> 
   distinct() |> 
   filter(!str_detect(death, regex("\\bBuried ", ignore_case = FALSE) )) |> 
   filter(!str_detect(death, regex("\\bChristened ", ignore_case = FALSE) )) |> 
   filter(!str_detect(death, regex("\\bIncrease/Decrease", ignore_case = FALSE) ))
- 
+
+deaths_unique_laxton <- laxton_causes_long |> 
+  select(death) |> 
+  distinct() |> 
+  filter(!str_detect(death, regex("\\bChristened ", ignore_case = FALSE) )) |> 
+  filter(!str_detect(death, regex("\\bIncrease/Decrease", ignore_case = FALSE) ))
+
 deaths_unique <- left_join(deaths_unique_wellcome, deaths_unique_laxton)
+deaths_unique <- left_join(deaths_unique, deaths_unique_laxton_1700)
 deaths_unique <- deaths_unique |> 
   arrange(death) |> 
   mutate(death_id = row_number())
@@ -83,6 +99,7 @@ deaths_unique <- deaths_unique |>
 # Write data
 write_csv(wellcome_causes_long, "data/wellcome_causes.csv", na = "")
 write_csv(laxton_causes_long, "data/laxton_causes.csv", na = "")
+write_csv(laxton_causes_1700_long, "data/laxton_causes_1700.csv", na = "")
 write_csv(deaths_unique, "data/deaths_unique.csv", na = "")
 
 # ---------------------------------------------------------------------- 
@@ -91,6 +108,12 @@ write_csv(deaths_unique, "data/deaths_unique.csv", na = "")
 laxton_weekly <- raw_laxton_weekly |> 
   select(!1:5) |> 
   pivot_longer(7:166,
+               names_to = 'parish_name',
+               values_to = 'count')
+
+laxton_1700_weekly <- raw_laxton_1700_weekly |> 
+  select(!1:5) |> 
+  pivot_longer(7:125,
                names_to = 'parish_name',
                values_to = 'count')
 
