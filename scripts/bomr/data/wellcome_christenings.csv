@@ -1,0 +1,223 @@
+Year,Week Number,Unique Identifier,Start Day,Start Month,End Day,End Month,christening,count
+1668,1,1668-01-verso,22,December,29,December,Christened (Male),114
+1668,1,1668-01-verso,22,December,29,December,Christened (Female),103
+1668,1,1668-01-verso,22,December,29,December,Christened (In All),217
+1668,2,1668-02-verso,29,December,5,January,Christened (Male),128
+1668,2,1668-02-verso,29,December,5,January,Christened (Female),126
+1668,2,1668-02-verso,29,December,5,January,Christened (In All),254
+1668,3,1668-03-verso,5,January,12,January,Christened (Male),127
+1668,3,1668-03-verso,5,January,12,January,Christened (Female),125
+1668,3,1668-03-verso,5,January,12,January,Christened (In All),252
+1668,4,1668-04-verso,12,January,19,January,Christened (Male),132
+1668,4,1668-04-verso,12,January,19,January,Christened (Female),130
+1668,4,1668-04-verso,12,January,19,January,Christened (In All),262
+1668,5,1668-05-verso,19,January,26,January,Christened (Male),120
+1668,5,1668-05-verso,19,January,26,January,Christened (Female),123
+1668,5,1668-05-verso,19,January,26,January,Christened (In All),243
+1668,6,1668-06-verso,26,January,2,February,Christened (Male),139
+1668,6,1668-06-verso,26,January,2,February,Christened (Female),129
+1668,6,1668-06-verso,26,January,2,February,Christened (In All),268
+1668,7,1668-07-verso,2,February,9,February,Christened (Male),134
+1668,7,1668-07-verso,2,February,9,February,Christened (Female),143
+1668,7,1668-07-verso,2,February,9,February,Christened (In All),277
+1668,8,1668-08-verso,9,February,16,February,Christened (Male),139
+1668,8,1668-08-verso,9,February,16,February,Christened (Female),96
+1668,8,1668-08-verso,9,February,16,February,Christened (In All),235
+1668,9,1668-09-verso,16,February,23,February,Christened (Male),125
+1668,9,1668-09-verso,16,February,23,February,Christened (Female),135
+1668,9,1668-09-verso,16,February,23,February,Christened (In All),260
+1668,11,1668-11-verso-form-fill,2,March,9,March,Christened (Male),161
+1668,11,1668-11-verso-form-fill,2,March,9,March,Christened (Female),118
+1668,11,1668-11-verso-form-fill,2,March,9,March,Christened (In All),279
+1668,12,1668-12-verso,9,March,16,March,Christened (Male),125
+1668,12,1668-12-verso,9,March,16,March,Christened (Female),141
+1668,12,1668-12-verso,9,March,16,March,Christened (In All),266
+1668,13,1668-13-verso,16,March,23,March,Christened (Male),133
+1668,13,1668-13-verso,16,March,23,March,Christened (Female),109
+1668,13,1668-13-verso,16,March,23,March,Christened (In All),242
+1669,14,1669-14-verso,23,March,30,March,Christened (Male),125
+1669,14,1669-14-verso,23,March,30,March,Christened (Female),126
+1669,14,1669-14-verso,23,March,30,March,Christened (In All),251
+1669,15,1669-15-verso,30,March,6,April,Christened (Male),146
+1669,15,1669-15-verso,30,March,6,April,Christened (Female),98
+1669,15,1669-15-verso,30,March,6,April,Christened (In All),244
+1669,16,1669-16-verso,6,April,13,April,Christened (Male),110
+1669,16,1669-16-verso,6,April,13,April,Christened (Female),102
+1669,16,1669-16-verso,6,April,13,April,Christened (In All),212
+1669,17,17-1669-verso,13,April,20,April,Christened (Male),130
+1669,17,17-1669-verso,13,April,20,April,Christened (Female),120
+1669,17,17-1669-verso,13,April,20,April,Christened (In All),250
+1669,18,1669-18-verso,20,April,27,April,Christened (Male),114
+1669,18,1669-18-verso,20,April,27,April,Christened (Female),112
+1669,18,1669-18-verso,20,April,27,April,Christened (In All),226
+1669,19,1669-19-verso,27,April,4,May,Christened (Male),114
+1669,19,1669-19-verso,27,April,4,May,Christened (Female),107
+1669,19,1669-19-verso,27,April,4,May,Christened (In All),221
+1669,20,1669-20-verso,4,May,11,May,Christened (Male),113
+1669,20,1669-20-verso,4,May,11,May,Christened (Female),109
+1669,20,1669-20-verso,4,May,11,May,Christened (In All),222
+1669,21,1669-21-verso,11,May,18,May,Christened (Male),125
+1669,21,1669-21-verso,11,May,18,May,Christened (Female),90
+1669,21,1669-21-verso,11,May,18,May,Christened (In All),215
+1669,22,1669-22-verso,18,May,25,May,Christened (Male),116
+1669,22,1669-22-verso,18,May,25,May,Christened (Female),121
+1669,22,1669-22-verso,18,May,25,May,Christened (In All),237
+1669,23,1669-23-London,25,May,1,June,Christened (Male),97
+1669,23,1669-23-London,25,May,1,June,Christened (Female),105
+1669,23,1669-23-London,25,May,1,June,Christened (In All),202
+1669,24,1669-24-verso,1,June,8,June,Christened (Male),116
+1669,24,1669-24-verso,1,June,8,June,Christened (Female),102
+1669,24,1669-24-verso,1,June,8,June,Christened (In All),218
+1669,25,1669-25-verso,8,June,15,June,Christened (Male),140
+1669,25,1669-25-verso,8,June,15,June,Christened (Female),111
+1669,25,1669-25-verso,8,June,15,June,Christened (In All),251
+1669,26,1669-26-verso,15,June,22,June,Christened (Male),116
+1669,26,1669-26-verso,15,June,22,June,Christened (Female),105
+1669,26,1669-26-verso,15,June,22,June,Christened (In All),221
+1669,27,1669-27-verso,22,June,29,June,Christened (Male),117
+1669,27,1669-27-verso,22,June,29,June,Christened (Female),97
+1669,27,1669-27-verso,22,June,29,June,Christened (In All),214
+1669,28,1669-28-verso,29,June,6,July,Christened (Male),108
+1669,28,1669-28-verso,29,June,6,July,Christened (Female),114
+1669,28,1669-28-verso,29,June,6,July,Christened (In All),222
+1669,29,1669-29-verso,6,July,13,July,Christened (Male),122
+1669,29,1669-29-verso,6,July,13,July,Christened (Female),97
+1669,29,1669-29-verso,6,July,13,July,Christened (In All),219
+1669,30,1669-30-verso,13,July,20,July,Christened (Male),119
+1669,30,1669-30-verso,13,July,20,July,Christened (Female),96
+1669,30,1669-30-verso,13,July,20,July,Christened (In All),215
+1669,31,1669-31-verso,20,July,27,July,Christened (Male),128
+1669,31,1669-31-verso,20,July,27,July,Christened (Female),96
+1669,31,1669-31-verso,20,July,27,July,Christened (In All),224
+1669,32,1669-32-verso,27,July,3,August,Christened (Male),127
+1669,32,1669-32-verso,27,July,3,August,Christened (Female),106
+1669,32,1669-32-verso,27,July,3,August,Christened (In All),233
+1669,33,1669-33-verso,3,August,10,August,Christened (Male),121
+1669,33,1669-33-verso,3,August,10,August,Christened (Female),117
+1669,33,1669-33-verso,3,August,10,August,Christened (In All),238
+1669,34,1669-34-verso,10,August,17,August,Christened (Male),127
+1669,34,1669-34-verso,10,August,17,August,Christened (Female),110
+1669,34,1669-34-verso,10,August,17,August,Christened (In All),237
+1669,35,1669-35-verso,17,August,24,August,Christened (Male),133
+1669,35,1669-35-verso,17,August,24,August,Christened (Female),112
+1669,35,1669-35-verso,17,August,24,August,Christened (In All),245
+1669,36,1669-36-verso,24,August,31,August,Christened (Male),132
+1669,36,1669-36-verso,24,August,31,August,Christened (Female),138
+1669,36,1669-36-verso,24,August,31,August,Christened (In All),270
+1669,37,1669-37-verso-form-fill,31,August,7,September,Christened (Male),124
+1669,37,1669-37-verso-form-fill,31,August,7,September,Christened (Female),105
+1669,37,1669-37-verso-form-fill,31,August,7,September,Christened (In All),229
+1669,38,1669-38-verso,7,September,14,September,Christened (Male),154
+1669,38,1669-38-verso,7,September,14,September,Christened (Female),106
+1669,38,1669-38-verso,7,September,14,September,Christened (In All),160
+1669,39,1669-39-verso,14,September,21,September,Christened (Male),121
+1669,39,1669-39-verso,14,September,21,September,Christened (Female),127
+1669,39,1669-39-verso,14,September,21,September,Christened (In All),148
+1669,40,1669-40-verso,21,September,28,September,Christened (Male),118
+1669,40,1669-40-verso,21,September,28,September,Christened (Female),89
+1669,40,1669-40-verso,21,September,28,September,Christened (In All),207
+1669,41,1669-41-verso,28,September,5,October,Christened (Male),130
+1669,41,1669-41-verso,28,September,5,October,Christened (Female),134
+1669,41,1669-41-verso,28,September,5,October,Christened (In All),264
+1669,42,1669-42-verso,5,October,12,October,Christened (Male),138
+1669,42,1669-42-verso,5,October,12,October,Christened (Female),111
+1669,42,1669-42-verso,5,October,12,October,Christened (In All),249
+1669,43,1669-43-verso,12,October,19,October,Christened (Male),132
+1669,43,1669-43-verso,12,October,19,October,Christened (Female),106
+1669,43,1669-43-verso,12,October,19,October,Christened (In All),238
+1669,46,1669-46-verso,2,November,9,November,Christened (Male),136
+1669,46,1669-46-verso,2,November,9,November,Christened (Female),101
+1669,46,1669-46-verso,2,November,9,November,Christened (In All),237
+1669,47,1669-47-verso,9,November,16,November,Christened (Male),123
+1669,47,1669-47-verso,9,November,16,November,Christened (Female),120
+1669,47,1669-47-verso,9,November,16,November,Christened (In All),243
+1669,48,1669-48-verso,16,November,23,November,Christened (Male),117
+1669,48,1669-48-verso,16,November,23,November,Christened (Female),122
+1669,48,1669-48-verso,16,November,23,November,Christened (In All),239
+1669,50,1669-50-verso,30,November,7,December,Christened (Male),132
+1669,50,1669-50-verso,30,November,7,December,Christened (Female),107
+1669,50,1669-50-verso,30,November,7,December,Christened (In All),239
+1669,51,1669-51-verso,7,December,14,December,Christened (Male),123
+1669,51,1669-51-verso,7,December,14,December,Christened (Female),122
+1669,51,1669-51-verso,7,December,14,December,Christened (In All),245
+1669,52,1669-52-verso,14,December,21,December,Christened (Male),113
+1669,52,1669-52-verso,14,December,21,December,Christened (Female),99
+1669,52,1669-52-verso,14,December,21,December,Christened (In All),212
+1669,2,1669-02-verso,28,December,4,January,Christened (Male),107
+1669,2,1669-02-verso,28,December,4,January,Christened (Female),104
+1669,2,1669-02-verso,28,December,4,January,Christened (In All),211
+1669,3,1669-03-verso,4,January,11,January,Christened (Male),139
+1669,3,1669-03-verso,4,January,11,January,Christened (Female),128
+1669,3,1669-03-verso,4,January,11,January,Christened (In All),267
+1669,4,1669-04-verso,11,January,18,January,Christened (Male),113
+1669,4,1669-04-verso,11,January,18,January,Christened (Female),114
+1669,4,1669-04-verso,11,January,18,January,Christened (In All),227
+1669,5,1669-05-verso,18,January,25,January,Christened (Male),126
+1669,5,1669-05-verso,18,January,25,January,Christened (Female),108
+1669,5,1669-05-verso,18,January,25,January,Christened (In All),234
+1669,6,1669-06-verso,25,January,1,February,Christened (Male),135
+1669,6,1669-06-verso,25,January,1,February,Christened (Female),123
+1669,6,1669-06-verso,25,January,1,February,Christened (In All),258
+1669,7,1669-07-verso,1,February,8,February,Christened (Male),131
+1669,7,1669-07-verso,1,February,8,February,Christened (Female),118
+1669,7,1669-07-verso,1,February,8,February,Christened (In All),249
+1669,8,1669-08-verso,8,February,15,February,Christened (Male),122
+1669,8,1669-08-verso,8,February,15,February,Christened (Female),131
+1669,8,1669-08-verso,8,February,15,February,Christened (In All),253
+1669,9,1669-09-verso,15,February,22,February,Christened (Male),138
+1669,9,1669-09-verso,15,February,22,February,Christened (Female),119
+1669,9,1669-09-verso,15,February,22,February,Christened (In All),257
+1669,11,1669-11-verso-form-fill,1,March,8,March,Christened (Male),161
+1669,11,1669-11-verso-form-fill,1,March,8,March,Christened (Female),139
+1669,11,1669-11-verso-form-fill,1,March,8,March,Christened (In All),300
+1669,12,1669-12-verso-form-fill,8,March,15,March,Christened (Male),NA
+1669,12,1669-12-verso-form-fill,8,March,15,March,Christened (Female),NA
+1669,12,1669-12-verso-form-fill,8,March,15,March,Christened (In All),NA
+1669,13,1669-13-verso-form-fill,15,March,22,March,Christened (Male),126
+1669,13,1669-13-verso-form-fill,15,March,22,March,Christened (Female),114
+1669,13,1669-13-verso-form-fill,15,March,22,March,Christened (In All),140
+1670,14,1670-14-verso,22,March,29,March,Christened (Male),134
+1670,14,1670-14-verso,22,March,29,March,Christened (Female),117
+1670,14,1670-14-verso,22,March,29,March,Christened (In All),251
+1670,15,1670-15-verso,29,March,5,April,Christened (Male),106
+1670,15,1670-15-verso,29,March,5,April,Christened (Female),105
+1670,15,1670-15-verso,29,March,5,April,Christened (In All),211
+1670,16,1670-16-verso,5,April,12,April,Christened (Male),125
+1670,16,1670-16-verso,5,April,12,April,Christened (Female),116
+1670,16,1670-16-verso,5,April,12,April,Christened (In All),241
+1670,18,1670-18-verso,19,April,26,April,Christened (Male),138
+1670,18,1670-18-verso,19,April,26,April,Christened (Female),113
+1670,18,1670-18-verso,19,April,26,April,Christened (In All),251
+1670,19,1669-19-verso,26,April,3,May,Christened (Male),109
+1670,19,1669-19-verso,26,April,3,May,Christened (Female),89
+1670,19,1669-19-verso,26,April,3,May,Christened (In All),198
+1670,20,1670-20-verso,3,May,10,May,Christened (Male),135
+1670,20,1670-20-verso,3,May,10,May,Christened (Female),109
+1670,20,1670-20-verso,3,May,10,May,Christened (In All),244
+1670,21,1670-21-verso,10,May,17,May,Christened (Male),106
+1670,21,1670-21-verso,10,May,17,May,Christened (Female),109
+1670,21,1670-21-verso,10,May,17,May,Christened (In All),215
+1670,22,1670-22-verso,17,May,24,May,Christened (Male),94
+1670,22,1670-22-verso,17,May,24,May,Christened (Female),94
+1670,22,1670-22-verso,17,May,24,May,Christened (In All),188
+1670,23,1670-23-verso,24,May,31,May,Christened (Male),112
+1670,23,1670-23-verso,24,May,31,May,Christened (Female),108
+1670,23,1670-23-verso,24,May,31,May,Christened (In All),220
+1670,24,1670-24-verso,31,May,7,June,Christened (Male),115
+1670,24,1670-24-verso,31,May,7,June,Christened (Female),107
+1670,24,1670-24-verso,31,May,7,June,Christened (In All),222
+1670,28,1670-28-verso,28,June,5,July,Christened (Male),91
+1670,28,1670-28-verso,28,June,5,July,Christened (Female),95
+1670,28,1670-28-verso,28,June,5,July,Christened (In All),186
+1679,30,1670-30-verso,12,July,19,July,Christened (Male),107
+1679,30,1670-30-verso,12,July,19,July,Christened (Female),113
+1679,30,1670-30-verso,12,July,19,July,Christened (In All),220
+1670,31,1670-31-verso,19,July,26,July,Christened (Male),112
+1670,31,1670-31-verso,19,July,26,July,Christened (Female),100
+1670,31,1670-31-verso,19,July,26,July,Christened (In All),312
+1670,32,1670-32-verso,26,July,2,August,Christened (Male),135
+1670,32,1670-32-verso,26,July,2,August,Christened (Female),120
+1670,32,1670-32-verso,26,July,2,August,Christened (In All),255
+1670,33,1670-33-verso,2,August,9,August,Christened (Male),118
+1670,33,1670-33-verso,2,August,9,August,Christened (Female),99
+1670,33,1670-33-verso,2,August,9,August,Christened (In All),287

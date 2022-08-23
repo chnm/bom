@@ -111,12 +111,6 @@ laxton_weekly <- raw_laxton_weekly |>
                names_to = 'parish_name',
                values_to = 'count')
 
-laxton_1700_weekly <- raw_laxton_1700_weekly |> 
-  select(!1:5) |> 
-  pivot_longer(7:125,
-               names_to = 'parish_name',
-               values_to = 'count')
-
 wellcome_weekly <- raw_wellcome_weekly |> 
   select(!1:5) |> 
   pivot_longer(7:284,
@@ -257,22 +251,22 @@ millar_long <- raw_millar_general |>
 millar_long <- millar_long |> 
   mutate(count_type = "Total")
 
-laxton_long <- raw_laxton_general |> 
-  select(!1:4) |> 
-  pivot_longer(8:167,
-               names_to = 'parish_name',
-               values_to = 'count') |> 
-  # We use a nonexistant week to help with some math below
-  mutate(week = 90)
-
-laxton_long <- laxton_long |> separate(parish_name, c("parish_name", "count_type"), sep = "[-]")
-laxton_long <- laxton_long |>
-  mutate(count_type = str_trim(count_type)) |> 
-  mutate(parish_name = str_trim(parish_name))
-
-# Lowercase column names and replace spaces with underscores.
-names(laxton_long) <- tolower(names(laxton_long))
-names(laxton_long) <- gsub(" ", "_", names(laxton_long))
+# laxton_long <- raw_laxton_general |> 
+#   select(!1:4) |> 
+#   pivot_longer(8:167,
+#                names_to = 'parish_name',
+#                values_to = 'count') |> 
+#   # We use a nonexistant week to help with some math below
+#   mutate(week = 90)
+# 
+# laxton_long <- laxton_long |> separate(parish_name, c("parish_name", "count_type"), sep = "[-]")
+# laxton_long <- laxton_long |>
+#   mutate(count_type = str_trim(count_type)) |> 
+#   mutate(parish_name = str_trim(parish_name))
+# 
+# # Lowercase column names and replace spaces with underscores.
+# names(laxton_long) <- tolower(names(laxton_long))
+# names(laxton_long) <- gsub(" ", "_", names(laxton_long))
 # The following is probably not necessary anymore:
 #laxton_long$year <- str_sub(laxton_long$unique_id, 8, 11)
 
@@ -281,7 +275,8 @@ names(millar_long) <- gsub(" ", "_", names(millar_long))
 millar_long$year <- str_sub(millar_long$unique_identifier, 8, 11)
 
 # Combine the general bills together 
-general_bills <- rbind(millar_long, laxton_long)
+# general_bills <- rbind(millar_long, laxton_long)
+general_bills <- millar_long
 general_bills <- general_bills |> 
   mutate(bill_type = "General")
 
@@ -482,7 +477,9 @@ week_unique <- week_unique |>
   select(-year)
 
 all_bills <- rbind(weekly_bills, general_bills)
-all_bills <- all_bills |> mutate(id = row_number())
+all_bills <- all_bills |> mutate(id = row_number()) |> 
+  select(!id.x) |> 
+  select(!id.y)
 
 # Write data to csv
 write_csv(weekly_bills, "data/bills_weekly.csv", na = "")
@@ -493,62 +490,69 @@ write_csv(week_unique, "data/week_unique.csv", na = "")
 write_csv(year_unique, "data/year_unique.csv", na = "")
 
 # ---------------------------------------------------------------------- 
-# Christenings, births, plague, and foodstuffs
-# ---------------------------------------------------------------------- 
-
 # Christenings
-# TODO: This needs to be fixed, or moved up to where some of this happens already
-# during the filtering of the data.
-parishes_filtering <- raw_parishes |> 
-  select(!1:5) |> 
-  pivot_longer(7:284,
-               names_to = 'parish_name',
+# ---------------------------------------------------------------------- 
+# TODO: Currently these does not reference the week_unique data as a unique id 
+# because the unique_identifier needs the verso side and those are not currently
+# included in week_unique. 
+
+laxton_christenings <- raw_laxton_causes |> 
+  select(5:11)
+
+laxton_christenings_tmp <- raw_laxton_causes |> 
+  select(contains("Christened ("))
+
+laxton_christenings_1700 <- raw_laxton_1700_causes |> 
+  select(5:11)
+
+laxton_christenings_1700_tmp <- raw_laxton_1700_causes |> 
+  select(contains("Christened ("))
+
+laxton_christenings <- cbind(laxton_christenings, laxton_christenings_tmp)
+laxton_christenings_1700 <- cbind(laxton_christenings_1700, laxton_christenings_1700_tmp)
+laxton_christenings <- rbind(laxton_christenings, laxton_christenings_1700)
+
+rm(laxton_christenings_tmp)
+rm(laxton_christenings_1700_tmp)
+
+wellcome_christenings <- raw_wellcome_causes |> 
+  select(6:12)
+wellcome_christenings_tmp <- raw_wellcome_causes |> 
+  select(contains("Christened ("))
+wellcome_christenings <- cbind(wellcome_christenings, wellcome_christenings_tmp)
+rm(wellcome_christenings_tmp)
+
+# Ensure values are numeric
+laxton_christenings <- laxton_christenings |> 
+  mutate(across(
+    .cols = contains('Christened '),
+    .fns = ~ as.numeric(.x)
+  ))
+
+wellcome_christenings <-  wellcome_christenings |> 
+  mutate(across(
+    .cols = contains('Christened '),
+    .fns = ~ as.numeric(.x)
+  ))
+
+# Pivot the data to long format
+laxton_christenings_long <- laxton_christenings |> 
+  pivot_longer(8:10,
+               names_to = 'christening',
                values_to = 'count')
 
-parishes_filtering$christening_detect <- str_detect(parishes_filtering$parish_name, "Christened")
-parishes_filtering$burials_detect <- str_detect(parishes_filtering$parish_name, "Buried in")
-parishes_filtering$plague_detect <- str_detect(parishes_filtering$parish_name, "Plague in")
+wellcome_christenings_long <- wellcome_christenings |> 
+  pivot_longer(8:10,
+               names_to = 'christening',
+               values_to = 'count')
 
-christenings <- parishes_filtering |> 
-  dplyr::filter(christening_detect == TRUE) |> 
-  select(-christening_detect, -burials_detect, -plague_detect)
-burials <- parishes_filtering |> 
-  dplyr::filter(burials_detect == TRUE) |> 
-  select(-christening_detect, -burials_detect, -plague_detect)
-plague <- parishes_filtering |> 
-  dplyr::filter(plague_detect == TRUE) |> 
-  select(-christening_detect, -burials_detect, -plague_detect)
+christenings <- rbind(wellcome_christenings_long, laxton_christenings_long)
 
-names(christenings) <- tolower(names(christenings))
-names(christenings) <- gsub(" ", "_", names(christenings))
+# Write data
+write_csv(wellcome_christenings_long, "data/wellcome_christenings.csv")
+write_csv(laxton_christenings, "data/laxton_christenings.csv")
+write_csv(christenings, "data/all_christenings.csv")
 
-christenings <- christenings |> 
-  select(-week, -start_day, -end_day, -start_month, -end_month) |> 
-  dplyr::left_join(week_unique, by = "unique_identifier") |> 
-  select(-week, -start_day, -end_day, -start_month, -end_month, -unique_identifier, -id, -year_range, -split_year)
-
-rm(parishes_filtering)
-
-write_csv(christenings, "data/christenings_counts.csv")
-write_csv(burials, "data/burials_counts.csv")
-write_csv(plague, "data/plague_counts.csv")
-
+# ---------------------------------------------------------------------- 
 # Foodstuffs
-# ----------
-# TODO: This section isn't working yet because we don't have this data yet. 
-# The code here is only scaffolding.
-parishes_filtering <- raw_parishes |> 
-  select(!1:5) |> 
-  pivot_longer(7:284,
-               names_to = 'parish_name',
-               values_to = 'count')
-
-parishes_filtering$food_detect <- str_detect(parishes_filtering, "bread")
-
-foodstuffs <- parishes_filtering |> 
-  dplyr::filter(food_detect == TRUE) |> 
-  select(-food_detect)
-
-rm(parishes_filtering)
-
-write_csv(foodstuffs, "data/foodstuffs_count.csv")
+# ---------------------------------------------------------------------- 
