@@ -37,6 +37,8 @@ func main() {
 	allBills := readCsv("../../scripts/bomr/data/all_bills.csv")
 	weekRecords := readCsv("../../scripts/bomr/data/week_unique.csv")
 	yearRecords := readCsv("../../scripts/bomr/data/year_unique.csv")
+	christeningRecords := readCsv("../../scripts/bomr/data/christenings.csv")
+	christeningsLocations := readCsv("../../scripts/bomr/data/christenings_locations.csv")
 
 	// Connect to the database
 	conn, err := pgx.Connect(context.Background(), os.Getenv("BOM_DB_STR"))
@@ -45,8 +47,8 @@ func main() {
 	}
 	defer conn.Close(context.Background())
 
-	// The following inserts each of the data types into their respective
-	// Postgres tables. The data is read from the CSV files and inserted
+	// The following inserts each of the datasets into their respective
+	// Postgres tables. The data is read from the CSV files above and inserted
 	// into the database.
 
 	// 1. Unique parish names -------------------------------------------------------
@@ -93,18 +95,22 @@ func main() {
 	// 3. Causes of death ---------------------------------------------------------
 	// Insert the causes of death into the bom.causes table. On conflict, do nothing.
 	causesQuery := `
-		INSERT INTO bom.causes (cause, cause_id)
-		VALUES ($1, $2)
+		INSERT INTO bom.causes_of_death (death, count, year, week_id, id, death_id)
+		VALUES ($1, $2, $3, $4, $5, $6)
 		ON CONFLICT DO NOTHING
 	`
 
 	// Assign variables to the values in the CSV file
 	for _, causeRecord := range causesRecords {
-		cause := causeRecord[0]
-		causeID := causeRecord[1]
+		death := causeRecord[0]
+		count := causeRecord[1]
+		year := causeRecord[2]
+		weekID := causeRecord[3]
+		id := causeRecord[4]
+		deathID := causeRecord[5]
 
 		// Execute the query
-		_, err = conn.Exec(context.Background(), causesQuery, cause, causeID)
+		_, err = conn.Exec(context.Background(), causesQuery, death, count, year, weekID, id, deathID)
 		if err != nil {
 			log.Fatal("Unable to insert parish names: ", err)
 		}
@@ -113,18 +119,24 @@ func main() {
 	// 4. All bills ----------------------------------------------------------------
 	// Insert the all bills into the bom.bills table. On conflict, do nothing.
 	billsQuery := `
-		INSERT INTO bom.bills ()
-		VALUES ()
+		INSERT INTO bom.bill_of_mortality (id, parish_id, collective_id, count_type, count, year_id, week_id, bill_type)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
 		ON CONFLICT DO NOTHING
 	`
 
 	// Assign variables to the values in the CSV file
 	for _, billRecord := range allBills {
-		cause := billRecord[0]
-		causeID := billRecord[1]
+		id := billRecord[0]
+		parishID := billRecord[1]
+		collectiveID := billRecord[2]
+		countType := billRecord[3]
+		count := billRecord[4]
+		yearID := billRecord[5]
+		weekID := billRecord[6]
+		billType := billRecord[7]
 
 		// Execute the query
-		_, err = conn.Exec(context.Background(), billsQuery, cause, causeID)
+		_, err = conn.Exec(context.Background(), billsQuery, id, parishID, collectiveID, countType, count, yearID, weekID, billType)
 		if err != nil {
 			log.Fatal("Unable to insert parish names: ", err)
 		}
@@ -133,18 +145,25 @@ func main() {
 	// 5. Unique weeks -------------------------------------------------------------
 	// Insert the unique weeks into the bom.weeks table. On conflict, do nothing.
 	weeksQuery := `
-		INSERT INTO bom.weeks (week, week_id)
-		VALUES ($1, $2)
+		INSERT INTO bom.week (id, week_id, start_day, start_month, end_day, end_month, year_id, week_no, split_year)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
 		ON CONFLICT DO NOTHING
 	`
 
 	// Assign variables to the values in the CSV file
 	for _, weekRecord := range weekRecords {
-		week := weekRecord[0]
+		id := weekRecord[0]
 		weekID := weekRecord[1]
+		startDay := weekRecord[2]
+		startMonth := weekRecord[3]
+		endDay := weekRecord[4]
+		endMonth := weekRecord[5]
+		yearID := weekRecord[6]
+		weekNo := weekRecord[7]
+		splitYear := weekRecord[8]
 
 		// Execute the query
-		_, err = conn.Exec(context.Background(), weeksQuery, week, weekID)
+		_, err = conn.Exec(context.Background(), weeksQuery, id, weekID, startDay, startMonth, endDay, endMonth, yearID, weekNo, splitYear)
 		if err != nil {
 			log.Fatal("Unable to insert parish names: ", err)
 		}
@@ -153,18 +172,63 @@ func main() {
 	// 6. Unique years -------------------------------------------------------------
 	// Insert the unique years into the bom.years table. On conflict, do nothing.
 	yearsQuery := `
-		INSERT INTO bom.years (year, year_id)
+		INSERT INTO bom.year (id, year_id, split_year, year)
 		VALUES ($1, $2)
 		ON CONFLICT DO NOTHING
 	`
 
 	// Assign variables to the values in the CSV file
 	for _, yearRecord := range yearRecords {
-		year := yearRecord[0]
+		id := yearRecord[0]
 		yearID := yearRecord[1]
+		splitYear := yearRecord[2]
+		year := yearRecord[3]
 
 		// Execute the query
-		_, err = conn.Exec(context.Background(), yearsQuery, year, yearID)
+		_, err = conn.Exec(context.Background(), yearsQuery, id, yearID, splitYear, year)
+		if err != nil {
+			log.Fatal("Unable to insert parish names: ", err)
+		}
+	}
+
+	// 7. Christenings -------------------------------------------------------------
+	// Insert the christenings into the bom.christenings table. On conflict, do nothing.
+	christeningsQuery := `
+		INSERT INTO bom.christenings (id, week_id, christening_desc, count, year_id)
+		VALUES ($1, $2, $3, $4, $5)
+		ON CONFLICT DO NOTHING
+		`
+
+	// Assign variables to the values in the CSV file
+	for _, christeningRecord := range christeningRecords {
+		id := christeningRecord[0]
+		weekID := christeningRecord[1]
+		christeningDesc := christeningRecord[2]
+		count := christeningRecord[3]
+		yearID := christeningRecord[4]
+
+		// Execute the query
+		_, err = conn.Exec(context.Background(), christeningsQuery, id, weekID, christeningDesc, count, yearID)
+		if err != nil {
+			log.Fatal("Unable to insert parish names: ", err)
+		}
+	}
+
+	// 8. Christening locations -----------------------------------------------------
+	// Insert the christening locations into the bom.christening_locations table. On conflict, do nothing.
+	christeningLocationsQuery := `
+		INSERT INTO bom.christening_locations (id, name)
+		VALUES ($1, $2)
+		ON CONFLICT DO NOTHING
+		`
+
+	// Assign variables to the values in the CSV file
+	for _, christeningLocationRecord := range christeningsLocations {
+		id := christeningLocationRecord[0]
+		name := christeningLocationRecord[1]
+
+		// Execute the query
+		_, err = conn.Exec(context.Background(), christeningLocationsQuery, id, name)
 		if err != nil {
 			log.Fatal("Unable to insert parish names: ", err)
 		}
