@@ -474,7 +474,9 @@ general_bills <- general_bills |>
 week_unique <- week_unique |> 
   mutate(year = as.integer(year)) |> 
   dplyr::left_join(year_unique, by = "year") |> 
-  select(-year)
+  select(-year) |> 
+  select(-id.y) |> 
+  rename(id = id.x)
 
 all_bills <- rbind(weekly_bills, general_bills)
 all_bills <- all_bills |> mutate(id = row_number()) |> 
