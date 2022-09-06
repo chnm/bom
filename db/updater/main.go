@@ -41,7 +41,7 @@ func main() {
 	christeningsLocations := readCsv("../../scripts/bomr/data/christenings_locations.csv")
 
 	// Connect to the database
-	conn, err := pgx.Connect(context.Background(), os.Getenv("BOM_DB_STR"))
+	conn, err := pgx.Connect(context.Background(), os.Getenv("BOM_DB_STR_LOCAL"))
 	if err != nil {
 		log.Fatal("Unable to connect to database: ", err)
 	}
