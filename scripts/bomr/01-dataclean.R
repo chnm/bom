@@ -17,13 +17,13 @@ raw_wellcome_weekly <- read_csv("../../datascribe-exports/2022-04-06-Wellcome-we
 # 2. Wellcome Weekly Bills Causes contains mortality information from weekly bills published in the late 17th century. It contains city-wide (including local suburbs) death counts for various causes of death, along with information about christenings (births registered within the Church of England), burials (deaths registered within the Church of England), plague deaths, and bread prices.
 raw_wellcome_causes <- read_csv("../../datascribe-exports/2022-04-06-Wellcome-weeklybills-causes.csv")
 # 3. Laxton Weekly Bills Parishes contains mortality information from weekly bills published in the early 18th century. It contains parish-by-parish counts of total mortality for the parish along with subtotals and totals of christenings (births registered within the Church of England) and burials (deaths registered within the Church of England).
-raw_laxton_weekly <- read_csv("../../datascribe-exports/2022-08-10-Laxton-weeklybills-parishes.csv")
+raw_laxton_weekly <- read_csv("../../datascribe-exports/2022-09-07-Laxton-weeklybills-parishes.csv")
 # 4. Millar General Bills PostPlague Parishes contains mortality information from "general" or annual summary bills published in the early 18th century. It contains parish-by-parish counts of total mortality for the parish along with subtotals and totals of christenings (births registered within the Church of England) and burials (deaths registered within the Church of England).
 raw_millar_general <- read_csv("../../datascribe-exports/2022-04-06-millar-generalbills-postplague-parishes.csv")
 # 5. Laxton 1700 Weekly Bills Causes contains mortality information from weekly bills published in the year 1700. It contains city-wide (including local suburbs) death counts for various causes of death.
 raw_laxton_1700_causes <- read_csv("../../datascribe-exports/2022-06-15-Laxton-1700-weeklybills-causes.csv")
 # 6. Laxton Weekly Bills Causes contains mortality information from weekly bills published in the early eighteenth century. It contains city-wide (including local suburbs) death counts for various causes of death.
-raw_laxton_causes <- read_csv("../../datascribe-exports/2022-08-10-Laxton-weeklybills-causes.csv")
+raw_laxton_causes <- read_csv("../../datascribe-exports/2022-09-07-Laxton-weeklybills-causes.csv")
 # 7. Laxton 1700 Weekly Bills Foodstuffs contains food prices from weekly bills published in the early eighteenth century. There are various types of bread and also salt.
 raw_laxton_1700_foodstuffs <- read_csv("../../datascribe-exports/2022-07-27-Laxton-1700-weeklybills-foodstuffs.csv")
 # 8. Laxton Weekly Bills Foodstuffs contains food prices from weekly bills published in the early eighteenth century. There are various types of bread and also salt.
@@ -405,6 +405,13 @@ deaths_long <- wellcome_causes_long |>
   select(-week_number, -start_day, -end_day, -start_month, -end_month, -year) |> 
   dplyr::left_join(week_unique, by = "unique_identifier") |> 
   select(-week, -start_day, -end_day, -start_month, -end_month) |> 
+  filter(!str_detect(death, regex("\\bBuried ", ignore_case = FALSE) )) |> 
+  filter(!str_detect(death, regex("\\bChristened ", ignore_case = FALSE) )) |> 
+  filter(!str_detect(death, regex("\\bPlague Deaths", ignore_case = FALSE) )) |> 
+  filter(!str_detect(death, regex("\\bOunces in", ignore_case = FALSE)  )) |> 
+  filter(!str_detect(death, regex("\\bIncrease/Decrease", ignore_case = FALSE) )) |> 
+  filter(!str_detect(death, regex("\\bParishes Clear", ignore_case = FALSE) )) |> 
+  filter(!str_detect(death, regex("\\bParishes Infected", ignore_case = FALSE))) |> 
   mutate(id = row_number())
 
 write_csv(deaths_long, na ="", "data/causes_of_death.csv")
