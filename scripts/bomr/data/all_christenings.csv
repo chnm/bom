@@ -275,6 +275,27 @@ Year,Week Number,Unique Identifier,Start Day,Start Month,End Day,End Month,chris
 1701,31,Laxton-1701-31-verso,15,July,22,July,Christened (Male),140
 1701,31,Laxton-1701-31-verso,15,July,22,July,Christened (Female),134
 1701,31,Laxton-1701-31-verso,15,July,22,July,Christened (In All),274
+1701,32,Laxton-1701-32-verso,22,July,29,July,Christened (Male),160
+1701,32,Laxton-1701-32-verso,22,July,29,July,Christened (Female),148
+1701,32,Laxton-1701-32-verso,22,July,29,July,Christened (In All),308
+1701,33,Laxton-1701-33-verso,29,July,5,August,Christened (Male),160
+1701,33,Laxton-1701-33-verso,29,July,5,August,Christened (Female),149
+1701,33,Laxton-1701-33-verso,29,July,5,August,Christened (In All),309
+1701,34,Laxton-1701-34-verso,5,August,12,August,Christened (Male),158
+1701,34,Laxton-1701-34-verso,5,August,12,August,Christened (Female),154
+1701,34,Laxton-1701-34-verso,5,August,12,August,Christened (In All),312
+1701,35,Laxton-1701-35-verso,12,August,19,August,Christened (Male),151
+1701,35,Laxton-1701-35-verso,12,August,19,August,Christened (Female),177
+1701,35,Laxton-1701-35-verso,12,August,19,August,Christened (In All),328
+1701,36,Laxton-1701-36-verso,19,August,26,August,Christened (Male),126
+1701,36,Laxton-1701-36-verso,19,August,26,August,Christened (Female),116
+1701,36,Laxton-1701-36-verso,19,August,26,August,Christened (In All),242
+1701,37,Laxton-1701-37-verso,26,August,2,September,Christened (Male),138
+1701,37,Laxton-1701-37-verso,26,August,2,September,Christened (Female),142
+1701,37,Laxton-1701-37-verso,26,August,2,September,Christened (In All),280
+1701,38,Laxton-1701-38-verso,2,September,9,September,Christened (Male),149
+1701,38,Laxton-1701-38-verso,2,September,9,September,Christened (Female),144
+1701,38,Laxton-1701-38-verso,2,September,9,September,Christened (In All),293
 1701,39,Laxton-1701-39-verso,9,September,16,September,Christened (Male),159
 1701,39,Laxton-1701-39-verso,9,September,16,September,Christened (Female),139
 1701,39,Laxton-1701-39-verso,9,September,16,September,Christened (In All),298
@@ -341,9 +362,174 @@ Year,Week Number,Unique Identifier,Start Day,Start Month,End Day,End Month,chris
 1702,33,Laxton-1702-33-verso,28,July,4,August,Christened (Male),169
 1702,33,Laxton-1702-33-verso,28,July,4,August,Christened (Female),145
 1702,33,Laxton-1702-33-verso,28,July,4,August,Christened (In All),314
+1702,34,Laxton-1702-34-verso,4,August,11,August,Christened (Male),159
+1702,34,Laxton-1702-34-verso,4,August,11,August,Christened (Female),157
+1702,34,Laxton-1702-34-verso,4,August,11,August,Christened (In All),316
+1702,35,Laxton-1702-35-verso,11,August,18,August,Christened (Male),152
+1702,35,Laxton-1702-35-verso,11,August,18,August,Christened (Female),141
+1702,35,Laxton-1702-35-verso,11,August,18,August,Christened (In All),293
+1702,36,Laxton-1702-36-verso,18,August,25,August,Christened (Male),153
+1702,36,Laxton-1702-36-verso,18,August,25,August,Christened (Female),157
+1702,36,Laxton-1702-36-verso,18,August,25,August,Christened (In All),310
+1702,37,Laxton-1702-37-verso,25,August,1,September,Christened (Male),128
+1702,37,Laxton-1702-37-verso,25,August,1,September,Christened (Female),168
+1702,37,Laxton-1702-37-verso,25,August,1,September,Christened (In All),296
+1702,38,Laxton-1702-38-verso,1,September,8,September,Christened (Male),160
+1702,38,Laxton-1702-38-verso,1,September,8,September,Christened (Female),141
+1702,38,Laxton-1702-38-verso,1,September,8,September,Christened (In All),301
+1702,39,Laxton-1702-39-verso,8,September,15,September,Christened (Male),163
+1702,39,Laxton-1702-39-verso,8,September,15,September,Christened (Female),138
+1702,39,Laxton-1702-39-verso,8,September,15,September,Christened (In All),301
+1702,40,Laxton-1702-40-verso,15,September,22,September,Christened (Male),163
+1702,40,Laxton-1702-40-verso,15,September,22,September,Christened (Female),132
+1702,40,Laxton-1702-40-verso,15,September,22,September,Christened (In All),295
+1702,41,Laxton-1702-41-verso,22,September,29,September,Christened (Male),165
+1702,41,Laxton-1702-41-verso,22,September,29,September,Christened (Female),169
+1702,41,Laxton-1702-41-verso,22,September,29,September,Christened (In All),334
+1702,42,Laxton-1702-42-verso,29,September,6,October,Christened (Male),173
+1702,42,Laxton-1702-42-verso,29,September,6,October,Christened (Female),154
+1702,42,Laxton-1702-42-verso,29,September,6,October,Christened (In All),327
+1702,43,Laxton-1702-43-verso,6,October,13,October,Christened (Male),172
+1702,43,Laxton-1702-43-verso,6,October,13,October,Christened (Female),142
+1702,43,Laxton-1702-43-verso,6,October,13,October,Christened (In All),314
+1702,44,Laxton-1702-44-verso,13,October,20,October,Christened (Male),170
+1702,44,Laxton-1702-44-verso,13,October,20,October,Christened (Female),143
+1702,44,Laxton-1702-44-verso,13,October,20,October,Christened (In All),313
+1701,45,Laxton-1701-45-verso,20,October,27,October,Christened (Male),149
+1701,45,Laxton-1701-45-verso,20,October,27,October,Christened (Female),153
+1701,45,Laxton-1701-45-verso,20,October,27,October,Christened (In All),302
+1701,46,Laxton-1701-46-verso,27,October,3,November,Christened (Male),138
+1701,46,Laxton-1701-46-verso,27,October,3,November,Christened (Female),122
+1701,46,Laxton-1701-46-verso,27,October,3,November,Christened (In All),260
+1702,47,Laxton-1702-47-verso,3,November,10,November,Christened (Male),177
+1702,47,Laxton-1702-47-verso,3,November,10,November,Christened (Female),158
+1702,47,Laxton-1702-47-verso,3,November,10,November,Christened (In All),335
+1702,48,Laxton-1702-48-verso,10,November,17,November,Christened (Male),124
+1702,48,Laxton-1702-48-verso,10,November,17,November,Christened (Female),157
+1702,48,Laxton-1702-48-verso,10,November,17,November,Christened (In All),281
+1702,49,Laxton-1702-49-verso,17,November,24,November,Christened (Male),147
+1702,49,Laxton-1702-49-verso,17,November,24,November,Christened (Female),130
+1702,49,Laxton-1702-49-verso,17,November,24,November,Christened (In All),277
+1702,50,Laxton-1702-50-verso,24,November,1,December,Christened (Male),140
+1702,50,Laxton-1702-50-verso,24,November,1,December,Christened (Female),167
+1702,50,Laxton-1702-50-verso,24,November,1,December,Christened (In All),307
+1702,51,Laxton-1702-51-verso,1,December,8,December,Christened (Male),157
+1702,51,Laxton-1702-51-verso,1,December,8,December,Christened (Female),170
+1702,51,Laxton-1702-51-verso,1,December,8,December,Christened (In All),327
+1702,52,Laxton-1702-52-verso,8,December,15,December,Christened (Male),167
+1702,52,Laxton-1702-52-verso,8,December,15,December,Christened (Female),148
+1702,52,Laxton-1702-52-verso,8,December,15,December,Christened (In All),315
+1702,1,Laxton-1702-01-verso,15,December,22,December,Christened (Male),163
+1702,1,Laxton-1702-01-verso,15,December,22,December,Christened (Female),140
+1702,1,Laxton-1702-01-verso,15,December,22,December,Christened (In All),303
+1702,2,Laxton-1702-02-verso,22,December,29,December,Christened (Male),131
+1702,2,Laxton-1702-02-verso,22,December,29,December,Christened (Female),146
+1702,2,Laxton-1702-02-verso,22,December,29,December,Christened (In All),277
+1702,3,Laxton-1702-03-verso,29,December,5,January,Christened (Male),155
+1702,3,Laxton-1702-03-verso,29,December,5,January,Christened (Female),168
+1702,3,Laxton-1702-03-verso,29,December,5,January,Christened (In All),323
+1702,4,Laxton-1702-04-verso,5,January,12,January,Christened (Male),153
+1702,4,Laxton-1702-04-verso,5,January,12,January,Christened (Female),162
+1702,4,Laxton-1702-04-verso,5,January,12,January,Christened (In All),315
+1702,06,Laxton-1702-06-verso,19,January,26,January,Christened (Male),164
+1702,06,Laxton-1702-06-verso,19,January,26,January,Christened (Female),149
+1702,06,Laxton-1702-06-verso,19,January,26,January,Christened (In All),313
+1702,07,Laxton-1702-07-verso,26,January,2,February,Christened (Male),163
+1702,07,Laxton-1702-07-verso,26,January,2,February,Christened (Female),149
+1702,07,Laxton-1702-07-verso,26,January,2,February,Christened (In All),312
+1702,8,Laxton-1702-08-verso,2,February,9,February,Christened (Male),176
+1702,8,Laxton-1702-08-verso,2,February,9,February,Christened (Female),141
+1702,8,Laxton-1702-08-verso,2,February,9,February,Christened (In All),317
+1702,9,Laxton-1702-09-verso,9,February,16,February,Christened (Male),178
+1702,9,Laxton-1702-09-verso,9,February,16,February,Christened (Female),174
+1702,9,Laxton-1702-09-verso,9,February,16,February,Christened (In All),352
+1702,10,Laxton-1702-10-verso,16,February,23,February,Christened (Male),165
+1702,10,Laxton-1702-10-verso,16,February,23,February,Christened (Female),156
+1702,10,Laxton-1702-10-verso,16,February,23,February,Christened (In All),321
+1702,11,Laxton-1702-11-verso,23,February,2,March,Christened (Male),164
+1702,11,Laxton-1702-11-verso,23,February,2,March,Christened (Female),146
+1702,11,Laxton-1702-11-verso,23,February,2,March,Christened (In All),310
+1702,12,Laxton-1702-12-verso,2,March,9,March,Christened (Male),161
+1702,12,Laxton-1702-12-verso,2,March,9,March,Christened (Female),166
+1702,12,Laxton-1702-12-verso,2,March,9,March,Christened (In All),327
+1702,13,Laxton-1702-13-verso,9,March,16,March,Christened (Male),153
+1702,13,Laxton-1702-13-verso,9,March,16,March,Christened (Female),148
+1702,13,Laxton-1702-13-verso,9,March,16,March,Christened (In All),301
+1702,14,Laxton-1702-14-verso,16,March,23,March,Christened (Male),158
+1702,14,Laxton-1702-14-verso,16,March,23,March,Christened (Female),160
+1702,14,Laxton-1702-14-verso,16,March,23,March,Christened (In All),318
+1703,15,Laxton-1703-15-verso,23,March,30,March,Christened (Male),138
+1703,15,Laxton-1703-15-verso,23,March,30,March,Christened (Female),134
+1703,15,Laxton-1703-15-verso,23,March,30,March,Christened (In All),272
+1703,16,Laxton-1703-16-verso,30,March,6,April,Christened (Male),157
+1703,16,Laxton-1703-16-verso,30,March,6,April,Christened (Female),154
+1703,16,Laxton-1703-16-verso,30,March,6,April,Christened (In All),311
+1703,17,Laxton-1703-17-verso,6,April,13,April,Christened (Male),128
+1703,17,Laxton-1703-17-verso,6,April,13,April,Christened (Female),124
+1703,17,Laxton-1703-17-verso,6,April,13,April,Christened (In All),252
+1703,18,Laxton-1703-18-verso,13,April,20,April,Christened (Male),133
+1703,18,Laxton-1703-18-verso,13,April,20,April,Christened (Female),126
+1703,18,Laxton-1703-18-verso,13,April,20,April,Christened (In All),259
+1703,19,Laxton-1703-19-verso,20,April,27,April,Christened (Male),139
+1703,19,Laxton-1703-19-verso,20,April,27,April,Christened (Female),145
+1703,19,Laxton-1703-19-verso,20,April,27,April,Christened (In All),284
+1703,20,Laxton-1703-20-verso,27,April,4,May,Christened (Male),133
+1703,20,Laxton-1703-20-verso,27,April,4,May,Christened (Female),126
+1703,20,Laxton-1703-20-verso,27,April,4,May,Christened (In All),259
+1703,21,Laxton-1703-21-verso,4,May,11,May,Christened (Male),134
+1703,21,Laxton-1703-21-verso,4,May,11,May,Christened (Female),141
+1703,21,Laxton-1703-21-verso,4,May,11,May,Christened (In All),275
+1703,22,Laxton-1703-22-verso,11,May,18,May,Christened (Male),119
+1703,22,Laxton-1703-22-verso,11,May,18,May,Christened (Female),127
+1703,22,Laxton-1703-22-verso,11,May,18,May,Christened (In All),246
+1703,23,Laxton-1703-23-verso,18,May,25,May,Christened (Male),136
+1703,23,Laxton-1703-23-verso,18,May,25,May,Christened (Female),139
+1703,23,Laxton-1703-23-verso,18,May,25,May,Christened (In All),275
 1703,24,Laxton-1703-24-verso,25,May,1,June,Christened (Male),121
 1703,24,Laxton-1703-24-verso,25,May,1,June,Christened (Female),128
 1703,24,Laxton-1703-24-verso,25,May,1,June,Christened (In All),249
+1703,25,Laxton-1703-25-verso,1,June,8,June,Christened (Male),130
+1703,25,Laxton-1703-25-verso,1,June,8,June,Christened (Female),135
+1703,25,Laxton-1703-25-verso,1,June,8,June,Christened (In All),265
+1703,26,Laxton-1703-26-verso,8,June,15,June,Christened (Male),129
+1703,26,Laxton-1703-26-verso,8,June,15,June,Christened (Female),136
+1703,26,Laxton-1703-26-verso,8,June,15,June,Christened (In All),265
+1703,27,Laxton-1703-27-verso,15,June,22,June,Christened (Male),125
+1703,27,Laxton-1703-27-verso,15,June,22,June,Christened (Female),119
+1703,27,Laxton-1703-27-verso,15,June,22,June,Christened (In All),244
+1703,28,Laxton-1703-28-verso,22,June,29,June,Christened (Male),130
+1703,28,Laxton-1703-28-verso,22,June,29,June,Christened (Female),125
+1703,28,Laxton-1703-28-verso,22,June,29,June,Christened (In All),255
+1703,29,Laxton-1703-29-verso,29,June,6,July,Christened (Male),141
+1703,29,Laxton-1703-29-verso,29,June,6,July,Christened (Female),146
+1703,29,Laxton-1703-29-verso,29,June,6,July,Christened (In All),287
+1703,30,Laxton-1703-30-verso,6,July,13,July,Christened (Male),143
+1703,30,Laxton-1703-30-verso,6,July,13,July,Christened (Female),152
+1703,30,Laxton-1703-30-verso,6,July,13,July,Christened (In All),295
+1703,31,Laxton-1703-31-verso,13,July,20,July,Christened (Male),143
+1703,31,Laxton-1703-31-verso,13,July,20,July,Christened (Female),137
+1703,31,Laxton-1703-31-verso,13,July,20,July,Christened (In All),280
+1703,32,Laxton-1703-32-verso,20,July,27,July,Christened (Male),129
+1703,32,Laxton-1703-32-verso,20,July,27,July,Christened (Female),120
+1703,32,Laxton-1703-32-verso,20,July,27,July,Christened (In All),249
+1703,33,Laxton-1703-33-verso,27,July,3,August,Christened (Male),132
+1703,33,Laxton-1703-33-verso,27,July,3,August,Christened (Female),141
+1703,33,Laxton-1703-33-verso,27,July,3,August,Christened (In All),273
+1703,34,Laxton-1703-34-verso,3,August,10,August,Christened (Male),152
+1703,34,Laxton-1703-34-verso,3,August,10,August,Christened (Female),147
+1703,34,Laxton-1703-34-verso,3,August,10,August,Christened (In All),299
+1703,35,Laxton-1703-35-verso,10,August,17,August,Christened (Male),128
+1703,35,Laxton-1703-35-verso,10,August,17,August,Christened (Female),134
+1703,35,Laxton-1703-35-verso,10,August,17,August,Christened (In All),262
+1703,36,Laxton-1703-36,17,August,24,August,Christened (Male),157
+1703,36,Laxton-1703-36,17,August,24,August,Christened (Female),162
+1703,36,Laxton-1703-36,17,August,24,August,Christened (In All),319
+1703,37,Laxton-1703-37-verso,24,August,31,August,Christened (Male),145
+1703,37,Laxton-1703-37-verso,24,August,31,August,Christened (Female),138
+1703,37,Laxton-1703-37-verso,24,August,31,August,Christened (In All),283
+1703,38,"Laxton-1703-38-verso""",31,August,7,September,Christened (Male),152
+1703,38,"Laxton-1703-38-verso""",31,August,7,September,Christened (Female),156
+1703,38,"Laxton-1703-38-verso""",31,August,7,September,Christened (In All),308
 1703,39,Laxton-1703-39-verso,7,September,14,September,Christened (Male),171
 1703,39,Laxton-1703-39-verso,7,September,14,September,Christened (Female),183
 1703,39,Laxton-1703-39-verso,7,September,14,September,Christened (In All),354
@@ -353,12 +539,45 @@ Year,Week Number,Unique Identifier,Start Day,Start Month,End Day,End Month,chris
 1703,41,Laxton-1703-41-verso,21,September,28,September,Christened (Male),154
 1703,41,Laxton-1703-41-verso,21,September,28,September,Christened (Female),143
 1703,41,Laxton-1703-41-verso,21,September,28,September,Christened (In All),297
+1703,42,Laxton-1703-42-verso,28,September,5,October,Christened (Male),172
+1703,42,Laxton-1703-42-verso,28,September,5,October,Christened (Female),179
+1703,42,Laxton-1703-42-verso,28,September,5,October,Christened (In All),351
+1703,43,Laxton-1703-43-verso,5,October,12,October,Christened (Male),177
+1703,43,Laxton-1703-43-verso,5,October,12,October,Christened (Female),159
+1703,43,Laxton-1703-43-verso,5,October,12,October,Christened (In All),336
 1703,44,Laxton-1703-44-verso,12,October,19,October,Christened (Male),143
 1703,44,Laxton-1703-44-verso,12,October,19,October,Christened (Female),160
 1703,44,Laxton-1703-44-verso,12,October,19,October,Christened (In All),303
+1703,45,Laxton-1703-45-verso,19,October,26,October,Christened (Male),169
+1703,45,Laxton-1703-45-verso,19,October,26,October,Christened (Female),152
+1703,45,Laxton-1703-45-verso,19,October,26,October,Christened (In All),321
+1703,46,Laxton-1703-46-verso,26,October,2,November,Christened (Male),170
+1703,46,Laxton-1703-46-verso,26,October,2,November,Christened (Female),183
+1703,46,Laxton-1703-46-verso,26,October,2,November,Christened (In All),353
+1703,47,Laxton-1703-47-verso,2,November,9,November,Christened (Male),172
+1703,47,Laxton-1703-47-verso,2,November,9,November,Christened (Female),166
+1703,47,Laxton-1703-47-verso,2,November,9,November,Christened (In All),338
+1703,48,Laxton-1703-48-verso,9,November,16,November,Christened (Male),157
+1703,48,Laxton-1703-48-verso,9,November,16,November,Christened (Female),148
+1703,48,Laxton-1703-48-verso,9,November,16,November,Christened (In All),305
+1703,49,Laxton-1703-49-verso,16,November,23,November,Christened (Male),152
+1703,49,Laxton-1703-49-verso,16,November,23,November,Christened (Female),160
+1703,49,Laxton-1703-49-verso,16,November,23,November,Christened (In All),312
+1710,33,Laxton-1710-33-verso,,,1,August,Christened (Male),150
+1710,33,Laxton-1710-33-verso,,,1,August,Christened (Female),128
+1710,33,Laxton-1710-33-verso,,,1,August,Christened (In All),278
+1752,38,Laxton-1752-38-verso,,,1,September,Christened (Male),159
+1752,38,Laxton-1752-38-verso,,,1,September,Christened (Female),121
+1752,38,Laxton-1752-38-verso,,,1,September,Christened (In All),280
 1722,44,Laxton-1722-44-verso,,,16,October,Christened (Male),199
 1722,44,Laxton-1722-44-verso,,,16,October,Christened (Female),162
 1722,44,Laxton-1722-44-verso,,,16,October,Christened (In All),351
+1732,37,Laxton-1732-37-verso,,,29,August,Christened (Male),190
+1732,37,Laxton-1732-37-verso,,,29,August,Christened (Female),155
+1732,37,Laxton-1732-37-verso,,,29,August,Christened (In All),345
+1740,,Laxton-1740-??-verso,,,16,December,Christened (Male),159
+1740,,Laxton-1740-??-verso,,,16,December,Christened (Female),122
+1740,,Laxton-1740-??-verso,,,16,December,Christened (In All),281
 1700,1,Laxton-1700-01-verso,17,December,24,December,Christened (Male),136
 1700,1,Laxton-1700-01-verso,17,December,24,December,Christened (Female),106
 1700,1,Laxton-1700-01-verso,17,December,24,December,Christened (In All),242
