@@ -45,9 +45,9 @@ names(wellcome_causes_long) <- tolower(names(wellcome_causes_long))
 names(wellcome_causes_long) <- gsub(" ", "_", names(wellcome_causes_long))
 
 laxton_causes_1700_long <- raw_laxton_1700_causes |> 
-  select(!1:5) |> 
+  select(!1:4) |> 
   select(!contains("(Descriptive")) |> 
-  pivot_longer(8:124,
+  pivot_longer(8:125,
                names_to = 'death',
                values_to = 'count') |> 
   mutate(death = str_trim(death))
@@ -57,13 +57,17 @@ names(laxton_causes_1700_long) <- tolower(names(laxton_causes_1700_long))
 names(laxton_causes_1700_long) <- gsub(" ", "_", names(laxton_causes_1700_long))
 
 laxton_causes_long <- raw_laxton_causes |> 
-  select(!1:5) |> 
+  select(!1:4) |> 
   select(!contains("(Descriptive")) |> 
   select(!contains("Christened (")) |> 
-  pivot_longer(8:121,
+  pivot_longer(8:122,
                names_to = 'death',
                values_to = 'count') |> 
   mutate(death = str_trim(death))
+
+# Lowercase column names and replace spaces with underscores
+names(laxton_causes_long) <- tolower(names(laxton_causes_long))
+names(laxton_causes_long) <- gsub(" ", "_", names(laxton_causes_long))
 
 # Types of death with unique ID
 deaths_unique_wellcome <- wellcome_causes_long |> 
@@ -106,32 +110,32 @@ write_csv(deaths_unique, "data/deaths_unique.csv", na = "")
 # Weekly Bills
 # ---------------------------------------------------------------------- 
 laxton_weekly <- raw_laxton_weekly |> 
-  select(!1:5) |> 
-  pivot_longer(7:166,
+  select(!1:4) |> 
+  pivot_longer(8:167,
                names_to = 'parish_name',
                values_to = 'count')
 
 wellcome_weekly <- raw_wellcome_weekly |> 
-  select(!1:5) |> 
-  pivot_longer(7:284,
+  select(!1:4) |> 
+  pivot_longer(8:285,
                names_to = 'parish_name',
                values_to = 'count')
 
-laxton_weekly <- laxton_weekly |> 
-  filter(!str_detect(`Unique ID`, "e.g. Laxton-1706-27-recto")) |> 
-  filter(!grepl("Laxton$$", `Unique ID`))
+names(wellcome_weekly) <- tolower(names(wellcome_weekly))
+names(wellcome_weekly) <- gsub(" ", "_", names(wellcome_weekly))
+
+#laxton_weekly <- laxton_weekly |> 
+#  filter(!str_detect(`Unique ID`, "e.g. Laxton-1706-27-recto")) |> 
+#  filter(!grepl("Laxton$$", `Unique ID`))
 
 # Lowercase column names and replace spaces with underscores.
 names(laxton_weekly) <- tolower(names(laxton_weekly))
 names(laxton_weekly) <- gsub(" ", "_", names(laxton_weekly))
-laxton_weekly$year <- str_sub(laxton_weekly$unique_id, 8, 11) 
 
 # The unique ID column is mis-named in the Laxton data so we fix it here
-names(laxton_weekly)[2] <- "unique_identifier"
+names(laxton_weekly)[3] <- "unique_identifier"
 
-names(wellcome_weekly) <- tolower(names(wellcome_weekly))
-names(wellcome_weekly) <- gsub(" ", "_", names(wellcome_weekly))
-wellcome_weekly$year <- str_sub(wellcome_weekly$unique_identifier, 1, 4)
+# --
 
 weekly_bills <- rbind(wellcome_weekly, laxton_weekly)
 weekly_bills <- weekly_bills |> 
@@ -336,10 +340,10 @@ week_unique_weekly <- weekly_bills |>
   # To get a leading zero and not mess with the math below, we create a temporary
   # column to pad the week number with a leading zero and use that for 
   # creating the week ID string.
-  mutate(id = row_number()) |> 
+  #mutate(id = row_number()) |> 
   mutate(week_tmp = str_pad(week, 2, pad = "0")) |> 
-  mutate(week = as.integer(week)) |>
-  mutate(week_id = ifelse(week > 15,
+  mutate(week_comparator = as.integer(week)) |>
+  mutate(week_id = ifelse(week_comparator > 15,
                           paste0(
                             year - 1, '-', year, '-', week_tmp
                           ),
@@ -349,29 +353,7 @@ week_unique_weekly <- weekly_bills |>
   )
   ) |> 
   mutate(year_range = str_sub(week_id, 1, 9)) |> 
-  select(-week_tmp)
-
-week_unique_general <- general_bills |> 
-  select(year, week, start_day, end_day, start_month, end_month, unique_identifier) |> 
-  distinct() |> 
-  mutate(year = as.integer(year)) |> 
-  # To get a leading zero and not mess with the math below, we create a temporary
-  # column to pad the week number with a leading zero and use that for 
-  # creating the week ID string.
-  mutate(id = row_number()) |> 
-  mutate(week_tmp = str_pad(week, 2, pad = "0")) |> 
-  mutate(week = as.integer(week)) |>
-  mutate(week_id = ifelse(week > 15,
-                          paste0(
-                            year - 1, '-', year, '-', week_tmp
-                          ),
-                          paste0(
-                            year, '-', year + 1, '-', week_tmp
-                          )
-  )
-  ) |> 
-  mutate(year_range = str_sub(week_id, 1, 9)) |> 
-  select(-week_tmp)
+  select(-week_tmp, -week_comparator)
 
 week_unique_wellcome <- wellcome_causes_long |> 
   select(year, week_number, start_day, end_day, start_month, end_month, unique_identifier) |> 
@@ -380,11 +362,11 @@ week_unique_wellcome <- wellcome_causes_long |>
   # To get a leading zero and not mess with the math below, we create a temporary
   # column to pad the week number with a leading zero and use that for 
   # creating the week ID string.
-  mutate(id = row_number()) |> 
+  #mutate(id = row_number()) |> 
   mutate(week_tmp = str_pad(week_number, 2, pad = "0")) |> 
-  mutate(week = as.integer(week_number)) |>
-  select(-week_number) |> 
-  mutate(week_id = ifelse(week > 15,
+  mutate(week_comparator = as.integer(week_number)) |>
+  #select(-week_number) |> 
+  mutate(week_id = ifelse(week_comparator > 15,
                           paste0(
                             year - 1, '-', year, '-', week_tmp
                           ),
@@ -394,26 +376,67 @@ week_unique_wellcome <- wellcome_causes_long |>
   )
   ) |> 
   mutate(year_range = str_sub(week_id, 1, 9)) |> 
-  select(-week_tmp)
+  select(-week_tmp, -week_comparator)
 
-week_unique <- rbind(week_unique_general, week_unique_weekly, week_unique_wellcome)
+all_laxton_weekly_causes <- rbind(laxton_causes_1700_long, laxton_causes_long)
+
+laxton_weeks_from_causes <- all_laxton_weekly_causes |> 
+  select(year, week_number, start_day, end_day, start_month, end_month, unique_identifier) |> 
+  distinct() |>
+  mutate(year = as.integer(year)) |> 
+  mutate(week_tmp = str_pad(week_number, 2, pad = "0")) |> 
+  mutate(week_comparator = as.integer(week_number)) |> 
+  mutate(week_id = ifelse(week_comparator > 15,
+                          paste0(
+                            year - 1, '-', year, '-', week_tmp
+                          ),
+                          paste0(
+                            year, '-', year + 1, '-', week_tmp
+                          )
+  )
+  ) |> 
+  mutate(year_range = str_sub(week_id, 1, 9)) |> 
+  select(-week_tmp, -week_comparator)
+      
+week_unique_weekly <- rename(week_unique_weekly, "week_number" = "week")
+
+week_unique <- rbind(week_unique_weekly, week_unique_wellcome, laxton_weeks_from_causes)
 # Ensure we have unique week ID and no duplicates
-week_unique <- week_unique |> distinct(week_id, .keep_all = TRUE)
+#week_unique <- week_unique |> distinct(week_id, .keep_all = TRUE)
 
-# Assign unique week IDs to the deaths long table. 
-deaths_long <- wellcome_causes_long |> 
-  select(-week_number, -start_day, -end_day, -start_month, -end_month, -year) |> 
-  dplyr::left_join(week_unique, by = "unique_identifier") |> 
-  select(-week, -start_day, -end_day, -start_month, -end_month) |> 
+# Filter out extraneous data and assign
+# unique week IDs to the deaths long table. 
+wellcome_deaths_cleaned <- wellcome_causes_long |> 
   filter(!str_detect(death, regex("\\bBuried ", ignore_case = FALSE) )) |> 
   filter(!str_detect(death, regex("\\bChristened ", ignore_case = FALSE) )) |> 
   filter(!str_detect(death, regex("\\bPlague Deaths", ignore_case = FALSE) )) |> 
   filter(!str_detect(death, regex("\\bOunces in", ignore_case = FALSE)  )) |> 
   filter(!str_detect(death, regex("\\bIncrease/Decrease", ignore_case = FALSE) )) |> 
   filter(!str_detect(death, regex("\\bParishes Clear", ignore_case = FALSE) )) |> 
-  filter(!str_detect(death, regex("\\bParishes Infected", ignore_case = FALSE))) |> 
-  mutate(id = row_number())
+  filter(!str_detect(death, regex("\\bParishes Infected", ignore_case = FALSE)))# |> 
+ 
+all_laxton_causes <- rbind(laxton_causes_long, laxton_causes_1700_long)
 
+laxton_deaths_cleaned <- all_laxton_causes |> 
+  filter(!str_detect(death, regex("\\bBuried ", ignore_case = FALSE) )) |> 
+  filter(!str_detect(death, regex("\\bChristened ", ignore_case = FALSE) )) |> 
+  filter(!str_detect(death, regex("\\bPlague Deaths", ignore_case = FALSE) )) |> 
+  filter(!str_detect(death, regex("\\bOunces in", ignore_case = FALSE)  )) |> 
+  filter(!str_detect(death, regex("\\bIncrease/Decrease", ignore_case = FALSE) )) |> 
+  filter(!str_detect(death, regex("\\bParishes Clear", ignore_case = FALSE) )) |> 
+  filter(!str_detect(death, regex("\\bParishes Infected", ignore_case = FALSE)))
+  
+total_causes <- rbind(laxton_deaths_cleaned, wellcome_deaths_cleaned)
+
+# Now that we have all potential causes, we drop their date information and combine 
+# the unique identifiers against the unique_weeks week ID to keep the date information
+# consistent. This data is joined in Postgres.
+deaths_long <- total_causes |> 
+  select(-week_number, -start_day, -end_day, -start_month, -end_month, -year) |> 
+  dplyr::left_join(week_unique, by = "unique_identifier") |> 
+  select(-week_number, -start_day, -end_day, -start_month, -end_month) |> 
+  mutate(id = row_number())
+  
 write_csv(deaths_long, na ="", "data/causes_of_death.csv")
   
 # Unique year values
@@ -451,13 +474,13 @@ weekly_bills <- weekly_bills |>
   select(-week, -start_day, -end_day, -start_month, -end_month, -year) |> 
   dplyr::left_join(week_unique, by = "unique_identifier") |> 
   drop_na(year) |> 
-  select(-week, -start_day, -end_day, -start_month, -end_month, -unique_identifier)
+  select(-week_number, -start_day, -end_day, -start_month, -end_month, -unique_identifier)
 
 general_bills <- general_bills |> 
   select(-week, -start_day, -end_day, -start_month, -end_month, -year) |> 
   dplyr::left_join(week_unique, by = "unique_identifier") |> 
   drop_na(year) |> 
-  select(-week, -start_day, -end_day, -start_month, -end_month, -unique_identifier)
+  select(-week_number, -start_day, -end_day, -start_month, -end_month, -unique_identifier)
 
 # Match unique year IDs to the long parish table, and drop the existing
 # year column from long_parishes so they're only referenced
