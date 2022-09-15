@@ -335,7 +335,7 @@ rm(parishes_tmp)
 # ------------------
 week_unique_weekly <- weekly_bills |> 
   select(year, week, start_day, end_day, start_month, end_month, unique_identifier) |> 
-  distinct() |> 
+  distinct(week) |> 
   mutate(year = as.integer(year)) |> 
   # To get a leading zero and not mess with the math below, we create a temporary
   # column to pad the week number with a leading zero and use that for 
@@ -357,7 +357,7 @@ week_unique_weekly <- weekly_bills |>
 
 week_unique_wellcome <- wellcome_causes_long |> 
   select(year, week_number, start_day, end_day, start_month, end_month, unique_identifier) |> 
-  distinct() |> 
+  distinct(week_number) |> 
   mutate(year = as.integer(year)) |> 
   # To get a leading zero and not mess with the math below, we create a temporary
   # column to pad the week number with a leading zero and use that for 
@@ -382,7 +382,7 @@ all_laxton_weekly_causes <- rbind(laxton_causes_1700_long, laxton_causes_long)
 
 laxton_weeks_from_causes <- all_laxton_weekly_causes |> 
   select(year, week_number, start_day, end_day, start_month, end_month, unique_identifier) |> 
-  distinct() |>
+  distinct(week_number) |>
   mutate(year = as.integer(year)) |> 
   mutate(week_tmp = str_pad(week_number, 2, pad = "0")) |> 
   mutate(week_comparator = as.integer(week_number)) |> 
@@ -443,7 +443,7 @@ write_csv(deaths_long, na ="", "data/causes_of_death.csv")
 # ------------------
 year_unique <- week_unique |> 
   select(year) |> 
-  distinct() |> 
+  distinct(year) |> 
   arrange() |> 
   mutate(year_id = as.integer(year)) |> 
   mutate(year = as.integer(year)) |> 
@@ -504,14 +504,10 @@ general_bills <- general_bills |>
 week_unique <- week_unique |> 
   mutate(year = as.integer(year)) |> 
   dplyr::left_join(year_unique, by = "year") |> 
-  select(-year) |> 
-  select(-id.y) |> 
-  rename(id = id.x)
+  select(-year)
 
 all_bills <- rbind(weekly_bills, general_bills)
-all_bills <- all_bills |> mutate(id = row_number()) |> 
-  select(!id.x) |> 
-  select(!id.y)
+all_bills <- all_bills |> mutate(id = row_number())
 
 # Write data to csv
 write_csv(weekly_bills, "data/bills_weekly.csv", na = "")
