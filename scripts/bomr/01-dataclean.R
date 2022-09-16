@@ -576,6 +576,12 @@ wellcome_christenings_long <- wellcome_christenings |>
 
 christenings <- rbind(wellcome_christenings_long, laxton_christenings_long)
 
+christenings <- christenings |> 
+  mutate(id = row_number())
+
+names(christenings) <- tolower(names(christenings))
+names(christenings) <- gsub(" ", "_", names(christenings))
+
 # Write data
 write_csv(wellcome_christenings_long, "data/wellcome_christenings.csv", na = "")
 write_csv(laxton_christenings, "data/laxton_christenings.csv", na = "")
