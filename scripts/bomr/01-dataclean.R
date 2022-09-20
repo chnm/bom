@@ -5,7 +5,7 @@
 #
 # Jason A. Heppler | jason@jasonheppler.org
 # Roy Rosenzweig Center for History and New Media
-# Updated: 2022-08-23
+# Updated: 2022-09-20
 
 library(tidyverse)
 
@@ -25,7 +25,7 @@ raw_laxton_1700_causes <- read_csv("../../datascribe-exports/2022-06-15-Laxton-1
 # 6. Laxton Weekly Bills Causes contains mortality information from weekly bills published in the early eighteenth century. It contains city-wide (including local suburbs) death counts for various causes of death.
 raw_laxton_causes <- read_csv("../../datascribe-exports/2022-09-07-Laxton-weeklybills-causes.csv")
 # 7. Laxton 1700 Weekly Bills Foodstuffs contains food prices from weekly bills published in the early eighteenth century. There are various types of bread and also salt.
-raw_laxton_1700_foodstuffs <- read_csv("../../datascribe-exports/2022-07-27-Laxton-1700-weeklybills-foodstuffs.csv")
+raw_laxton_1700_foodstuffs <- read_csv("../../datascribe-exports/2022-09-19-Laxton-1700-weeklybills-foodstuffs.csv")
 # 8. Laxton Weekly Bills Foodstuffs contains food prices from weekly bills published in the early eighteenth century. There are various types of bread and also salt.
 raw_laxton_foodstuffs <- read_csv("../../datascribe-exports/2022-07-27-Laxton-weeklybills-foodstuffs.csv")
 
@@ -335,7 +335,7 @@ rm(parishes_tmp)
 # ------------------
 week_unique_weekly <- weekly_bills |> 
   select(year, week, start_day, end_day, start_month, end_month, unique_identifier) |> 
-  distinct(week) |> 
+  distinct() |> 
   mutate(year = as.integer(year)) |> 
   # To get a leading zero and not mess with the math below, we create a temporary
   # column to pad the week number with a leading zero and use that for 
@@ -357,7 +357,7 @@ week_unique_weekly <- weekly_bills |>
 
 week_unique_wellcome <- wellcome_causes_long |> 
   select(year, week_number, start_day, end_day, start_month, end_month, unique_identifier) |> 
-  distinct(week_number) |> 
+  distinct() |> 
   mutate(year = as.integer(year)) |> 
   # To get a leading zero and not mess with the math below, we create a temporary
   # column to pad the week number with a leading zero and use that for 
@@ -382,7 +382,7 @@ all_laxton_weekly_causes <- rbind(laxton_causes_1700_long, laxton_causes_long)
 
 laxton_weeks_from_causes <- all_laxton_weekly_causes |> 
   select(year, week_number, start_day, end_day, start_month, end_month, unique_identifier) |> 
-  distinct(week_number) |>
+  distinct() |>
   mutate(year = as.integer(year)) |> 
   mutate(week_tmp = str_pad(week_number, 2, pad = "0")) |> 
   mutate(week_comparator = as.integer(week_number)) |> 
@@ -601,7 +601,6 @@ foodstuffs_laxton <- foodstuffs_laxton |> separate(item, c("item", "value_type")
 
 names(foodstuffs_laxton) <- tolower(names(foodstuffs_laxton))
 names(foodstuffs_laxton) <- gsub(" ", "_", names(foodstuffs_laxton))
-
 
 foodstuffs_laxton_1700 <- raw_laxton_1700_foodstuffs |> 
   select(!1:4) |> 
