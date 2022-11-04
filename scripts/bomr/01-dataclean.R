@@ -442,19 +442,16 @@ write_csv(deaths_long, na ="", "data/causes_of_death.csv")
 # Unique year values
 # ------------------
 year_unique <- week_unique |> 
-  select(year) |> 
-  distinct(year) |> 
+  select(year, week_number) |> 
   arrange() |> 
   mutate(year_id = as.integer(year)) |> 
   mutate(year = as.integer(year)) |> 
-  mutate(split_year = ifelse(year > 15,
-                          paste0(
-                            year - 1, '/', year
-                          ),
-                          paste0(
-                            year, '/', year + 1
-                          )
-  )
+  mutate(week_number = as.integer(week_number)) |> 
+  mutate(split_year = ifelse(
+    week_number > 15,
+      paste0(year - 1, '/', year),
+    paste0(year)
+    )
   ) |> 
   mutate(id = row_number())
 
