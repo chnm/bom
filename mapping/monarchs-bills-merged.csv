@@ -1,0 +1,809 @@
+printedYear,startMonth,startDay,endMonth,endDay,parish,cause,count,parishTotal,parishPlague,canonicalDBN
+1665,March,13,March,20,"Albans, in Woodstreet",ffeaver,1.0,1.0,,St Alban Wood Street
+1666,May,22,May,29,"Albans, in Woodstreet",Griefe,1.0,1.0,,St Alban Wood Street
+1666,July,10,July,17,"Albans, in Woodstreet",Teeth,1.0,1.0,,St Alban Wood Street
+1665,March,13,March,20,"Alhallowes-Barking, in Towerstreet",Consumpcon,1.0,2.0,,All Hallows Barking
+1665,March,13,March,20,"Alhallowes-Barking, in Towerstreet",Dropsy,1.0,2.0,,All Hallows Barking
+1666,May,22,May,29,"Alhallowes-Barking, in Towerstreet",Jaundies,1.0,2.0,,All Hallows Barking
+1666,May,22,May,29,"Alhallowes-Barking, in Towerstreet",Purples,1.0,2.0,,All Hallows Barking
+1666,July,10,July,17,"Alhallowes-Barking, in Towerstreet",Chrisoms,2.0,4.0,,All Hallows Barking
+1666,July,10,July,17,"Alhallowes-Barking, in Towerstreet",Consumpcon,1.0,4.0,,All Hallows Barking
+1666,July,10,July,17,"Alhallowes-Barking, in Towerstreet",Stone,1.0,4.0,,All Hallows Barking
+1665,March,13,March,20,"Alhallowes, in Breadstreet",Consumpcon,1.0,1.0,,All Hallows Bread Street
+1665,March,13,March,20,"Alhallowes-Great, near the Stilyard",Scowring,1.0,1.0,,All Hallows the Great
+1666,May,22,May,29,"Alhallowes-Great, near the Stilyard",Teeth,1.0,1.0,,All Hallows the Great
+1666,July,10,July,17,"Alhallowes-Great, near the Stilyard",Infant,1.0,1.0,,All Hallows the Great
+1665,March,13,March,20,"Alhallowes-Wall, near Broadstreet",Stone,1.0,1.0,,All Hallows London Wall
+1666,April,10,April,17,"Alhallowes-Wall, near Broadstreet",Palsy,1.0,3.0,,All Hallows London Wall
+1666,April,10,April,17,"Alhallowes-Wall, near Broadstreet",Quinsy,1.0,3.0,,All Hallows London Wall
+1666,April,10,April,17,"Alhallowes-Wall, near Broadstreet",Stone,1.0,3.0,,All Hallows London Wall
+1666,May,22,May,29,"Alhallowes-Wall, near Broadstreet",Consumpcon,2.0,3.0,,All Hallows London Wall
+1666,May,22,May,29,"Alhallowes-Wall, near Broadstreet",Teeth,1.0,3.0,,All Hallows London Wall
+1665,March,13,March,20,"Alphage, within Cripplegate",Chrisoms,1.0,3.0,,St Alphage
+1665,March,13,March,20,"Alphage, within Cripplegate",Dropsy,1.0,3.0,,St Alphage
+1665,March,13,March,20,"Alphage, within Cripplegate",Spotted ffeaver,1.0,3.0,,St Alphage
+1665,March,13,March,20,"Andrew, by the Wardrobe",Stilborne,1.0,1.0,,St Andrew Wardrobe
+1666,April,10,April,17,"Andrew, by the Wardrobe",Wind,1.0,1.0,,St Andrew Wardrobe
+1666,July,10,July,17,"Andrew, by the Wardrobe",Consumpcon,1.0,3.0,,St Andrew Wardrobe
+1666,July,10,July,17,"Andrew, by the Wardrobe",Aged,1.0,3.0,,St Andrew Wardrobe
+1666,July,10,July,17,"Andrew, by the Wardrobe",Teeth,1.0,3.0,,St Andrew Wardrobe
+1665,March,13,March,20,"Anne, within Aldersgate",Consumpcon,1.0,1.0,,St Anne Aldersgate
+1666,April,10,April,17,"Anne, within Aldersgate",ffeaver,1.0,1.0,,St Anne Aldersgate
+1666,July,10,July,17,"Anne, within Aldersgate",Consumpcon,1.0,2.0,,St Anne Aldersgate
+1666,July,10,July,17,"Anne, within Aldersgate",Dropsy,1.0,2.0,,St Anne Aldersgate
+1665,March,13,March,20,"Anne, in Blackfryers",Consumpcon,1.0,2.0,,St Ann Blackfriars
+1665,March,13,March,20,"Anne, in Blackfryers",Ricketts,1.0,2.0,,St Ann Blackfriars
+1666,April,10,April,17,"Anne, in Blackfryers",Consumpcon,1.0,1.0,,St Ann Blackfriars
+1666,May,22,May,29,"Anne, in Blackfryers",Consumpcon,1.0,5.0,3.0,St Ann Blackfriars
+1666,May,22,May,29,"Anne, in Blackfryers",Gripeing in ye gutts,1.0,5.0,3.0,St Ann Blackfriars
+1666,May,22,May,29,"Anne, in Blackfryers",Plague,3.0,5.0,3.0,St Ann Blackfriars
+1666,July,10,July,17,"Anne, in Blackfryers",Gripeing in ye gutts,1.0,2.0,1.0,St Ann Blackfriars
+1666,July,10,July,17,"Anne, in Blackfryers",Plague,1.0,2.0,1.0,St Ann Blackfriars
+1665,March,13,March,20,"Antholins, in Watling-street",Gripeing in ye gutts,1.0,1.0,,St Antholin
+1665,March,13,March,20,"Austins, at the Old-Change",Consumpcon,1.0,1.0,,St Austin
+1666,May,22,May,29,"Austins, at the Old-Change",Convulcon,1.0,1.0,,St Austin
+1665,March,13,March,20,Bennet-Grace-Church,Gout,1.0,1.0,,St Benet Gracechurch
+1665,March,13,March,20,Christ-Church,Consumpcon,1.0,1.0,,Christ Church
+1666,April,10,April,17,Christ-Church,Aged,1.0,2.0,,Christ Church
+1666,April,10,April,17,Christ-Church,Dropsy,1.0,2.0,,Christ Church
+1666,July,10,July,17,Christ-Church,Teeth,1.0,1.0,,Christ Church
+1665,March,13,March,20,"Dunstans-East, near Tower-street",Stoping of ye Stomack,1.0,1.0,,St Dunstan East
+1666,April,10,April,17,"Dunstans-East, near Tower-street",Consumpcon,1.0,2.0,1.0,St Dunstan East
+1666,April,10,April,17,"Dunstans-East, near Tower-street",Plague,1.0,2.0,1.0,St Dunstan East
+1665,March,13,March,20,"Ethelborough, within Bishopsgate",Purples,1.0,1.0,,St Ethelburga
+1665,March,13,March,20,"Fosters, in Fosterlane",Scurvy,1.0,1.0,,St Vedast alias Foster
+1665,March,13,March,20,"Gregories, by St. Pauls",Stilborne,1.0,1.0,,St Gregory by St Paul's
+1666,July,10,July,17,"Gregories, by St. Pauls",Stilborne,1.0,1.0,,St Gregory by St Paul's
+1665,March,13,March,20,"James, in Dukes-place",Abortive,1.0,2.0,,St James Duke's Place
+1665,March,13,March,20,"James, in Dukes-place",Chrisoms,1.0,2.0,,St James Duke's Place
+1666,April,10,April,17,"James, in Dukes-place",Consumpcon,1.0,1.0,,St James Duke's Place
+1666,July,10,July,17,"James, in Dukes-place",Plague,1.0,1.0,1.0,St James Duke's Place
+1666,September,18,September,25,"James, in Dukes-place",Consumpcon,1.0,3.0,,St James Duke's Place
+1666,September,18,September,25,"James, in Dukes-place",ffeaver,1.0,3.0,,St James Duke's Place
+1666,September,18,September,25,"James, in Dukes-place",ffrighted,1.0,3.0,,St James Duke's Place
+1665,March,13,March,20,"James, at Garlickhithe",Stilborne,1.0,1.0,,St James Garlickhithe
+1666,April,10,April,17,"James, at Garlickhithe",Consumpcon,1.0,1.0,,St James Garlickhithe
+1666,May,22,May,29,"James, at Garlickhithe",Plague,1.0,1.0,1.0,St James Garlickhithe
+1665,March,13,March,20,"Katherine-Coleman, in Fenchurch-street",Palsy,1.0,1.0,,St Katherine Coleman
+1666,April,10,April,17,"Katherine-Coleman, in Fenchurch-street",Dropsy,1.0,2.0,1.0,St Katherine Coleman
+1666,April,10,April,17,"Katherine-Coleman, in Fenchurch-street",Plague,1.0,2.0,1.0,St Katherine Coleman
+1665,March,13,March,20,"Margaret-Moses, in Fridaystreet",Teeth,1.0,1.0,,St Margaret Moses
+1666,April,10,April,17,"Margaret-Moses, in Fridaystreet",Gripeing in ye gutts,1.0,,,St Margaret Moses
+1666,May,22,May,29,"Margaret-Moses, in Fridaystreet",Consumpcon,1.0,1.0,,St Margaret Moses
+1665,March,13,March,20,"Mary, in Aldermanbury",Dropsy,1.0,1.0,,St Mary Aldermanbury
+1665,March,13,March,20,Martins-Ludgate,Consumpcon,1.0,1.0,,St Martin Ludgate
+1665,March,13,March,20,"Martins-Orgars, near Canningstreet",Consumpcon,1.0,1.0,,St Martin Orgar
+1665,March,13,March,20,"Michael-Bassishaw, near Guildhal",Convulcon,1.0,3.0,,St Michael Bassishaw
+1665,March,13,March,20,"Michael-Bassishaw, near Guildhal",ffeaver,1.0,3.0,,St Michael Bassishaw
+1665,March,13,March,20,"Michael-Bassishaw, near Guildhal",Tissick,1.0,3.0,,St Michael Bassishaw
+1666,April,10,April,17,"Michael-Bassishaw, near Guildhal",ffeaver,1.0,1.0,,St Michael Bassishaw
+1665,March,13,March,20,Michael-Cornhil,Ague,1.0,2.0,,St Michael Cornhill
+1665,March,13,March,20,Michael-Cornhil,Consumpcon,1.0,2.0,,St Michael Cornhill
+1666,April,10,April,17,Michael-Cornhil,Plague,2.0,2.0,2.0,St Michael Cornhill
+1666,July,10,July,17,Michael-Cornhil,Infant,1.0,1.0,,St Michael Cornhill
+1665,March,13,March,20,Mildred-Breadstreet,Tissick,1.0,1.0,,St Mildred Bread Street
+1665,March,13,March,20,"Olaves-Hartstreet, in Crutchet-Fryers",Consumpcon,2.0,2.0,,St Olave Hart Street
+1666,April,10,April,17,"Olaves-Hartstreet, in Crutchet-Fryers",ffeaver,1.0,,,St Olave Hart Street
+1666,April,10,April,17,"Olaves-Hartstreet, in Crutchet-Fryers",Teeth,1.0,,,St Olave Hart Street
+1666,September,18,September,25,"Olaves-Hartstreet, in Crutchet-Fryers",Gripeing in ye gutts,1.0,2.0,1.0,St Olave Hart Street
+1666,September,18,September,25,"Olaves-Hartstreet, in Crutchet-Fryers",Plague,1.0,2.0,1.0,St Olave Hart Street
+1665,March,13,March,20,"Peters, near Paulswharfe",Hangd herselfe,1.0,1.0,,St Peter Paul's Wharf
+1666,July,10,July,17,"Peters, near Paulswharfe",Consumpcon,1.0,1.0,,St Peter Paul's Wharf
+1665,March,13,March,20,"Stevens, in Colemanstreet",Smalpox,1.0,2.0,,St Stephen Coleman Street
+1665,March,13,March,20,"Stevens, in Colemanstreet",Stoping of ye Stomack,1.0,2.0,,St Stephen Coleman Street
+1666,April,10,April,17,"Stevens, in Colemanstreet",Childbed,1.0,2.0,,St Stephen Coleman Street
+1666,April,10,April,17,"Stevens, in Colemanstreet",Dropsy,1.0,2.0,,St Stephen Coleman Street
+1666,July,10,July,17,"Stevens, in Colemanstreet",Consumpcon,1.0,2.0,,St Stephen Coleman Street
+1666,July,10,July,17,"Stevens, in Colemanstreet",Stoping of ye Stomack,1.0,2.0,,St Stephen Coleman Street
+1665,March,13,March,20,Andrew-Holborn,Aged,1.0,9.0,1.0,St Andrew Holborn
+1665,March,13,March,20,Andrew-Holborn,Consumpcon,2.0,9.0,1.0,St Andrew Holborn
+1665,March,13,March,20,Andrew-Holborn,Dropsy,1.0,9.0,1.0,St Andrew Holborn
+1665,March,13,March,20,Andrew-Holborn,ffeaver,1.0,9.0,1.0,St Andrew Holborn
+1665,March,13,March,20,Andrew-Holborn,Plague,1.0,9.0,1.0,St Andrew Holborn
+1665,March,13,March,20,Andrew-Holborn,Riseing of ye lights,1.0,9.0,1.0,St Andrew Holborn
+1665,March,13,March,20,Andrew-Holborn,Surfett,2.0,9.0,1.0,St Andrew Holborn
+1666,April,10,April,17,Andrew-Holborn,Consumpcon,5.0,11.0,3.0,St Andrew Holborn
+1666,April,10,April,17,Andrew-Holborn,Convulcon,1.0,11.0,3.0,St Andrew Holborn
+1666,April,10,April,17,Andrew-Holborn,Dropsy,1.0,11.0,3.0,St Andrew Holborn
+1666,April,10,April,17,Andrew-Holborn,Ricketts,1.0,11.0,3.0,St Andrew Holborn
+1666,April,10,April,17,Andrew-Holborn,Plague,3.0,11.0,3.0,St Andrew Holborn
+1666,May,22,May,29,Andrew-Holborn,Consumpcon,1.0,5.0,,St Andrew Holborn
+1666,May,22,May,29,Andrew-Holborn,ffeaver,2.0,5.0,,St Andrew Holborn
+1666,May,22,May,29,Andrew-Holborn,Palsy,1.0,5.0,,St Andrew Holborn
+1666,May,22,May,29,Andrew-Holborn,Riseing of ye lights,1.0,5.0,,St Andrew Holborn
+1666,July,10,July,17,Andrew-Holborn,Consumpcon,2.0,6.0,,St Andrew Holborn
+1666,July,10,July,17,Andrew-Holborn,Dropsy,1.0,6.0,,St Andrew Holborn
+1666,July,10,July,17,Andrew-Holborn,Ricketts,1.0,6.0,,St Andrew Holborn
+1666,July,10,July,17,Andrew-Holborn,Riseing of ye lights,2.0,6.0,,St Andrew Holborn
+1666,September,18,September,25,Andrew-Holborn,Consumpcon,1.0,8.0,1.0,St Andrew Holborn
+1666,September,18,September,25,Andrew-Holborn,Childbed,1.0,8.0,1.0,St Andrew Holborn
+1666,September,18,September,25,Andrew-Holborn,Chrisoms,1.0,8.0,1.0,St Andrew Holborn
+1666,September,18,September,25,Andrew-Holborn,Dropsy,1.0,8.0,1.0,St Andrew Holborn
+1666,September,18,September,25,Andrew-Holborn,Hanged himself,1.0,8.0,1.0,St Andrew Holborn
+1666,September,18,September,25,Andrew-Holborn,Plague,1.0,8.0,1.0,St Andrew Holborn
+1666,September,18,September,25,Andrew-Holborn,Surfett,1.0,8.0,1.0,St Andrew Holborn
+1666,September,18,September,25,Andrew-Holborn,Teeth,1.0,8.0,1.0,St Andrew Holborn
+1665,March,13,March,20,"Brides, near Fleetstreet",Aged,2.0,13.0,1.0,St Bride
+1665,March,13,March,20,"Brides, near Fleetstreet",Consumpcon,2.0,13.0,1.0,St Bride
+1665,March,13,March,20,"Brides, near Fleetstreet",Convulcon,1.0,13.0,1.0,St Bride
+1665,March,13,March,20,"Brides, near Fleetstreet",Chrisoms,1.0,13.0,1.0,St Bride
+1665,March,13,March,20,"Brides, near Fleetstreet",Spotted ffeaver,1.0,13.0,1.0,St Bride
+1665,March,13,March,20,"Brides, near Fleetstreet",Stone,1.0,13.0,1.0,St Bride
+1665,March,13,March,20,"Brides, near Fleetstreet",Childbed,1.0,13.0,1.0,St Bride
+1665,March,13,March,20,"Brides, near Fleetstreet",Abortive,1.0,13.0,1.0,St Bride
+1665,March,13,March,20,"Brides, near Fleetstreet",Teeth,2.0,13.0,1.0,St Bride
+1665,March,13,March,20,"Brides, near Fleetstreet",Plague,1.0,13.0,1.0,St Bride
+1666,April,10,April,17,"Brides, near Fleetstreet",Consumpcon,2.0,7.0,1.0,St Bride
+1666,April,10,April,17,"Brides, near Fleetstreet",Convulcon,1.0,7.0,1.0,St Bride
+1666,April,10,April,17,"Brides, near Fleetstreet",Palsy,1.0,7.0,1.0,St Bride
+1666,April,10,April,17,"Brides, near Fleetstreet",Plague,1.0,7.0,1.0,St Bride
+1666,April,10,April,17,"Brides, near Fleetstreet",Spotted ffeaver,1.0,7.0,1.0,St Bride
+1666,April,10,April,17,"Brides, near Fleetstreet",Stilborne,1.0,7.0,1.0,St Bride
+1666,May,22,May,29,"Brides, near Fleetstreet",Childbed,1.0,5.0,,St Bride
+1666,May,22,May,29,"Brides, near Fleetstreet",Consumpcon,2.0,5.0,,St Bride
+1666,May,22,May,29,"Brides, near Fleetstreet",Thrush,2.0,5.0,,St Bride
+1666,July,10,July,17,"Brides, near Fleetstreet",Convulcon,1.0,2.0,,St Bride
+1666,July,10,July,17,"Brides, near Fleetstreet",Dropsy,1.0,2.0,,St Bride
+1665,March,13,March,20,Bridewell-Precinct,Surfett,1.0,1.0,,Bridewell Precinct
+1665,March,13,March,20,"Botolph, without Aldersgate",Dropsy,2.0,4.0,,St Botolph Aldersgate
+1665,March,13,March,20,"Botolph, without Aldersgate",Consumpcon,1.0,4.0,,St Botolph Aldersgate
+1665,March,13,March,20,"Botolph, without Aldersgate",Stilborne,1.0,4.0,,St Botolph Aldersgate
+1666,April,10,April,17,"Botolph, without Aldersgate",Convulcon,1.0,1.0,,St Botolph Aldersgate
+1666,May,22,May,29,"Botolph, without Aldersgate",Consumpcon,1.0,1.0,,St Botolph Aldersgate
+1666,July,10,July,17,"Botolph, without Aldersgate",Childbed,2.0,3.0,,St Botolph Aldersgate
+1666,July,10,July,17,"Botolph, without Aldersgate",Stilborne,1.0,3.0,,St Botolph Aldersgate
+1666,September,18,September,25,"Botolph, without Aldersgate",Consumpcon,4.0,6.0,1.0,St Botolph Aldersgate
+1666,September,18,September,25,"Botolph, without Aldersgate",Plague,1.0,6.0,1.0,St Botolph Aldersgate
+1666,September,18,September,25,"Botolph, without Aldersgate",Burnt,1.0,6.0,1.0,St Botolph Aldersgate
+1665,March,13,March,20,"Botolph, without Aldgate",Consumpcon,1.0,11.0,6.0,St Botolph Aldgate
+1665,March,13,March,20,"Botolph, without Aldgate",Dropsy,1.0,11.0,6.0,St Botolph Aldgate
+1665,March,13,March,20,"Botolph, without Aldgate",ffrenchpox,1.0,11.0,6.0,St Botolph Aldgate
+1665,March,13,March,20,"Botolph, without Aldgate",Surfett,1.0,11.0,6.0,St Botolph Aldgate
+1665,March,13,March,20,"Botolph, without Aldgate",Spotted ffeaver,1.0,11.0,6.0,St Botolph Aldgate
+1665,March,13,March,20,"Botolph, without Aldgate",Plague,6.0,11.0,6.0,St Botolph Aldgate
+1666,April,10,April,17,"Botolph, without Aldgate",Aged,1.0,11.0,5.0,St Botolph Aldgate
+1666,April,10,April,17,"Botolph, without Aldgate",Consumpcon,4.0,11.0,5.0,St Botolph Aldgate
+1666,April,10,April,17,"Botolph, without Aldgate",Plague,5.0,11.0,5.0,St Botolph Aldgate
+1666,April,10,April,17,"Botolph, without Aldgate",Surfett,1.0,11.0,5.0,St Botolph Aldgate
+1666,May,22,May,29,"Botolph, without Aldgate",Aged,1.0,11.0,2.0,St Botolph Aldgate
+1666,May,22,May,29,"Botolph, without Aldgate",Consumpcon,3.0,11.0,2.0,St Botolph Aldgate
+1666,May,22,May,29,"Botolph, without Aldgate",Dropsy,1.0,11.0,2.0,St Botolph Aldgate
+1666,May,22,May,29,"Botolph, without Aldgate",Plague,2.0,11.0,2.0,St Botolph Aldgate
+1666,May,22,May,29,"Botolph, without Aldgate",Quinsy,1.0,11.0,2.0,St Botolph Aldgate
+1666,May,22,May,29,"Botolph, without Aldgate",Riseing of ye lights,1.0,11.0,2.0,St Botolph Aldgate
+1666,May,22,May,29,"Botolph, without Aldgate",Stilborne,1.0,11.0,2.0,St Botolph Aldgate
+1666,May,22,May,29,"Botolph, without Aldgate",Ricketts,1.0,11.0,2.0,St Botolph Aldgate
+1666,July,10,July,17,"Botolph, without Aldgate",Chrisoms,1.0,5.0,,St Botolph Aldgate
+1666,July,10,July,17,"Botolph, without Aldgate",Consumpcon,1.0,5.0,,St Botolph Aldgate
+1666,July,10,July,17,"Botolph, without Aldgate",Convulcon,1.0,5.0,,St Botolph Aldgate
+1666,July,10,July,17,"Botolph, without Aldgate",Thrush,1.0,5.0,,St Botolph Aldgate
+1666,July,10,July,17,"Botolph, without Aldgate",Kings Evill,1.0,5.0,,St Botolph Aldgate
+1666,September,18,September,25,"Botolph, without Aldgate",Aged,1.0,15.0,,St Botolph Aldgate
+1666,September,18,September,25,"Botolph, without Aldgate",Chrisoms,3.0,15.0,,St Botolph Aldgate
+1666,September,18,September,25,"Botolph, without Aldgate",Childbed,1.0,15.0,,St Botolph Aldgate
+1666,September,18,September,25,"Botolph, without Aldgate",Consumpcon,1.0,15.0,,St Botolph Aldgate
+1666,September,18,September,25,"Botolph, without Aldgate",Convulcon,1.0,15.0,,St Botolph Aldgate
+1666,September,18,September,25,"Botolph, without Aldgate",ffrighted,3.0,15.0,,St Botolph Aldgate
+1666,September,18,September,25,"Botolph, without Aldgate",Gripeing in ye gutts,1.0,15.0,,St Botolph Aldgate
+1666,September,18,September,25,"Botolph, without Aldgate",Stilborne,2.0,15.0,,St Botolph Aldgate
+1666,September,18,September,25,"Botolph, without Aldgate",Teeth,1.0,15.0,,St Botolph Aldgate
+1666,September,18,September,25,"Botolph, without Aldgate",Tissick,1.0,15.0,,St Botolph Aldgate
+1665,March,13,March,20,"Botolph, without Bishopsgate",Consumpcon,2.0,7.0,,St Botolph Bishopsgate
+1665,March,13,March,20,"Botolph, without Bishopsgate",Dropsy,1.0,7.0,,St Botolph Bishopsgate
+1665,March,13,March,20,"Botolph, without Bishopsgate",ffeaver,1.0,7.0,,St Botolph Bishopsgate
+1665,March,13,March,20,"Botolph, without Bishopsgate",Teeth,1.0,7.0,,St Botolph Bishopsgate
+1666,April,10,April,17,"Botolph, without Bishopsgate",Dropsy,3.0,5.0,,St Botolph Bishopsgate
+1666,April,10,April,17,"Botolph, without Bishopsgate",Tissick,1.0,5.0,,St Botolph Bishopsgate
+1666,April,10,April,17,"Botolph, without Bishopsgate",Stilborne,1.0,5.0,,St Botolph Bishopsgate
+1666,May,22,May,29,"Botolph, without Bishopsgate",Drowned in a Tub of water,1.0,3.0,,St Botolph Bishopsgate
+1666,May,22,May,29,"Botolph, without Bishopsgate",Consumpcon,1.0,3.0,,St Botolph Bishopsgate
+1666,May,22,May,29,"Botolph, without Bishopsgate",Stoping of ye Stomack,1.0,3.0,,St Botolph Bishopsgate
+1666,September,18,September,25,"Botolph, without Bishopsgate",ffeaver,2.0,7.0,,St Botolph Bishopsgate
+1666,September,18,September,25,"Botolph, without Bishopsgate",Kings Evill,1.0,7.0,,St Botolph Bishopsgate
+1666,September,18,September,25,"Botolph, without Bishopsgate",Cancer,1.0,7.0,,St Botolph Bishopsgate
+1666,September,18,September,25,"Botolph, without Bishopsgate",Lunatique,1.0,7.0,,St Botolph Bishopsgate
+1666,September,18,September,25,"Botolph, without Bishopsgate",Tissick,1.0,7.0,,St Botolph Bishopsgate
+1666,September,18,September,25,"Botolph, without Bishopsgate",Teeth,1.0,7.0,,St Botolph Bishopsgate
+1665,March,13,March,20,"Dunstans-West, in Fleetstreet",Abortive,1.0,3.0,,St Dunstan West
+1665,March,13,March,20,"Dunstans-West, in Fleetstreet",ffeaver,1.0,3.0,,St Dunstan West
+1665,March,13,March,20,"Dunstans-West, in Fleetstreet",Overlayd,1.0,3.0,,St Dunstan West
+1666,April,10,April,17,"Dunstans-West, in Fleetstreet",Consumpcon,1.0,5.0,1.0,St Dunstan West
+1666,April,10,April,17,"Dunstans-West, in Fleetstreet",Convulcon,1.0,5.0,1.0,St Dunstan West
+1666,April,10,April,17,"Dunstans-West, in Fleetstreet",Plague,1.0,5.0,1.0,St Dunstan West
+1666,April,10,April,17,"Dunstans-West, in Fleetstreet",Ricketts,1.0,5.0,1.0,St Dunstan West
+1666,April,10,April,17,"Dunstans-West, in Fleetstreet",Teeth,1.0,5.0,1.0,St Dunstan West
+1666,May,22,May,29,"Dunstans-West, in Fleetstreet",Consumpcon,1.0,3.0,,St Dunstan West
+1666,May,22,May,29,"Dunstans-West, in Fleetstreet",Scurvy,1.0,3.0,,St Dunstan West
+1666,May,22,May,29,"Dunstans-West, in Fleetstreet",Tissick,1.0,3.0,,St Dunstan West
+1666,July,10,July,17,"Dunstans-West, in Fleetstreet",Consumpcon,1.0,1.0,,St Dunstan West
+1665,March,13,March,20,"George, in Southwark",Stilborne,1.0,2.0,,St George Southwark
+1665,March,13,March,20,"George, in Southwark",Teeth,1.0,2.0,,St George Southwark
+1666,April,10,April,17,"George, in Southwark",Aged,2.0,6.0,1.0,St George Southwark
+1666,April,10,April,17,"George, in Southwark",Cancer,1.0,6.0,1.0,St George Southwark
+1666,April,10,April,17,"George, in Southwark",Plague,1.0,6.0,1.0,St George Southwark
+1666,April,10,April,17,"George, in Southwark",Teeth,2.0,6.0,1.0,St George Southwark
+1666,May,22,May,29,"George, in Southwark",Consumpcon,1.0,1.0,,St George Southwark
+1666,July,10,July,17,"George, in Southwark",Consumpcon,2.0,6.0,,St George Southwark
+1666,July,10,July,17,"George, in Southwark",Infant,4.0,6.0,,St George Southwark
+1666,September,18,September,25,"George, in Southwark",Aged,2.0,4.0,,St George Southwark
+1666,September,18,September,25,"George, in Southwark",ffeaver,2.0,4.0,,St George Southwark
+1665,March,13,March,20,"Giles, without Cripplegate",Aged,2.0,11.0,3.0,St Giles Cripplegate
+1665,March,13,March,20,"Giles, without Cripplegate",Consumpcon,3.0,11.0,3.0,St Giles Cripplegate
+1665,March,13,March,20,"Giles, without Cripplegate",Dropsy,3.0,11.0,3.0,St Giles Cripplegate
+1665,March,13,March,20,"Giles, without Cripplegate",Gripeing in ye gutts,3.0,11.0,3.0,St Giles Cripplegate
+1666,April,10,April,17,"Giles, without Cripplegate",Consumpcon,1.0,7.0,,St Giles Cripplegate
+1666,April,10,April,17,"Giles, without Cripplegate",Convulcon,2.0,7.0,,St Giles Cripplegate
+1666,April,10,April,17,"Giles, without Cripplegate",Dropsy,2.0,7.0,,St Giles Cripplegate
+1666,April,10,April,17,"Giles, without Cripplegate",Stilborne,1.0,7.0,,St Giles Cripplegate
+1666,April,10,April,17,"Giles, without Cripplegate",Surfett,1.0,7.0,,St Giles Cripplegate
+1666,May,22,May,29,"Giles, without Cripplegate",Aged,2.0,13.0,,St Giles Cripplegate
+1666,May,22,May,29,"Giles, without Cripplegate",Consumpcon,2.0,13.0,,St Giles Cripplegate
+1666,May,22,May,29,"Giles, without Cripplegate",Convulcon,1.0,13.0,,St Giles Cripplegate
+1666,May,22,May,29,"Giles, without Cripplegate",Dropsy,4.0,13.0,,St Giles Cripplegate
+1666,May,22,May,29,"Giles, without Cripplegate",Gripeing in ye gutts,1.0,13.0,,St Giles Cripplegate
+1666,May,22,May,29,"Giles, without Cripplegate",Infant,1.0,13.0,,St Giles Cripplegate
+1666,May,22,May,29,"Giles, without Cripplegate",Quinsy,1.0,13.0,,St Giles Cripplegate
+1666,May,22,May,29,"Giles, without Cripplegate",Stone,1.0,13.0,,St Giles Cripplegate
+1666,July,10,July,17,"Giles, without Cripplegate",Consumpcon,4.0,14.0,,St Giles Cripplegate
+1666,July,10,July,17,"Giles, without Cripplegate",Convulcon,1.0,14.0,,St Giles Cripplegate
+1666,July,10,July,17,"Giles, without Cripplegate",Dropsy,3.0,14.0,,St Giles Cripplegate
+1666,July,10,July,17,"Giles, without Cripplegate",Gripeing in ye gutts,1.0,14.0,,St Giles Cripplegate
+1666,July,10,July,17,"Giles, without Cripplegate",Spotted ffeaver,1.0,14.0,,St Giles Cripplegate
+1666,July,10,July,17,"Giles, without Cripplegate",Surfett,1.0,14.0,,St Giles Cripplegate
+1666,July,10,July,17,"Giles, without Cripplegate",Teeth,3.0,14.0,,St Giles Cripplegate
+1666,September,18,September,25,"Giles, without Cripplegate",Aged,3.0,19.0,2.0,St Giles Cripplegate
+1666,September,18,September,25,"Giles, without Cripplegate",Childbed,1.0,19.0,2.0,St Giles Cripplegate
+1666,September,18,September,25,"Giles, without Cripplegate",Consumpcon,6.0,19.0,2.0,St Giles Cripplegate
+1666,September,18,September,25,"Giles, without Cripplegate",ffeaver,1.0,19.0,2.0,St Giles Cripplegate
+1666,September,18,September,25,"Giles, without Cripplegate",ffrighted,1.0,19.0,2.0,St Giles Cripplegate
+1666,September,18,September,25,"Giles, without Cripplegate",Gripeing in ye gutts,2.0,19.0,2.0,St Giles Cripplegate
+1666,September,18,September,25,"Giles, without Cripplegate",Plague,2.0,19.0,2.0,St Giles Cripplegate
+1666,September,18,September,25,"Giles, without Cripplegate",Surfett,1.0,19.0,2.0,St Giles Cripplegate
+1666,September,18,September,25,"Giles, without Cripplegate",Teeth,2.0,19.0,2.0,St Giles Cripplegate
+1665,March,13,March,20,"Olaves, in Southwark",Aged,1.0,11.0,3.0,St Olave Southwark
+1665,March,13,March,20,"Olaves, in Southwark",Childbed,1.0,11.0,3.0,St Olave Southwark
+1665,March,13,March,20,"Olaves, in Southwark",Consumpcon,2.0,11.0,3.0,St Olave Southwark
+1665,March,13,March,20,"Olaves, in Southwark",ffeaver,2.0,11.0,3.0,St Olave Southwark
+1665,March,13,March,20,"Olaves, in Southwark",Infant,1.0,11.0,3.0,St Olave Southwark
+1665,March,13,March,20,"Olaves, in Southwark",Plague,3.0,11.0,3.0,St Olave Southwark
+1665,March,13,March,20,"Olaves, in Southwark",Stone,1.0,11.0,3.0,St Olave Southwark
+1666,April,10,April,17,"Olaves, in Southwark",Aged,1.0,8.0,3.0,St Olave Southwark
+1666,April,10,April,17,"Olaves, in Southwark",Consumpcon,2.0,8.0,3.0,St Olave Southwark
+1666,April,10,April,17,"Olaves, in Southwark",ffeaver,2.0,8.0,3.0,St Olave Southwark
+1666,April,10,April,17,"Olaves, in Southwark",Plague,3.0,8.0,3.0,St Olave Southwark
+1666,May,22,May,29,"Olaves, in Southwark",Aged,2.0,12.0,,St Olave Southwark
+1666,May,22,May,29,"Olaves, in Southwark",Consumpcon,2.0,12.0,,St Olave Southwark
+1666,May,22,May,29,"Olaves, in Southwark",Dropsy,2.0,12.0,,St Olave Southwark
+1666,May,22,May,29,"Olaves, in Southwark",ffeaver,1.0,12.0,,St Olave Southwark
+1666,May,22,May,29,"Olaves, in Southwark",Fffistula,1.0,12.0,,St Olave Southwark
+1666,May,22,May,29,"Olaves, in Southwark",Infant,2.0,12.0,,St Olave Southwark
+1666,May,22,May,29,"Olaves, in Southwark",Stone,2.0,12.0,,St Olave Southwark
+1666,July,10,July,17,"Olaves, in Southwark",Aged,1.0,13.0,,St Olave Southwark
+1666,July,10,July,17,"Olaves, in Southwark",Childbed,1.0,13.0,,St Olave Southwark
+1666,July,10,July,17,"Olaves, in Southwark",Consumpcon,1.0,13.0,,St Olave Southwark
+1666,July,10,July,17,"Olaves, in Southwark",Dropsy,1.0,13.0,,St Olave Southwark
+1666,July,10,July,17,"Olaves, in Southwark",ffeaver,3.0,13.0,,St Olave Southwark
+1666,July,10,July,17,"Olaves, in Southwark",Gripeing in ye gutts,1.0,13.0,,St Olave Southwark
+1666,July,10,July,17,"Olaves, in Southwark",Infant,3.0,13.0,,St Olave Southwark
+1666,July,10,July,17,"Olaves, in Southwark",Teeth,2.0,13.0,,St Olave Southwark
+1666,September,18,September,25,"Olaves, in Southwark",Aged,1.0,14.0,1.0,St Olave Southwark
+1666,September,18,September,25,"Olaves, in Southwark",Consumpcon,2.0,14.0,1.0,St Olave Southwark
+1666,September,18,September,25,"Olaves, in Southwark",ffeaver,2.0,14.0,1.0,St Olave Southwark
+1666,September,18,September,25,"Olaves, in Southwark",Infant,6.0,14.0,1.0,St Olave Southwark
+1666,September,18,September,25,"Olaves, in Southwark",Plague,1.0,14.0,1.0,St Olave Southwark
+1666,September,18,September,25,"Olaves, in Southwark",Spotted ffeaver,1.0,14.0,1.0,St Olave Southwark
+1666,September,18,September,25,"Olaves, in Southwark",Stilborne,1.0,14.0,1.0,St Olave Southwark
+1665,March,13,March,20,"Saviours, in Southwark",Consumpcon,1.0,10.0,1.0,St Saviour Southwark
+1665,March,13,March,20,"Saviours, in Southwark",Chrisoms,1.0,10.0,1.0,St Saviour Southwark
+1665,March,13,March,20,"Saviours, in Southwark",Dropsy,2.0,10.0,1.0,St Saviour Southwark
+1665,March,13,March,20,"Saviours, in Southwark",Jaundies,1.0,10.0,1.0,St Saviour Southwark
+1665,March,13,March,20,"Saviours, in Southwark",Plague,1.0,10.0,1.0,St Saviour Southwark
+1665,March,13,March,20,"Saviours, in Southwark",Teeth,2.0,10.0,1.0,St Saviour Southwark
+1665,March,13,March,20,"Saviours, in Southwark",Tissick,2.0,10.0,1.0,St Saviour Southwark
+1666,April,10,April,17,"Saviours, in Southwark",Aged,1.0,11.0,,St Saviour Southwark
+1666,April,10,April,17,"Saviours, in Southwark",Consumpcon,1.0,11.0,,St Saviour Southwark
+1666,April,10,April,17,"Saviours, in Southwark",Convulcon,1.0,11.0,,St Saviour Southwark
+1666,April,10,April,17,"Saviours, in Southwark",Drowned,1.0,11.0,,St Saviour Southwark
+1666,April,10,April,17,"Saviours, in Southwark",fflox,1.0,11.0,,St Saviour Southwark
+1666,April,10,April,17,"Saviours, in Southwark",Gripeing in ye gutts,1.0,11.0,,St Saviour Southwark
+1666,April,10,April,17,"Saviours, in Southwark",Stilborne,3.0,11.0,,St Saviour Southwark
+1666,April,10,April,17,"Saviours, in Southwark",Teeth,1.0,11.0,,St Saviour Southwark
+1666,April,10,April,17,"Saviours, in Southwark",Tissick,1.0,11.0,,St Saviour Southwark
+1666,May,22,May,29,"Saviours, in Southwark",Aged,1.0,6.0,2.0,St Saviour Southwark
+1666,May,22,May,29,"Saviours, in Southwark",Consumpcon,1.0,6.0,2.0,St Saviour Southwark
+1666,May,22,May,29,"Saviours, in Southwark",Plague,2.0,6.0,2.0,St Saviour Southwark
+1666,May,22,May,29,"Saviours, in Southwark",Ricketts,1.0,6.0,2.0,St Saviour Southwark
+1666,May,22,May,29,"Saviours, in Southwark",Tissick,1.0,6.0,2.0,St Saviour Southwark
+1666,July,10,July,17,"Saviours, in Southwark",Convulcon,1.0,12.0,2.0,St Saviour Southwark
+1666,July,10,July,17,"Saviours, in Southwark",ffeaver,2.0,12.0,2.0,St Saviour Southwark
+1666,July,10,July,17,"Saviours, in Southwark",Gripeing in ye gutts,2.0,12.0,2.0,St Saviour Southwark
+1666,July,10,July,17,"Saviours, in Southwark",Plague,2.0,12.0,2.0,St Saviour Southwark
+1666,July,10,July,17,"Saviours, in Southwark",Spotted ffeaver,1.0,12.0,2.0,St Saviour Southwark
+1666,July,10,July,17,"Saviours, in Southwark",Stilborne,1.0,12.0,2.0,St Saviour Southwark
+1666,July,10,July,17,"Saviours, in Southwark",Teeth,2.0,12.0,2.0,St Saviour Southwark
+1666,July,10,July,17,"Saviours, in Southwark",Ulcer,1.0,12.0,2.0,St Saviour Southwark
+1666,September,18,September,25,"Saviours, in Southwark",Consumpcon,1.0,11.0,1.0,St Saviour Southwark
+1666,September,18,September,25,"Saviours, in Southwark",Childbed,1.0,11.0,1.0,St Saviour Southwark
+1666,September,18,September,25,"Saviours, in Southwark",Chrisoms,1.0,11.0,1.0,St Saviour Southwark
+1666,September,18,September,25,"Saviours, in Southwark",Dropsy,3.0,11.0,1.0,St Saviour Southwark
+1666,September,18,September,25,"Saviours, in Southwark",Gripeing in ye gutts,3.0,11.0,1.0,St Saviour Southwark
+1666,September,18,September,25,"Saviours, in Southwark",Plague,1.0,11.0,1.0,St Saviour Southwark
+1666,September,18,September,25,"Saviours, in Southwark",Suddenly,1.0,11.0,1.0,St Saviour Southwark
+1665,March,13,March,20,"Sepulchres, without Newgate",Aged,1.0,13.0,1.0,St Sepulchre
+1665,March,13,March,20,"Sepulchres, without Newgate",Childbed,1.0,13.0,1.0,St Sepulchre
+1665,March,13,March,20,"Sepulchres, without Newgate",Consumpcon,1.0,13.0,1.0,St Sepulchre
+1665,March,13,March,20,"Sepulchres, without Newgate",Chrisoms,2.0,13.0,1.0,St Sepulchre
+1665,March,13,March,20,"Sepulchres, without Newgate",Convulcon,2.0,13.0,1.0,St Sepulchre
+1665,March,13,March,20,"Sepulchres, without Newgate",Dropsy,2.0,13.0,1.0,St Sepulchre
+1665,March,13,March,20,"Sepulchres, without Newgate",ffeaver,1.0,13.0,1.0,St Sepulchre
+1665,March,13,March,20,"Sepulchres, without Newgate",Plague,1.0,13.0,1.0,St Sepulchre
+1665,March,13,March,20,"Sepulchres, without Newgate",Gripeing in ye gutts,1.0,13.0,1.0,St Sepulchre
+1665,March,13,March,20,"Sepulchres, without Newgate",Riseing of ye lights,2.0,13.0,1.0,St Sepulchre
+1666,April,10,April,17,"Sepulchres, without Newgate",Aged,1.0,10.0,4.0,St Sepulchre
+1666,April,10,April,17,"Sepulchres, without Newgate",Consumpcon,1.0,10.0,4.0,St Sepulchre
+1666,April,10,April,17,"Sepulchres, without Newgate",Dropsy,1.0,10.0,4.0,St Sepulchre
+1666,April,10,April,17,"Sepulchres, without Newgate",ffeaver,1.0,10.0,4.0,St Sepulchre
+1666,April,10,April,17,"Sepulchres, without Newgate",Plague,4.0,10.0,4.0,St Sepulchre
+1666,April,10,April,17,"Sepulchres, without Newgate",Ricketts,1.0,10.0,4.0,St Sepulchre
+1666,April,10,April,17,"Sepulchres, without Newgate",Surfett,1.0,10.0,4.0,St Sepulchre
+1666,May,22,May,29,"Sepulchres, without Newgate",Consumpcon,1.0,8.0,,St Sepulchre
+1666,May,22,May,29,"Sepulchres, without Newgate",Dropsy,1.0,8.0,,St Sepulchre
+1666,May,22,May,29,"Sepulchres, without Newgate",Gripeing in ye gutts,2.0,8.0,,St Sepulchre
+1666,May,22,May,29,"Sepulchres, without Newgate",Ricketts,1.0,8.0,,St Sepulchre
+1666,May,22,May,29,"Sepulchres, without Newgate",Stilborne,1.0,8.0,,St Sepulchre
+1666,May,22,May,29,"Sepulchres, without Newgate",Stone,1.0,8.0,,St Sepulchre
+1666,May,22,May,29,"Sepulchres, without Newgate",Tissick,1.0,8.0,,St Sepulchre
+1666,July,10,July,17,"Sepulchres, without Newgate",Consumpcon,3.0,6.0,,St Sepulchre
+1666,July,10,July,17,"Sepulchres, without Newgate",Convulcon,1.0,6.0,,St Sepulchre
+1666,July,10,July,17,"Sepulchres, without Newgate",Dropsy,1.0,6.0,,St Sepulchre
+1666,July,10,July,17,"Sepulchres, without Newgate",Surfett,1.0,6.0,,St Sepulchre
+1666,September,18,September,25,"Sepulchres, without Newgate",Aged,3.0,11.0,,St Sepulchre
+1666,September,18,September,25,"Sepulchres, without Newgate",Chrisoms,1.0,11.0,,St Sepulchre
+1666,September,18,September,25,"Sepulchres, without Newgate",Consumpcon,2.0,11.0,,St Sepulchre
+1666,September,18,September,25,"Sepulchres, without Newgate",Convulcon,1.0,11.0,,St Sepulchre
+1666,September,18,September,25,"Sepulchres, without Newgate",Dropsy,1.0,11.0,,St Sepulchre
+1666,September,18,September,25,"Sepulchres, without Newgate",ffeaver,1.0,11.0,,St Sepulchre
+1666,September,18,September,25,"Sepulchres, without Newgate",Gripeing in ye gutts,1.0,11.0,,St Sepulchre
+1666,September,18,September,25,"Sepulchres, without Newgate",Riseing of ye lights,1.0,11.0,,St Sepulchre
+1665,March,13,March,20,"Giles, in the Fields",Consumpcon,1.0,6.0,,St Giles in the Field
+1665,March,13,March,20,"Giles, in the Fields",Convulcon,1.0,6.0,,St Giles in the Field
+1665,March,13,March,20,"Giles, in the Fields",Gripeing in ye gutts,3.0,6.0,,St Giles in the Field
+1665,March,13,March,20,"Giles, in the Fields",Teeth,1.0,6.0,,St Giles in the Field
+1666,April,10,April,17,"Giles, in the Fields",Aged,2.0,6.0,1.0,St Giles in the Field
+1666,April,10,April,17,"Giles, in the Fields",Consumpcon,1.0,6.0,1.0,St Giles in the Field
+1666,April,10,April,17,"Giles, in the Fields",Dropsy,1.0,6.0,1.0,St Giles in the Field
+1666,April,10,April,17,"Giles, in the Fields",Stone,1.0,6.0,1.0,St Giles in the Field
+1666,April,10,April,17,"Giles, in the Fields",Plague,1.0,6.0,1.0,St Giles in the Field
+1666,May,22,May,29,"Giles, in the Fields",Convulcon,1.0,3.0,,St Giles in the Field
+1666,May,22,May,29,"Giles, in the Fields",Gripeing in ye gutts,1.0,3.0,,St Giles in the Field
+1666,May,22,May,29,"Giles, in the Fields",ffeaver,1.0,3.0,,St Giles in the Field
+1666,July,10,July,17,"Giles, in the Fields",Consumpcon,3.0,15.0,2.0,St Giles in the Field
+1666,July,10,July,17,"Giles, in the Fields",Executed,1.0,15.0,2.0,St Giles in the Field
+1666,July,10,July,17,"Giles, in the Fields",Gripeing in ye gutts,4.0,15.0,2.0,St Giles in the Field
+1666,July,10,July,17,"Giles, in the Fields",Impostume,1.0,15.0,2.0,St Giles in the Field
+1666,July,10,July,17,"Giles, in the Fields",Plague,2.0,15.0,2.0,St Giles in the Field
+1666,July,10,July,17,"Giles, in the Fields",Stilborne,1.0,15.0,2.0,St Giles in the Field
+1666,July,10,July,17,"Giles, in the Fields",Stone,1.0,15.0,2.0,St Giles in the Field
+1666,July,10,July,17,"Giles, in the Fields",Thrush,1.0,15.0,2.0,St Giles in the Field
+1666,July,10,July,17,"Giles, in the Fields",Dropsy,1.0,15.0,2.0,St Giles in the Field
+1666,September,18,September,25,"Giles, in the Fields",Dropsy,3.0,10.0,1.0,St Giles in the Field
+1666,September,18,September,25,"Giles, in the Fields",Consumpcon,2.0,10.0,1.0,St Giles in the Field
+1666,September,18,September,25,"Giles, in the Fields",Suddenly,1.0,10.0,1.0,St Giles in the Field
+1666,September,18,September,25,"Giles, in the Fields",Surfett,1.0,10.0,1.0,St Giles in the Field
+1666,September,18,September,25,"Giles, in the Fields",Gripeing in ye gutts,2.0,10.0,1.0,St Giles in the Field
+1666,September,18,September,25,"Giles, in the Fields",Plague,1.0,10.0,1.0,St Giles in the Field
+1665,March,13,March,20,Hackney-Parish,Chrisoms,1.0,4.0,2.0,St John at Hackney
+1665,March,13,March,20,Hackney-Parish,Consumpcon,1.0,4.0,2.0,St John at Hackney
+1665,March,13,March,20,Hackney-Parish,Plague,2.0,4.0,2.0,St John at Hackney
+1666,April,10,April,17,Hackney-Parish,Dropsy,1.0,1.0,,St John at Hackney
+1666,May,22,May,29,Hackney-Parish,Aged,1.0,3.0,,St John at Hackney
+1666,May,22,May,29,Hackney-Parish,Consumpcon,1.0,3.0,,St John at Hackney
+1666,May,22,May,29,Hackney-Parish,Dropsy,1.0,3.0,,St John at Hackney
+1666,July,10,July,17,Hackney-Parish,Plague,1.0,1.0,1.0,St John at Hackney
+1666,September,18,September,25,Hackney-Parish,Aged,1.0,3.0,,St John at Hackney
+1666,September,18,September,25,Hackney-Parish,Childbed,1.0,3.0,,St John at Hackney
+1666,September,18,September,25,Hackney-Parish,Surfett,1.0,3.0,,St John at Hackney
+1665,March,13,March,20,James-Clerkenwel,Consumpcon,1.0,1.0,,St James Clerkenwell
+1666,April,10,April,17,James-Clerkenwel,Consumpcon,5.0,6.0,,St James Clerkenwell
+1666,April,10,April,17,James-Clerkenwel,Dropsy,1.0,6.0,,St James Clerkenwell
+1666,May,22,May,29,James-Clerkenwel,Consumpcon,1.0,2.0,,St James Clerkenwell
+1666,May,22,May,29,James-Clerkenwel,Ricketts,1.0,2.0,,St James Clerkenwell
+1666,July,10,July,17,James-Clerkenwel,Consumpcon,1.0,5.0,,St James Clerkenwell
+1666,July,10,July,17,James-Clerkenwel,Convulcon,1.0,5.0,,St James Clerkenwell
+1666,July,10,July,17,James-Clerkenwel,Scowring,1.0,5.0,,St James Clerkenwell
+1666,July,10,July,17,James-Clerkenwel,Teeth,1.0,5.0,,St James Clerkenwell
+1666,July,10,July,17,James-Clerkenwel,Winde,1.0,5.0,,St James Clerkenwell
+1666,September,18,September,25,James-Clerkenwel,Consumpcon,1.0,3.0,1.0,St James Clerkenwell
+1666,September,18,September,25,James-Clerkenwel,Convulcon,1.0,3.0,1.0,St James Clerkenwell
+1666,September,18,September,25,James-Clerkenwel,Plague,1.0,3.0,1.0,St James Clerkenwell
+1665,March,13,March,20,"Katherine, near the Tower",Consumpcon,1.0,3.0,1.0,St Katharine Tower
+1665,March,13,March,20,"Katherine, near the Tower",Plague,1.0,3.0,1.0,St Katharine Tower
+1665,March,13,March,20,"Katherine, near the Tower",ffound dead a man in the Comon Sewer,1.0,3.0,1.0,St Katharine Tower
+1666,April,10,April,17,"Katherine, near the Tower",Lethargy,1.0,2.0,1.0,St Katharine Tower
+1666,April,10,April,17,"Katherine, near the Tower",Plague,1.0,2.0,1.0,St Katharine Tower
+1666,July,10,July,17,"Katherine, near the Tower",Consumpcon,3.0,8.0,1.0,St Katharine Tower
+1666,July,10,July,17,"Katherine, near the Tower",Drowned,1.0,8.0,1.0,St Katharine Tower
+1666,July,10,July,17,"Katherine, near the Tower",Infant,2.0,8.0,1.0,St Katharine Tower
+1666,July,10,July,17,"Katherine, near the Tower",Plague,1.0,8.0,1.0,St Katharine Tower
+1666,July,10,July,17,"Katherine, near the Tower",Teeth,1.0,8.0,1.0,St Katharine Tower
+1666,September,18,September,25,"Katherine, near the Tower",Consumpcon,1.0,2.0,,St Katharine Tower
+1666,September,18,September,25,"Katherine, near the Tower",Infant,1.0,2.0,,St Katharine Tower
+1665,March,13,March,20,Lambeth-Parish,Plague,4.0,4.0,4.0,St Mary Lambeth
+1666,April,10,April,17,Lambeth-Parish,Consumpcon,1.0,5.0,2.0,St Mary Lambeth
+1666,April,10,April,17,Lambeth-Parish,Dropsy,1.0,5.0,2.0,St Mary Lambeth
+1666,April,10,April,17,Lambeth-Parish,ffeaver,1.0,5.0,2.0,St Mary Lambeth
+1666,April,10,April,17,Lambeth-Parish,Plague,2.0,5.0,2.0,St Mary Lambeth
+1666,May,22,May,29,Lambeth-Parish,Infant,3.0,10.0,1.0,St Mary Lambeth
+1666,May,22,May,29,Lambeth-Parish,Aged,1.0,10.0,1.0,St Mary Lambeth
+1666,May,22,May,29,Lambeth-Parish,Consumpcon,1.0,10.0,1.0,St Mary Lambeth
+1666,May,22,May,29,Lambeth-Parish,Ricketts,1.0,10.0,1.0,St Mary Lambeth
+1666,May,22,May,29,Lambeth-Parish,ffeaver,3.0,10.0,1.0,St Mary Lambeth
+1666,May,22,May,29,Lambeth-Parish,Plague,1.0,10.0,1.0,St Mary Lambeth
+1666,July,10,July,17,Lambeth-Parish,Consumpcon,1.0,21.0,16.0,St Mary Lambeth
+1666,July,10,July,17,Lambeth-Parish,Infant,2.0,21.0,16.0,St Mary Lambeth
+1666,July,10,July,17,Lambeth-Parish,ffeaver,1.0,21.0,16.0,St Mary Lambeth
+1666,July,10,July,17,Lambeth-Parish,Stilborne,1.0,21.0,16.0,St Mary Lambeth
+1666,July,10,July,17,Lambeth-Parish,Plague,16.0,21.0,16.0,St Mary Lambeth
+1666,September,18,September,25,Lambeth-Parish,ffeaver,1.0,5.0,2.0,St Mary Lambeth
+1666,September,18,September,25,Lambeth-Parish,Infant,2.0,5.0,2.0,St Mary Lambeth
+1666,September,18,September,25,Lambeth-Parish,Plague,2.0,5.0,2.0,St Mary Lambeth
+1665,March,13,March,20,"Leonard, in Shoreditch",Consumpcon,3.0,9.0,,St Leonard Shoreditch
+1665,March,13,March,20,"Leonard, in Shoreditch",Convulcon,2.0,9.0,,St Leonard Shoreditch
+1665,March,13,March,20,"Leonard, in Shoreditch",ffeaver,1.0,9.0,,St Leonard Shoreditch
+1665,March,13,March,20,"Leonard, in Shoreditch",Riseing of ye lights,3.0,9.0,,St Leonard Shoreditch
+1666,April,10,April,17,"Leonard, in Shoreditch",Aged,2.0,5.0,,St Leonard Shoreditch
+1666,April,10,April,17,"Leonard, in Shoreditch",Consumpcon,1.0,5.0,,St Leonard Shoreditch
+1666,April,10,April,17,"Leonard, in Shoreditch",ffeaver,1.0,5.0,,St Leonard Shoreditch
+1666,April,10,April,17,"Leonard, in Shoreditch",Teeth,1.0,5.0,,St Leonard Shoreditch
+1666,May,22,May,29,"Leonard, in Shoreditch",Aged,1.0,4.0,,St Leonard Shoreditch
+1666,May,22,May,29,"Leonard, in Shoreditch",Riseing of ye lights,3.0,4.0,,St Leonard Shoreditch
+1666,July,10,July,17,"Leonard, in Shoreditch",Consumpcon,3.0,7.0,2.0,St Leonard Shoreditch
+1666,July,10,July,17,"Leonard, in Shoreditch",Dropsy,1.0,7.0,2.0,St Leonard Shoreditch
+1666,July,10,July,17,"Leonard, in Shoreditch",Plague,2.0,7.0,2.0,St Leonard Shoreditch
+1666,July,10,July,17,"Leonard, in Shoreditch",Stilborne,1.0,7.0,2.0,St Leonard Shoreditch
+1666,September,18,September,25,"Leonard, in Shoreditch",Aged,2.0,8.0,,St Leonard Shoreditch
+1666,September,18,September,25,"Leonard, in Shoreditch",Burnt,1.0,8.0,,St Leonard Shoreditch
+1666,September,18,September,25,"Leonard, in Shoreditch",Consumpcon,1.0,8.0,,St Leonard Shoreditch
+1666,September,18,September,25,"Leonard, in Shoreditch",Convulcon,1.0,8.0,,St Leonard Shoreditch
+1666,September,18,September,25,"Leonard, in Shoreditch",Stilborne,1.0,8.0,,St Leonard Shoreditch
+1666,September,18,September,25,"Leonard, in Shoreditch",Surfett,1.0,8.0,,St Leonard Shoreditch
+1666,September,18,September,25,"Leonard, in Shoreditch",Riseing of ye lights,1.0,8.0,,St Leonard Shoreditch
+1665,March,13,March,20,"Magdalens, in Bermondsey-street",Aged,1.0,4.0,1.0,St Mary Magdalen Bermondsey
+1665,March,13,March,20,"Magdalens, in Bermondsey-street",Chrisoms,1.0,4.0,1.0,St Mary Magdalen Bermondsey
+1665,March,13,March,20,"Magdalens, in Bermondsey-street",Gripeing in ye gutts,1.0,4.0,1.0,St Mary Magdalen Bermondsey
+1665,March,13,March,20,"Magdalens, in Bermondsey-street",Plague,4.0,4.0,1.0,St Mary Magdalen Bermondsey
+1666,April,10,April,17,"Magdalens, in Bermondsey-street",Spotted ffeaver,1.0,2.0,,St Mary Magdalen Bermondsey
+1666,April,10,April,17,"Magdalens, in Bermondsey-street",Infant,1.0,2.0,,St Mary Magdalen Bermondsey
+1666,May,22,May,29,"Magdalens, in Bermondsey-street",Consumpcon,1.0,5.0,4.0,St Mary Magdalen Bermondsey
+1666,May,22,May,29,"Magdalens, in Bermondsey-street",Plague,4.0,5.0,4.0,St Mary Magdalen Bermondsey
+1666,July,10,July,17,"Magdalens, in Bermondsey-street",Aged,1.0,13.0,7.0,St Mary Magdalen Bermondsey
+1666,July,10,July,17,"Magdalens, in Bermondsey-street",Dropsy,1.0,13.0,7.0,St Mary Magdalen Bermondsey
+1666,July,10,July,17,"Magdalens, in Bermondsey-street",Gripeing in ye gutts,4.0,13.0,7.0,St Mary Magdalen Bermondsey
+1666,July,10,July,17,"Magdalens, in Bermondsey-street",Plague,7.0,13.0,7.0,St Mary Magdalen Bermondsey
+1666,September,18,September,25,"Magdalens, in Bermondsey-street",Aged,1.0,13.0,3.0,St Mary Magdalen Bermondsey
+1666,September,18,September,25,"Magdalens, in Bermondsey-street",Childbed,1.0,13.0,3.0,St Mary Magdalen Bermondsey
+1666,September,18,September,25,"Magdalens, in Bermondsey-street",Consumpcon,1.0,13.0,3.0,St Mary Magdalen Bermondsey
+1666,September,18,September,25,"Magdalens, in Bermondsey-street",Dropsy,1.0,13.0,3.0,St Mary Magdalen Bermondsey
+1666,September,18,September,25,"Magdalens, in Bermondsey-street",Gripeing in ye gutts,3.0,13.0,3.0,St Mary Magdalen Bermondsey
+1666,September,18,September,25,"Magdalens, in Bermondsey-street",Convulcon,1.0,13.0,3.0,St Mary Magdalen Bermondsey
+1666,September,18,September,25,"Magdalens, in Bermondsey-street",Plague,3.0,13.0,3.0,St Mary Magdalen Bermondsey
+1666,September,18,September,25,"Magdalens, in Bermondsey-street",Ricketts,1.0,13.0,3.0,St Mary Magdalen Bermondsey
+1666,September,18,September,25,"Magdalens, in Bermondsey-street",Scalded,1.0,13.0,3.0,St Mary Magdalen Bermondsey
+1665,March,13,March,20,"Mary, at Islington",Consumpcon,1.0,1.0,,St Mary Islington
+1666,May,22,May,29,"Mary, at Islington",Abortive,2.0,4.0,,St Mary Islington
+1666,May,22,May,29,"Mary, at Islington",Consumpcon,1.0,4.0,,St Mary Islington
+1666,May,22,May,29,"Mary, at Islington",Shott,1.0,4.0,,St Mary Islington
+1666,July,10,July,17,"Mary, at Islington",Drowned,1.0,2.0,,St Mary Islington
+1666,July,10,July,17,"Mary, at Islington",Stilborne,1.0,2.0,,St Mary Islington
+1666,September,18,September,25,"Mary, at Islington",Stilborne,2.0,9.0,,St Mary Islington
+1666,September,18,September,25,"Mary, at Islington",Infant,1.0,9.0,,St Mary Islington
+1666,September,18,September,25,"Mary, at Islington",Consumpcon,3.0,9.0,,St Mary Islington
+1666,September,18,September,25,"Mary, at Islington",Dropsy,3.0,9.0,,St Mary Islington
+1665,March,13,March,20,"Mary, at Whitechappel",Aged,1.0,4.0,,St Mary Whitechapel
+1665,March,13,March,20,"Mary, at Whitechappel",Consumpcon,1.0,4.0,,St Mary Whitechapel
+1665,March,13,March,20,"Mary, at Whitechappel",Dropsy,1.0,4.0,,St Mary Whitechapel
+1665,March,13,March,20,"Mary, at Whitechappel",ffeaver,1.0,4.0,,St Mary Whitechapel
+1666,April,10,April,17,"Mary, at Whitechappel",Aged,1.0,3.0,,St Mary Whitechapel
+1666,April,10,April,17,"Mary, at Whitechappel",Consumpcon,1.0,3.0,,St Mary Whitechapel
+1666,April,10,April,17,"Mary, at Whitechappel",Convulcon,1.0,3.0,,St Mary Whitechapel
+1666,May,22,May,29,"Mary, at Whitechappel",Plague,1.0,9.0,1.0,St Mary Whitechapel
+1666,May,22,May,29,"Mary, at Whitechappel",Dropsy,3.0,9.0,1.0,St Mary Whitechapel
+1666,May,22,May,29,"Mary, at Whitechappel",Stilborne,2.0,9.0,1.0,St Mary Whitechapel
+1666,May,22,May,29,"Mary, at Whitechappel",Teeth,1.0,9.0,1.0,St Mary Whitechapel
+1666,May,22,May,29,"Mary, at Whitechappel",Consumpcon,1.0,9.0,1.0,St Mary Whitechapel
+1666,May,22,May,29,"Mary, at Whitechappel",ffeaver,1.0,9.0,1.0,St Mary Whitechapel
+1666,July,10,July,17,"Mary, at Whitechappel",Chrisoms,1.0,12.0,3.0,St Mary Whitechapel
+1666,July,10,July,17,"Mary, at Whitechappel",Convulcon,5.0,12.0,3.0,St Mary Whitechapel
+1666,July,10,July,17,"Mary, at Whitechappel",Dropsy,1.0,12.0,3.0,St Mary Whitechapel
+1666,July,10,July,17,"Mary, at Whitechappel",ffeaver,1.0,12.0,3.0,St Mary Whitechapel
+1666,July,10,July,17,"Mary, at Whitechappel",Plague,3.0,12.0,3.0,St Mary Whitechapel
+1666,July,10,July,17,"Mary, at Whitechappel",Ricketts,1.0,12.0,3.0,St Mary Whitechapel
+1666,September,18,September,25,"Mary, at Whitechappel",Plague,2.0,22.0,2.0,St Mary Whitechapel
+1666,September,18,September,25,"Mary, at Whitechappel",Convulcon,5.0,22.0,2.0,St Mary Whitechapel
+1666,September,18,September,25,"Mary, at Whitechappel",Consumpcon,1.0,22.0,2.0,St Mary Whitechapel
+1666,September,18,September,25,"Mary, at Whitechappel",Dropsy,5.0,22.0,2.0,St Mary Whitechapel
+1666,September,18,September,25,"Mary, at Whitechappel",Drowned,1.0,22.0,2.0,St Mary Whitechapel
+1666,September,18,September,25,"Mary, at Whitechappel",Aged,1.0,22.0,2.0,St Mary Whitechapel
+1666,September,18,September,25,"Mary, at Whitechappel",Ricketts,1.0,22.0,2.0,St Mary Whitechapel
+1666,September,18,September,25,"Mary, at Whitechappel",Cancer,1.0,22.0,2.0,St Mary Whitechapel
+1666,September,18,September,25,"Mary, at Whitechappel",Riseing of ye lights,2.0,22.0,2.0,St Mary Whitechapel
+1666,September,18,September,25,"Mary, at Whitechappel",Chrisoms,2.0,22.0,2.0,St Mary Whitechapel
+1666,September,18,September,25,"Mary, at Whitechappel",ffeaver,1.0,22.0,2.0,St Mary Whitechapel
+1665,March,13,March,20,Redrisse-Parish,Spotted ffeaver,1.0,2.0,,St Mary Rotherhithe
+1665,March,13,March,20,Redrisse-Parish,Plague,1.0,2.0,,St Mary Rotherhithe
+1666,April,10,April,17,Redrisse-Parish,ffeaver,1.0,4.0,3.0,St Mary Rotherhithe
+1666,April,10,April,17,Redrisse-Parish,Plague,3.0,4.0,3.0,St Mary Rotherhithe
+1666,May,22,May,29,Redrisse-Parish,Consumpcon,1.0,7.0,2.0,St Mary Rotherhithe
+1666,May,22,May,29,Redrisse-Parish,Childbed,1.0,7.0,2.0,St Mary Rotherhithe
+1666,May,22,May,29,Redrisse-Parish,Infant,1.0,7.0,2.0,St Mary Rotherhithe
+1666,May,22,May,29,Redrisse-Parish,Plague,2.0,7.0,2.0,St Mary Rotherhithe
+1666,May,22,May,29,Redrisse-Parish,Spotted ffeaver,1.0,7.0,2.0,St Mary Rotherhithe
+1666,May,22,May,29,Redrisse-Parish,Teeth,1.0,7.0,2.0,St Mary Rotherhithe
+1666,July,10,July,17,Redrisse-Parish,Consumpcon,1.0,10.0,4.0,St Mary Rotherhithe
+1666,July,10,July,17,Redrisse-Parish,Convulcon,1.0,10.0,4.0,St Mary Rotherhithe
+1666,July,10,July,17,Redrisse-Parish,ffeaver,1.0,10.0,4.0,St Mary Rotherhithe
+1666,July,10,July,17,Redrisse-Parish,Infant,1.0,10.0,4.0,St Mary Rotherhithe
+1666,July,10,July,17,Redrisse-Parish,Teeth,1.0,10.0,4.0,St Mary Rotherhithe
+1666,July,10,July,17,Redrisse-Parish,Thrush,1.0,10.0,4.0,St Mary Rotherhithe
+1666,July,10,July,17,Redrisse-Parish,Plague,4.0,10.0,4.0,St Mary Rotherhithe
+1666,September,18,September,25,Redrisse-Parish,Consumpcon,2.0,2.0,,St Mary Rotherhithe
+1665,March,13,March,20,Stepney-Parish,Aged,1.0,29.0,5.0,St Dunstan Stepney
+1665,March,13,March,20,Stepney-Parish,Childbed,2.0,29.0,5.0,St Dunstan Stepney
+1665,March,13,March,20,Stepney-Parish,Cough,1.0,29.0,5.0,St Dunstan Stepney
+1665,March,13,March,20,Stepney-Parish,Convulcon,2.0,29.0,5.0,St Dunstan Stepney
+1665,March,13,March,20,Stepney-Parish,Consumpcon,3.0,29.0,5.0,St Dunstan Stepney
+1665,March,13,March,20,Stepney-Parish,Chrisoms,3.0,29.0,5.0,St Dunstan Stepney
+1665,March,13,March,20,Stepney-Parish,Dropsy,3.0,29.0,5.0,St Dunstan Stepney
+1665,March,13,March,20,Stepney-Parish,Drowned,1.0,29.0,5.0,St Dunstan Stepney
+1665,March,13,March,20,Stepney-Parish,ffeaver,3.0,29.0,5.0,St Dunstan Stepney
+1665,March,13,March,20,Stepney-Parish,Plague,5.0,29.0,5.0,St Dunstan Stepney
+1665,March,13,March,20,Stepney-Parish,Scalded in a Brwers Mash ffatt,1.0,29.0,5.0,St Dunstan Stepney
+1665,March,13,March,20,Stepney-Parish,Surfett,1.0,29.0,5.0,St Dunstan Stepney
+1665,March,13,March,20,Stepney-Parish,Teeth,2.0,29.0,5.0,St Dunstan Stepney
+1665,March,13,March,20,Stepney-Parish,Wormes,1.0,29.0,5.0,St Dunstan Stepney
+1666,April,10,April,17,Stepney-Parish,Consumpcon,6.0,20.0,6.0,St Dunstan Stepney
+1666,April,10,April,17,Stepney-Parish,Convulcon,1.0,20.0,6.0,St Dunstan Stepney
+1666,April,10,April,17,Stepney-Parish,ffeaver,3.0,20.0,6.0,St Dunstan Stepney
+1666,April,10,April,17,Stepney-Parish,plague,6.0,20.0,6.0,St Dunstan Stepney
+1666,April,10,April,17,Stepney-Parish,Teeth,3.0,20.0,6.0,St Dunstan Stepney
+1666,April,10,April,17,Stepney-Parish,Thrush,1.0,20.0,6.0,St Dunstan Stepney
+1666,May,22,May,29,Stepney-Parish,Aged,3.0,24.0,3.0,St Dunstan Stepney
+1666,May,22,May,29,Stepney-Parish,Consumpcon,4.0,24.0,3.0,St Dunstan Stepney
+1666,May,22,May,29,Stepney-Parish,Chrisoms,1.0,24.0,3.0,St Dunstan Stepney
+1666,May,22,May,29,Stepney-Parish,Convulcon,3.0,24.0,3.0,St Dunstan Stepney
+1666,May,22,May,29,Stepney-Parish,Drowned,1.0,24.0,3.0,St Dunstan Stepney
+1666,May,22,May,29,Stepney-Parish,Dropsy,2.0,24.0,3.0,St Dunstan Stepney
+1666,May,22,May,29,Stepney-Parish,ffeaver,2.0,24.0,3.0,St Dunstan Stepney
+1666,May,22,May,29,Stepney-Parish,Fffistula,1.0,24.0,3.0,St Dunstan Stepney
+1666,May,22,May,29,Stepney-Parish,Plague,3.0,24.0,3.0,St Dunstan Stepney
+1666,May,22,May,29,Stepney-Parish,Ricketts,1.0,24.0,3.0,St Dunstan Stepney
+1666,May,22,May,29,Stepney-Parish,Stilborne,1.0,24.0,3.0,St Dunstan Stepney
+1666,May,22,May,29,Stepney-Parish,Stone,1.0,24.0,3.0,St Dunstan Stepney
+1666,May,22,May,29,Stepney-Parish,Surfett,1.0,24.0,3.0,St Dunstan Stepney
+1666,July,10,July,17,Stepney-Parish,Aged,3.0,36.0,2.0,St Dunstan Stepney
+1666,July,10,July,17,Stepney-Parish,Chrisoms,1.0,36.0,2.0,St Dunstan Stepney
+1666,July,10,July,17,Stepney-Parish,Consumpcon,4.0,36.0,2.0,St Dunstan Stepney
+1666,July,10,July,17,Stepney-Parish,Convulcon,5.0,36.0,2.0,St Dunstan Stepney
+1666,July,10,July,17,Stepney-Parish,ffeaver,1.0,36.0,2.0,St Dunstan Stepney
+1666,July,10,July,17,Stepney-Parish,Gripeing in ye gutts,1.0,36.0,2.0,St Dunstan Stepney
+1666,July,10,July,17,Stepney-Parish,Plague,2.0,36.0,2.0,St Dunstan Stepney
+1666,July,10,July,17,Stepney-Parish,Ricketts,1.0,36.0,2.0,St Dunstan Stepney
+1666,July,10,July,17,Stepney-Parish,Scowring,5.0,36.0,2.0,St Dunstan Stepney
+1666,July,10,July,17,Stepney-Parish,Stilborne,1.0,36.0,2.0,St Dunstan Stepney
+1666,July,10,July,17,Stepney-Parish,Surfett,3.0,36.0,2.0,St Dunstan Stepney
+1666,July,10,July,17,Stepney-Parish,Teeth,4.0,36.0,2.0,St Dunstan Stepney
+1666,July,10,July,17,Stepney-Parish,Thrush,2.0,36.0,2.0,St Dunstan Stepney
+1666,July,10,July,17,Stepney-Parish,Tissick,1.0,36.0,2.0,St Dunstan Stepney
+1666,July,10,July,17,Stepney-Parish,Vomiting,1.0,36.0,2.0,St Dunstan Stepney
+1666,July,10,July,17,Stepney-Parish,Wormes,1.0,36.0,2.0,St Dunstan Stepney
+1666,September,18,September,25,Stepney-Parish,Aged,2.0,27.0,6.0,St Dunstan Stepney
+1666,September,18,September,25,Stepney-Parish,Childbed,2.0,27.0,6.0,St Dunstan Stepney
+1666,September,18,September,25,Stepney-Parish,Consumpcon,6.0,27.0,6.0,St Dunstan Stepney
+1666,September,18,September,25,Stepney-Parish,Convulcon,3.0,27.0,6.0,St Dunstan Stepney
+1666,September,18,September,25,Stepney-Parish,Chrisoms,1.0,27.0,6.0,St Dunstan Stepney
+1666,September,18,September,25,Stepney-Parish,ffeaver,2.0,27.0,6.0,St Dunstan Stepney
+1666,September,18,September,25,Stepney-Parish,ffrenchpox,1.0,27.0,6.0,St Dunstan Stepney
+1666,September,18,September,25,Stepney-Parish,Gripeing in ye gutts,1.0,27.0,6.0,St Dunstan Stepney
+1666,September,18,September,25,Stepney-Parish,Plague,6.0,27.0,6.0,St Dunstan Stepney
+1666,September,18,September,25,Stepney-Parish,Riseing of ye lights,1.0,27.0,6.0,St Dunstan Stepney
+1666,September,18,September,25,Stepney-Parish,Spotted ffeaver,1.0,27.0,6.0,St Dunstan Stepney
+1666,September,18,September,25,Stepney-Parish,Wormes,1.0,27.0,6.0,St Dunstan Stepney
+1665,March,13,March,20,"Clement-Danes, without Temple-Bar",ffeaver,1.0,6.0,1.0,St Clement Danes
+1665,March,13,March,20,"Clement-Danes, without Temple-Bar",Plague,1.0,6.0,1.0,St Clement Danes
+1665,March,13,March,20,"Clement-Danes, without Temple-Bar",Riseing of ye lights,1.0,6.0,1.0,St Clement Danes
+1665,March,13,March,20,"Clement-Danes, without Temple-Bar",Rupture,1.0,6.0,1.0,St Clement Danes
+1665,March,13,March,20,"Clement-Danes, without Temple-Bar",Surfett,1.0,6.0,1.0,St Clement Danes
+1665,March,13,March,20,"Clement-Danes, without Temple-Bar",Teeth,1.0,6.0,1.0,St Clement Danes
+1666,April,10,April,17,"Clement-Danes, without Temple-Bar",Consumpcon,1.0,4.0,,St Clement Danes
+1666,April,10,April,17,"Clement-Danes, without Temple-Bar",Dropsy,2.0,4.0,,St Clement Danes
+1666,April,10,April,17,"Clement-Danes, without Temple-Bar",Ricketts,1.0,4.0,,St Clement Danes
+1666,May,22,May,29,"Clement-Danes, without Temple-Bar",Aged,1.0,5.0,,St Clement Danes
+1666,May,22,May,29,"Clement-Danes, without Temple-Bar",Consumpcon,2.0,5.0,,St Clement Danes
+1666,May,22,May,29,"Clement-Danes, without Temple-Bar",Convulcon,1.0,5.0,,St Clement Danes
+1666,May,22,May,29,"Clement-Danes, without Temple-Bar",Stilborne,1.0,5.0,,St Clement Danes
+1666,July,10,July,17,"Clement-Danes, without Temple-Bar",Consumpcon,2.0,6.0,,St Clement Danes
+1666,July,10,July,17,"Clement-Danes, without Temple-Bar",Convulcon,1.0,6.0,,St Clement Danes
+1666,July,10,July,17,"Clement-Danes, without Temple-Bar",Riseing of ye lights,1.0,6.0,,St Clement Danes
+1666,July,10,July,17,"Clement-Danes, without Temple-Bar",Ricketts,1.0,6.0,,St Clement Danes
+1666,July,10,July,17,"Clement-Danes, without Temple-Bar",Teeth,1.0,6.0,,St Clement Danes
+1666,September,18,September,25,"Clement-Danes, without Temple-Bar",Consumpcon,3.0,8.0,1.0,St Clement Danes
+1666,September,18,September,25,"Clement-Danes, without Temple-Bar",Chrisoms,1.0,8.0,1.0,St Clement Danes
+1666,September,18,September,25,"Clement-Danes, without Temple-Bar",Dropsy,1.0,8.0,1.0,St Clement Danes
+1666,September,18,September,25,"Clement-Danes, without Temple-Bar",Plague,1.0,8.0,1.0,St Clement Danes
+1666,September,18,September,25,"Clement-Danes, without Temple-Bar",ffrenchpox,1.0,8.0,1.0,St Clement Danes
+1666,September,18,September,25,"Clement-Danes, without Temple-Bar",Riseing of ye lights,1.0,8.0,1.0,St Clement Danes
+1665,March,13,March,20,Paul Covent-Garden,Stilborne,1.0,2.0,,St Paul Covent Garden
+1665,March,13,March,20,Paul Covent-Garden,Infant,1.0,2.0,,St Paul Covent Garden
+1666,April,10,April,17,Paul Covent-Garden,Consumpcon,1.0,1.0,,St Paul Covent Garden
+1666,May,22,May,29,Paul Covent-Garden,Convulcon,1.0,1.0,,St Paul Covent Garden
+1666,July,10,July,17,Paul Covent-Garden,Consumpcon,1.0,3.0,,St Paul Covent Garden
+1666,July,10,July,17,Paul Covent-Garden,Convulcon,1.0,3.0,,St Paul Covent Garden
+1666,July,10,July,17,Paul Covent-Garden,Thrush,1.0,3.0,,St Paul Covent Garden
+1666,September,18,September,25,Paul Covent-Garden,Consumpcon,1.0,3.0,,St Paul Covent Garden
+1666,September,18,September,25,Paul Covent-Garden,Dropsy,1.0,3.0,,St Paul Covent Garden
+1666,September,18,September,25,Paul Covent-Garden,ffrenchpox,1.0,3.0,,St Paul Covent Garden
+1665,March,13,March,20,"Martins, in the Fields",Aged,1.0,11.0,2.0,St Martin in the Fields
+1665,March,13,March,20,"Martins, in the Fields",Chrisoms,1.0,11.0,2.0,St Martin in the Fields
+1665,March,13,March,20,"Martins, in the Fields",Consumpcon,1.0,11.0,2.0,St Martin in the Fields
+1665,March,13,March,20,"Martins, in the Fields",Convulcon,2.0,11.0,2.0,St Martin in the Fields
+1665,March,13,March,20,"Martins, in the Fields",Cough,1.0,11.0,2.0,St Martin in the Fields
+1665,March,13,March,20,"Martins, in the Fields",Gripeing in ye gutts,1.0,11.0,2.0,St Martin in the Fields
+1665,March,13,March,20,"Martins, in the Fields",Infant,1.0,11.0,2.0,St Martin in the Fields
+1665,March,13,March,20,"Martins, in the Fields",Plague,2.0,11.0,2.0,St Martin in the Fields
+1665,March,13,March,20,"Martins, in the Fields",Surfett,1.0,11.0,2.0,St Martin in the Fields
+1666,April,10,April,17,"Martins, in the Fields",Appoplex,1.0,14.0,,St Martin in the Fields
+1666,April,10,April,17,"Martins, in the Fields",Childbed,1.0,14.0,,St Martin in the Fields
+1666,April,10,April,17,"Martins, in the Fields",Consumpcon,5.0,14.0,,St Martin in the Fields
+1666,April,10,April,17,"Martins, in the Fields",Convulcon,2.0,14.0,,St Martin in the Fields
+1666,April,10,April,17,"Martins, in the Fields",Dropsy,1.0,14.0,,St Martin in the Fields
+1666,April,10,April,17,"Martins, in the Fields",Gripeing in ye gutts,1.0,14.0,,St Martin in the Fields
+1666,April,10,April,17,"Martins, in the Fields",Surfett,1.0,14.0,,St Martin in the Fields
+1666,April,10,April,17,"Martins, in the Fields",Teeth,1.0,14.0,,St Martin in the Fields
+1666,April,10,April,17,"Martins, in the Fields",Ulcer,1.0,14.0,,St Martin in the Fields
+1666,May,22,May,29,"Martins, in the Fields",Consumpcon,4.0,11.0,1.0,St Martin in the Fields
+1666,May,22,May,29,"Martins, in the Fields",Convulcon,1.0,11.0,1.0,St Martin in the Fields
+1666,May,22,May,29,"Martins, in the Fields",Cough,1.0,11.0,1.0,St Martin in the Fields
+1666,May,22,May,29,"Martins, in the Fields",ffeaver,1.0,11.0,1.0,St Martin in the Fields
+1666,May,22,May,29,"Martins, in the Fields",Gripeing in ye gutts,2.0,11.0,1.0,St Martin in the Fields
+1666,May,22,May,29,"Martins, in the Fields",Livergrowne,1.0,11.0,1.0,St Martin in the Fields
+1666,May,22,May,29,"Martins, in the Fields",Plague,1.0,11.0,1.0,St Martin in the Fields
+1666,July,10,July,17,"Martins, in the Fields",Consumpcon,5.0,13.0,,St Martin in the Fields
+1666,July,10,July,17,"Martins, in the Fields",Dropsy,1.0,13.0,,St Martin in the Fields
+1666,July,10,July,17,"Martins, in the Fields",Gripeing in ye gutts,2.0,13.0,,St Martin in the Fields
+1666,July,10,July,17,"Martins, in the Fields",Impostume,1.0,13.0,,St Martin in the Fields
+1666,July,10,July,17,"Martins, in the Fields",Stilborne,1.0,13.0,,St Martin in the Fields
+1666,July,10,July,17,"Martins, in the Fields",Stone,1.0,13.0,,St Martin in the Fields
+1666,July,10,July,17,"Martins, in the Fields",Teeth,2.0,13.0,,St Martin in the Fields
+1666,September,18,September,25,"Martins, in the Fields",Consumpcon,3.0,16.0,4.0,St Martin in the Fields
+1666,September,18,September,25,"Martins, in the Fields",Plague,4.0,16.0,4.0,St Martin in the Fields
+1666,September,18,September,25,"Martins, in the Fields",Apoplex,1.0,16.0,4.0,St Martin in the Fields
+1666,September,18,September,25,"Martins, in the Fields",Collick,1.0,16.0,4.0,St Martin in the Fields
+1666,September,18,September,25,"Martins, in the Fields",Convulcon,1.0,16.0,4.0,St Martin in the Fields
+1666,September,18,September,25,"Martins, in the Fields",Cough,1.0,16.0,4.0,St Martin in the Fields
+1666,September,18,September,25,"Martins, in the Fields",Gripeing in ye gutts,1.0,16.0,4.0,St Martin in the Fields
+1666,September,18,September,25,"Martins, in the Fields",Jaundies,1.0,16.0,4.0,St Martin in the Fields
+1666,September,18,September,25,"Martins, in the Fields",Stilborne,1.0,16.0,4.0,St Martin in the Fields
+1666,September,18,September,25,"Martins, in the Fields",Surfett,1.0,16.0,4.0,St Martin in the Fields
+1666,September,18,September,25,"Martins, in the Fields",Wormes,1.0,16.0,4.0,St Martin in the Fields
+1665,March,13,March,20,"Mary Savoy, in the Strand",Aged,1.0,4.0,1.0,St Mary Savoy
+1665,March,13,March,20,"Mary Savoy, in the Strand",Consumpcon,1.0,4.0,1.0,St Mary Savoy
+1665,March,13,March,20,"Mary Savoy, in the Strand",Dropsy,1.0,4.0,1.0,St Mary Savoy
+1665,March,13,March,20,"Mary Savoy, in the Strand",Plague,1.0,4.0,1.0,St Mary Savoy
+1666,April,10,April,17,"Mary Savoy, in the Strand",Consumpcon,1.0,1.0,,St Mary Savoy
+1666,July,10,July,17,"Mary Savoy, in the Strand",Consumpcon,1.0,2.0,,St Mary Savoy
+1666,July,10,July,17,"Mary Savoy, in the Strand",Teeth,1.0,2.0,,St Mary Savoy
+1666,September,18,September,25,"Mary Savoy, in the Strand",Consumpcon,1.0,2.0,2.0,St Mary Savoy
+1666,September,18,September,25,"Mary Savoy, in the Strand",Wounded,1.0,2.0,2.0,St Mary Savoy
+1665,March,13,March,20,"Margaret, in Westminster",Consumpcon,1.0,5.0,1.0,St Margaret Westminster
+1665,March,13,March,20,"Margaret, in Westminster",Dropsy,1.0,5.0,1.0,St Margaret Westminster
+1665,March,13,March,20,"Margaret, in Westminster",ffeaver,1.0,5.0,1.0,St Margaret Westminster
+1665,March,13,March,20,"Margaret, in Westminster",Jaundies,1.0,5.0,1.0,St Margaret Westminster
+1665,March,13,March,20,"Margaret, in Westminster",Plague,1.0,5.0,1.0,St Margaret Westminster
+1666,April,10,April,17,"Margaret, in Westminster",Consumpcon,3.0,10.0,2.0,St Margaret Westminster
+1666,April,10,April,17,"Margaret, in Westminster",Bruised between a Hoy & a Barge,1.0,10.0,2.0,St Margaret Westminster
+1666,April,10,April,17,"Margaret, in Westminster",Cold,1.0,10.0,2.0,St Margaret Westminster
+1666,April,10,April,17,"Margaret, in Westminster",Jaundies,1.0,10.0,2.0,St Margaret Westminster
+1666,April,10,April,17,"Margaret, in Westminster",Surfett,2.0,10.0,2.0,St Margaret Westminster
+1666,April,10,April,17,"Margaret, in Westminster",Plague,2.0,10.0,2.0,St Margaret Westminster
+1666,May,22,May,29,"Margaret, in Westminster",Consumpcon,3.0,4.0,,St Margaret Westminster
+1666,May,22,May,29,"Margaret, in Westminster",Surfett,1.0,4.0,,St Margaret Westminster
+1666,July,10,July,17,"Margaret, in Westminster",Aged,1.0,8.0,3.0,St Margaret Westminster
+1666,July,10,July,17,"Margaret, in Westminster",Convulcon,2.0,8.0,3.0,St Margaret Westminster
+1666,July,10,July,17,"Margaret, in Westminster",Dropsy,2.0,8.0,3.0,St Margaret Westminster
+1666,July,10,July,17,"Margaret, in Westminster",Plague,3.0,8.0,3.0,St Margaret Westminster
+1666,September,18,September,25,"Margaret, in Westminster",Consumpcon,5.0,14.0,2.0,St Margaret Westminster
+1666,September,18,September,25,"Margaret, in Westminster",Convulcon,3.0,14.0,2.0,St Margaret Westminster
+1666,September,18,September,25,"Margaret, in Westminster",Childbed,1.0,14.0,2.0,St Margaret Westminster
+1666,September,18,September,25,"Margaret, in Westminster",Jaundies,1.0,14.0,2.0,St Margaret Westminster
+1666,September,18,September,25,"Margaret, in Westminster",Surfett,1.0,14.0,2.0,St Margaret Westminster
+1666,September,18,September,25,"Margaret, in Westminster",Stone,1.0,14.0,2.0,St Margaret Westminster
+1666,September,18,September,25,"Margaret, in Westminster",Plague,2.0,14.0,2.0,St Margaret Westminster
+1666,April,10,April,17,"Alhallowes-Lesse, at Cole-harbor",Dropsy,1.0,3.0,,All Hallows the Less
+1666,April,10,April,17,"Alhallowes-Lesse, at Cole-harbor",Jaundies,1.0,3.0,,All Hallows the Less
+1666,April,10,April,17,"Alhallowes-Lesse, at Cole-harbor",Tissick,1.0,3.0,,All Hallows the Less
+1666,April,10,April,17,"Andrew-Hubbard, near little East-cheap",Teeth,1.0,1.0,,St Andrew Hubbard
+1666,April,10,April,17,"Andrew-Undershaft, in Leaden-hall-street",Teeth,1.0,1.0,,St Andrew Undershaft
+1666,May,22,May,29,"Andrew-Undershaft, in Leaden-hall-street",Chrisoms,1.0,1.0,,St Andrew Undershaft
+1666,April,10,April,17,Bennet Paulswharfe,Consumpcon,1.0,1.0,,St Benet Paul's Wharf
+1666,May,22,May,29,Bennet Paulswharfe,ffeaver,2.0,4.0,,St Benet Paul's Wharf
+1666,May,22,May,29,Bennet Paulswharfe,fflox,1.0,4.0,,St Benet Paul's Wharf
+1666,May,22,May,29,Bennet Paulswharfe,Cancer,1.0,4.0,,St Benet Paul's Wharf
+1666,April,10,April,17,"Botolph-Billingsgate, in Thamestreet",ffeaver,1.0,1.0,,St Botolph Billingsgate
+1666,July,10,July,17,"Botolph-Billingsgate, in Thamestreet",Chrisoms,1.0,1.0,,St Botolph Billingsgate
+1666,April,10,April,17,"Hellens, within Bishopsgate",Dropsy,1.0,2.0,,St Helen
+1666,April,10,April,17,"Hellens, within Bishopsgate",Infant,1.0,2.0,,St Helen
+1666,April,10,April,17,Katherine-Creechurch within Aldgate,Consumpcon,1.0,1.0,,St Katherine Creechurch
+1666,May,22,May,29,Katherine-Creechurch within Aldgate,Consumpcon,1.0,1.0,,St Katherine Creechurch
+1666,July,10,July,17,Katherine-Creechurch within Aldgate,Chrisoms,1.0,3.0,,St Katherine Creechurch
+1666,July,10,July,17,Katherine-Creechurch within Aldgate,Teeth,1.0,3.0,,St Katherine Creechurch
+1666,April,10,April,17,"Lawrence-Jewry, near Guildhal",Stone,1.0,1.0,,St Lawrence Jewry
+1666,May,22,May,29,"Lawrence-Jewry, near Guildhal",Consumpcon,1.0,1.0,,St Lawrence Jewry
+1666,April,10,April,17,"Lawrence-Pountney, near Canningstreet",Chrisoms,1.0,2.0,,St Lawrence Pountney
+1666,April,10,April,17,"Lawrence-Pountney, near Canningstreet",Consumpcon,1.0,2.0,,St Lawrence Pountney
+1666,May,22,May,29,"Lawrence-Pountney, near Canningstreet",Aged,1.0,1.0,,St Lawrence Pountney
+1666,April,10,April,17,"Margaret, in Newfishstreet",Consumpcon,1.0,,,St Margaret New Fish Street
+1666,May,22,May,29,"Margaret, in Newfishstreet",Thrush,1.0,1.0,,St Margaret New Fish Street
+1666,April,10,April,17,"Mary-Abchurch, near Canningstreet",Tissick,1.0,,,St Mary Abchurch
+1666,July,10,July,17,"Mary-Abchurch, near Canningstreet",Consumpcon,1.0,1.0,,St Mary Abchurch
+1666,April,10,April,17,"Mary-Aldermary, in Bow lane",Teeth,1.0,,,St Mary Aldermay
+1666,July,10,July,17,"Mary-Aldermary, in Bow lane",Gangrene,1.0,1.0,,St Mary Aldermay
+1666,April,10,April,17,"Mary-Woolnoth, in Lumbardstreet",Sudenly,1.0,1.0,,St Mary Woolnoth
+1666,April,10,April,17,"Martins-Outwich, in Bishopsgatestreet",Consumpcon,1.0,1.0,,St Martin Outwich
+1666,May,22,May,29,"Martins-Outwich, in Bishopsgatestreet",ffeaver,1.0,1.0,,St Martin Outwich
+1666,April,10,April,17,"Martins-Vintrey, in Thamestreet",ffeaver,1.0,2.0,1.0,St Martin Vintry
+1666,April,10,April,17,"Martins-Vintrey, in Thamestreet",Plague,1.0,2.0,1.0,St Martin Vintry
+1666,May,22,May,29,"Martins-Vintrey, in Thamestreet",Kild by an Oxen,1.0,1.0,,St Martin Vintry
+1666,July,10,July,17,"Martins-Vintrey, in Thamestreet",Overlaid,1.0,1.0,,St Martin Vintry
+1666,April,10,April,17,Matthew-Fridaystreet,Jaundies,1.0,1.0,,St Matthew Friday Street
+1666,May,22,May,29,Matthew-Fridaystreet,,,,,St Matthew Friday Street
+1666,April,10,April,17,Michael-Crookedlane,Tissick,1.0,1.0,,St Michael Crooked Lane
+1666,April,10,April,17,"Thomas, in Southwark",Convulcon,1.0,1.0,,St Thomas Southwark
+1666,April,10,April,17,The Pest-house Without the Walls,Plague,2.0,2.0,,Pesthouse Without the Walls
+1666,May,22,May,29,The Pest-house Without the Walls,,,,,Pesthouse Without the Walls
+1666,July,10,July,17,The Pest-house Without the Walls,Plague,1.0,1.0,1.0,Pesthouse Without the Walls
+1666,September,18,September,25,The Pest-house Without the Walls,Plague,1.0,1.0,1.0,Pesthouse Without the Walls
+1666,April,10,April,17,"Mary, at Newington Buts",Abortive,1.0,2.0,,St Mary Newington
+1666,April,10,April,17,"Mary, at Newington Buts",Spotted ffeaver,1.0,2.0,,St Mary Newington
+1666,May,22,May,29,"Mary, at Newington Buts",Consumpcon,1.0,3.0,,St Mary Newington
+1666,May,22,May,29,"Mary, at Newington Buts",ffrenchpox,1.0,3.0,,St Mary Newington
+1666,May,22,May,29,"Mary, at Newington Buts",Stoping of ye Stomack,1.0,3.0,,St Mary Newington
+1666,July,10,July,17,"Mary, at Newington Buts",Consumpcon,1.0,2.0,,St Mary Newington
+1666,July,10,July,17,"Mary, at Newington Buts",Kild with a Pistol,1.0,2.0,,St Mary Newington
+1666,September,18,September,25,"Mary, at Newington Buts",ffeaver,1.0,1.0,,St Mary Newington
+1666,May,22,May,29,"Alhallowes, in Lumbardstreet",Impostume,1.0,1.0,,All Hallows Lombard Street
+1666,July,10,July,17,"Alhallowes, in Lumbardstreet",Abortive,1.0,2.0,,All Hallows Lombard Street
+1666,July,10,July,17,"Alhallowes, in Lumbardstreet",Teeth,1.0,2.0,,All Hallows Lombard Street
+1666,May,22,May,29,"Alhallowes-Stayning, in Marke-lane",Cancer,1.0,1.0,,All Hallows Staining
+1666,September,18,September,25,"Alhallowes-Stayning, in Marke-lane",Surfett,1.0,1.0,,All Hallows Staining
+1666,May,22,May,29,"Clement, by East-cheap",Infant,2.0,2.0,,St Clement Eastcheap
+1666,May,22,May,29,"Faiths, under St. Pauls the Cathedral",Consumpcon,,,,St Faith under St Paul's
+1666,July,10,July,17,"Faiths, under St. Pauls the Cathedral",Thrush,1.0,1.0,,St Faith under St Paul's
+1666,May,22,May,29,"John-Baptist, near Downgate",Dropsy,1.0,1.0,,St John Baptist
+1666,July,10,July,17,"John-Baptist, near Downgate",Aged,1.0,1.0,,St John Baptist
+1666,May,22,May,29,"Leonard, in Fosterlane",Convulcon,1.0,1.0,,St Leonard Foster Lane
+1666,May,22,May,29,"Mary-Colechurch, lower end of Cheapside",ffeaver,1.0,1.0,,St Mary Colechurch
+1666,May,22,May,29,Maudlins-Milkstreet,,,,,St Mary Magdalen Milk Street
+1666,May,22,May,29,Maudlins-Oldfishstreet,Consumpcon,1.0,1.0,,St Mary Magdalen Old Fish Street
+1666,May,22,May,29,Peters-Cheapside,,,,,St Peter Cheap
+1666,May,22,May,29,"Peters, in Cornhil",Infant,2.0,2.0,,St Peter Cornhill
+1666,May,22,May,29,"Peters-Poor, in Broadstreet",Infant,1.0,1.0,,St Peter Poor
+1666,July,10,July,17,"Peters-Poor, in Broadstreet",Consumpcon,1.0,1.0,,St Peter Poor
+1666,May,22,May,29,Trinity in the Minories,,,,,Holy Trinity Minories
+1666,September,18,September,25,Trinity in the Minories,Consumpcon,1.0,1.0,,Holy Trinity Minories
+1666,July,10,July,17,"John-Zachary, lower end of Fosterlane",Dropsy,1.0,2.0,,St John Zachary
+1666,July,10,July,17,"John-Zachary, lower end of Fosterlane",Teeth,1.0,2.0,,St John Zachary
+1666,July,10,July,17,"Magnus, by London-Bridge",Gripeing in ye gutts,1.0,1.0,,St Magnus
+1666,July,10,July,17,"Margaret-Pattons, in Roodlane",Teeth,2.0,2.0,,St Margaret Pattens
+1666,July,10,July,17,"Mary-le-Bow, in Cheapside",Infant,1.0,2.0,,St Mary le Bow
+1666,July,10,July,17,"Mary-le-Bow, in Cheapside",Teeth,1.0,2.0,,St Mary le Bow
+1666,July,10,July,17,"Mary-Bothaw, at Dowgate",Stilborne,1.0,1.0,,St Mary Bothaw
+1666,July,10,July,17,"Mary-Summerset, at Broken-wharf",Consumpcon,1.0,2.0,,St Mary Somerset
+1666,July,10,July,17,"Mary-Summerset, at Broken-wharf",Teeth,1.0,2.0,,St Mary Somerset
+1666,July,10,July,17,Michael-Queenhithe,Consumpcon,1.0,2.0,,St Michael Queenhithe
+1666,July,10,July,17,Michael-Queenhithe,Teeth,1.0,2.0,,St Michael Queenhithe
+1666,July,10,July,17,"Mildred, in the Poultrey",Childbed,1.0,1.0,,St Mildred Poultrey
+1666,July,10,July,17,"Trinity-Parish, in Trinity-lane",Teeth,1.0,1.0,,Trinity
+1666,July,10,July,17,Bartholomew-Great,Plague,3.0,3.0,3.0,St Bartholomew Great
+1666,September,18,September,25,Bartholomew-Great,ffeaver,2.0,5.0,2.0,St Bartholomew Great
+1666,September,18,September,25,Bartholomew-Great,Plague,2.0,5.0,2.0,St Bartholomew Great
+1666,September,18,September,25,Bartholomew-Great,Thrush,1.0,5.0,2.0,St Bartholomew Great
