@@ -10,11 +10,11 @@
 import pandas as pd
 import geopandas as gpd
 
-# Read in the two files
+# Read in the two files.
 monarchs = pd.read_excel("monarchs-bills.xlsx", sheet_name="counts")
 crosswalk = pd.read_excel("cross-walk.xlsx", sheet_name="parishes")
 
-# Merge the two files
+# Merge the two files.
 merged = pd.merge(monarchs, crosswalk, left_on="parish", right_on="monarchicalParish")
 # Then, drop the "monarchicalParish" column
 merged = merged.drop(columns=["monarchicalParish"])
@@ -31,7 +31,7 @@ merged.to_csv("monarchs-bills-merged.csv", index=False, na_rep="")
 # Read the shapefile
 parishes = gpd.read_file("../parish-shapefiles/WithinTheBills1671/WithinTheBills1671.shp")
 
-# Join the csv to the shapefile
+# Join the csv to the shapefile.
 parishes = parishes.merge(merged, left_on="DBN_PAR", right_on="canonicalDBN")
 # Ensure that "count", "parishTotal", and "parishPlague" are integers not floats.
 parishes["count"] = parishes["count"].astype('Int64')
@@ -42,6 +42,6 @@ parishes["count"] = parishes["count"].fillna(pd.NA)
 parishes["parishTotal"] = parishes["parishTotal"].fillna(pd.NA)
 parishes["parishPlague"] = parishes["parishPlague"].fillna(pd.NA)
 
-# Write the output to a new shapefile
-parishes.to_file("parishes-merged.geojson", driver="GeoJSON")
+# Write the output to a new shapefile. 
+parishes.to_crs(epsg=3857).to_file("parishes-merged.geojson", driver="GeoJSON")
 parishes.to_file("../parish-shapefiles/merged/parishes-merged.shp", driver="ESRI Shapefile")
