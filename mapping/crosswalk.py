@@ -43,5 +43,5 @@ parishes["parishTotal"] = parishes["parishTotal"].fillna(pd.NA)
 parishes["parishPlague"] = parishes["parishPlague"].fillna(pd.NA)
 
 # Write the output to a new shapefile. 
-parishes.to_crs(epsg=3857).to_file("parishes-merged.geojson", driver="GeoJSON")
+parishes.to_crs(epsg=4326).to_file("parishes-merged.geojson", driver="GeoJSON")
 parishes.to_file("../parish-shapefiles/merged/parishes-merged.shp", driver="ESRI Shapefile")
