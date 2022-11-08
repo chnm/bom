@@ -5,7 +5,7 @@
 #
 # Jason A. Heppler | jason@jasonheppler.org
 # Roy Rosenzweig Center for History and New Media
-# Updated: 2022-09-20
+# Updated: 2022-11-08
 
 library(tidyverse)
 
@@ -13,21 +13,23 @@ library(tidyverse)
 # Data sources
 # ---------------------------------------------------------------------- 
 # 1. Wellcome Weekly Bills Parishes contains mortality information from weekly bills published in the late 17th century. It contains parish-by-parish counts of plague mortality and total mortality for the parish, along with subtotals and totals of christenings (births registered within the Church of England) and burials (deaths registered within the Church of England).
-raw_wellcome_weekly <- read_csv("../../datascribe-exports/2022-04-06-Wellcome-weeklybills-parishes.csv")
+raw_wellcome_weekly <- read_csv("/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/datascribe-exports/2022-04-06-1669-1670-Wellcome-weeklybills-parishes.csv")
 # 2. Wellcome Weekly Bills Causes contains mortality information from weekly bills published in the late 17th century. It contains city-wide (including local suburbs) death counts for various causes of death, along with information about christenings (births registered within the Church of England), burials (deaths registered within the Church of England), plague deaths, and bread prices.
-raw_wellcome_causes <- read_csv("../../datascribe-exports/2022-04-06-Wellcome-weeklybills-causes.csv")
+raw_wellcome_causes <- read_csv("/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/datascribe-exports/2022-04-06-Wellcome-weeklybills-causes.csv")
 # 3. Laxton Weekly Bills Parishes contains mortality information from weekly bills published in the early 18th century. It contains parish-by-parish counts of total mortality for the parish along with subtotals and totals of christenings (births registered within the Church of England) and burials (deaths registered within the Church of England).
-raw_laxton_weekly <- read_csv("../../datascribe-exports/2022-09-07-Laxton-weeklybills-parishes.csv")
+raw_laxton_weekly <- read_csv("/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/datascribe-exports/2022-11-02-Laxton-weeklybills-parishes.csv")
 # 4. Millar General Bills PostPlague Parishes contains mortality information from "general" or annual summary bills published in the early 18th century. It contains parish-by-parish counts of total mortality for the parish along with subtotals and totals of christenings (births registered within the Church of England) and burials (deaths registered within the Church of England).
-raw_millar_general <- read_csv("../../datascribe-exports/2022-04-06-millar-generalbills-postplague-parishes.csv")
+raw_millar_general <- read_csv("/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/datascribe-exports/2022-04-06-millar-generalbills-postplague-parishes.csv")
 # 5. Laxton 1700 Weekly Bills Causes contains mortality information from weekly bills published in the year 1700. It contains city-wide (including local suburbs) death counts for various causes of death.
-raw_laxton_1700_causes <- read_csv("../../datascribe-exports/2022-06-15-Laxton-1700-weeklybills-causes.csv")
+raw_laxton_1700_causes <- read_csv("/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/datascribe-exports/2022-06-15-Laxton-1700-weeklybills-causes.csv")
 # 6. Laxton Weekly Bills Causes contains mortality information from weekly bills published in the early eighteenth century. It contains city-wide (including local suburbs) death counts for various causes of death.
-raw_laxton_causes <- read_csv("../../datascribe-exports/2022-09-07-Laxton-weeklybills-causes.csv")
+raw_laxton_causes <- read_csv("/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/datascribe-exports/2022-11-02-Laxton-weeklybills-causes.csv")
 # 7. Laxton 1700 Weekly Bills Foodstuffs contains food prices from weekly bills published in the early eighteenth century. There are various types of bread and also salt.
-raw_laxton_1700_foodstuffs <- read_csv("../../datascribe-exports/2022-09-19-Laxton-1700-weeklybills-foodstuffs.csv")
+raw_laxton_1700_foodstuffs <- read_csv("/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/datascribe-exports/2022-09-19-Laxton-1700-weeklybills-foodstuffs.csv")
 # 8. Laxton Weekly Bills Foodstuffs contains food prices from weekly bills published in the early eighteenth century. There are various types of bread and also salt.
-raw_laxton_foodstuffs <- read_csv("../../datascribe-exports/2022-07-27-Laxton-weeklybills-foodstuffs.csv")
+raw_laxton_foodstuffs <- read_csv("/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/datascribe-exports/2022-09-19-Laxton-1700-weeklybills-foodstuffs.csv")
+# 9. Bodleian bills
+raw_bodleian <- read_csv("/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/datascribe-exports/2022-11-02-Bodleian-V1-weeklybills-parishes.csv")
 
 # ---------------------------------------------------------------------- 
 # Types of death table
@@ -121,23 +123,26 @@ wellcome_weekly <- raw_wellcome_weekly |>
                names_to = 'parish_name',
                values_to = 'count')
 
-names(wellcome_weekly) <- tolower(names(wellcome_weekly))
-names(wellcome_weekly) <- gsub(" ", "_", names(wellcome_weekly))
-
-#laxton_weekly <- laxton_weekly |> 
-#  filter(!str_detect(`Unique ID`, "e.g. Laxton-1706-27-recto")) |> 
-#  filter(!grepl("Laxton$$", `Unique ID`))
+bodleian_weekly <- raw_bodleian |> 
+  select(!1:4) |> 
+  pivot_longer(8:266,
+               names_to = 'parish_name',
+               values_to = 'count')
 
 # Lowercase column names and replace spaces with underscores.
 names(laxton_weekly) <- tolower(names(laxton_weekly))
 names(laxton_weekly) <- gsub(" ", "_", names(laxton_weekly))
+names(wellcome_weekly) <- tolower(names(wellcome_weekly))
+names(wellcome_weekly) <- gsub(" ", "_", names(wellcome_weekly))
+names(bodleian_weekly) <- tolower(names(bodleian_weekly))
+names(bodleian_weekly) <- gsub(" ", "_", names(bodleian_weekly))
 
 # The unique ID column is mis-named in the Laxton data so we fix it here
 names(laxton_weekly)[3] <- "unique_identifier"
-
-# --
+names(bodleian_weekly)[3] <- "unique_identifier"
 
 weekly_bills <- rbind(wellcome_weekly, laxton_weekly)
+weekly_bills <- rbind(weekly_bills, bodleian_weekly)
 weekly_bills <- weekly_bills |> 
   mutate(bill_type = "Weekly")
 
@@ -255,25 +260,6 @@ millar_long <- raw_millar_general |>
 millar_long <- millar_long |> 
   mutate(count_type = "Total")
 
-# laxton_long <- raw_laxton_general |> 
-#   select(!1:4) |> 
-#   pivot_longer(8:167,
-#                names_to = 'parish_name',
-#                values_to = 'count') |> 
-#   # We use a nonexistant week to help with some math below
-#   mutate(week = 90)
-# 
-# laxton_long <- laxton_long |> separate(parish_name, c("parish_name", "count_type"), sep = "[-]")
-# laxton_long <- laxton_long |>
-#   mutate(count_type = str_trim(count_type)) |> 
-#   mutate(parish_name = str_trim(parish_name))
-# 
-# # Lowercase column names and replace spaces with underscores.
-# names(laxton_long) <- tolower(names(laxton_long))
-# names(laxton_long) <- gsub(" ", "_", names(laxton_long))
-# The following is probably not necessary anymore:
-#laxton_long$year <- str_sub(laxton_long$unique_id, 8, 11)
-
 names(millar_long) <- tolower(names(millar_long))
 names(millar_long) <- gsub(" ", "_", names(millar_long))
 millar_long$year <- str_sub(millar_long$unique_identifier, 8, 11)
@@ -323,13 +309,6 @@ parishes_unique <- parishes_unique |>
   mutate(parish_id = row_number())
 
 rm(parishes_tmp)
-# Find all unique values for parish name, week, and year. These will be 
-# referenced as foreign keys in PostgreSQL.
-#parishes_unique <- weekly_bills |> 
-#  select(parish_name) |> 
-#  distinct() |> 
-#  arrange(parish_name) |> 
-#  mutate(parish_name = str_trim(parish_name))
 
 # Unique week values
 # ------------------
@@ -401,8 +380,6 @@ laxton_weeks_from_causes <- all_laxton_weekly_causes |>
 week_unique_weekly <- rename(week_unique_weekly, "week_number" = "week")
 
 week_unique <- rbind(week_unique_weekly, week_unique_wellcome, laxton_weeks_from_causes)
-# Ensure we have unique week ID and no duplicates
-#week_unique <- week_unique |> distinct(week_id, .keep_all = TRUE)
 
 # Filter out extraneous data and assign
 # unique week IDs to the deaths long table. 
