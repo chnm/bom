@@ -29,7 +29,7 @@ merged.to_csv("monarchs-bills-merged.csv", index=False, na_rep="")
 # data from the shapefile plus the new columns from the csv.
 
 # Read the shapefile
-parishes = gpd.read_file("../parish-shapefiles/WithinTheBills1671/WithinTheBills1671.shp")
+parishes = gpd.read_file("../parish-shapefiles/WithinTheBills1622/WithinTheBills1622.shp")
 
 # Join the csv to the shapefile.
 parishes = parishes.merge(merged, left_on="DBN_PAR", right_on="canonicalDBN")
