@@ -1,48 +1,444 @@
 year,week,unique_identifier,start_day,start_month,end_day,end_month,item,value_type,value
-1701,14,Laxton-1700-14-verso,18,March,25,March,Penny Loaf Troy Weight , White,07;14
-1701,14,Laxton-1700-14-verso,18,March,25,March,Penny Loaf Troy Weight , Wheaten,11;10
-1701,14,Laxton-1700-14-verso,18,March,25,March,Penny Loaf Troy Weight , Household,15;07
-1701,14,Laxton-1700-14-verso,18,March,25,March,Penny Loaf Common Weight , White,08;07
-1701,14,Laxton-1700-14-verso,18,March,25,March,Penny Loaf Common Weight , Wheaten,12;10
-1701,14,Laxton-1700-14-verso,18,March,25,March,Penny Loaf Common Weight , Household,16;14
-1701,14,Laxton-1700-14-verso,18,March,25,March,Two Penny Loaf Common Weight , White,
-1701,14,Laxton-1700-14-verso,18,March,25,March,Two Penny Loaf Common Weight , Wheaten,
-1701,14,Laxton-1700-14-verso,18,March,25,March,Two Penny Loaf Common Weight , Household,
-1701,14,Laxton-1700-14-verso,18,March,25,March,Six Penny Loaf Common Weight , Wheaten,
-1701,14,Laxton-1700-14-verso,18,March,25,March,Six Penny Loaf Common Weight , Household,
-1701,14,Laxton-1700-14-verso,18,March,25,March,Twelve Penny Loaf Common Weight , Wheaten,
-1701,14,Laxton-1700-14-verso,18,March,25,March,Twelve Penny Loaf Common Weight , Household,
-1701,14,Laxton-1700-14-verso,18,March,25,March,Eighteen Penny Loaf Common Weight , Wheaten,
-1701,14,Laxton-1700-14-verso,18,March,25,March,Eighteen Penny Loaf Common Weight , Household,
-1701,14,Laxton-1700-14-verso,18,March,25,March,Quartern Loaf Common Weight , Wheaten,
-1701,14,Laxton-1700-14-verso,18,March,25,March,Quartern Loaf Common Weight , Household,
-1701,14,Laxton-1700-14-verso,18,March,25,March,Half Peck Loaf Common Weight , Wheaten,
-1701,14,Laxton-1700-14-verso,18,March,25,March,Half Peck Loaf Common Weight , Household,
-1701,14,Laxton-1700-14-verso,18,March,25,March,Peck Loaf Common Weight , Wheaten,
-1701,14,Laxton-1700-14-verso,18,March,25,March,Peck Loaf Common Weight , Household,
-1701,14,Laxton-1700-14-verso,18,March,25,March,Salt,,56 I. to the Bushel 5 s
-1701,15,Laxton-1701-15-verso,25,March,1,April,Penny Loaf Troy Weight , White,07;14
-1701,15,Laxton-1701-15-verso,25,March,1,April,Penny Loaf Troy Weight , Wheaten,11;10
-1701,15,Laxton-1701-15-verso,25,March,1,April,Penny Loaf Troy Weight , Household,15;07
-1701,15,Laxton-1701-15-verso,25,March,1,April,Penny Loaf Common Weight , White,08;07
-1701,15,Laxton-1701-15-verso,25,March,1,April,Penny Loaf Common Weight , Wheaten,12;10
-1701,15,Laxton-1701-15-verso,25,March,1,April,Penny Loaf Common Weight , Household,16;14
-1701,15,Laxton-1701-15-verso,25,March,1,April,Two Penny Loaf Common Weight , White,
-1701,15,Laxton-1701-15-verso,25,March,1,April,Two Penny Loaf Common Weight , Wheaten,
-1701,15,Laxton-1701-15-verso,25,March,1,April,Two Penny Loaf Common Weight , Household,
-1701,15,Laxton-1701-15-verso,25,March,1,April,Six Penny Loaf Common Weight , Wheaten,
-1701,15,Laxton-1701-15-verso,25,March,1,April,Six Penny Loaf Common Weight , Household,
-1701,15,Laxton-1701-15-verso,25,March,1,April,Twelve Penny Loaf Common Weight , Wheaten,
-1701,15,Laxton-1701-15-verso,25,March,1,April,Twelve Penny Loaf Common Weight , Household,
-1701,15,Laxton-1701-15-verso,25,March,1,April,Eighteen Penny Loaf Common Weight , Wheaten,
-1701,15,Laxton-1701-15-verso,25,March,1,April,Eighteen Penny Loaf Common Weight , Household,
-1701,15,Laxton-1701-15-verso,25,March,1,April,Quartern Loaf Common Weight , Wheaten,
-1701,15,Laxton-1701-15-verso,25,March,1,April,Quartern Loaf Common Weight , Household,
-1701,15,Laxton-1701-15-verso,25,March,1,April,Half Peck Loaf Common Weight , Wheaten,
-1701,15,Laxton-1701-15-verso,25,March,1,April,Half Peck Loaf Common Weight , Household,
-1701,15,Laxton-1701-15-verso,25,March,1,April,Peck Loaf Common Weight , Wheaten,
-1701,15,Laxton-1701-15-verso,25,March,1,April,Peck Loaf Common Weight , Household,
-1701,15,Laxton-1701-15-verso,25,March,1,April,Salt,,56 l. to the Bushel 5 s
+1700,1,1700-01-verso,17,December,24,December,Penny Loaf Troy Weight , White,00;08;00
+1700,1,1700-01-verso,17,December,24,December,Penny Loaf Troy Weight , Wheaten,00;12;00
+1700,1,1700-01-verso,17,December,24,December,Penny Loaf Troy Weight , Household,00;16;01
+1700,1,1700-01-verso,17,December,24,December,Penny Loaf Common Weight , White,00;08;12
+1700,1,1700-01-verso,17,December,24,December,Penny Loaf Common Weight , Wheaten,00;13;03
+1700,1,1700-01-verso,17,December,24,December,Penny Loaf Common Weight , Household,00;17;10
+1700,1,1700-01-verso,17,December,24,December,Two Penny Loaf Common Weight , White,
+1700,1,1700-01-verso,17,December,24,December,Two Penny Loaf Common Weight , Wheaten,
+1700,1,1700-01-verso,17,December,24,December,Two Penny Loaf Common Weight , Household,
+1700,1,1700-01-verso,17,December,24,December,Six Penny Loaf Common Weight , Wheaten,
+1700,1,1700-01-verso,17,December,24,December,Six Penny Loaf Common Weight , Household,
+1700,1,1700-01-verso,17,December,24,December,Twelve Penny Loaf Common Weight , Wheaten,
+1700,1,1700-01-verso,17,December,24,December,Twelve Penny Loaf Common Weight , Household,
+1700,1,1700-01-verso,17,December,24,December,Eighteen Penny Loaf Common Weight , Wheaten,
+1700,1,1700-01-verso,17,December,24,December,Eighteen Penny Loaf Common Weight , Household,
+1700,1,1700-01-verso,17,December,24,December,Quartern Loaf Common Weight , Wheaten,
+1700,1,1700-01-verso,17,December,24,December,Quartern Loaf Common Weight , Household,
+1700,1,1700-01-verso,17,December,24,December,Half Peck Loaf Common Weight , Wheaten,
+1700,1,1700-01-verso,17,December,24,December,Half Peck Loaf Common Weight , Household,
+1700,1,1700-01-verso,17,December,24,December,Peck Loaf Common Weight , Wheaten,
+1700,1,1700-01-verso,17,December,24,December,Peck Loaf Common Weight , Household,
+1700,1,1700-01-verso,17,December,24,December,Salt,,56 l. to the Bushel 5 s
+1700,2,Laxton-1700-02-verso,24,December,31,December,Penny Loaf Troy Weight , White,00;08;00
+1700,2,Laxton-1700-02-verso,24,December,31,December,Penny Loaf Troy Weight , Wheaten,00;12;00
+1700,2,Laxton-1700-02-verso,24,December,31,December,Penny Loaf Troy Weight , Household,00;16;01
+1700,2,Laxton-1700-02-verso,24,December,31,December,Penny Loaf Common Weight , White,00;08;12
+1700,2,Laxton-1700-02-verso,24,December,31,December,Penny Loaf Common Weight , Wheaten,00;13;03
+1700,2,Laxton-1700-02-verso,24,December,31,December,Penny Loaf Common Weight , Household,00;17;10
+1700,2,Laxton-1700-02-verso,24,December,31,December,Two Penny Loaf Common Weight , White,
+1700,2,Laxton-1700-02-verso,24,December,31,December,Two Penny Loaf Common Weight , Wheaten,
+1700,2,Laxton-1700-02-verso,24,December,31,December,Two Penny Loaf Common Weight , Household,
+1700,2,Laxton-1700-02-verso,24,December,31,December,Six Penny Loaf Common Weight , Wheaten,
+1700,2,Laxton-1700-02-verso,24,December,31,December,Six Penny Loaf Common Weight , Household,
+1700,2,Laxton-1700-02-verso,24,December,31,December,Twelve Penny Loaf Common Weight , Wheaten,
+1700,2,Laxton-1700-02-verso,24,December,31,December,Twelve Penny Loaf Common Weight , Household,
+1700,2,Laxton-1700-02-verso,24,December,31,December,Eighteen Penny Loaf Common Weight , Wheaten,
+1700,2,Laxton-1700-02-verso,24,December,31,December,Eighteen Penny Loaf Common Weight , Household,
+1700,2,Laxton-1700-02-verso,24,December,31,December,Quartern Loaf Common Weight , Wheaten,
+1700,2,Laxton-1700-02-verso,24,December,31,December,Quartern Loaf Common Weight , Household,
+1700,2,Laxton-1700-02-verso,24,December,31,December,Half Peck Loaf Common Weight , Wheaten,
+1700,2,Laxton-1700-02-verso,24,December,31,December,Half Peck Loaf Common Weight , Household,
+1700,2,Laxton-1700-02-verso,24,December,31,December,Peck Loaf Common Weight , Wheaten,
+1700,2,Laxton-1700-02-verso,24,December,31,December,Peck Loaf Common Weight , Household,
+1700,2,Laxton-1700-02-verso,24,December,31,December,Salt,,56 l. to the Bushel 5 s
+1700,3,Laxton-1700-03-verso,31,December,7,January,Penny Loaf Troy Weight , White,00;08;00
+1700,3,Laxton-1700-03-verso,31,December,7,January,Penny Loaf Troy Weight , Wheaten,00;12;00
+1700,3,Laxton-1700-03-verso,31,December,7,January,Penny Loaf Troy Weight , Household,00;16;01
+1700,3,Laxton-1700-03-verso,31,December,7,January,Penny Loaf Common Weight , White,00;08;12
+1700,3,Laxton-1700-03-verso,31,December,7,January,Penny Loaf Common Weight , Wheaten,00;13;03
+1700,3,Laxton-1700-03-verso,31,December,7,January,Penny Loaf Common Weight , Household,00;17;10
+1700,3,Laxton-1700-03-verso,31,December,7,January,Two Penny Loaf Common Weight , White,
+1700,3,Laxton-1700-03-verso,31,December,7,January,Two Penny Loaf Common Weight , Wheaten,
+1700,3,Laxton-1700-03-verso,31,December,7,January,Two Penny Loaf Common Weight , Household,
+1700,3,Laxton-1700-03-verso,31,December,7,January,Six Penny Loaf Common Weight , Wheaten,
+1700,3,Laxton-1700-03-verso,31,December,7,January,Six Penny Loaf Common Weight , Household,
+1700,3,Laxton-1700-03-verso,31,December,7,January,Twelve Penny Loaf Common Weight , Wheaten,
+1700,3,Laxton-1700-03-verso,31,December,7,January,Twelve Penny Loaf Common Weight , Household,
+1700,3,Laxton-1700-03-verso,31,December,7,January,Eighteen Penny Loaf Common Weight , Wheaten,
+1700,3,Laxton-1700-03-verso,31,December,7,January,Eighteen Penny Loaf Common Weight , Household,
+1700,3,Laxton-1700-03-verso,31,December,7,January,Quartern Loaf Common Weight , Wheaten,
+1700,3,Laxton-1700-03-verso,31,December,7,January,Quartern Loaf Common Weight , Household,
+1700,3,Laxton-1700-03-verso,31,December,7,January,Half Peck Loaf Common Weight , Wheaten,
+1700,3,Laxton-1700-03-verso,31,December,7,January,Half Peck Loaf Common Weight , Household,
+1700,3,Laxton-1700-03-verso,31,December,7,January,Peck Loaf Common Weight , Wheaten,
+1700,3,Laxton-1700-03-verso,31,December,7,January,Peck Loaf Common Weight , Household,
+1700,3,Laxton-1700-03-verso,31,December,7,January,Salt,,56 l to the Bushel 5 s
+1700,4,Laxton-1700-04-verso,7,January,14,January,Penny Loaf Troy Weight , White,00;08;00
+1700,4,Laxton-1700-04-verso,7,January,14,January,Penny Loaf Troy Weight , Wheaten,00;12;00
+1700,4,Laxton-1700-04-verso,7,January,14,January,Penny Loaf Troy Weight , Household,00;16;01
+1700,4,Laxton-1700-04-verso,7,January,14,January,Penny Loaf Common Weight , White,00;08;12
+1700,4,Laxton-1700-04-verso,7,January,14,January,Penny Loaf Common Weight , Wheaten,00;13;03
+1700,4,Laxton-1700-04-verso,7,January,14,January,Penny Loaf Common Weight , Household,00;17;10
+1700,4,Laxton-1700-04-verso,7,January,14,January,Two Penny Loaf Common Weight , White,
+1700,4,Laxton-1700-04-verso,7,January,14,January,Two Penny Loaf Common Weight , Wheaten,
+1700,4,Laxton-1700-04-verso,7,January,14,January,Two Penny Loaf Common Weight , Household,
+1700,4,Laxton-1700-04-verso,7,January,14,January,Six Penny Loaf Common Weight , Wheaten,
+1700,4,Laxton-1700-04-verso,7,January,14,January,Six Penny Loaf Common Weight , Household,
+1700,4,Laxton-1700-04-verso,7,January,14,January,Twelve Penny Loaf Common Weight , Wheaten,
+1700,4,Laxton-1700-04-verso,7,January,14,January,Twelve Penny Loaf Common Weight , Household,
+1700,4,Laxton-1700-04-verso,7,January,14,January,Eighteen Penny Loaf Common Weight , Wheaten,
+1700,4,Laxton-1700-04-verso,7,January,14,January,Eighteen Penny Loaf Common Weight , Household,
+1700,4,Laxton-1700-04-verso,7,January,14,January,Quartern Loaf Common Weight , Wheaten,
+1700,4,Laxton-1700-04-verso,7,January,14,January,Quartern Loaf Common Weight , Household,
+1700,4,Laxton-1700-04-verso,7,January,14,January,Half Peck Loaf Common Weight , Wheaten,
+1700,4,Laxton-1700-04-verso,7,January,14,January,Half Peck Loaf Common Weight , Household,
+1700,4,Laxton-1700-04-verso,7,January,14,January,Peck Loaf Common Weight , Wheaten,
+1700,4,Laxton-1700-04-verso,7,January,14,January,Peck Loaf Common Weight , Household,
+1700,4,Laxton-1700-04-verso,7,January,14,January,Salt,,56 l. to the Bushel 5 s.
+1700,5,Laxton-1700-05-verso,14,January,21,January,Penny Loaf Troy Weight , White,00;08;00
+1700,5,Laxton-1700-05-verso,14,January,21,January,Penny Loaf Troy Weight , Wheaten,00;12;00
+1700,5,Laxton-1700-05-verso,14,January,21,January,Penny Loaf Troy Weight , Household,00;16;01
+1700,5,Laxton-1700-05-verso,14,January,21,January,Penny Loaf Common Weight , White,00;08;12
+1700,5,Laxton-1700-05-verso,14,January,21,January,Penny Loaf Common Weight , Wheaten,00;13;03
+1700,5,Laxton-1700-05-verso,14,January,21,January,Penny Loaf Common Weight , Household,00;17;10
+1700,5,Laxton-1700-05-verso,14,January,21,January,Two Penny Loaf Common Weight , White,
+1700,5,Laxton-1700-05-verso,14,January,21,January,Two Penny Loaf Common Weight , Wheaten,
+1700,5,Laxton-1700-05-verso,14,January,21,January,Two Penny Loaf Common Weight , Household,
+1700,5,Laxton-1700-05-verso,14,January,21,January,Six Penny Loaf Common Weight , Wheaten,
+1700,5,Laxton-1700-05-verso,14,January,21,January,Six Penny Loaf Common Weight , Household,
+1700,5,Laxton-1700-05-verso,14,January,21,January,Twelve Penny Loaf Common Weight , Wheaten,
+1700,5,Laxton-1700-05-verso,14,January,21,January,Twelve Penny Loaf Common Weight , Household,
+1700,5,Laxton-1700-05-verso,14,January,21,January,Eighteen Penny Loaf Common Weight , Wheaten,
+1700,5,Laxton-1700-05-verso,14,January,21,January,Eighteen Penny Loaf Common Weight , Household,
+1700,5,Laxton-1700-05-verso,14,January,21,January,Quartern Loaf Common Weight , Wheaten,
+1700,5,Laxton-1700-05-verso,14,January,21,January,Quartern Loaf Common Weight , Household,
+1700,5,Laxton-1700-05-verso,14,January,21,January,Half Peck Loaf Common Weight , Wheaten,
+1700,5,Laxton-1700-05-verso,14,January,21,January,Half Peck Loaf Common Weight , Household,
+1700,5,Laxton-1700-05-verso,14,January,21,January,Peck Loaf Common Weight , Wheaten,
+1700,5,Laxton-1700-05-verso,14,January,21,January,Peck Loaf Common Weight , Household,
+1700,5,Laxton-1700-05-verso,14,January,21,January,Salt,,56 l to the Bushel 5 s
+1700,06,Laxton-1700-06-verso,21,January,28,January,Penny Loaf Troy Weight , White,00;08;00
+1700,06,Laxton-1700-06-verso,21,January,28,January,Penny Loaf Troy Weight , Wheaten,00;12;00
+1700,06,Laxton-1700-06-verso,21,January,28,January,Penny Loaf Troy Weight , Household,00;16;01
+1700,06,Laxton-1700-06-verso,21,January,28,January,Penny Loaf Common Weight , White,00;08;12
+1700,06,Laxton-1700-06-verso,21,January,28,January,Penny Loaf Common Weight , Wheaten,00;13;03
+1700,06,Laxton-1700-06-verso,21,January,28,January,Penny Loaf Common Weight , Household,00;17;10
+1700,06,Laxton-1700-06-verso,21,January,28,January,Two Penny Loaf Common Weight , White,
+1700,06,Laxton-1700-06-verso,21,January,28,January,Two Penny Loaf Common Weight , Wheaten,
+1700,06,Laxton-1700-06-verso,21,January,28,January,Two Penny Loaf Common Weight , Household,
+1700,06,Laxton-1700-06-verso,21,January,28,January,Six Penny Loaf Common Weight , Wheaten,
+1700,06,Laxton-1700-06-verso,21,January,28,January,Six Penny Loaf Common Weight , Household,
+1700,06,Laxton-1700-06-verso,21,January,28,January,Twelve Penny Loaf Common Weight , Wheaten,
+1700,06,Laxton-1700-06-verso,21,January,28,January,Twelve Penny Loaf Common Weight , Household,
+1700,06,Laxton-1700-06-verso,21,January,28,January,Eighteen Penny Loaf Common Weight , Wheaten,
+1700,06,Laxton-1700-06-verso,21,January,28,January,Eighteen Penny Loaf Common Weight , Household,
+1700,06,Laxton-1700-06-verso,21,January,28,January,Quartern Loaf Common Weight , Wheaten,
+1700,06,Laxton-1700-06-verso,21,January,28,January,Quartern Loaf Common Weight , Household,
+1700,06,Laxton-1700-06-verso,21,January,28,January,Half Peck Loaf Common Weight , Wheaten,
+1700,06,Laxton-1700-06-verso,21,January,28,January,Half Peck Loaf Common Weight , Household,
+1700,06,Laxton-1700-06-verso,21,January,28,January,Peck Loaf Common Weight , Wheaten,
+1700,06,Laxton-1700-06-verso,21,January,28,January,Peck Loaf Common Weight , Household,
+1700,06,Laxton-1700-06-verso,21,January,28,January,Salt,,56 l. to the Bushel 5 s.
+1700,7,Laxton-1700-07-verso,28,January,4,February,Penny Loaf Troy Weight , White,00;08;06
+1700,7,Laxton-1700-07-verso,28,January,4,February,Penny Loaf Troy Weight , Wheaten,00;12;10
+1700,7,Laxton-1700-07-verso,28,January,4,February,Penny Loaf Troy Weight , Household,00;16;14
+1700,7,Laxton-1700-07-verso,28,January,4,February,Penny Loaf Common Weight , White,00;09;02
+1700,7,Laxton-1700-07-verso,28,January,4,February,Penny Loaf Common Weight , Wheaten,00;13;12
+1700,7,Laxton-1700-07-verso,28,January,4,February,Penny Loaf Common Weight , Household,00;18;04
+1700,7,Laxton-1700-07-verso,28,January,4,February,Two Penny Loaf Common Weight , White,
+1700,7,Laxton-1700-07-verso,28,January,4,February,Two Penny Loaf Common Weight , Wheaten,
+1700,7,Laxton-1700-07-verso,28,January,4,February,Two Penny Loaf Common Weight , Household,
+1700,7,Laxton-1700-07-verso,28,January,4,February,Six Penny Loaf Common Weight , Wheaten,
+1700,7,Laxton-1700-07-verso,28,January,4,February,Six Penny Loaf Common Weight , Household,
+1700,7,Laxton-1700-07-verso,28,January,4,February,Twelve Penny Loaf Common Weight , Wheaten,
+1700,7,Laxton-1700-07-verso,28,January,4,February,Twelve Penny Loaf Common Weight , Household,
+1700,7,Laxton-1700-07-verso,28,January,4,February,Eighteen Penny Loaf Common Weight , Wheaten,
+1700,7,Laxton-1700-07-verso,28,January,4,February,Eighteen Penny Loaf Common Weight , Household,
+1700,7,Laxton-1700-07-verso,28,January,4,February,Quartern Loaf Common Weight , Wheaten,
+1700,7,Laxton-1700-07-verso,28,January,4,February,Quartern Loaf Common Weight , Household,
+1700,7,Laxton-1700-07-verso,28,January,4,February,Half Peck Loaf Common Weight , Wheaten,
+1700,7,Laxton-1700-07-verso,28,January,4,February,Half Peck Loaf Common Weight , Household,
+1700,7,Laxton-1700-07-verso,28,January,4,February,Peck Loaf Common Weight , Wheaten,
+1700,7,Laxton-1700-07-verso,28,January,4,February,Peck Loaf Common Weight , Household,
+1700,7,Laxton-1700-07-verso,28,January,4,February,Salt,,56 l. to the Bushel 5 s.
+1700,8,Laxton-1700-08-verso,4,February,11,February,Penny Loaf Troy Weight , White,00;08;06
+1700,8,Laxton-1700-08-verso,4,February,11,February,Penny Loaf Troy Weight , Wheaten,00;12;10
+1700,8,Laxton-1700-08-verso,4,February,11,February,Penny Loaf Troy Weight , Household,00;16;14
+1700,8,Laxton-1700-08-verso,4,February,11,February,Penny Loaf Common Weight , White,00;09;02
+1700,8,Laxton-1700-08-verso,4,February,11,February,Penny Loaf Common Weight , Wheaten,00;13;12
+1700,8,Laxton-1700-08-verso,4,February,11,February,Penny Loaf Common Weight , Household,00;18;04
+1700,8,Laxton-1700-08-verso,4,February,11,February,Two Penny Loaf Common Weight , White,
+1700,8,Laxton-1700-08-verso,4,February,11,February,Two Penny Loaf Common Weight , Wheaten,
+1700,8,Laxton-1700-08-verso,4,February,11,February,Two Penny Loaf Common Weight , Household,
+1700,8,Laxton-1700-08-verso,4,February,11,February,Six Penny Loaf Common Weight , Wheaten,
+1700,8,Laxton-1700-08-verso,4,February,11,February,Six Penny Loaf Common Weight , Household,
+1700,8,Laxton-1700-08-verso,4,February,11,February,Twelve Penny Loaf Common Weight , Wheaten,
+1700,8,Laxton-1700-08-verso,4,February,11,February,Twelve Penny Loaf Common Weight , Household,
+1700,8,Laxton-1700-08-verso,4,February,11,February,Eighteen Penny Loaf Common Weight , Wheaten,
+1700,8,Laxton-1700-08-verso,4,February,11,February,Eighteen Penny Loaf Common Weight , Household,
+1700,8,Laxton-1700-08-verso,4,February,11,February,Quartern Loaf Common Weight , Wheaten,
+1700,8,Laxton-1700-08-verso,4,February,11,February,Quartern Loaf Common Weight , Household,
+1700,8,Laxton-1700-08-verso,4,February,11,February,Half Peck Loaf Common Weight , Wheaten,
+1700,8,Laxton-1700-08-verso,4,February,11,February,Half Peck Loaf Common Weight , Household,
+1700,8,Laxton-1700-08-verso,4,February,11,February,Peck Loaf Common Weight , Wheaten,
+1700,8,Laxton-1700-08-verso,4,February,11,February,Peck Loaf Common Weight , Household,
+1700,8,Laxton-1700-08-verso,4,February,11,February,Salt,,56 l. to the Bushel 5 s.
+1700,9,Laxton-1700-09-verso,11,February,18,February,Penny Loaf Troy Weight , White,00;08;06
+1700,9,Laxton-1700-09-verso,11,February,18,February,Penny Loaf Troy Weight , Wheaten,00;12;10
+1700,9,Laxton-1700-09-verso,11,February,18,February,Penny Loaf Troy Weight , Household,00;16;14
+1700,9,Laxton-1700-09-verso,11,February,18,February,Penny Loaf Common Weight , White,00;09;02
+1700,9,Laxton-1700-09-verso,11,February,18,February,Penny Loaf Common Weight , Wheaten,00;13;12
+1700,9,Laxton-1700-09-verso,11,February,18,February,Penny Loaf Common Weight , Household,00;18;04
+1700,9,Laxton-1700-09-verso,11,February,18,February,Two Penny Loaf Common Weight , White,
+1700,9,Laxton-1700-09-verso,11,February,18,February,Two Penny Loaf Common Weight , Wheaten,
+1700,9,Laxton-1700-09-verso,11,February,18,February,Two Penny Loaf Common Weight , Household,
+1700,9,Laxton-1700-09-verso,11,February,18,February,Six Penny Loaf Common Weight , Wheaten,
+1700,9,Laxton-1700-09-verso,11,February,18,February,Six Penny Loaf Common Weight , Household,
+1700,9,Laxton-1700-09-verso,11,February,18,February,Twelve Penny Loaf Common Weight , Wheaten,
+1700,9,Laxton-1700-09-verso,11,February,18,February,Twelve Penny Loaf Common Weight , Household,
+1700,9,Laxton-1700-09-verso,11,February,18,February,Eighteen Penny Loaf Common Weight , Wheaten,
+1700,9,Laxton-1700-09-verso,11,February,18,February,Eighteen Penny Loaf Common Weight , Household,
+1700,9,Laxton-1700-09-verso,11,February,18,February,Quartern Loaf Common Weight , Wheaten,
+1700,9,Laxton-1700-09-verso,11,February,18,February,Quartern Loaf Common Weight , Household,
+1700,9,Laxton-1700-09-verso,11,February,18,February,Half Peck Loaf Common Weight , Wheaten,
+1700,9,Laxton-1700-09-verso,11,February,18,February,Half Peck Loaf Common Weight , Household,
+1700,9,Laxton-1700-09-verso,11,February,18,February,Peck Loaf Common Weight , Wheaten,
+1700,9,Laxton-1700-09-verso,11,February,18,February,Peck Loaf Common Weight , Household,
+1700,9,Laxton-1700-09-verso,11,February,18,February,Salt,,56 l. to the Bushel 5 s.
+1700,10,Laxton-1700-10-verso,18,February,25,February,Penny Loaf Troy Weight , White,00;08;06
+1700,10,Laxton-1700-10-verso,18,February,25,February,Penny Loaf Troy Weight , Wheaten,00;12;10
+1700,10,Laxton-1700-10-verso,18,February,25,February,Penny Loaf Troy Weight , Household,00;16;14
+1700,10,Laxton-1700-10-verso,18,February,25,February,Penny Loaf Common Weight , White,00;09;02
+1700,10,Laxton-1700-10-verso,18,February,25,February,Penny Loaf Common Weight , Wheaten,00;13;12
+1700,10,Laxton-1700-10-verso,18,February,25,February,Penny Loaf Common Weight , Household,00;18;04
+1700,10,Laxton-1700-10-verso,18,February,25,February,Two Penny Loaf Common Weight , White,
+1700,10,Laxton-1700-10-verso,18,February,25,February,Two Penny Loaf Common Weight , Wheaten,
+1700,10,Laxton-1700-10-verso,18,February,25,February,Two Penny Loaf Common Weight , Household,
+1700,10,Laxton-1700-10-verso,18,February,25,February,Six Penny Loaf Common Weight , Wheaten,
+1700,10,Laxton-1700-10-verso,18,February,25,February,Six Penny Loaf Common Weight , Household,
+1700,10,Laxton-1700-10-verso,18,February,25,February,Twelve Penny Loaf Common Weight , Wheaten,
+1700,10,Laxton-1700-10-verso,18,February,25,February,Twelve Penny Loaf Common Weight , Household,
+1700,10,Laxton-1700-10-verso,18,February,25,February,Eighteen Penny Loaf Common Weight , Wheaten,
+1700,10,Laxton-1700-10-verso,18,February,25,February,Eighteen Penny Loaf Common Weight , Household,
+1700,10,Laxton-1700-10-verso,18,February,25,February,Quartern Loaf Common Weight , Wheaten,
+1700,10,Laxton-1700-10-verso,18,February,25,February,Quartern Loaf Common Weight , Household,
+1700,10,Laxton-1700-10-verso,18,February,25,February,Half Peck Loaf Common Weight , Wheaten,
+1700,10,Laxton-1700-10-verso,18,February,25,February,Half Peck Loaf Common Weight , Household,
+1700,10,Laxton-1700-10-verso,18,February,25,February,Peck Loaf Common Weight , Wheaten,
+1700,10,Laxton-1700-10-verso,18,February,25,February,Peck Loaf Common Weight , Household,
+1700,10,Laxton-1700-10-verso,18,February,25,February,Salt,,56 l. to the Bushel 5 s.
+1700,11,Laxton-1700-11-verso,25,February,4,March,Penny Loaf Troy Weight , White,00;07;14
+1700,11,Laxton-1700-11-verso,25,February,4,March,Penny Loaf Troy Weight , Wheaten,00;11;10
+1700,11,Laxton-1700-11-verso,25,February,4,March,Penny Loaf Troy Weight , Household,00;15;07
+1700,11,Laxton-1700-11-verso,25,February,4,March,Penny Loaf Common Weight , White,00;08;07
+1700,11,Laxton-1700-11-verso,25,February,4,March,Penny Loaf Common Weight , Wheaten,00;12;10
+1700,11,Laxton-1700-11-verso,25,February,4,March,Penny Loaf Common Weight , Household,00;16;14
+1700,11,Laxton-1700-11-verso,25,February,4,March,Two Penny Loaf Common Weight , White,
+1700,11,Laxton-1700-11-verso,25,February,4,March,Two Penny Loaf Common Weight , Wheaten,
+1700,11,Laxton-1700-11-verso,25,February,4,March,Two Penny Loaf Common Weight , Household,
+1700,11,Laxton-1700-11-verso,25,February,4,March,Six Penny Loaf Common Weight , Wheaten,
+1700,11,Laxton-1700-11-verso,25,February,4,March,Six Penny Loaf Common Weight , Household,
+1700,11,Laxton-1700-11-verso,25,February,4,March,Twelve Penny Loaf Common Weight , Wheaten,
+1700,11,Laxton-1700-11-verso,25,February,4,March,Twelve Penny Loaf Common Weight , Household,
+1700,11,Laxton-1700-11-verso,25,February,4,March,Eighteen Penny Loaf Common Weight , Wheaten,
+1700,11,Laxton-1700-11-verso,25,February,4,March,Eighteen Penny Loaf Common Weight , Household,
+1700,11,Laxton-1700-11-verso,25,February,4,March,Quartern Loaf Common Weight , Wheaten,
+1700,11,Laxton-1700-11-verso,25,February,4,March,Quartern Loaf Common Weight , Household,
+1700,11,Laxton-1700-11-verso,25,February,4,March,Half Peck Loaf Common Weight , Wheaten,
+1700,11,Laxton-1700-11-verso,25,February,4,March,Half Peck Loaf Common Weight , Household,
+1700,11,Laxton-1700-11-verso,25,February,4,March,Peck Loaf Common Weight , Wheaten,
+1700,11,Laxton-1700-11-verso,25,February,4,March,Peck Loaf Common Weight , Household,
+1700,11,Laxton-1700-11-verso,25,February,4,March,Salt,,56 l. to the Bushel 5 s.
+1700,12,Laxton-1700-12-verso,4,March,11,March,Penny Loaf Troy Weight , White,00;07;14
+1700,12,Laxton-1700-12-verso,4,March,11,March,Penny Loaf Troy Weight , Wheaten,00;11;10
+1700,12,Laxton-1700-12-verso,4,March,11,March,Penny Loaf Troy Weight , Household,00;15;07
+1700,12,Laxton-1700-12-verso,4,March,11,March,Penny Loaf Common Weight , White,00;08;07
+1700,12,Laxton-1700-12-verso,4,March,11,March,Penny Loaf Common Weight , Wheaten,00;12;10
+1700,12,Laxton-1700-12-verso,4,March,11,March,Penny Loaf Common Weight , Household,00;16;14
+1700,12,Laxton-1700-12-verso,4,March,11,March,Two Penny Loaf Common Weight , White,
+1700,12,Laxton-1700-12-verso,4,March,11,March,Two Penny Loaf Common Weight , Wheaten,
+1700,12,Laxton-1700-12-verso,4,March,11,March,Two Penny Loaf Common Weight , Household,
+1700,12,Laxton-1700-12-verso,4,March,11,March,Six Penny Loaf Common Weight , Wheaten,
+1700,12,Laxton-1700-12-verso,4,March,11,March,Six Penny Loaf Common Weight , Household,
+1700,12,Laxton-1700-12-verso,4,March,11,March,Twelve Penny Loaf Common Weight , Wheaten,
+1700,12,Laxton-1700-12-verso,4,March,11,March,Twelve Penny Loaf Common Weight , Household,
+1700,12,Laxton-1700-12-verso,4,March,11,March,Eighteen Penny Loaf Common Weight , Wheaten,
+1700,12,Laxton-1700-12-verso,4,March,11,March,Eighteen Penny Loaf Common Weight , Household,
+1700,12,Laxton-1700-12-verso,4,March,11,March,Quartern Loaf Common Weight , Wheaten,
+1700,12,Laxton-1700-12-verso,4,March,11,March,Quartern Loaf Common Weight , Household,
+1700,12,Laxton-1700-12-verso,4,March,11,March,Half Peck Loaf Common Weight , Wheaten,
+1700,12,Laxton-1700-12-verso,4,March,11,March,Half Peck Loaf Common Weight , Household,
+1700,12,Laxton-1700-12-verso,4,March,11,March,Peck Loaf Common Weight , Wheaten,
+1700,12,Laxton-1700-12-verso,4,March,11,March,Peck Loaf Common Weight , Household,
+1700,12,Laxton-1700-12-verso,4,March,11,March,Salt,,56 l. to the Bushel 5 s.
+1700,13,Laxton-1700-13-verso,11,March,18,March,Penny Loaf Troy Weight , White,00;07;14
+1700,13,Laxton-1700-13-verso,11,March,18,March,Penny Loaf Troy Weight , Wheaten,00;11;10
+1700,13,Laxton-1700-13-verso,11,March,18,March,Penny Loaf Troy Weight , Household,00;15;07
+1700,13,Laxton-1700-13-verso,11,March,18,March,Penny Loaf Common Weight , White,00;08;07
+1700,13,Laxton-1700-13-verso,11,March,18,March,Penny Loaf Common Weight , Wheaten,00;12;10
+1700,13,Laxton-1700-13-verso,11,March,18,March,Penny Loaf Common Weight , Household,00;16;14
+1700,13,Laxton-1700-13-verso,11,March,18,March,Two Penny Loaf Common Weight , White,
+1700,13,Laxton-1700-13-verso,11,March,18,March,Two Penny Loaf Common Weight , Wheaten,
+1700,13,Laxton-1700-13-verso,11,March,18,March,Two Penny Loaf Common Weight , Household,
+1700,13,Laxton-1700-13-verso,11,March,18,March,Six Penny Loaf Common Weight , Wheaten,
+1700,13,Laxton-1700-13-verso,11,March,18,March,Six Penny Loaf Common Weight , Household,
+1700,13,Laxton-1700-13-verso,11,March,18,March,Twelve Penny Loaf Common Weight , Wheaten,
+1700,13,Laxton-1700-13-verso,11,March,18,March,Twelve Penny Loaf Common Weight , Household,
+1700,13,Laxton-1700-13-verso,11,March,18,March,Eighteen Penny Loaf Common Weight , Wheaten,
+1700,13,Laxton-1700-13-verso,11,March,18,March,Eighteen Penny Loaf Common Weight , Household,
+1700,13,Laxton-1700-13-verso,11,March,18,March,Quartern Loaf Common Weight , Wheaten,
+1700,13,Laxton-1700-13-verso,11,March,18,March,Quartern Loaf Common Weight , Household,
+1700,13,Laxton-1700-13-verso,11,March,18,March,Half Peck Loaf Common Weight , Wheaten,
+1700,13,Laxton-1700-13-verso,11,March,18,March,Half Peck Loaf Common Weight , Household,
+1700,13,Laxton-1700-13-verso,11,March,18,March,Peck Loaf Common Weight , Wheaten,
+1700,13,Laxton-1700-13-verso,11,March,18,March,Peck Loaf Common Weight , Household,
+1700,13,Laxton-1700-13-verso,11,March,18,March,Salt,,56 l. to the Bushel 5 s.
+1701,1,Laxton-1701-01-verso,16,December,23,December,Penny Loaf Troy Weight , White,00;09;01
+1701,1,Laxton-1701-01-verso,16,December,23,December,Penny Loaf Troy Weight , Wheaten,00;13;10
+1701,1,Laxton-1701-01-verso,16,December,23,December,Penny Loaf Troy Weight , Household,00;17;19
+1701,1,Laxton-1701-01-verso,16,December,23,December,Penny Loaf Common Weight , White,00;09;14
+1701,1,Laxton-1701-01-verso,16,December,23,December,Penny Loaf Common Weight , Wheaten,00;14;13
+1701,1,Laxton-1701-01-verso,16,December,23,December,Penny Loaf Common Weight , Household,00;19;11
+1701,1,Laxton-1701-01-verso,16,December,23,December,Two Penny Loaf Common Weight , White,
+1701,1,Laxton-1701-01-verso,16,December,23,December,Two Penny Loaf Common Weight , Wheaten,
+1701,1,Laxton-1701-01-verso,16,December,23,December,Two Penny Loaf Common Weight , Household,
+1701,1,Laxton-1701-01-verso,16,December,23,December,Six Penny Loaf Common Weight , Wheaten,
+1701,1,Laxton-1701-01-verso,16,December,23,December,Six Penny Loaf Common Weight , Household,
+1701,1,Laxton-1701-01-verso,16,December,23,December,Twelve Penny Loaf Common Weight , Wheaten,
+1701,1,Laxton-1701-01-verso,16,December,23,December,Twelve Penny Loaf Common Weight , Household,
+1701,1,Laxton-1701-01-verso,16,December,23,December,Eighteen Penny Loaf Common Weight , Wheaten,
+1701,1,Laxton-1701-01-verso,16,December,23,December,Eighteen Penny Loaf Common Weight , Household,
+1701,1,Laxton-1701-01-verso,16,December,23,December,Quartern Loaf Common Weight , Wheaten,
+1701,1,Laxton-1701-01-verso,16,December,23,December,Quartern Loaf Common Weight , Household,
+1701,1,Laxton-1701-01-verso,16,December,23,December,Half Peck Loaf Common Weight , Wheaten,
+1701,1,Laxton-1701-01-verso,16,December,23,December,Half Peck Loaf Common Weight , Household,
+1701,1,Laxton-1701-01-verso,16,December,23,December,Peck Loaf Common Weight , Wheaten,
+1701,1,Laxton-1701-01-verso,16,December,23,December,Peck Loaf Common Weight , Household,
+1701,1,Laxton-1701-01-verso,16,December,23,December,Salt,,56 l. to the Bushel 5 s.
+1701,2,Laxton-1701-02-verso,23,December,30,December,Penny Loaf Troy Weight , White,00;09;01
+1701,2,Laxton-1701-02-verso,23,December,30,December,Penny Loaf Troy Weight , Wheaten,00;13;10
+1701,2,Laxton-1701-02-verso,23,December,30,December,Penny Loaf Troy Weight , Household,00;17;19
+1701,2,Laxton-1701-02-verso,23,December,30,December,Penny Loaf Common Weight , White,00;09;14
+1701,2,Laxton-1701-02-verso,23,December,30,December,Penny Loaf Common Weight , Wheaten,00;14;13
+1701,2,Laxton-1701-02-verso,23,December,30,December,Penny Loaf Common Weight , Household,00;19;11
+1701,2,Laxton-1701-02-verso,23,December,30,December,Two Penny Loaf Common Weight , White,
+1701,2,Laxton-1701-02-verso,23,December,30,December,Two Penny Loaf Common Weight , Wheaten,
+1701,2,Laxton-1701-02-verso,23,December,30,December,Two Penny Loaf Common Weight , Household,
+1701,2,Laxton-1701-02-verso,23,December,30,December,Six Penny Loaf Common Weight , Wheaten,
+1701,2,Laxton-1701-02-verso,23,December,30,December,Six Penny Loaf Common Weight , Household,
+1701,2,Laxton-1701-02-verso,23,December,30,December,Twelve Penny Loaf Common Weight , Wheaten,
+1701,2,Laxton-1701-02-verso,23,December,30,December,Twelve Penny Loaf Common Weight , Household,
+1701,2,Laxton-1701-02-verso,23,December,30,December,Eighteen Penny Loaf Common Weight , Wheaten,
+1701,2,Laxton-1701-02-verso,23,December,30,December,Eighteen Penny Loaf Common Weight , Household,
+1701,2,Laxton-1701-02-verso,23,December,30,December,Quartern Loaf Common Weight , Wheaten,
+1701,2,Laxton-1701-02-verso,23,December,30,December,Quartern Loaf Common Weight , Household,
+1701,2,Laxton-1701-02-verso,23,December,30,December,Half Peck Loaf Common Weight , Wheaten,
+1701,2,Laxton-1701-02-verso,23,December,30,December,Half Peck Loaf Common Weight , Household,
+1701,2,Laxton-1701-02-verso,23,December,30,December,Peck Loaf Common Weight , Wheaten,
+1701,2,Laxton-1701-02-verso,23,December,30,December,Peck Loaf Common Weight , Household,
+1701,2,Laxton-1701-02-verso,23,December,30,December,Salt,,56 l. to the Bushel 5 s.
+1701,3,Laxton-1701-03-verso,30,December,6,January,Penny Loaf Troy Weight , White,00;09;01
+1701,3,Laxton-1701-03-verso,30,December,6,January,Penny Loaf Troy Weight , Wheaten,00;13;10
+1701,3,Laxton-1701-03-verso,30,December,6,January,Penny Loaf Troy Weight , Household,00;17;19
+1701,3,Laxton-1701-03-verso,30,December,6,January,Penny Loaf Common Weight , White,00;09;14
+1701,3,Laxton-1701-03-verso,30,December,6,January,Penny Loaf Common Weight , Wheaten,00;14;13
+1701,3,Laxton-1701-03-verso,30,December,6,January,Penny Loaf Common Weight , Household,00;19;11
+1701,3,Laxton-1701-03-verso,30,December,6,January,Two Penny Loaf Common Weight , White,
+1701,3,Laxton-1701-03-verso,30,December,6,January,Two Penny Loaf Common Weight , Wheaten,
+1701,3,Laxton-1701-03-verso,30,December,6,January,Two Penny Loaf Common Weight , Household,
+1701,3,Laxton-1701-03-verso,30,December,6,January,Six Penny Loaf Common Weight , Wheaten,
+1701,3,Laxton-1701-03-verso,30,December,6,January,Six Penny Loaf Common Weight , Household,
+1701,3,Laxton-1701-03-verso,30,December,6,January,Twelve Penny Loaf Common Weight , Wheaten,
+1701,3,Laxton-1701-03-verso,30,December,6,January,Twelve Penny Loaf Common Weight , Household,
+1701,3,Laxton-1701-03-verso,30,December,6,January,Eighteen Penny Loaf Common Weight , Wheaten,
+1701,3,Laxton-1701-03-verso,30,December,6,January,Eighteen Penny Loaf Common Weight , Household,
+1701,3,Laxton-1701-03-verso,30,December,6,January,Quartern Loaf Common Weight , Wheaten,
+1701,3,Laxton-1701-03-verso,30,December,6,January,Quartern Loaf Common Weight , Household,
+1701,3,Laxton-1701-03-verso,30,December,6,January,Half Peck Loaf Common Weight , Wheaten,
+1701,3,Laxton-1701-03-verso,30,December,6,January,Half Peck Loaf Common Weight , Household,
+1701,3,Laxton-1701-03-verso,30,December,6,January,Peck Loaf Common Weight , Wheaten,
+1701,3,Laxton-1701-03-verso,30,December,6,January,Peck Loaf Common Weight , Household,
+1701,3,Laxton-1701-03-verso,30,December,6,January,Salt,,56 l. to the Bushel 5 s.
+1701,4,Laxton-1701-04-verso,6,January,13,January,Penny Loaf Troy Weight , White,00;09;01
+1701,4,Laxton-1701-04-verso,6,January,13,January,Penny Loaf Troy Weight , Wheaten,00;13;10
+1701,4,Laxton-1701-04-verso,6,January,13,January,Penny Loaf Troy Weight , Household,00;17;19
+1701,4,Laxton-1701-04-verso,6,January,13,January,Penny Loaf Common Weight , White,00;09;14
+1701,4,Laxton-1701-04-verso,6,January,13,January,Penny Loaf Common Weight , Wheaten,00;14;13
+1701,4,Laxton-1701-04-verso,6,January,13,January,Penny Loaf Common Weight , Household,00;19;11
+1701,4,Laxton-1701-04-verso,6,January,13,January,Two Penny Loaf Common Weight , White,
+1701,4,Laxton-1701-04-verso,6,January,13,January,Two Penny Loaf Common Weight , Wheaten,
+1701,4,Laxton-1701-04-verso,6,January,13,January,Two Penny Loaf Common Weight , Household,
+1701,4,Laxton-1701-04-verso,6,January,13,January,Six Penny Loaf Common Weight , Wheaten,
+1701,4,Laxton-1701-04-verso,6,January,13,January,Six Penny Loaf Common Weight , Household,
+1701,4,Laxton-1701-04-verso,6,January,13,January,Twelve Penny Loaf Common Weight , Wheaten,
+1701,4,Laxton-1701-04-verso,6,January,13,January,Twelve Penny Loaf Common Weight , Household,
+1701,4,Laxton-1701-04-verso,6,January,13,January,Eighteen Penny Loaf Common Weight , Wheaten,
+1701,4,Laxton-1701-04-verso,6,January,13,January,Eighteen Penny Loaf Common Weight , Household,
+1701,4,Laxton-1701-04-verso,6,January,13,January,Quartern Loaf Common Weight , Wheaten,
+1701,4,Laxton-1701-04-verso,6,January,13,January,Quartern Loaf Common Weight , Household,
+1701,4,Laxton-1701-04-verso,6,January,13,January,Half Peck Loaf Common Weight , Wheaten,
+1701,4,Laxton-1701-04-verso,6,January,13,January,Half Peck Loaf Common Weight , Household,
+1701,4,Laxton-1701-04-verso,6,January,13,January,Peck Loaf Common Weight , Wheaten,
+1701,4,Laxton-1701-04-verso,6,January,13,January,Peck Loaf Common Weight , Household,
+1701,4,Laxton-1701-04-verso,6,January,13,January,Salt,,56 l. to the Bushel 5 s.
+1701,5,Laxton-1701-05-verso,13,January,20,January,Penny Loaf Troy Weight , White,00;08;13
+1701,5,Laxton-1701-05-verso,13,January,20,January,Penny Loaf Troy Weight , Wheaten,00;13;00
+1701,5,Laxton-1701-05-verso,13,January,20,January,Penny Loaf Troy Weight , Household,00;17;06
+1701,5,Laxton-1701-05-verso,13,January,20,January,Penny Loaf Common Weight , White,00;09;08
+1701,5,Laxton-1701-05-verso,13,January,20,January,Penny Loaf Common Weight , Wheaten,00;14;04
+1701,5,Laxton-1701-05-verso,13,January,20,January,Penny Loaf Common Weight , Household,00;19;00
+1701,5,Laxton-1701-05-verso,13,January,20,January,Two Penny Loaf Common Weight , White,
+1701,5,Laxton-1701-05-verso,13,January,20,January,Two Penny Loaf Common Weight , Wheaten,
+1701,5,Laxton-1701-05-verso,13,January,20,January,Two Penny Loaf Common Weight , Household,
+1701,5,Laxton-1701-05-verso,13,January,20,January,Six Penny Loaf Common Weight , Wheaten,
+1701,5,Laxton-1701-05-verso,13,January,20,January,Six Penny Loaf Common Weight , Household,
+1701,5,Laxton-1701-05-verso,13,January,20,January,Twelve Penny Loaf Common Weight , Wheaten,
+1701,5,Laxton-1701-05-verso,13,January,20,January,Twelve Penny Loaf Common Weight , Household,
+1701,5,Laxton-1701-05-verso,13,January,20,January,Eighteen Penny Loaf Common Weight , Wheaten,
+1701,5,Laxton-1701-05-verso,13,January,20,January,Eighteen Penny Loaf Common Weight , Household,
+1701,5,Laxton-1701-05-verso,13,January,20,January,Quartern Loaf Common Weight , Wheaten,
+1701,5,Laxton-1701-05-verso,13,January,20,January,Quartern Loaf Common Weight , Household,
+1701,5,Laxton-1701-05-verso,13,January,20,January,Half Peck Loaf Common Weight , Wheaten,
+1701,5,Laxton-1701-05-verso,13,January,20,January,Half Peck Loaf Common Weight , Household,
+1701,5,Laxton-1701-05-verso,13,January,20,January,Peck Loaf Common Weight , Wheaten,
+1701,5,Laxton-1701-05-verso,13,January,20,January,Peck Loaf Common Weight , Household,
+1701,5,Laxton-1701-05-verso,13,January,20,January,Salt,,56 l. to the Bushel 5 s.
+1701,6,Laxton-1701-06-verso,20,January,27,January,Penny Loaf Troy Weight , White,00;08;13
+1701,6,Laxton-1701-06-verso,20,January,27,January,Penny Loaf Troy Weight , Wheaten,00;13;00
+1701,6,Laxton-1701-06-verso,20,January,27,January,Penny Loaf Troy Weight , Household,00;17;06
+1701,6,Laxton-1701-06-verso,20,January,27,January,Penny Loaf Common Weight , White,00;09;08
+1701,6,Laxton-1701-06-verso,20,January,27,January,Penny Loaf Common Weight , Wheaten,00;14;04
+1701,6,Laxton-1701-06-verso,20,January,27,January,Penny Loaf Common Weight , Household,00;19;00
+1701,6,Laxton-1701-06-verso,20,January,27,January,Two Penny Loaf Common Weight , White,
+1701,6,Laxton-1701-06-verso,20,January,27,January,Two Penny Loaf Common Weight , Wheaten,
+1701,6,Laxton-1701-06-verso,20,January,27,January,Two Penny Loaf Common Weight , Household,
+1701,6,Laxton-1701-06-verso,20,January,27,January,Six Penny Loaf Common Weight , Wheaten,
+1701,6,Laxton-1701-06-verso,20,January,27,January,Six Penny Loaf Common Weight , Household,
+1701,6,Laxton-1701-06-verso,20,January,27,January,Twelve Penny Loaf Common Weight , Wheaten,
+1701,6,Laxton-1701-06-verso,20,January,27,January,Twelve Penny Loaf Common Weight , Household,
+1701,6,Laxton-1701-06-verso,20,January,27,January,Eighteen Penny Loaf Common Weight , Wheaten,
+1701,6,Laxton-1701-06-verso,20,January,27,January,Eighteen Penny Loaf Common Weight , Household,
+1701,6,Laxton-1701-06-verso,20,January,27,January,Quartern Loaf Common Weight , Wheaten,
+1701,6,Laxton-1701-06-verso,20,January,27,January,Quartern Loaf Common Weight , Household,
+1701,6,Laxton-1701-06-verso,20,January,27,January,Half Peck Loaf Common Weight , Wheaten,
+1701,6,Laxton-1701-06-verso,20,January,27,January,Half Peck Loaf Common Weight , Household,
+1701,6,Laxton-1701-06-verso,20,January,27,January,Peck Loaf Common Weight , Wheaten,
+1701,6,Laxton-1701-06-verso,20,January,27,January,Peck Loaf Common Weight , Household,
+1701,6,Laxton-1701-06-verso,20,January,27,January,Salt,,56 l. to the Bushel 7 s.
+1701,7,Laxton-1701-07-verso,27,January,3,February,Penny Loaf Troy Weight , White,00;08;13
+1701,7,Laxton-1701-07-verso,27,January,3,February,Penny Loaf Troy Weight , Wheaten,00;13;00
+1701,7,Laxton-1701-07-verso,27,January,3,February,Penny Loaf Troy Weight , Household,00;17;06
+1701,7,Laxton-1701-07-verso,27,January,3,February,Penny Loaf Common Weight , White,00;09;08
+1701,7,Laxton-1701-07-verso,27,January,3,February,Penny Loaf Common Weight , Wheaten,00;14;04
+1701,7,Laxton-1701-07-verso,27,January,3,February,Penny Loaf Common Weight , Household,00;19;00
+1701,7,Laxton-1701-07-verso,27,January,3,February,Two Penny Loaf Common Weight , White,
+1701,7,Laxton-1701-07-verso,27,January,3,February,Two Penny Loaf Common Weight , Wheaten,
+1701,7,Laxton-1701-07-verso,27,January,3,February,Two Penny Loaf Common Weight , Household,
+1701,7,Laxton-1701-07-verso,27,January,3,February,Six Penny Loaf Common Weight , Wheaten,
+1701,7,Laxton-1701-07-verso,27,January,3,February,Six Penny Loaf Common Weight , Household,
+1701,7,Laxton-1701-07-verso,27,January,3,February,Twelve Penny Loaf Common Weight , Wheaten,
+1701,7,Laxton-1701-07-verso,27,January,3,February,Twelve Penny Loaf Common Weight , Household,
+1701,7,Laxton-1701-07-verso,27,January,3,February,Eighteen Penny Loaf Common Weight , Wheaten,
+1701,7,Laxton-1701-07-verso,27,January,3,February,Eighteen Penny Loaf Common Weight , Household,
+1701,7,Laxton-1701-07-verso,27,January,3,February,Quartern Loaf Common Weight , Wheaten,
+1701,7,Laxton-1701-07-verso,27,January,3,February,Quartern Loaf Common Weight , Household,
+1701,7,Laxton-1701-07-verso,27,January,3,February,Half Peck Loaf Common Weight , Wheaten,
+1701,7,Laxton-1701-07-verso,27,January,3,February,Half Peck Loaf Common Weight , Household,
+1701,7,Laxton-1701-07-verso,27,January,3,February,Peck Loaf Common Weight , Wheaten,
+1701,7,Laxton-1701-07-verso,27,January,3,February,Peck Loaf Common Weight , Household,
+1701,7,Laxton-1701-07-verso,27,January,3,February,Salt,,56 l. to the Bushel 7 s.
 1700,1,1700-01-verso,17,December,24,December,Penny Loaf Troy Weight , White,00;08;00
 1700,1,1700-01-verso,17,December,24,December,Penny Loaf Troy Weight , Wheaten,00;12;00
 1700,1,1700-01-verso,17,December,24,December,Penny Loaf Troy Weight , Household,00;16;01
