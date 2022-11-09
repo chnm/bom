@@ -141,8 +141,7 @@ names(bodleian_weekly) <- gsub(" ", "_", names(bodleian_weekly))
 names(laxton_weekly)[3] <- "unique_identifier"
 names(bodleian_weekly)[3] <- "unique_identifier"
 
-weekly_bills <- rbind(wellcome_weekly, laxton_weekly)
-weekly_bills <- rbind(weekly_bills, bodleian_weekly)
+weekly_bills <- rbind(wellcome_weekly, laxton_weekly, bodleian_weekly)
 weekly_bills <- weekly_bills |> 
   mutate(bill_type = "Weekly")
 
@@ -151,6 +150,8 @@ weekly_bills <- weekly_bills |>
   mutate(end_day = as.integer(end_day)) |> 
   mutate(week = as.integer(week))
 
+# This sets up cleaning text like: 
+# "{Christened, Buried, Plague} in the 97 Parishes within the Walls"
 # Separate out a parish name from the count type (plague vs. burial). If there's
 # no notation for plague or burial, we assume burial.
 # Whitespace is removed with str_trim().
@@ -215,6 +216,7 @@ rm(christenings_tmp, burials_tmp, plague_tmp)
 filtered_entries <- filtered_entries |> 
   mutate(count_type = "Buried")
 
+# Separate the '- Count' and '- Parish' values into tidy format.
 weekly_bills <- weekly_bills |> separate(parish_name, c("parish_name", "count_type"), sep = "[-]")
 
 weekly_bills <- weekly_bills |>
@@ -230,8 +232,9 @@ filtered_entries <- filtered_entries |>
 weekly_bills <- weekly_bills |> 
   filter(!weekly_bills$parish_name %in% filtered_entries$parish_name)
 
-# Combine our dataframes
+# Combine our dataframes and remove filtered_entries since we no longer need it.
 weekly_bills <- rbind(weekly_bills, filtered_entries)
+rm(filtered_entries)
 
 # Replace the alternate spelling of "Alhallows"
 weekly_bills <- weekly_bills |> 
@@ -376,10 +379,40 @@ laxton_weeks_from_causes <- all_laxton_weekly_causes |>
   ) |> 
   mutate(year_range = str_sub(week_id, 1, 9)) |> 
   select(-week_tmp, -week_comparator)
-      
+
+week_unique_general <- general_bills |> 
+  select(year, week, start_day, start_month, end_day, end_month, unique_identifier) |> 
+  distinct() |> 
+  mutate(year = as.integer(year)) |> 
+  mutate(week_tmp = str_pad(week, 2, pad = "0")) |> 
+  mutate(week_comparator = as.integer(week)) |> 
+  mutate(week_id = ifelse(week_comparator > 15,
+                          paste0(
+                            year - 1, '-', year, '-', week_tmp
+                          ),
+                          paste0(
+                            year, '-', year + 1, '-', week_tmp
+                          )
+  )
+  ) |> 
+  mutate(year_range = str_sub(week_id, 1, 9)) |> 
+  select(-week_tmp, -week_comparator)
+
+week_unique_general <- rename(week_unique_general, "week_number" = "week")
 week_unique_weekly <- rename(week_unique_weekly, "week_number" = "week")
 
-week_unique <- rbind(week_unique_weekly, week_unique_wellcome, laxton_weeks_from_causes)
+week_unique <- rbind(week_unique_weekly, week_unique_wellcome, laxton_weeks_from_causes, week_unique_general)
+
+# We determine here whether a year should be a split year by looking at the 
+# week number and determining if it falls between week 52 and week 15 as the calendar
+# turns over.
+week_unique <- week_unique |>  
+  mutate(split_year = ifelse(
+    week_number > 15,
+      paste0(year - 1, '/', year),
+    paste0(year)
+    )
+  ) 
 
 # Filter out extraneous data and assign
 # unique week IDs to the deaths long table. 
@@ -421,15 +454,11 @@ write_csv(deaths_long, na ="", "data/causes_of_death.csv")
 year_unique <- week_unique |> 
   select(year, week_number) |> 
   arrange() |> 
-  mutate(year_id = as.integer(year)) |> 
   mutate(year = as.integer(year)) |> 
   mutate(week_number = as.integer(week_number)) |> 
-  mutate(split_year = ifelse(
-    week_number > 15,
-      paste0(year - 1, '/', year),
-    paste0(year)
-    )
-  ) |> 
+  select(-week_number) |> 
+  distinct() |> 
+  arrange(year) |> 
   mutate(id = row_number())
 
 # Match unique parish IDs with the long parish tables, and drop the parish
@@ -448,13 +477,13 @@ weekly_bills <- weekly_bills |>
   select(-week, -start_day, -end_day, -start_month, -end_month, -year) |> 
   dplyr::left_join(week_unique, by = "unique_identifier") |> 
   drop_na(year) |> 
-  select(-week_number, -start_day, -end_day, -start_month, -end_month, -unique_identifier)
+  select(-week_number, -start_day, -end_day, -start_month, -end_month, -unique_identifier, -canonical_name)
 
 general_bills <- general_bills |> 
   select(-week, -start_day, -end_day, -start_month, -end_month, -year) |> 
   dplyr::left_join(week_unique, by = "unique_identifier") |> 
   drop_na(year) |> 
-  select(-week_number, -start_day, -end_day, -start_month, -end_month, -unique_identifier)
+  select(-week_number, -start_day, -end_day, -start_month, -end_month, -unique_identifier, -canonical_name)
 
 # Match unique year IDs to the long parish table, and drop the existing
 # year column from long_parishes so they're only referenced
@@ -465,20 +494,24 @@ weekly_bills <- weekly_bills |>
 general_bills <- general_bills |> 
   mutate(year = as.integer(year))
 
-weekly_bills <- weekly_bills |> 
-  dplyr::left_join(year_unique, by = "year") |> 
-  select(-year, -canonical_name)
+#weekly_bills <- weekly_bills |> 
+#  dplyr::right_join(year_unique, by = "year") |> 
+#  select(-year)
+  
+  
+  #dplyr::left_join(year_unique, by = "year") |> 
+  #select(-year)
 
 general_bills <- general_bills |> 
-  dplyr::left_join(year_unique, by = "year") |> 
-  select(-year, -canonical_name, -start_year, -end_year)
+#  dplyr::left_join(year_unique, by = "year") |> 
+  select(-start_year, -end_year)
 
 # After we have unique years, we need to join the year ID to the 
 # unique weeks and weekly_bills. 
-week_unique <- week_unique |> 
-  mutate(year = as.integer(year)) |> 
-  dplyr::left_join(year_unique, by = "year") |> 
-  select(-year)
+#week_unique <- week_unique |> 
+#  mutate(year = as.integer(year)) |> 
+#  dplyr::left_join(year_unique, by = "year") |> 
+#  select(-year)
 
 all_bills <- rbind(weekly_bills, general_bills)
 all_bills <- all_bills |> mutate(id = row_number())
