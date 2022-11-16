@@ -12,24 +12,15 @@ library(tidyverse)
 # ---------------------------------------------------------------------- 
 # Data sources
 # ---------------------------------------------------------------------- 
-# 1. Wellcome Weekly Bills Parishes contains mortality information from weekly bills published in the late 17th century. It contains parish-by-parish counts of plague mortality and total mortality for the parish, along with subtotals and totals of christenings (births registered within the Church of England) and burials (deaths registered within the Church of England).
 raw_wellcome_weekly <- read_csv("/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/datascribe-exports/2022-04-06-1669-1670-Wellcome-weeklybills-parishes.csv")
-# 2. Wellcome Weekly Bills Causes contains mortality information from weekly bills published in the late 17th century. It contains city-wide (including local suburbs) death counts for various causes of death, along with information about christenings (births registered within the Church of England), burials (deaths registered within the Church of England), plague deaths, and bread prices.
 raw_wellcome_causes <- read_csv("/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/datascribe-exports/2022-04-06-Wellcome-weeklybills-causes.csv")
-# 3. Laxton Weekly Bills Parishes contains mortality information from weekly bills published in the early 18th century. It contains parish-by-parish counts of total mortality for the parish along with subtotals and totals of christenings (births registered within the Church of England) and burials (deaths registered within the Church of England).
 raw_laxton_weekly <- read_csv("/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/datascribe-exports/2022-11-02-Laxton-weeklybills-parishes.csv")
-# 4. Millar General Bills PostPlague Parishes contains mortality information from "general" or annual summary bills published in the early 18th century. It contains parish-by-parish counts of total mortality for the parish along with subtotals and totals of christenings (births registered within the Church of England) and burials (deaths registered within the Church of England).
 raw_millar_general <- read_csv("/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/datascribe-exports/2022-04-06-millar-generalbills-postplague-parishes.csv")
-# 5. Laxton 1700 Weekly Bills Causes contains mortality information from weekly bills published in the year 1700. It contains city-wide (including local suburbs) death counts for various causes of death.
 raw_laxton_1700_causes <- read_csv("/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/datascribe-exports/2022-06-15-Laxton-1700-weeklybills-causes.csv")
-# 6. Laxton Weekly Bills Causes contains mortality information from weekly bills published in the early eighteenth century. It contains city-wide (including local suburbs) death counts for various causes of death.
 raw_laxton_causes <- read_csv("/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/datascribe-exports/2022-11-02-Laxton-weeklybills-causes.csv")
-# 7. Laxton 1700 Weekly Bills Foodstuffs contains food prices from weekly bills published in the early eighteenth century. There are various types of bread and also salt.
 raw_laxton_1700_foodstuffs <- read_csv("/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/datascribe-exports/2022-09-19-Laxton-1700-weeklybills-foodstuffs.csv")
-# 8. Laxton Weekly Bills Foodstuffs contains food prices from weekly bills published in the early eighteenth century. There are various types of bread and also salt.
 raw_laxton_foodstuffs <- read_csv("/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/datascribe-exports/2022-09-19-Laxton-1700-weeklybills-foodstuffs.csv")
-# 9. Bodleian bills
-raw_bodleian <- read_csv("/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/datascribe-exports/2022-11-02-Bodleian-V1-weeklybills-parishes.csv")
+raw_bodleian <- read_csv("/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/datascribe-exports/2022-11-08-Bodleian-V1-weeklybills-parishes.csv")
 
 # ---------------------------------------------------------------------- 
 # Types of death table
@@ -412,7 +403,9 @@ week_unique <- week_unique |>
       paste0(year - 1, '/', year),
     paste0(year)
     )
-  ) 
+  ) |> 
+  distinct(week_id, .keep_all = TRUE) |> 
+  mutate(id = row_number())
 
 # Filter out extraneous data and assign
 # unique week IDs to the deaths long table. 
