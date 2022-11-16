@@ -1,0 +1,3 @@
+The shapefiles contained here have been merged with data and canonical names in a crosswalk using [this Python script](https://github.com/chnm/bom/tree/main/mapping). The crosswalk script joins this data together, and then merges the new dataset with the shapefiles. Since we want to preserve the original shapfiles, we are leaving those alone. The material here are merged with new data. 
+
+Currently, this directory only contains the merged shapefile for the Within the Bills 1622 as a test case.
