@@ -448,6 +448,7 @@ year_unique <- week_unique |>
   select(year, week_number) |> 
   arrange() |> 
   mutate(year = as.integer(year)) |> 
+  mutate(year_id = as.integer(year)) |> 
   mutate(week_number = as.integer(week_number)) |> 
   select(-week_number) |> 
   distinct() |> 
