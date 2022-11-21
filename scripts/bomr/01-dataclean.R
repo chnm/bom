@@ -141,10 +141,10 @@ weekly_bills <- weekly_bills |>
   mutate(end_day = as.integer(end_day)) |> 
   mutate(week = as.integer(week))
 
-# This sets up cleaning text like: 
+# This sets up cleaning text that looks something like: 
 # "{Christened, Buried, Plague} in the 97 Parishes within the Walls"
-# Separate out a parish name from the count type (plague vs. burial). If there's
-# no notation for plague or burial, we assume burial.
+# To clean this up, the following separate out a parish name from the count 
+# type (plague vs. burial). If there's no notation for plague or burial, we assume burial.
 # Whitespace is removed with str_trim().
 filtered_entries <- weekly_bills |> 
   filter(!str_detect(parish_name, '-'))
@@ -470,13 +470,13 @@ weekly_bills <- weekly_bills |>
   select(-week, -start_day, -end_day, -start_month, -end_month, -year) |> 
   dplyr::left_join(week_unique, by = "unique_identifier") |> 
   drop_na(year) |> 
-  select(-week_number, -start_day, -end_day, -start_month, -end_month, -unique_identifier, -canonical_name)
+  select(-week_number, -start_day, -end_day, -start_month, -end_month, -canonical_name)
 
 general_bills <- general_bills |> 
   select(-week, -start_day, -end_day, -start_month, -end_month, -year) |> 
   dplyr::left_join(week_unique, by = "unique_identifier") |> 
   drop_na(year) |> 
-  select(-week_number, -start_day, -end_day, -start_month, -end_month, -unique_identifier, -canonical_name)
+  select(-week_number, -start_day, -end_day, -start_month, -end_month, -canonical_name)
 
 # Match unique year IDs to the long parish table, and drop the existing
 # year column from long_parishes so they're only referenced
