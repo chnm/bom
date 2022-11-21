@@ -12,15 +12,15 @@ library(tidyverse)
 # ---------------------------------------------------------------------- 
 # Data sources
 # ---------------------------------------------------------------------- 
-raw_wellcome_weekly <- read_csv("/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/datascribe-exports/2022-04-06-1669-1670-Wellcome-weeklybills-parishes.csv")
-raw_wellcome_causes <- read_csv("/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/datascribe-exports/2022-04-06-Wellcome-weeklybills-causes.csv")
-raw_laxton_weekly <- read_csv("/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/datascribe-exports/2022-11-02-Laxton-weeklybills-parishes.csv")
-raw_millar_general <- read_csv("/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/datascribe-exports/2022-04-06-millar-generalbills-postplague-parishes.csv")
-raw_laxton_1700_causes <- read_csv("/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/datascribe-exports/2022-06-15-Laxton-1700-weeklybills-causes.csv")
-raw_laxton_causes <- read_csv("/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/datascribe-exports/2022-11-02-Laxton-weeklybills-causes.csv")
-raw_laxton_1700_foodstuffs <- read_csv("/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/datascribe-exports/2022-09-19-Laxton-1700-weeklybills-foodstuffs.csv")
-raw_laxton_foodstuffs <- read_csv("/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/datascribe-exports/2022-09-19-Laxton-1700-weeklybills-foodstuffs.csv")
-raw_bodleian <- read_csv("/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/datascribe-exports/2022-11-08-Bodleian-V1-weeklybills-parishes.csv")
+raw_wellcome_weekly <- read_csv("/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/data-csvs/2022-04-06-1669-1670-Wellcome-weeklybills-parishes.csv")
+raw_wellcome_causes <- read_csv("/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/data-csvs/2022-04-06-Wellcome-weeklybills-causes.csv")
+raw_laxton_weekly <- read_csv("/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/data-csvs/2022-11-02-Laxton-weeklybills-parishes.csv")
+raw_millar_general <- read_csv("/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/data-csvs/2022-04-06-millar-generalbills-postplague-parishes.csv")
+raw_laxton_1700_causes <- read_csv("/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/data-csvs/2022-06-15-Laxton-1700-weeklybills-causes.csv")
+raw_laxton_causes <- read_csv("/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/data-csvs/2022-11-02-Laxton-weeklybills-causes.csv")
+raw_laxton_1700_foodstuffs <- read_csv("/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/data-csvs/2022-09-19-Laxton-1700-weeklybills-foodstuffs.csv")
+raw_laxton_foodstuffs <- read_csv("/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/data-csvs/2022-09-19-Laxton-1700-weeklybills-foodstuffs.csv")
+raw_bodleian <- read_csv("/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/data-csvs/2022-11-16-Bodleian-V1-weeklybills-parishes.csv")
 
 # ---------------------------------------------------------------------- 
 # Types of death table
