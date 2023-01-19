@@ -6,7 +6,10 @@ data-csvs contains data exports from the Bills of Mortality DataScribe installat
 db contains
 parish-shapefiles contains shapefiles for the parishes contained within the Bills of Mortality, as they changed over time
 mapping contains
+monarchical-bills contains a catalog of extant reports to the monarch, in-progress transcriptions, and a parish name crosswalk
 scripts contains
+
+The BOM Catalog Excel file is in progress and does not contain all bills known to the project; it currently focuses on bills from the 1630s-1690s
 
 For the Bills of Mortality database code, see https://github.com/chnm/bom-db
 
