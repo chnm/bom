@@ -1,0 +1,54 @@
+{{ define "main" }}
+<main>
+  <div class="flex min-h-screen items-center justify-start bg-white pt-7">
+    <div class="flex flex-wrap p-5 prose">
+      <h2 class="text-4xl font-medium pb-4">{{ .Title }}</h2>
+      {{ .Content }}
+        {{ range .Pages }}
+        <section class="flex items-center py-16 bg-gray-100 lg:py-20">
+            <div class="justify-center flex-1 max-w-3xl px-4 py-4 mx-auto text-left lg:py-10 ">
+                <div class="p-4 mb-6 rounded-md bg-gray-5">
+                    <div class="flex items-center justify-between">
+                        <div class="inline-block mb-2 text-xs font-semibold uppercase">
+                            by 
+                            {{ range .Params.author }}
+                                {{ . }}
+                            {{ end }}
+                        </div>
+                        <span class="mb-2 text-xs text-gray-500">{{.Date.Format "2006-01-02"}}</span>
+                    </div>
+        
+                    <h2 class="mb-4 text-xl font-semibold text-gray-600">
+        
+                        <a href="{{.Permalink}}">{{ .Title }}</a></h2>
+        
+                    <div class="flex flex-wrap items-center mb-4 ">
+                        <a href="{{.Permalink}}"
+                            class="flex items-center mb-2 mr-4 text-sm text-gray-500 md:mb-0 hover:text-gray-700">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="w-4 h-4 mr-1 bi bi-folder" viewBox="0 0 16 16">
+                                <path
+                                    d="M.54 3.87.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.826a2 2 0 0 1-1.991-1.819l-.637-7a1.99 1.99 0 0 1 .342-1.31zM2.19 4a1 1 0 0 0-.996 1.09l.637 7a1 1 0 0 0 .995.91h10.348a1 1 0 0 0 .995-.91l.637-7A1 1 0 0 0 13.81 4H2.19zm4.69-1.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981l.006.139C1.72 3.042 1.95 3 2.19 3h5.396l-.707-.707z" />
+                            </svg>
+                            {{ range .Params.categories }}		
+                            <a href="/categories/{{ . | urlize }}">{{ . }}</a>
+                            {{ end }}
+                        </a>
+                    </div>
+                    <p class="mb-4 text-sm text-gray-50">
+                        {{.Summary}}
+                        {{ if .Truncated }}
+                        <div>
+                            <a href="{{ .Permalink }}">Read More...</a>
+                        </div>
+                        {{ end }}
+                    </p>
+                </div>
+            </div>
+        </section>
+        <hr>
+        {{ end }}
+    </div>
+  </div>
+</main>
+{{ end }}

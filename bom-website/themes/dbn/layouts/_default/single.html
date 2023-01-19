@@ -1,0 +1,10 @@
+{{ define "main" }}
+
+<div class="flex min-h-screen items-center justify-start bg-white pt-7">
+  <div class="container mx-auto px-4">
+    <h2 class="text-4xl font-medium pb-4">{{ .Title }}</h2>
+    <div class="flex flex-wrap w-3/4 p-5 prose">{{ .Content }}</div>
+  </div>
+</div>
+
+{{ end }}

@@ -1,0 +1,27 @@
+baseURL: 'https://deathbynumbers.org'
+languageCode: 'en-us'
+title: 'Death by Numbers'
+description: >-
+  Death by Numbers is a digital scholarly research project on the London Plague Bills 
+  by the Roy Rosenzweig Center for History and New Media
+copyright: 2021-2023
+
+permalinks:
+  blog: '/:year/:month/:day/:slug/'
+  archive: '/:slug/'
+  page: '/:section/:slug/'
+
+theme: 'dbn'
+
+author:
+  name: Jason Heppler
+  email: jheppler@gmu.edu
+
+# We need this set for TailwindCSS
+build:
+  writeStats: true
+
+sitemap:
+  changefreq: weekly
+  priority: 0.5
+  filename: sitemap.xml

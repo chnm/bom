@@ -1,0 +1,17 @@
+{{ define "main" }}
+
+<div class="flex min-h-screen items-center justify-start bg-white pt-7">
+  <div class="container mx-auto px-4">
+    <h2 class="text-4xl font-medium pb-4">{{ .Title }}</h2>
+    {{ if .IsHome }}
+    <div class="grid grid-cols-4 gap-3">
+        <div class="col-span-2 prose">{{ .Content }}</div>
+        <div class="col-span-2"><img class="object-none pt-2 pb-2 pr-2 pl-2" src="https://the-public-domain-review.imgix.net/collections/londons-dreadful-visitation-bills-of-mortality/plague-highest-week-small.jpg?fit=max&w=1200&h=850"/></div>
+      </div>
+    {{ else }}
+    <div class="flex flex-wrap w-3/4 p-5 prose">{{ .Content }}</div>
+    {{ end }}
+  </div>
+</div>
+
+{{ end }}
