@@ -1,0 +1,41 @@
+{
+  "App": {
+    "description": "Auto imported from components/App.vue"
+  },
+  "ChristeningsDataTable": {
+    "description": "Auto imported from components/ChristeningsDataTable.vue"
+  },
+  "DeathCausesTable": {
+    "description": "Auto imported from components/DeathCausesTable.vue"
+  },
+  "FoodstuffsDataTable": {
+    "description": "Auto imported from components/FoodstuffsDataTable.vue"
+  },
+  "GeneralBillsTable": {
+    "description": "Auto imported from components/GeneralBillsTable.vue"
+  },
+  "Modal": {
+    "description": "Auto imported from components/Modal.vue"
+  },
+  "TheFooter": {
+    "description": "Auto imported from components/TheFooter.vue"
+  },
+  "TheNavBar": {
+    "description": "Auto imported from components/TheNavBar.vue"
+  },
+  "ViewMore": {
+    "description": "Auto imported from components/ViewMore.vue"
+  },
+  "WeeklyBillsTable": {
+    "description": "Auto imported from components/WeeklyBillsTable.vue"
+  },
+  "TablesSelectCountType": {
+    "description": "Auto imported from components/tables/SelectCountType.vue"
+  },
+  "VisualizationsCausesBarChart": {
+    "description": "Auto imported from components/visualizations/CausesBarChart.vue"
+  },
+  "VisualizationsPlagueDeathsChart": {
+    "description": "Auto imported from components/visualizations/PlagueDeathsChart.vue"
+  }
+}

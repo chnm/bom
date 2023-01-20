@@ -1,0 +1,82 @@
+{
+  "name": "postcss-values-parser",
+  "version": "4.0.0",
+  "description": "A CSS property value parser for use with PostCSS",
+  "license": "MPL-2.0",
+  "repository": "shellscape/postcss-values-parser",
+  "author": {
+    "name": "Andrew Powell (shellscape)",
+    "email": "andrew@shellscape.org",
+    "url": "http://shellscape.org"
+  },
+  "homepage": "https://github.com/shellscape/postcss-values-parser",
+  "bugs": "https://github.com/shellscape/postcss-values-parser/issues",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "engines": {
+    "node": ">=10"
+  },
+  "scripts": {
+    "ci:coverage": "nyc npm run test && nyc report --reporter=text-lcov > coverage.lcov",
+    "ci:test": "npm run test",
+    "lint": "eslint lib test --fix --cache",
+    "lint-staged": "lint-staged",
+    "security": "npm audit --audit-level=moderate",
+    "test": "ava"
+  },
+  "files": [
+    "lib",
+    "LICENSE",
+    "README.md"
+  ],
+  "dependencies": {
+    "color-name": "^1.1.4",
+    "is-url-superb": "^4.0.0",
+    "postcss": "^7.0.5"
+  },
+  "devDependencies": {
+    "ava": "^3.5.1",
+    "chalk": "^4.1.0",
+    "eslint-config-shellscape": "^2.0.2",
+    "globby": "^11.0.0",
+    "lint-staged": "^10.0.8",
+    "nyc": "^15.0.0",
+    "perfy": "^1.1.5",
+    "postcss-value-parser": "^4.0.0",
+    "pre-commit": "^1.2.2",
+    "prettier": "^2.0.1",
+    "strip-ansi": "^6.0.0",
+    "text-table": "^0.2.0"
+  },
+  "keywords": [
+    "css",
+    "less",
+    "ast",
+    "postcss",
+    "value",
+    "values",
+    "parser",
+    "parsing",
+    "properties"
+  ],
+  "ava": {
+    "files": [
+      "!**/fixtures/**",
+      "!**/helpers/**"
+    ]
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix"
+    ]
+  },
+  "nyc": {
+    "include": [
+      "lib/*.js"
+    ],
+    "exclude": [
+      "test/"
+    ]
+  },
+  "pre-commit": "lint-staged"
+}

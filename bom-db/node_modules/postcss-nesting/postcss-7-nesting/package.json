@@ -1,0 +1,19 @@
+{
+  "private": true,
+  "type": "module",
+  "main": "postcss-nesting.cjs",
+  "module": "postcss-nesting.mjs",
+  "jsdelivr": "postcss-nesting.mjs",
+  "unpkg": "postcss-nesting.mjs",
+  "files": [
+    "postcss-nesting.cjs",
+    "postcss-nesting.mjs"
+  ],
+  "exports": {
+    ".": {
+      "import": "./postcss-nesting.mjs",
+      "require": "./postcss-nesting.cjs",
+      "default": "./postcss-nesting.mjs"
+    }
+  }
+}

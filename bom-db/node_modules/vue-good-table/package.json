@@ -1,0 +1,61 @@
+{
+  "name": "vue-good-table",
+  "version": "2.21.11",
+  "sideEffects": [
+    "*.vue",
+    "*.css"
+  ],
+  "description": "A simple, clean data table for VueJS (2.x) with essential features like sorting, column filtering, pagination etc",
+  "main": "dist/vue-good-table.cjs.js",
+  "module": "dist/vue-good-table.esm.js",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "bundle": "bili",
+    "dev": "poi --serve",
+    "docs:dev": "vuepress dev vp-docs",
+    "docs:build": "vuepress build vp-docs",
+    "test": "echo \"No test specified\""
+  },
+  "repository": "github:xaksis/vue-good-table",
+  "keywords": [
+    "vue",
+    "vuejs",
+    "table",
+    "datatable"
+  ],
+  "author": {
+    "name": "xaksis",
+    "email": "shay@crayonbits.com"
+  },
+  "license": "MIT",
+  "poi": {
+    "entry": "dev/main.js",
+    "output": {
+      "dir": "dev/dist",
+      "publicUrl": "./",
+      "html": {
+        "template": "dev/index.html"
+      }
+    }
+  },
+  "dependencies": {
+    "date-fns": "^2.17.0",
+    "lodash.isequal": "^4.5.0"
+  },
+  "devDependencies": {
+    "@vuepress/plugin-google-analytics": "^1.0.0-rc.1",
+    "bili": "^4.8.0",
+    "eslint-config-airbnb": "^18.2.0",
+    "node-sass": "^4.12.0",
+    "poi": "^12.7.0",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-vue": "^5.1.9",
+    "sass-loader": "^7.1.0",
+    "vue": "^2.6.10",
+    "vue-template-compiler": "^2.6.10",
+    "vuepress": "^1.0.0-rc.1"
+  }
+}

@@ -1,0 +1,58 @@
+[
+  {
+    "name": "About",
+    "path": "/About",
+    "component": "/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom-db/pages/About.vue",
+    "chunkName": "pages/About",
+    "_name": "_699a41ac"
+  },
+  {
+    "name": "Data",
+    "path": "/Data",
+    "component": "/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom-db/pages/Data.vue",
+    "chunkName": "pages/Data",
+    "_name": "_315ebdc6"
+  },
+  {
+    "name": "Team",
+    "path": "/Team",
+    "component": "/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom-db/pages/Team.vue",
+    "chunkName": "pages/Team",
+    "_name": "_19396250"
+  },
+  {
+    "name": "Visualizations",
+    "path": "/Visualizations",
+    "component": "/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom-db/pages/Visualizations.vue",
+    "chunkName": "pages/Visualizations",
+    "_name": "_75275dfc"
+  },
+  {
+    "name": "WeeklyBills",
+    "path": "/WeeklyBills",
+    "component": "/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom-db/pages/WeeklyBills.vue",
+    "chunkName": "pages/WeeklyBills",
+    "_name": "_38674a28"
+  },
+  {
+    "name": "visualizations-causes",
+    "path": "/visualizations/causes",
+    "component": "/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom-db/pages/visualizations/causes.vue",
+    "chunkName": "pages/visualizations/causes",
+    "_name": "_1f2162b2"
+  },
+  {
+    "name": "visualizations-plague",
+    "path": "/visualizations/plague",
+    "component": "/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom-db/pages/visualizations/plague.vue",
+    "chunkName": "pages/visualizations/plague",
+    "_name": "_3940caaf"
+  },
+  {
+    "name": "index",
+    "path": "/",
+    "component": "/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom-db/pages/index.vue",
+    "chunkName": "pages/index",
+    "_name": "_73789a0f"
+  }
+]

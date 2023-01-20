@@ -1,0 +1,30 @@
+{
+  "name": "@nuxtjs/eslint-config",
+  "version": "6.0.1",
+  "description": "Nuxt.js eslint config",
+  "homepage": "https://github.com/nuxt/eslint-config/tree/master/packages/eslint-config",
+  "repository": "nuxt/eslint-config",
+  "license": "MIT",
+  "contributors": [
+    "Alexander Lichter <npm@lichter.io>"
+  ],
+  "files": [
+    "index.js"
+  ],
+  "dependencies": {
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.23.3",
+    "eslint-plugin-jest": "^24.3.6",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.1.0",
+    "eslint-plugin-standard": "^4.1.0",
+    "eslint-plugin-unicorn": "^28.0.2",
+    "eslint-plugin-vue": "^7.9.0"
+  },
+  "peerDependencies": {
+    "eslint": "^7.27.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
