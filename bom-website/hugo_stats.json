@@ -2,6 +2,7 @@
   "htmlElements": {
     "tags": [
       "a",
+      "b",
       "blockquote",
       "body",
       "button",
@@ -80,6 +81,7 @@
       "lg:w-6/12",
       "lg:w-auto",
       "max-w-3xl",
+      "max-w-lg",
       "mb-2",
       "mb-4",
       "mb-6",
@@ -91,6 +93,7 @@
       "mr-6",
       "mx-6",
       "mx-auto",
+      "object-cover",
       "object-none",
       "object-scale-down",
       "overflow-hidden",
