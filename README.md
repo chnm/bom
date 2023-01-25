@@ -1,4 +1,5 @@
-# bom
+# London Bills of Mortality
+
 Main project repo for Death by Numbers, a project on the London Bills of Mortality. 
 
 api-docs contains documentation for the API
