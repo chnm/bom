@@ -4,13 +4,14 @@ name = "Death by Numbers"
 license = "MIT"
 licenselink = "https://github.com/chnm/bom/bom-website/blob/master/LICENSE"
 description = "Theme for the Death by Numbers project at the Roy Rosenzweig Center for History and New Media"
-homepage = "http://deathbynumbers.org/"
-tags = [Hugo, TailwindCSS]
+homepage = "https://deathbynumbers.org/"
 min_version = "0.41.0"
 
 [author]
   name = "Roy Rosenzweig Center for History and New Media"
   homepage = "https://rrchnm.org"
+
+paginate = 10
 
 [taxonomies]
     tag = "tags"
