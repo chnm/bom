@@ -4,7 +4,7 @@ The website and blog for the Death by Numbers project.
 
 ## Theme
 
-The theme is custom-designed using TailwindCSS. To get started with developing the theme, you'll need to install the necessary dependencies. 
+The theme is custom-designed using TailwindCSS. To get started with developing the theme, you'll need to install the necessary dependencies. Navigate to `themes/dbn/` before running these commands.
 
 ```
 npm install -y
