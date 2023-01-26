@@ -4,10 +4,10 @@
     <div class="container mx-auto px-4">
       <h2 class="text-4xl font-medium pb-4">{{ .Title }}</h2>
       {{ .Content }}
-        {{ range .Paginator.Pages }}
-        <section class="flex items-center py-16 bg-gray-100 lg:py-20 prose">
-            <div class="justify-center flex-1 max-w-3xl px-4 py-4 mx-auto text-left lg:py-10 ">
-                <div class="p-4 mb-6 rounded-md bg-gray-5">
+      {{ range .Paginator.Pages }}
+        <section class="flex items-center prose">
+            <div class="justify-center flex-1 max-w-3xl mx-auto text-left">
+                <div class="p-4">
 
                     <h2 class="mb-4 text-xl font-semibold text-gray-600"><a href="{{.Permalink}}">{{ .Title }}</a></h2>
                     <div class="flex items-center justify-between">
@@ -17,11 +17,11 @@
                                 {{ . }}
                             {{ end }}
                         </div>
-                        <span class="mb-2 text-xs text-gray-500">{{.Date.Format "2006-01-02"}}</span>
+                        <span class="mb-2 text-xs">{{.Date.Format "2006-01-02"}}</span>
                     </div>
                     <div class="flex flex-wrap items-center mb-4 ">
                         <a href="{{.Permalink}}"
-                            class="flex items-center mb-2 mr-4 text-sm text-gray-500 md:mb-0 hover:text-gray-700">
+                            class="flex items-center mb-2 mr-4 text-sm md:mb-0">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                 class="w-4 h-4 mr-1 bi bi-folder" viewBox="0 0 16 16">
                                 <path
@@ -32,7 +32,7 @@
                             {{ end }}
                         </a>
                     </div>
-                    <p class="mb-4 text-sm text-gray-50">
+                    <p class="mb-4 text-sm text-black">
                         {{.Summary}}
                         {{ if .Truncated }}
                         <div>
@@ -43,8 +43,133 @@
                 </div>
             </div>
         </section>
-        <hr class="w-48 h-1 mx-auto my-4 bg-gray-700 border-0 rounded md:my-10 pt-2 pb-2 mt-2 mb-2">
+        <hr class="w-48 h-0.5 mx-auto my-4 bg-gray-700 border-0 rounded md:my-10">
         {{ end }}
+
+<!-- pagination numbers -->
+{{ $paginator := .Paginator }}
+
+<!-- Number of links either side of the current page. -->
+{{ $adjacent_links := 2 }}
+
+<!-- $max_links = ($adjacent_links * 2) + 1 -->
+{{ $max_links := (add (mul $adjacent_links 2) 1) }}
+
+<!-- $lower_limit = $adjacent_links + 1 -->
+{{ $lower_limit := (add $adjacent_links 1) }}
+
+<!-- $upper_limit = $paginator.TotalPages - $adjacent_links -->
+{{ $upper_limit := (sub $paginator.TotalPages $adjacent_links) }}
+
+<div class="max-w-2xl mx-auto p-9">
+
+<!-- If there's more than one page. -->
+{{ if gt $paginator.TotalPages 1 }}
+
+<ul class="inline-flex -space-x-px">
+    
+    
+    <!-- First page. -->
+    {{ if ne $paginator.PageNumber 1 }}
+    <li class="pagination__item pagination__item--first">
+      <a class="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 ml-0 rounded-l-lg leading-tight py-2 px-3 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" href="{{ $paginator.First.URL }}">
+        ««
+      </a>
+    </li>
+    {{ end }}
+
+    <!-- Previous page. -->
+    {{ if $paginator.HasPrev }}
+    <li class="pagination__item pagination__item--previous">
+      <a href="{{ $paginator.Prev.URL }}" 
+      class="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 leading-tight py-2 px-3 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+        «
+      </a>
+    </li>
+    {{ end }}
+  
+    <!-- Page numbers. -->
+    {{ range $paginator.Pagers }}
+    
+      {{ $.Scratch.Set "page_number_flag" false }}
+
+      
+      <!-- Advanced page numbers. -->
+      {{ if gt $paginator.TotalPages $max_links }}
+
+
+        <!-- Lower limit pages. -->
+        <!-- If the user is on a page which is in the lower limit.  -->
+        {{ if le $paginator.PageNumber $lower_limit }}
+
+          <!-- If the current loop page is less than max_links. -->
+          {{ if le .PageNumber $max_links }}
+            {{ $.Scratch.Set "page_number_flag" true }}
+          {{ end }}
+
+
+        <!-- Upper limit pages. -->
+        <!-- If the user is on a page which is in the upper limit. -->
+        {{ else if ge $paginator.PageNumber $upper_limit }}
+
+          <!-- If the current loop page is greater than total pages minus $max_links -->
+          {{ if gt .PageNumber (sub $paginator.TotalPages $max_links) }}
+            {{ $.Scratch.Set "page_number_flag" true }}
+          {{ end }}
+
+
+        <!-- Middle pages. -->
+        {{ else }}
+          
+          {{ if and ( ge .PageNumber (sub $paginator.PageNumber $adjacent_links) ) ( le .PageNumber (add $paginator.PageNumber $adjacent_links) ) }}
+            {{ $.Scratch.Set "page_number_flag" true }}
+          {{ end }}
+
+        {{ end }}
+
+      
+      <!-- Simple page numbers. -->
+      {{ else }}
+
+        {{ $.Scratch.Set "page_number_flag" true }}
+
+      {{ end }}
+
+      <!-- Output page numbers. -->
+      {{ if eq ($.Scratch.Get "page_number_flag") true }}
+        <li class="pagination__item{{ if eq . $paginator }} pagination__item--current{{ end }}">
+          <a href="{{ .URL }}" class="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 leading-tight py-2 px-3 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+            {{ .PageNumber }}
+          </a>
+        </li>
+      {{ end }}
+
+    {{ end }}
+
+    <!-- Next page. -->
+    {{ if $paginator.HasNext }}
+    <li class="pagination__item pagination__item--next">
+      <a href="{{ $paginator.Next.URL }}" 
+      class="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 leading-tight py-2 px-3 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+        »
+      </a>
+    </li>
+    {{ end }}
+
+    <!-- Last page. -->
+    {{ if ne $paginator.PageNumber $paginator.TotalPages }}
+    <li class="pagination__item pagination__item--last">
+      <a class="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 rounded-r-lg leading-tight py-2 px-3 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" href="{{ $paginator.Last.URL }}">
+        »»
+      </a>
+    </li>
+    {{ end }}
+
+  </ul><!-- .pagination -->
+{{ end }}
+</div>
+
+
     </div>
   </div>
 </main>
