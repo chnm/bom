@@ -11,7 +11,7 @@ min_version = "0.41.0"
   name = "Roy Rosenzweig Center for History and New Media"
   homepage = "https://rrchnm.org"
 
-paginate = 10
+paginate = 8
 
 [taxonomies]
     tag = "tags"

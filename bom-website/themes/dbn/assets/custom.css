@@ -30,8 +30,3 @@ h6 {
     @apply text-dbn-purple;
   }
 }
-
-/* Footer */
-footer p {
-  font-family: "Playfair Display", serif;
-}
