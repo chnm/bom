@@ -117,8 +117,6 @@
       "lg:w-6/12",
       "lg:w-auto",
       "m-3",
-      "max-h-fit",
-      "max-h-screen",
       "max-w-2xl",
       "max-w-3xl",
       "max-w-lg",
