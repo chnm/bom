@@ -552,33 +552,33 @@ a {
   margin-left: auto;
 }
 
-@media (min-width: 600px) {
+@media (min-width: 640px) {
   .container {
-    max-width: 600px;
+    max-width: 640px;
   }
 }
 
-@media (min-width: 728px) {
+@media (min-width: 768px) {
   .container {
-    max-width: 728px;
+    max-width: 768px;
   }
 }
 
-@media (min-width: 984px) {
+@media (min-width: 1024px) {
   .container {
-    max-width: 984px;
+    max-width: 1024px;
   }
 }
 
-@media (min-width: 1240px) {
+@media (min-width: 1280px) {
   .container {
-    max-width: 1240px;
+    max-width: 1280px;
   }
 }
 
-@media (min-width: 1496px) {
+@media (min-width: 1536px) {
   .container {
-    max-width: 1496px;
+    max-width: 1536px;
   }
 }
 
@@ -991,7 +991,7 @@ a {
 
 .prose {
   color: var(--tw-prose-body);
-  max-width: 65ch;
+  max-width: 82ch;
 }
 
 .prose :where([class~="lead"]):not(:where([class~="not-prose"] *)) {
@@ -2371,6 +2371,10 @@ a {
   margin-left: 0px;
 }
 
+.mb-5 {
+  margin-bottom: 1.25rem;
+}
+
 .mb-6 {
   margin-bottom: 1.5rem;
 }
@@ -2435,10 +2439,6 @@ a {
   height: 2.5rem;
 }
 
-.h-3 {
-  height: 0.75rem;
-}
-
 .h-auto {
   height: auto;
 }
@@ -2464,20 +2464,16 @@ a {
   width: 12rem;
 }
 
-.w-4 {
-  width: 1rem;
-}
-
 .w-full {
   width: 100%;
 }
 
-.w-auto {
-  width: auto;
+.w-4 {
+  width: 1rem;
 }
 
-.w-3 {
-  width: 0.75rem;
+.w-auto {
+  width: auto;
 }
 
 .max-w-3xl {
@@ -2601,11 +2597,6 @@ a {
   border-color: rgb(209 213 219 / var(--tw-border-opacity));
 }
 
-.border-white {
-  --tw-border-opacity: 1;
-  border-color: rgb(255 255 255 / var(--tw-border-opacity));
-}
-
 .border-slate-200 {
   --tw-border-opacity: 1;
   border-color: rgb(226 232 240 / var(--tw-border-opacity));
@@ -2653,10 +2644,6 @@ a {
   background-position: center;
 }
 
-.fill-current {
-  fill: currentColor;
-}
-
 .object-none {
   -o-object-fit: none;
      object-fit: none;
@@ -2692,6 +2679,16 @@ a {
   padding-right: 1rem;
 }
 
+.px-6 {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.py-12 {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
 .py-2 {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
@@ -2718,6 +2715,10 @@ a {
 
 .pb-4 {
   padding-bottom: 1rem;
+}
+
+.pb-5 {
+  padding-bottom: 1.25rem;
 }
 
 .pt-8 {
@@ -2796,6 +2797,10 @@ a {
   font-weight: 600;
 }
 
+.font-light {
+  font-weight: 300;
+}
+
 .font-bold {
   font-weight: 700;
 }
@@ -2854,6 +2859,10 @@ a {
   color: rgb(0 0 0 / var(--tw-text-opacity));
 }
 
+.text-dbn-orange {
+  color: #c75000ff;
+}
+
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
@@ -2884,11 +2893,6 @@ a {
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
-.hover\:border-white:hover {
-  --tw-border-opacity: 1;
-  border-color: rgb(255 255 255 / var(--tw-border-opacity));
-}
-
 .hover\:bg-gray-100:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(243 244 246 / var(--tw-bg-opacity));
@@ -2902,11 +2906,6 @@ a {
 .hover\:text-gray-700:hover {
   --tw-text-opacity: 1;
   color: rgb(55 65 81 / var(--tw-text-opacity));
-}
-
-.hover\:text-white:hover {
-  --tw-text-opacity: 1;
-  color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
 .hover\:opacity-75:hover {
@@ -2988,6 +2987,11 @@ a {
     margin-bottom: 2.5rem;
   }
 
+  .md\:mx-auto {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
   .md\:mt-0 {
     margin-top: 0px;
   }
@@ -3006,6 +3010,10 @@ a {
 
   .md\:w-7\/12 {
     width: 58.333333%;
+  }
+
+  .md\:max-w-3xl {
+    max-width: 48rem;
   }
 
   .md\:max-w-screen-md {
@@ -3036,10 +3044,6 @@ a {
     display: flex;
   }
 
-  .lg\:hidden {
-    display: none;
-  }
-
   .lg\:w-6\/12 {
     width: 50%;
   }
@@ -3054,6 +3058,10 @@ a {
 
   .lg\:w-3\/5 {
     width: 60%;
+  }
+
+  .lg\:max-w-4xl {
+    max-width: 56rem;
   }
 
   .lg\:max-w-screen-lg {
@@ -3074,6 +3082,14 @@ a {
 
   .lg\:items-center {
     align-items: center;
+  }
+
+  .lg\:pt-16 {
+    padding-top: 4rem;
+  }
+
+  .lg\:pb-28 {
+    padding-bottom: 7rem;
   }
 
   .lg\:text-left {
