@@ -3,6 +3,9 @@ title: "Building a Data API for Historical Research"
 author: 
     - Jason Heppler
 date: "2022-11-21"
+tags: 
+    - database
+    - data visualization
 categories: 
   - "infrastructure"
 ---
@@ -23,31 +26,31 @@ We currently provided four key endpoints (the location where an API receives req
 [
     {
         "name":"All Hallows Barking",
-        "bill\_type":"Weekly",
-        "count\_type":"Plague",
+        "bill_type":"Weekly",
+        "count_type":"Plague",
         "count":null,
-        "start\_day":21,
-        "start\_month":"December",
-        "end\_day":28,
-        "end\_month":"December",
+        "start_day":21,
+        "start_month":"December",
+        "end_day":28,
+        "end_month":"December",
         "year":1669,
-        "split\_year":"1668/1669",
-        "week\_no":1,
-        "week\_id":"1669-1670-01"
+        "split_year":"1668/1669",
+        "week_no":1,
+        "week_id":"1669-1670-01"
     },
     {
         "name":"All Hallows Barking",
-        "bill\_type":"Weekly",
-        "count\_type":"Buried",
+        "bill_type":"Weekly",
+        "count_type":"Buried",
         "count":2,
-        "start\_day":21,
-        "start\_month":"December",
-        "end\_day":28,
-        "end\_month":"December",
+        "start_day":21,
+        "start_month":"December",
+        "end_day":28,
+        "end_month":"December",
         "year":1669,
-        "split\_year":"1668/1669",
-        "week\_no":1,
-        "week\_id":"1669-1670-01"
+        "split_year":"1668/1669",
+        "week_no":1,
+        "week_id":"1669-1670-01"
     },
     ...
 ]
@@ -58,30 +61,30 @@ We also provided an [endpoint](https://data.chnm.org/bom/causes?start-year=1648&
 ```
 [
     {
-        "death\_id":1,
+        "death_id":1,
         "death":"Abortive",
         "count":1,
-        "week\_id":"1668-1669-01",
-        "week\_no":1,
-        "start\_day":22,
-        "start\_month":"December",
-        "end\_day":29,
-        "end\_month":"December",
+        "week_id":"1668-1669-01",
+        "week_no":1,
+        "start_day":22,
+        "start_month":"December",
+        "end_day":29,
+        "end_month":"December",
         "year":1668,
-        "split\_year":"1667/1668"
+        "split_year":"1667/1668"
     },
     {
-        "death\_id":2,
+        "death_id":2,
         "death":"Aged",
         "count":10,
-        "week\_id":"1668-1669-01",
-        "week\_no":1,
-        "start\_day":22,
-        "start\_month":"December",
-        "end\_day":29,
-        "end\_month":"December",
+        "week_id":"1668-1669-01",
+        "week_no":1,
+        "start_day":22,
+        "start_month":"December",
+        "end_day":29,
+        "end_month":"December",
         "year":1668,
-        "split\_year":"1667/1668"
+        "split_year":"1667/1668"
     },
     ...
 ]
@@ -95,6 +98,6 @@ This computational infrastructure feeds into the web components that we are buil
 
 We also use the endpoints to power the visualizations, which themselves will be reactive to filters applied by users. These are still in an early phase of design, but just like our tables we can fetch the data we want to visualize in charts, networks, and maps.
 
-{{< figure src="images/Screenshot-2022-11-20-at-4.54.24-PM.png" caption="Figure 3. A sample data visualization, a small multiple bar chart showing the amount of causes of death for 1668, 1669, 1670, and 1679." alt="A sample data visualization, a small multiple bar chart showing the amount of causes of death for 1668, 1669, 1670, and 1679." >}}
+{{< figure src="/images/Screenshot-2022-11-20-at-4.54.24-PM.png" caption="Figure 3. A sample data visualization, a small multiple bar chart showing the amount of causes of death for 1668, 1669, 1670, and 1679." alt="A sample data visualization, a small multiple bar chart showing the amount of causes of death for 1668, 1669, 1670, and 1679." >}}
 
 The additional value here is, while the API is fairly purpose-built for the web application, it can be used in other programming environments like R or Python, or interactive notebooks like Observable and Jupyter. This means researchers can explore specific points of data among individual parishes or specific causes of death reported in the plague bills all through a simple API query. The queries are consistent across each of the endpoints, typically accepting `start-year`, `end-year`, `bill-type` and `count-type` parameters. A more detailed look at the API's specific parameters can be [read in the documentation](https://github.com/chnm/bom/blob/main/api-docs/api-reference.md). This means, for example, you can use the API in an Observable notebook [like this one](https://observablehq.com/d/7adb8b95df5d51a9) that lets you explore and visualize the data outside our web application and recombine or visualize that data in new ways. As our dataset continues to grow, having access to that information from a fast and queryable database allows us a great degree of flexibility, data assurances, and opens up new ways for us to recombine data in creative ways.
