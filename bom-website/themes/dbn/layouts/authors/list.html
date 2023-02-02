@@ -1,0 +1,6 @@
+<h2>Articles by {{ .Params.author }}</h2>
+<ul>
+{{ range .Data.Pages }}
+    <li><a href="{{ .Permalink }}">{{ .Title }}</a></li>
+{{ end }}
+</ul>

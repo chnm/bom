@@ -1,0 +1,25 @@
+<figure>
+	{{ $raw := .Get "src" | $.Page.Resources.Get }}
+	{{ $ext := path.Ext (.Get "src") }}
+	{{ $link := .Get "link" }}
+	{{ $title := .Get "title" }}
+	{{ if $title }}
+	<h5>{{ $title }}</h5>
+	{{ end }}
+	{{ if ne $raw.MediaType.SubType "svg" }}
+	{{ $regular := $raw.Resize "750x webp"}}
+	{{ $retina := $raw.Resize "1500x webp"}}
+	<a href="{{ $link | default $raw.Permalink }}">
+		<img src='{{ $regular.Permalink }}' srcset="{{ $regular.Permalink }}, {{ $retina.Permalink }} 2x" alt='{{ .Get "caption" | markdownify | plainify }}' style="box-shadow:none;">
+	</a>
+	{{ else }}
+	<a href="{{ $link | default $raw.Permalink }}">
+		<img src='{{ $raw.Permalink }}' alt='{{ .Get "caption" | markdownify | plainify }}' style="box-shadow:none;">
+	</a>
+	{{ end }}
+	<figcaption>
+		<p>
+			Figure. {{ .Get "caption" | markdownify }}
+		</p>
+	</figcaption>
+</figure>
