@@ -2443,8 +2443,8 @@ a {
   height: auto;
 }
 
-.h-\[200px\] {
-  height: 200px;
+.h-\[400px\] {
+  height: 400px;
 }
 
 .min-h-screen {
@@ -2779,14 +2779,14 @@ a {
   line-height: 1rem;
 }
 
-.text-3xl {
-  font-size: 1.875rem;
-  line-height: 2.25rem;
-}
-
 .text-base {
   font-size: 1rem;
   line-height: 1.5rem;
+}
+
+.text-3xl {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
 }
 
 .font-medium {
