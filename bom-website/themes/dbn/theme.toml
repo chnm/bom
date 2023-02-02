@@ -10,8 +10,7 @@ min_version = "0.41.0"
 [author]
   name = "Roy Rosenzweig Center for History and New Media"
   homepage = "https://rrchnm.org"
-
-paginate = 5
+  version = 0.8
 
 [taxonomies]
     tag = "tags"

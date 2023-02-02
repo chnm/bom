@@ -8,7 +8,7 @@
     <h2 class="text-4xl font-medium">{{ .Title }}</h2>
     <div id="metadata" class="prose prose-lg mb-5 pb-5">
       <span class="font-bold">By</span> {{ range $key, $value := .Params.author }}
-      <a class="text-dbn-orange" href="/authors/{{ $value | urlize }}">{{ $value }}</a>{{ if ne $key (sub (len $.Params.author) 1) }} and {{ else }}{{ end }}
+      <a class="text-dbn-orange" href="/author/{{ $value | urlize }}">{{ $value }}</a>{{ if ne $key (sub (len $.Params.author) 1) }} and {{ else }}{{ end }}
       {{ end }} in {{ range .Params.categories }}<a class="text-dbn-orange" href="/categories/{{ . | urlize }}">{{ . }}</a>{{ end }}
     </div>
     <div class="prose prose-lg">{{ .Content }}</div>
