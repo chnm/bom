@@ -2379,10 +2379,6 @@ a {
   margin-bottom: 1.5rem;
 }
 
-.mr-6 {
-  margin-right: 1.5rem;
-}
-
 .mr-4 {
   margin-right: 1rem;
 }
@@ -2447,10 +2443,6 @@ a {
   height: auto;
 }
 
-.h-\[400px\] {
-  height: 400px;
-}
-
 .min-h-screen {
   min-height: 100vh;
 }
@@ -2502,10 +2494,6 @@ a {
 
 .flex-1 {
   flex: 1 1 0%;
-}
-
-.flex-shrink-0 {
-  flex-shrink: 0;
 }
 
 .flex-grow {
@@ -2638,18 +2626,6 @@ a {
 .bg-dbn-blue {
   --tw-bg-opacity: 1;
   background-color: rgb(150 173 200 / var(--tw-bg-opacity));
-}
-
-.bg-cover {
-  background-size: cover;
-}
-
-.bg-fixed {
-  background-attachment: fixed;
-}
-
-.bg-center {
-  background-position: center;
 }
 
 .object-cover {

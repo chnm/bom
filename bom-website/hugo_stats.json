@@ -210,6 +210,7 @@
       "rounded-tr-lg",
       "section-content",
       "shadow-xl",
+      "sm:",
       "sm:flex-row",
       "sm:inline-block",
       "sm:max-w-screen-sm",
