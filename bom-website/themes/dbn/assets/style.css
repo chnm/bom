@@ -2311,6 +2311,10 @@ a {
   position: relative;
 }
 
+.float-right {
+  float: right;
+}
+
 .m-3 {
   margin: 0.75rem;
 }
@@ -2439,10 +2443,6 @@ a {
   height: 2.5rem;
 }
 
-.h-auto {
-  height: auto;
-}
-
 .min-h-screen {
   min-height: 100vh;
 }
@@ -2452,8 +2452,12 @@ a {
   min-height: fit-content;
 }
 
-.w-3\/4 {
-  width: 75%;
+.w-full {
+  width: 100%;
+}
+
+.w-11\/12 {
+  width: 91.666667%;
 }
 
 .w-48 {
@@ -2464,8 +2468,8 @@ a {
   width: 24rem;
 }
 
-.w-full {
-  width: 100%;
+.w-3\/4 {
+  width: 75%;
 }
 
 .w-4 {
@@ -2474,6 +2478,10 @@ a {
 
 .w-auto {
   width: auto;
+}
+
+.w-44 {
+  width: 11rem;
 }
 
 .max-w-3xl {
@@ -2488,16 +2496,16 @@ a {
   max-width: 32rem;
 }
 
-.max-w-md {
-  max-width: 28rem;
-}
-
 .flex-1 {
   flex: 1 1 0%;
 }
 
 .flex-grow {
   flex-grow: 1;
+}
+
+.flex-grow-0 {
+  flex-grow: 0;
 }
 
 .cursor-pointer {
@@ -2643,12 +2651,17 @@ a {
      object-fit: scale-down;
 }
 
-.p-5 {
-  padding: 1.25rem;
+.object-center {
+  -o-object-position: center;
+     object-position: center;
 }
 
 .p-3 {
   padding: 0.75rem;
+}
+
+.p-5 {
+  padding: 1.25rem;
 }
 
 .p-9 {
@@ -2657,10 +2670,6 @@ a {
 
 .p-2 {
   padding: 0.5rem;
-}
-
-.p-6 {
-  padding: 1.5rem;
 }
 
 .px-4 {
@@ -2945,6 +2954,10 @@ a {
     display: inline-block;
   }
 
+  .sm\:h-44 {
+    height: 11rem;
+  }
+
   .sm\:w-1\/2 {
     width: 50%;
   }
@@ -2989,6 +3002,10 @@ a {
     margin-bottom: 0px;
   }
 
+  .md\:h-44 {
+    height: 11rem;
+  }
+
   .md\:w-1\/2 {
     width: 50%;
   }
@@ -3001,12 +3018,12 @@ a {
     width: 58.333333%;
   }
 
-  .md\:max-w-3xl {
-    max-width: 48rem;
-  }
-
   .md\:max-w-screen-md {
     max-width: 768px;
+  }
+
+  .md\:max-w-3xl {
+    max-width: 48rem;
   }
 
   .md\:text-left {
@@ -3033,6 +3050,10 @@ a {
     display: flex;
   }
 
+  .lg\:h-auto {
+    height: auto;
+  }
+
   .lg\:w-6\/12 {
     width: 50%;
   }
@@ -3041,20 +3062,20 @@ a {
     width: auto;
   }
 
-  .lg\:w-2\/5 {
-    width: 40%;
-  }
-
   .lg\:w-3\/5 {
     width: 60%;
   }
 
-  .lg\:max-w-4xl {
-    max-width: 56rem;
+  .lg\:w-2\/5 {
+    width: 40%;
   }
 
   .lg\:max-w-screen-lg {
     max-width: 1024px;
+  }
+
+  .lg\:max-w-4xl {
+    max-width: 56rem;
   }
 
   .lg\:max-w-md {

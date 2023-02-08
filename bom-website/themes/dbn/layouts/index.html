@@ -1,13 +1,13 @@
 {{ define "main" }}
 
-<div class="flex min-h-screen items-center justify-start bg-white pt-7">
+<div class="flex min-h-screen items-center justify-start bg-white pt-7 mx-auto w-full lg:max-w-screen-lg sm:max-w-screen-sm md:max-w-screen-md">
   <div class="container mx-auto px-4">
     <h2 class="text-4xl font-medium pb-4">{{ .Title }}</h2>
     {{ if .IsHome }}
 
     <div class="flex flex-col mb-8 animated fadeIn sm:flex-row">
       <div class="flex items-center mb-8 sm:w-1/2 md:w-1/2">
-        <div class="flex flex-wrap w-3/4 p-5 prose prose-lg">
+        <div class="flex flex-wrap w-11/12 prose prose-lg">
           {{ .Content }}
         </div>
       </div>
