@@ -17,10 +17,7 @@
                         <div class="flex justify-between">
                             <div class="inline-block mb-2 text-xs font-semibold uppercase">
                                 by 
-                                {{ range $key, $value := .Params.author }}
-                                  {{ $value }}
-                                  <!-- add an "and" separator -->
-                                {{ end }}
+                                {{ range $i, $e := .Params.author }}{{ if $i }}, {{ end }}{{ $e }}{{ end }}
                             </div>
                             <span class="mb-2 text-xs">{{.Date.Format "2006-01-02"}}</span>
                         </div>
