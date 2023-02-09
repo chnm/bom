@@ -109,7 +109,7 @@ export default {
       parishNames: [],
       totalGeneralBills: [],
       totalRecords: 100000,
-      filteredYears: [1640, 1754],
+      filteredYears: [1636, 1754],
       openTab: 1,
       serverParams: {
         limit: 50,
@@ -140,7 +140,7 @@ export default {
         "reset-filters",
         (this.filteredCountType = "All"),
         (this.filteredBillsData = []),
-        (this.filteredYears = [1640, 1754])
+        (this.filteredYears = [1636, 1754])
       );
     },
   },
