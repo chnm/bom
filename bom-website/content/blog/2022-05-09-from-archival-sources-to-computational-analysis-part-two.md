@@ -15,7 +15,7 @@ tags:
 
 In our last post, we explained how we used Tropy to organize photographs of bound bills into items, concluding with the export of the item metadata using the Tropy CSV Export plugin. This post covers the other part of the process of going from digital images to items in a datascribe item set. If you look at the workflow image, we’ll be describing work that takes place in the “Image Processing and CSV Creation” and “Omeka S Item Creation” areas.
 
-![diagram of image preparation workflow showing process from digitization to image processing and csv creation to omeka s item creation to datascribe transcription](images/workflow-erd-1024x654.png)
+{{< figure src="/images/workflow-erd-1024x654.png" caption="Figure 1. diagram of image preparation workflow showing process from digitization to image processing and CSV creation to omeka s item creation to datascribe transcription." alt="diagram of image preparation workflow showing process from digitization to image processing and csv creation to omeka s item creation to datascribe transcription" >}}
 
 At this point in the process we have a csv and a lot of digital files—possibly organized but maybe not. Each row in the csv file will become an item in our Omeka S installation. Before we can use the csv with the Omeka S CSV Import module, we need to do some further data cleanup.
 
@@ -27,7 +27,7 @@ Finally, we add a unique title for each item. The titles we use in this project 
 
 Once this step is done, our csv should have full metadata, a proper title, and accurate file paths for every item. It is ready for importing into Omeka S! But is our installation ready?
 
-![flowchart showing that multiple items go into an item set which then feeds into different datasets](images/omeka-workflow-251x300.png)
+{{< figure src="/images/omeka-workflow-251x300.png" caption="Figure 2. Flowchart showing that multiple items go into an item set which then feeds into different datasets." alt="flowchart showing that multiple items go into an item set which then feeds into different datasets" >}}
 
 At some point during the processing of the images and cleanup of the csv file, there is also work to do in the Omeka S installation. DataScribe uses item sets to populate datasets for a given project, so we need to be sure to create the item sets with the needs of the datasets in mind.  In this project we have different datasets for weekly and general bills, but we can use the same item set for multiple datasets within this project.
 

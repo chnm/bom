@@ -34,7 +34,7 @@ That coloured past makes parts of the Bills easier to section out deaths that we
 
 Our team decided it was best to put all drownings in their own category to limit our after-the-fact interpretation of the data. If we spent the time trying to find the documentation to every drowning, this project could take years and might still never be accurate. In the case of the drowning below, we cannot tell if this is suicide, so it will fall into our “drowning” category for consistently.
 
-![bill of mortality snippet reading: Drowned 2. One accidentally at St Dunstan in the East, and one at St Saviour in Southwark.](images/drowning-bill.png)
+{{< figure src="/images/drowning-bill.png" caption="Figure 1. Bill of mortality snippet reading: Drowned 2. One accidentally at St Dunstan in the East, and one at St Saviour in Southwark." alt="bill of mortality snippet reading: Drowned 2. One accidentally at St Dunstan in the East, and one at St Saviour in Southwark." >}}
 
 **Other works involving the Bills**
 
