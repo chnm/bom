@@ -30,7 +30,7 @@ If the Bills of Mortality transcription team had a time machine, our first stop 
 
 It's easy to mix up names, and it happens to every transcriber. This is why transcribers need to be familiar with the sources and why careful reviewers are essential. Each project will have sneaky mix ups and subtle nuances. A lot of these types of transcription errors can be anticipated, and while forewarning new transcribers will not stop every mistake, maintaining a running list of potential jumbles can help ease transcriptions.
 
-![excerpt from a bill of mortality showing all the St Mary parishes within the city walls](images/image2.jpg)
+![excerpt from a bill of mortality showing all the St Mary parishes within the city walls](/images/image2.jpg)
 
 ### **Problem Number 3: It's… a number?**
 
@@ -38,7 +38,7 @@ It's easy to mix up names, and it happens to every transcriber. This is why tran
 
 Early modern printing and handwriting is often a challenge to read. You can see our weekly [#TranscriptionThursday posts on Twitter](https://mobile.twitter.com/PlagueBills) where we share examples of problem numbers. While our Bills give sum totals, and a few members of our project team know addition, one of the goals of Death By Numbers is to check early modern arithmetic. Your project might allow deduction, but we prefer not to assume a lack of entry is a 0 or that a smudge is a 2, no matter how much it makes sense. On DataScribe, we can mark data entry fields as illegible and encourage transcribers to be cautious. Your project should set clear guidelines prior to onboarding transcribers so every team member knows how to encounter the questionable 7 or the deceitful 4.
 
-![excerpt from bill of mortality showing black smears over text that makes it illegible](images/image1-300x99.png)
+![excerpt from bill of mortality showing black smears over text that makes it illegible](/images/image1-300x99.png)
 
 ### **Problem Number 4: Damaged Sources: Are They Whole Numbers or Hole Numbers?**
 
@@ -46,7 +46,7 @@ Early modern printing and handwriting is often a challenge to read. You can see 
 
 The early modern period was unkind to paper, and even if you're transcribing documents from last week, you may find rips, tears, and cutouts. Or the page is fine, but your PI might have taken blurry photographs. Or the page was collected in a bound volume and the binding hides half the data. Prepare your transcribers for these imperfect documents and let them know that your illegible data policy covers more than just smudged writing.
 
-![excerpt from a bill of mortality with a circular splotch where the number should be](images/image3-300x157.jpg)
+![excerpt from a bill of mortality with a circular splotch where the number should be](/images/image3-300x157.jpg)
 
 ### **Problem Number 5: Tech Happens**
 
