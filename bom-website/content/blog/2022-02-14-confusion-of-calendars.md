@@ -2,6 +2,7 @@
 title: "Confusion of Calendars"
 date: "2022-02-14"
 author:
+  - Emily Meyers
   - Jessica Otis
 categories: 
   - "context"
@@ -11,8 +12,6 @@ tags:
   - "otis"
   - "time"
 ---
-
-by Emily Meyers and Jessica Otis
 
 One of the first things a [Bill of Mortality](https://deathbynumbers.org/2022/01/31/the-london-bills-of-mortality/) tells the reader is the date. The bill (partially) pictured below covers mortality data for the city of London, in the 3rd week of the current bills’ year, which ran from the 31st of December to the 7th of January in the year 1700 AD (from the Latin, [_Anno Domini_](https://en.wikipedia.org/wiki/Anno_Domini), which was often translated into English as the Year of the Lord).
 
