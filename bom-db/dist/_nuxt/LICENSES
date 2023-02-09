@@ -6,6 +6,13 @@
 
 
 /*!
+ * Vue.js v2.6.14
+ * (c) 2014-2021 Evan You
+ * Released under the MIT License.
+ */
+
+
+/*!
   * pinia v2.0.22
   * (c) 2022 Eduardo San Martin Morote
   * @license MIT
@@ -24,10 +31,3 @@
  */
 
 //! invalid number
-
-
-/*!
- * Vue.js v2.6.14
- * (c) 2014-2021 Evan You
- * Released under the MIT License.
- */
