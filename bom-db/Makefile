@@ -11,7 +11,7 @@ deploy : build
 	@echo "Deploying the site to dev with rsync ..."
 	rsync -avz --delete --itemize-changes --omit-dir-times \
 			--checksum --no-perms --exclude-from=rsync-excludes \
-			dist/ chnmdev:/websites/bomdev/www | egrep -v '^\.'
+			dist/ susanoo:/websites/database.deathbynumbers.org/ | egrep -v '^\.'
 	@echo "Finished deploying the site to dev with rsync."
 
 build-prod : 
