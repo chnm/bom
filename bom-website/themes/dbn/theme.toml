@@ -6,13 +6,14 @@ licenselink = "https://github.com/chnm/bom/bom-website/blob/master/LICENSE"
 description = "Theme for the Death by Numbers project at the Roy Rosenzweig Center for History and New Media"
 homepage = "https://deathbynumbers.org/"
 min_version = "0.41.0"
+languageCode = "en-us"
 
 [author]
   name = "Roy Rosenzweig Center for History and New Media"
   homepage = "https://rrchnm.org"
-
-paginate = 8
+  version = 0.8
 
 [taxonomies]
     tag = "tags"
     category = "categories"
+    author = "authors"

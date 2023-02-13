@@ -2,7 +2,7 @@
 title: "God's Terrible Voice in the City: New England Connections to the Bills of Mortality"
 date: "2022-08-29"
 author:
-  - Jessica Otis
+  - Dan Howlett
 categories: 
   - "context"
 tags: 
@@ -28,8 +28,6 @@ Mather also took a scientific approach to understanding providence.  In 1683, h
 
 The astronomical and numerical depictions of divine providence reflected in Mather’s work came from an empirical culture in seventeenth-century New England.  Sarah Rivett’s _The Science of the Soul in Colonial New England_ looks at how science and religion intersected: “Ministers learned to study the human soul through the same methods that seventeenth-century scientists used to study nature,” (Rivett, 5).  In order to become a full member of the Congregational Church, prospective members needed to orally testify to their personal conversion experience that confirmed their placement among God’s chosen elect.  Ministers, like Mather, wrote down conversion narratives and preached on conversion experiences that mimicked the ones they documented.  This created a cyclical, self-fulfilling, relationship to the type of conversion narrative spoken and witnessed and the expectations set by the minister.  It ensured a sort of uniformity to the methods of relaying an individual’s story of salvation.  An empirical study of the soul became possible as certain themes crossed narratives and granted a tangible understanding of a supernatural idea.  The same occurred with divine providence in the ways that the Bills tracked the spread and impact of plague and as Mather connected comet sightings with providential events.  The Bills of Mortality were a part of this religious and intellectual culture on both sides of the Atlantic, offering proof of providence to ministers and scientists. 
 
-— Dan Howlett
-
 ## Primary Sources:
 
 Vincent, Thomas. _God’s Terrible Voice in the City of London_. Cambridge, MA: Marmaduke Johnson, 1668. [https://quod.lib.umich.edu/e/evans/N00083.0001.001](https://quod.lib.umich.edu/e/evans/N00083.0001.001).
@@ -41,8 +39,6 @@ Mather, Increase. _An Essay for the Recording of Illustrious Providences_. Bosto
 Mather, Increase. _Kometographia_. Boston: S.G., 1683. [https://quod.lib.umich.edu/e/evans/N00277.0001.001?view=toc](https://quod.lib.umich.edu/e/evans/N00277.0001.001?view=toc).
 
 Mather, Increase and Michael G. Hall (ed.). _The Autobiography of Increase Mather._ Worcester, MA: American Antiquarian Society, 1962.
-
- 
 
 ## Secondary Sources:
 

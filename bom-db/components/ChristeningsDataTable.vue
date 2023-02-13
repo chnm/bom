@@ -101,7 +101,7 @@
                         <div class="slider-container">
                           <vue-slider
                             v-model="filteredYears"
-                            :min="1640"
+                            :min="1636"
                             :max="1754"
                             :interval="1"
                             :enable-cross="false"
@@ -207,7 +207,7 @@ export default {
       totalChristenings: [],
       christeningsList: [],
       totalRecords: 0,
-      filteredYears: [1640, 1754],
+      filteredYears: [1636, 1754],
       filteredChristeningsID: [],
       columns: [
         {
@@ -245,7 +245,7 @@ export default {
         limit: 25,
         offset: 0,
         location: "",
-        year: [1640, 1754],
+        year: [1636, 1754],
         perPage: 25,
         page: 1,
       },
@@ -347,10 +347,10 @@ export default {
     // When a user clicks the Reset Filters button, we return the data to their defaults.
     resetFilters() {
       this.filteredChristeningsID = [];
-      this.filteredYears = [1640, 1754];
+      this.filteredYears = [1636, 1754];
       this.updateParams({
         location: [],
-        year: [1640, 1754],
+        year: [1636, 1754],
       });
       this.loadItems();
     },
