@@ -16,9 +16,13 @@ In the fourth week of 1727 the habitual readers of the Bills of Mortality notice
 
 Apparently, it took Will Humphryes --the Printer to the Company of Parish Clerks-- a few weeks of trial-and-error with the woodcut blocks to set the final outline of the skull rim. Humphyres initially placed the skulls side by side, facing symmetrically to the center of the bill. One week later, the skulls on the side were facing down, vertically piled up on top of one another, while the top and bottom stripes remained facing inwards. Six weeks later, in the bill published on February 24th, William Humphryes placed the skull and crossed-bones border in what would become their permanent display: all skulls pointing downwards, both in the horizontal and vertical rims.
 
+{{< figure src="/images/hernan-image2.png" caption="Figure 1. 1727, 3rd week, skulls facing inward" alt="Close up of a border of skull and crossed bones facing inward." >}}
+
+{{< figure src="/images/hernan-image3.png" caption="Figure 2. 1727, 4th week, skulls facing downwards" alt="Close up of a border of skull and crossed bones facing downwards." >}}
+
 The skull and crossed-bones border remained untouched for more than sixteen years, until August of 1743, when Humphryes and the Parish Clerks decided to give the artwork an update. The bill published on August 11th, corresponding to 1743's thirty-fourth week, included a more complex framing made of a sequence of a skull and the frontal view of an hourglass, set in an intercalated fashion. Adding the hourglass was not the only innovation, though. The shape of the skull printed by Humphryes in 1743 was quite different from the 1727 version. The fully frontally placed skull had a smaller cranium, and it included the remnants of a maxilla or upper jaw on top of slightly thinner crossed-bones. Although William Humphryes' name was removed from the Bills of Mortality by 1749, the skull-hourglass fringe kept showing up at least until late 1752 (which is the final year of the Death by Numbers project).
 
-{{< figure src="/images/image1-300x180.png" caption="Figure 1. 1743, 34th week, updated design including an hourglass" alt="Close up of a border alternating an hourglass with a skull and crossed bones." >}}
+{{< figure src="/images/hernan-image1.png" caption="Figure 3. 1743, 34th week, updated design including an hourglass" alt="Close up of a border alternating an hourglass with a skull and crossed bones." >}}
 
 What possible interpretations can we draw from the iconography of death inscribed on the Bills of Mortality? For the average eighteenth-century Londoner, witnessing such stereotypical representations of death in a printed publication about death was probably of little surprise. Skulls, hourglasses, shovels, scythes, weeping puttos and skeletons were commonly included and adapted to fit in printed funeral invitations and publications surrounding the rituals that dealt with the deceased.
 
