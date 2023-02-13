@@ -4,7 +4,7 @@ preview :
 
 build :
 	@echo "\nBuilding the site with Hugo ..."
-	hugo --cleanDestinationDir --buildDrafts --buildFuture --baseURL http://deathbynumbers.org/
+	hugo --cleanDestinationDir --buildDrafts --buildFuture --baseURL https://deathbynumbers.org/
 	@echo "Website finished building."
 
 build-prod :
