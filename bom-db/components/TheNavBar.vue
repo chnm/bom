@@ -5,24 +5,24 @@
       <a
         id="site-title"
         class="font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap text-white"
-        href="http://deathbynumbers.org">Death by <span class="text-dbn-blue">Numbers</span></a>
+        href="https://deathbynumbers.org">Death by <span class="text-dbn-blue">Numbers</span></a>
       
   </div>
   <div class="w-full block flex-grow-0 lg:items-center lg:w-auto">    
     <div class="text-sm lg:flex-grow">
-      <a href="http://deathbynumbers.org/blog/" class="inline-block px-3 py-2 items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75 ml-2">
+      <a href="https://deathbynumbers.org/blog/" class="inline-block px-3 py-2 items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75 ml-2">
         Blog
       </a>
-      <a href="http://database.deathbynumbers.org" class="inline-block px-3 py-2 items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75 ml-2">
+      <a href="https://database.deathbynumbers.org" class="inline-block px-3 py-2 items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75 ml-2">
         Database
       </a>
-      <a href="http://deathbynumbers.org/visualizations/" class="inline-block px-3 py-2 items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75 ml-2">
+      <a href="https://deathbynumbers.org/visualizations/" class="inline-block px-3 py-2 items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75 ml-2">
         Visualizations
       </a>
-      <a href="http://deathbynumbers.org/about/" class="inline-block px-3 py-2 items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75 ml-2">
+      <a href="https://deathbynumbers.org/about/" class="inline-block px-3 py-2 items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75 ml-2">
         About
       </a>
-      <a href="github.com/chnm/bom/tree/main/bom-data" class="inline-block px-3 py-2 items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75 ml-2">
+      <a href="https://github.com/chnm/bom/tree/main/bom-data" class="inline-block px-3 py-2 items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75 ml-2">
         <span class="inline-flex items-baseline">
           <span class="mr-1">Data</span>
           <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="white" class="bi bi-box-arrow-up-right" viewBox="0 0 16 16">
