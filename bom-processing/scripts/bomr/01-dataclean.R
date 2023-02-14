@@ -5,22 +5,23 @@
 #
 # Jason A. Heppler | jason@jasonheppler.org
 # Roy Rosenzweig Center for History and New Media
-# Updated: 2022-11-08
+# Updated: 2023-02-14 <3
 
 library(tidyverse)
 
 # ---------------------------------------------------------------------- 
 # Data sources
 # ---------------------------------------------------------------------- 
-raw_wellcome_weekly <- read_csv("../bom/data-csvs/2022-04-06-1669-1670-Wellcome-weeklybills-parishes.csv")
-raw_wellcome_causes <- read_csv("../bom/data-csvs/2022-04-06-Wellcome-weeklybills-causes.csv")
-raw_laxton_weekly <- read_csv("../bom/data-csvs/2022-11-02-Laxton-weeklybills-parishes.csv")
-raw_millar_general <- read_csv("../bom/data-csvs/2022-04-06-millar-generalbills-postplague-parishes.csv")
-raw_laxton_1700_causes <- read_csv("../bom/data-csvs/2022-06-15-Laxton-1700-weeklybills-causes.csv")
-raw_laxton_causes <- read_csv("../bom/data-csvs/2022-11-02-Laxton-weeklybills-causes.csv")
-raw_laxton_1700_foodstuffs <- read_csv("../bom/data-csvs/2022-09-19-Laxton-1700-weeklybills-foodstuffs.csv")
-raw_laxton_foodstuffs <- read_csv("../bom/data-csvs/2022-09-19-Laxton-1700-weeklybills-foodstuffs.csv")
-raw_bodleian <- read_csv("../bom/data-csvs/2022-11-16-Bodleian-V1-weeklybills-parishes.csv")
+raw_wellcome_weekly <- read_csv("../../../bom-data/data-csvs/2022-04-06-1669-1670-Wellcome-weeklybills-parishes.csv")
+raw_wellcome_causes <- read_csv("../../../bom-data/data-csvs/2022-04-06-Wellcome-weeklybills-causes.csv")
+raw_laxton_weekly <- read_csv("../../../bom-data/data-csvs/2022-11-02-Laxton-weeklybills-parishes.csv")
+raw_millar_general <- read_csv("../../../bom-data/data-csvs/2022-04-06-millar-generalbills-postplague-parishes.csv")
+raw_laxton_1700_causes <- read_csv("../../../bom-data/data-csvs/2022-06-15-Laxton-1700-weeklybills-causes.csv")
+raw_laxton_causes <- read_csv("../../../bom-data/data-csvs/2022-11-02-Laxton-weeklybills-causes.csv")
+raw_laxton_1700_foodstuffs <- read_csv("../../../bom-data/data-csvs/2022-09-19-Laxton-1700-weeklybills-foodstuffs.csv")
+raw_laxton_foodstuffs <- read_csv("../../../bom-data/data-csvs/2022-09-19-Laxton-1700-weeklybills-foodstuffs.csv")
+raw_bodleian <- read_csv("../../../bom-data/data-csvs/2023-02-08-BodleianV1-weeklybills-parishes.csv")
+raw_bodleian_v2 <- read_csv("../../../bom-data/data-csvs/2023-02-08-BodleianV2-weeklybills-parishes.csv")
 
 # ---------------------------------------------------------------------- 
 # Types of death table
@@ -120,6 +121,17 @@ bodleian_weekly <- raw_bodleian |>
                names_to = 'parish_name',
                values_to = 'count')
 
+bodleian_weekly_v2 <- raw_bodleian_v2 |> 
+  select(-c(starts_with('is_illegible')))
+bodleian_weekly_v2 <- bodleian_weekly_v2 |> 
+  select(-c(starts_with('is_missing')))
+
+bodleian_weekly_v2 <- bodleian_weekly_v2 |> 
+  select(!1:4) |> 
+  pivot_longer(8:266,
+               names_to = 'parish_name',
+               values_to = 'count')
+
 # Lowercase column names and replace spaces with underscores.
 names(laxton_weekly) <- tolower(names(laxton_weekly))
 names(laxton_weekly) <- gsub(" ", "_", names(laxton_weekly))
@@ -127,12 +139,15 @@ names(wellcome_weekly) <- tolower(names(wellcome_weekly))
 names(wellcome_weekly) <- gsub(" ", "_", names(wellcome_weekly))
 names(bodleian_weekly) <- tolower(names(bodleian_weekly))
 names(bodleian_weekly) <- gsub(" ", "_", names(bodleian_weekly))
+names(bodleian_weekly_v2) <- tolower(names(bodleian_weekly_v2))
+names(bodleian_weekly_v2) <- gsub(" ", "_", names(bodleian_weekly_v2))
 
 # The unique ID column is mis-named in the Laxton data so we fix it here
 names(laxton_weekly)[3] <- "unique_identifier"
 names(bodleian_weekly)[3] <- "unique_identifier"
+names(bodleian_weekly_v2)[3] <- "unique_identifier"
 
-weekly_bills <- rbind(wellcome_weekly, laxton_weekly, bodleian_weekly)
+weekly_bills <- rbind(wellcome_weekly, laxton_weekly, bodleian_weekly, bodleian_weekly_v2)
 weekly_bills <- weekly_bills |> 
   mutate(bill_type = "Weekly")
 
