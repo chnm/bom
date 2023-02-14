@@ -1,6 +1,6 @@
 {{ define "main" }}
 <main>
-  <div class="flex min-h-screen bg-white pt-7 items-start">
+  <div class="flex min-h-screen bg-white pt-7 items-start mx-auto w-full lg:max-w-screen-lg sm:max-w-screen-sm md:max-w-screen-md">
     <div class="container mx-auto px-4">
       <h2 class="text-4xl font-medium pb-4">{{ .Title }}</h2>
       {{ .Content }}
@@ -8,7 +8,7 @@
       <div class="flex flex-col mb-8 animated fadeIn sm:flex-row">
         <div class="flex mb-8 sm:w-1/2 md:w-7/12">
           <div class="flex flex-wrap w-3/4 prose prose-lg">
-            {{ range .Paginator.Pages }}
+            {{ range (.Paginator 4).Pages }}
             <section class="flex prose">
                 <div class="flex-1 max-w-3xl mx-auto text-left">
                     <div class="section-content">
@@ -17,9 +17,7 @@
                         <div class="flex justify-between">
                             <div class="inline-block mb-2 text-xs font-semibold uppercase">
                                 by 
-                                {{ range .Params.author }}
-                                    {{ . }}
-                                {{ end }}
+                                {{ range $i, $e := .Params.author }}{{ if $i }}, {{ end }}{{ $e }}{{ end }}
                             </div>
                             <span class="mb-2 text-xs">{{.Date.Format "2006-01-02"}}</span>
                         </div>
@@ -70,6 +68,8 @@
 
 
         <div class="container tagcloud">
+          <h2 class="text-2xl text-gray-600">Post Tags</h2>
+
             {{ if ne (len $.Site.Taxonomies.tags) 0 }}
               {{ $largestFontSize := 1.6 }}
               {{ $smallestFontSize := 0.9 }}
@@ -89,6 +89,24 @@
                     </a>
                 {{ end }}
             {{ end }}
+        </div>
+
+        <hr class="w-48 h-0.5 mx-auto my-4 bg-gray-700 border-0 rounded md:my-10">
+
+
+        <div class="container categories">
+          <!-- list of categories -->
+          {{ if ne (len $.Site.Taxonomies.categories) 0 }}
+            <h2 class="text-2xl text-gray-600">Post Categories</h2>
+            <div class="flex flex-col mt-4">
+              {{ range $name, $taxonomy := $.Site.Taxonomies.categories }}
+                <a class="prose" href="{{ "/categories/" | relURL }}{{ $name | urlize }}">
+                  {{ $name }} <span>({{ len $taxonomy.Pages }})</span>
+                </a>
+              {{ end }}
+            </div>
+          {{ end }}
+
         </div>
         </div>
         </div>

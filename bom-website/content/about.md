@@ -3,14 +3,20 @@ title: About
 slug: /about/
 ---
 
-One of the most dreaded diseases in early modern England was plague, which was present in the British Isles from 1348 until 1679. The most well-documented epidemics of the early modern era were in England's cities, particularly London, which suffered six major epidemics in the century between 1563 and 1665, and lost an estimated 225,000 people to plague. Government officials attempted to quantify the severity of various plague outbreaks and, starting in 1603, published London’s weekly mortality statistics in broadside series known as the Bills of Mortality. The bills grew to include not just plague deaths but also dozens of other causes of death, such as childbirth, measles, syphilis, and suicide, ensuring their continued publication for decades after the final outbreak of plague in England. The weekly bills were also supplemented annually with a general account of the preceding year, published on the Thursday before Christmas. Between 1603 and 1752, almost 8,000 different weekly bills were published, chronicling plague and general mortality through the city of London. 
+One of the most dreaded diseases in early modern England was plague, which was present in the British Isles from 1348 until 1679. The most well-documented epidemics of the early modern era were in England's cities, particularly London, which suffered six major epidemics in the century between 1563 and 1665, and lost an estimated 225,000 people to plague. Government officials attempted to quantify the severity of various plague outbreaks and, starting in 1603, published London's weekly mortality statistics in broadside series known as the Bills of Mortality. The bills grew to include not just plague deaths but also dozens of other causes of death, such as childbirth, measles, syphilis, and suicide, ensuring their continued publication for decades after the final outbreak of plague in England. The weekly bills were also supplemented annually with a general account of the preceding year, published on the Thursday before Christmas. Between 1603 and 1752, almost 8,000 different weekly bills were published, chronicling plague and general mortality through the city of London. 
 
-One of the major aims of the _Death by Numbers_ project is to transcribe and publish the information in these bills in a dataset suitable for computational analysis. **More about the project aims, work here. Mention DataScribe?**
+Using the DataScribe module for Omeka S, the *Death by Numbers* project aims to transcribe and publish the information in these bills in a dataset suitable for computational analysis. We then use the Bills of Mortality to investigate how lived experiences of plague outbreaks intersected with an emerging 
+quantitative mentality among the people of early modern England. In particular, we examine how ordinary people aggregated, transformed, and interpreted death counts in order to draw conclusions about changes in the early modern use of and trust in numbers over time. In doing so, we are investigating contemporary perceptions of numbers and historicizes a quantitative method of knowledge generation 
+that has become central to twenty-first-century understandings of the world.
+
+The *Death by Numbers* project is also designed to support dataset reuse by publishing the transcribed bills in three different formats: 1) csv's in a GitHub repository that can be accessed through the data menu item; 2) a graphical user interface that can be accessed through the database menu item; and 3) an API which powers the database and can also be queried directly by users (see our GitHub for instructions). This data supports original student research, which has appeared on our project blog and in a variety of conference presentations held from 2022-2024.
 
 ## Current Project Team
 
 - Jessica Otis, Principal Investigator, 2016-present
 - Hernán Adasme, Graduate Research Assistant, 2022-present
+- Rachel Barton, Digital Public Humanities Intern, 2023
+- Michelle Curtis, Digital History Research Assistant, 2023-present
 - Andrew Crooks, Advisory Board, 2021-present
 - Vanessa Harding, Advisory Board, 2021-present
 - Jack Harvey, Digital History Research Assistant, 2022-present
@@ -21,6 +27,7 @@ One of the major aims of the _Death by Numbers_ project is to transcribe and p
 - Thanh Nguyen, Office Manager, 2020-present
 - Amira Roess, Advisory Board, 2021-present
 - Logan Skorupa, Digital History Research Assistant, 2022-present
+- Mary Shuman, Digital Public Humanities Intern, 2023
 - Tony Trinh, Systems Administrator, 2022-present
 - Cecilia Ward, Digital History Research Assistant, 2022-present
 
@@ -37,4 +44,6 @@ One of the major aims of the _Death by Numbers_ project is to transcribe and p
 - Paige Kuester, Graduate Student Assistant, 2018
 - Emily Meyers, Digital History Research Assistant, 2021-2023
 - Megan Mitchell, Digital Public Humanities Intern, 2022
+- Amber Pelham, Graduate Research Assistant, 2023
 - Kayleigh Seng, Digital History Research Assistant, 2021-2022
+- Rachel Whyte, Graduate Research Assistant, 2023

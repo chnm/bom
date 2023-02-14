@@ -1,129 +1,43 @@
 <template>
-  <nav
-    class="relative flex flex-wrap items-center justify-between px-2 py-3"
-  >
-    <div
-      class="container px-4 mx-auto flex flex-wrap items-center justify-between"
-    >
-      <div
-        class="w-full relative flex justify-between lg:w-auto px-4 lg:static lg:block lg:justify-start"
-      >
-      <div class="flex items-center flex-no-shrink text-white mr-6">
-        <img src="/death-by-numbers.jpg" alt="Death by Numbers" class="object-scale-down w-48 overflow-hidden" />
-        <NuxtLink
-          id="site-title"
-          class="text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase text-white"
-          to="/"
-          >London Bills of Mortality</NuxtLink
-        >
-      </div>
-        <button
-          class="text-white cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none"
-          type="button"
-          @click="toggleNavbar()"
-        >
-          <i class="fas fa-bars"></i>
-        </button>
-      </div>
-      <div
-        :class="{ hidden: !showMenu, flex: showMenu }"
-        class="lg:flex lg:flex-grow items-center"
-      >
-        <ul class="flex flex-col lg:flex-row list-none ml-auto">
-          <li class="nav-item">
-            <a
-              target="_window"
-              href="https://deathbynumbers.org/posts/"
-              class="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75 ml-2"
-              >Blog</a
-            >
-          </li>
-          <li class="nav-item">
-            <NuxtLink
-              to="/"
-              class="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75 ml-2"
-              >Database</NuxtLink
-            >
-          </li>
-          <li class="nav-item">
-            <NuxtLink
-              to="/visualizations/"
-              class="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75 ml-2"
-              >Visualizations</NuxtLink
-            >
-          </li>
-          <li class="nav-item">
-              <a href="https://github.com/chnm/bom" class="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75 ml-2">
-              Data</a>
-          </li>
-          <div class="relative inline-flex align-middle w-full">
-            <li ref="btnDropdownRef" class="nav-item" @click="toggleDropdown()">
-              <a
-                class="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75"
-                href="#"
-              >
-                <span class="ml-2">About</span>
-              </a>
-            </li>
-            <div
-              ref="popoverDropdownRef"
-              :class="{
-                hidden: !dropdownPopoverShow,
-                block: dropdownPopoverShow,
-              }"
-              class="bg-white text-base z-50 float-left py-2 list-none text-left rounded shadow-lg mt-1"
-              style="min-width: 12rem"
-            >
-              <a
-                target="_window"
-                href="https://deathbynumbers.org"
-                class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-              >
-                Project description &amp; team
-              </a>
-              <div
-                class="h-0 my-2 border border-solid border-t-0 border-blueGray-800 opacity-25"
-              ></div>
-              <a
-                target="_window"
-                href="https://github.com/chnm/bom-db/issues"
-                class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-              >
-                Report an issue
-              </a>
-            </div>
-          </div>
-        </ul>
-      </div>
+  <nav class="flex items-center justify-between flex-wrap bg-dbn-green px-4 mx-auto w-full lg:max-w-screen-lg sm:max-w-screen-sm md:max-w-screen-md">
+  <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
+    <img src="death-by-numbers.jpg" alt="Death by Numbers" class="object-scale-down w-44 overflow-hidden" />
+      <a
+        id="site-title"
+        class="font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap text-white"
+        href="https://deathbynumbers.org">Death by <span class="text-dbn-blue">Numbers</span></a>
+      
+  </div>
+  <div class="w-full block flex-grow-0 lg:items-center lg:w-auto">    
+    <div class="text-sm lg:flex-grow">
+      <a href="https://deathbynumbers.org/blog/" class="inline-block px-3 py-2 items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75 ml-2">
+        Blog
+      </a>
+      <a href="https://database.deathbynumbers.org" class="inline-block px-3 py-2 items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75 ml-2">
+        Database
+      </a>
+      <a href="https://deathbynumbers.org/visualizations/" class="inline-block px-3 py-2 items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75 ml-2">
+        Visualizations
+      </a>
+      <a href="https://deathbynumbers.org/about/" class="inline-block px-3 py-2 items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75 ml-2">
+        About
+      </a>
+      <a href="https://github.com/chnm/bom/tree/main/bom-data" class="inline-block px-3 py-2 items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75 ml-2">
+        <span class="inline-flex items-baseline">
+          <span class="mr-1">Data</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="white" class="bi bi-box-arrow-up-right" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5z"/>
+            <path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z"/>
+          </svg>
+        </span>
+      </a>
     </div>
-  </nav>
+  </div>
+</nav>
 </template>
 
 <script>
-import { createPopper } from "@popperjs/core";
-
 export default {
-  name: "IndigoNavbar",
-  data() {
-    return {
-      showMenu: false,
-      dropdownPopoverShow: false,
-    };
-  },
-  methods: {
-    toggleNavbar() {
-      this.showMenu = !this.showMenu;
-    },
-    toggleDropdown() {
-      if (this.dropdownPopoverShow) {
-        this.dropdownPopoverShow = false;
-      } else {
-        this.dropdownPopoverShow = true;
-        createPopper(this.$refs.btnDropdownRef, this.$refs.popoverDropdownRef, {
-          placement: "bottom-start",
-        });
-      }
-    },
-  },
+  name: "DbnNavBar",
 };
 </script>

@@ -2,57 +2,57 @@
   {
     "name": "About",
     "path": "/About",
-    "component": "/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom-db/pages/About.vue",
+    "component": "/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/bom-db/pages/About.vue",
     "chunkName": "pages/About",
-    "_name": "_699a41ac"
+    "_name": "_1460bb4e"
   },
   {
     "name": "Data",
     "path": "/Data",
-    "component": "/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom-db/pages/Data.vue",
+    "component": "/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/bom-db/pages/Data.vue",
     "chunkName": "pages/Data",
-    "_name": "_315ebdc6"
+    "_name": "_43873c0e"
   },
   {
     "name": "Team",
     "path": "/Team",
-    "component": "/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom-db/pages/Team.vue",
+    "component": "/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/bom-db/pages/Team.vue",
     "chunkName": "pages/Team",
-    "_name": "_19396250"
+    "_name": "_756ffd41"
   },
   {
     "name": "Visualizations",
     "path": "/Visualizations",
-    "component": "/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom-db/pages/Visualizations.vue",
+    "component": "/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/bom-db/pages/Visualizations.vue",
     "chunkName": "pages/Visualizations",
-    "_name": "_75275dfc"
+    "_name": "_d6129a9a"
   },
   {
     "name": "WeeklyBills",
     "path": "/WeeklyBills",
-    "component": "/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom-db/pages/WeeklyBills.vue",
+    "component": "/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/bom-db/pages/WeeklyBills.vue",
     "chunkName": "pages/WeeklyBills",
-    "_name": "_38674a28"
+    "_name": "_136aae17"
   },
   {
     "name": "visualizations-causes",
     "path": "/visualizations/causes",
-    "component": "/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom-db/pages/visualizations/causes.vue",
+    "component": "/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/bom-db/pages/visualizations/causes.vue",
     "chunkName": "pages/visualizations/causes",
-    "_name": "_1f2162b2"
+    "_name": "_d3545854"
   },
   {
     "name": "visualizations-plague",
     "path": "/visualizations/plague",
-    "component": "/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom-db/pages/visualizations/plague.vue",
+    "component": "/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/bom-db/pages/visualizations/plague.vue",
     "chunkName": "pages/visualizations/plague",
-    "_name": "_3940caaf"
+    "_name": "_41b16044"
   },
   {
     "name": "index",
     "path": "/",
-    "component": "/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom-db/pages/index.vue",
+    "component": "/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/bom-db/pages/index.vue",
     "chunkName": "pages/index",
-    "_name": "_73789a0f"
+    "_name": "_c3d54584"
   }
 ]

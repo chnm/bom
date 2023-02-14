@@ -1,1 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[20],{486:function(e,n,t){"use strict";t.r(n);var r={},c=t(60),component=Object(c.a)(r,(function(){var e=this,n=e.$createElement;e._self._c;return e._m(0)}),[function(){var e=this,n=e.$createElement,t=e._self._c||n;return t("div",[t("h2",[e._v("Team")])])}],!1,null,"47a08d47",null);n.default=component.exports}}]);

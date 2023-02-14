@@ -8,13 +8,6 @@ module.exports = {
     },
     container: {
       center: true,
-      screens: {
-        sm: "600px",
-        md: "728px",
-        lg: "984px",
-        xl: "1240px",
-        "2xl": "1496px",
-      },
     },
     extend: {
       colors: {
@@ -27,6 +20,13 @@ module.exports = {
           orange: "#c75000ff",
           purple: "#7F5A83",
         },
+      },
+      typography: {
+        DEFAULT: {
+          css: {
+            maxWidth: "82ch",
+          }
+        }
       },
     },
   },
