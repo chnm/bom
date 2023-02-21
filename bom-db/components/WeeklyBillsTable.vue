@@ -219,13 +219,16 @@
     >
       <template slot="table-column" slot-scope="props">
         <span v-if="props.column.label == 'Parish'">
-          <span class="hint--top" aria-label="The names of the parishes.">
+          <span
+            class="hint--bottom z-50"
+            aria-label="The names of the parishes."
+          >
             {{ props.column.label }}
           </span>
         </span>
         <span v-else-if="props.column.label == 'Count Type'">
           <span
-            class="hint--top"
+            class="hint--bottom z-50"
             aria-label="The count type, either by the number in the parish with plague or the number buried in the parish."
           >
             {{ props.column.label }}
@@ -233,24 +236,30 @@
         </span>
         <span v-else-if="props.column.label == 'Count'">
           <span
-            class="hint--top"
+            class="hint--bottom z-50"
             aria-label="The number of plague or buried in the parish."
           >
             {{ props.column.label }}
           </span>
         </span>
         <span v-else-if="props.column.label == 'Week Number'">
-          <span class="hint--top" aria-label="The week number in the year.">
+          <span
+            class="hint--bottom z-50"
+            aria-label="The week number in the year."
+          >
             {{ props.column.label }}
           </span>
         </span>
         <span v-else-if="props.column.label == 'Year'">
-          <span class="hint--top" aria-label="The year for the data.">
+          <span class="hint--bottom z-50" aria-label="The year for the data.">
             {{ props.column.label }}
           </span>
         </span>
         <span v-else-if="props.column.label == 'Split Year'">
-          <span class="hint--top" aria-label="The split year for the data.">
+          <span
+            class="hint--bottom z-50"
+            aria-label="The split year for the data."
+          >
             {{ props.column.label }}
           </span>
         </span>
@@ -259,22 +268,47 @@
         </span>
       </template>
     </vue-good-table>
+    <!-- Modal must wait for a user to trigger onRowClick, otherwise there's no data
+    and we get an error. -->
+    <Modal 
+      v-show="isModalVisible" 
+      :params="params"
+      @close="closeModal"
+    >
+      <template 
+        v-if="params.row"
+        #header>
+        <h3 class="text-xl font-bold">
+          <!-- show the params -->
+          {{ params.row.name }}
+        </h3>
+      </template>
+      <template
+        v-if="params.row"
+        #body> Period of time between {{ params.row.start_month }} {{ params.row.start_day }} and {{ params.row.end_month }} {{ params.row.end_day}}, {{ params.row.year }}.</template>
+      <template
+        v-if="params.row"
+        #footer> This is a new modal footer. </template>
+    </Modal>
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import VueSlider from "vue-slider-component";
+import modal from "@/components/Modal.vue";
 
 export default {
   name: "WeeklyBillsTable",
   components: {
     VueSlider,
+    modal,
   },
   data() {
     return {
       errors: [],
       search: "",
+      params: {},
       columns: [
         {
           label: "Parish",
@@ -314,6 +348,7 @@ export default {
       filteredCountType: "All",
       filteredParishIDs: [],
       filteredYears: [1636, 1754],
+      isModalVisible: false,
       // Always show vue-slider tooltips
       dotOptions: [
         {
@@ -395,14 +430,15 @@ export default {
       });
   },
   methods: {
+    showModal(params) {
+      this.params = params;
+      this.isModalVisible = true;
+    },
+    closeModal() {
+      this.isModalVisible = false;
+    },
     onRowClick(params) {
-      // eslint-disable-next-line no-console
-      console.log("row clicked", params);
-      // params.row - row object
-      // params.pageIndex - index of this row on the current page.
-      // params.selected - if selection is enabled this argument
-      // indicates selected or not
-      // params.event - click event
+      this.showModal(params);
     },
     updateParams(newProps) {
       this.serverParams = Object.assign({}, this.serverParams, newProps);

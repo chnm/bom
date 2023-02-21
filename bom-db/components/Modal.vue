@@ -1,113 +1,112 @@
-<template>
-  <transition name="fade">
-    <div v-if="show" class="modal">
-      <div class="modal__backdrop" @click="closeModal()" />
-
-      <div class="modal__dialog">
-        <div class="modal__header">
-          <slot name="header" />
-          <button type="button" class="modal__close" @click="closeModal()">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 512">
-              <path
-                fill="currentColor"
-                d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z"
-              ></path>
-            </svg>
-          </button>
-        </div>
-
-        <div class="modal__body">
-          <slot name="body" />
-        </div>
-
-        <div class="modal__footer">
-          <slot name="footer" />
-        </div>
-      </div>
-    </div>
-  </transition>
-</template>
-
 <script>
 export default {
   name: "Modal",
-  data() {
-    return {
-      show: false,
-    };
-  },
   methods: {
-    closeModal() {
-      this.show = false;
-      document.querySelector("body").classList.remove("overflow-hidden");
-    },
-    openModal() {
-      this.show = true;
-      document.querySelector("body").classList.add("overflow-hidden");
+    close() {
+      this.$emit("close");
     },
   },
 };
 </script>
 
-<style lang="scss" scoped>
-.modal {
-  overflow-x: hidden;
-  overflow-y: auto;
+<template>
+  <transition name="modal-fade">
+    <div class="modal-backdrop">
+      <div
+        class="modal"
+        role="dialog"
+        aria-labelledby="modalTitle"
+        aria-describedby="modalDescription"
+      >
+        <header id="modalTitle" class="modal-header">
+          <slot name="header"> Default title </slot>
+        </header>
+
+        <section class="modal-body">
+          <slot name="body"> Default body text. </slot>
+        </section>
+
+        <section class="modal-footer">
+          <slot name="footer"> Default footer text. </slot>
+          <button type="button" class="btn-green" aria-label="Close modal" @click="close">Close</button>
+        </section>
+      </div>
+    </div>
+  </transition>
+</template>
+
+<style scoped>
+.modal-backdrop {
   position: fixed;
   top: 0;
-  right: 0;
   bottom: 0;
   left: 0;
-  z-index: 9;
-  &__backdrop {
-    background-color: rgba(0, 0, 0, 0.3);
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 1;
-  }
-  &__dialog {
-    background-color: #ffffff;
-    position: relative;
-    width: 600px;
-    margin: 50px auto;
-    display: flex;
-    flex-direction: column;
-    border-radius: 5px;
-    z-index: 2;
-    @media screen and (max-width: 992px) {
-      width: 90%;
-    }
-  }
-  &__close {
-    width: 30px;
-    height: 30px;
-  }
-  &__header {
-    padding: 20px 20px 10px;
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-  }
-  &__body {
-    padding: 10px 20px 10px;
-    overflow: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-  }
-  &__footer {
-    padding: 10px 20px 20px;
-  }
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.2s;
+
+.modal {
+  background: #ffffff;
+  box-shadow: 2px 2px 20px 1px;
+  overflow-x: auto;
+  display: flex;
+  flex-direction: column;
 }
-.fade-enter,
-.fade-leave-to {
+
+.modal-header,
+.modal-footer {
+  padding: 15px;
+  display: flex;
+}
+
+.modal-header {
+  position: relative;
+  border-bottom: 1px solid #eeeeee;
+  color: #4aae9b;
+  justify-content: space-between;
+}
+
+.modal-footer {
+  border-top: 1px solid #eeeeee;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.modal-body {
+  position: relative;
+  padding: 20px 10px;
+}
+
+.btn-close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border: none;
+  font-size: 20px;
+  padding: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #4aae9b;
+  background: transparent;
+}
+
+.btn-green {
+  color: white;
+  background: #4aae9b;
+  border: 1px solid #4aae9b;
+  border-radius: 2px;
+}
+
+.modal-fade-enter,
+.modal-fade-leave-to {
   opacity: 0;
+}
+
+.modal-fade-enter-active,
+.modal-fade-leave-active {
+  transition: opacity 0.5s ease;
 }
 </style>
