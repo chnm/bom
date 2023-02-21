@@ -2,7 +2,8 @@
 title: "Found Dead? Unknown Causes of Death in the Bills of Mortality"
 date: "2022-10-31"
 author: 
-  - Jessica Otis
+  - Katie Kania
+  - Emily Meyers
 categories: 
   - "context"
 tags: 
