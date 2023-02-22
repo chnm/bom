@@ -9,9 +9,9 @@ min_version = "0.41.0"
 languageCode = "en-us"
 
 [author]
-  name = "Roy Rosenzweig Center for History and New Media"
-  homepage = "https://rrchnm.org"
-  version = 0.8
+  name = "Jason Heppler"
+  homepage = "https://jasonheppler.org"
+  version = 1.0
 
 [taxonomies]
     tag = "tags"

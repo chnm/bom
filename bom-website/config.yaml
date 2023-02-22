@@ -14,8 +14,8 @@ permalinks:
 theme: 'dbn'
 
 author:
-  name: Jason Heppler
-  email: jheppler@gmu.edu
+  name: Roy Rosenzweig Center for History and New Media
+  email: webmaster@chnm.gmu.edu
 
 # We need this set for TailwindCSS
 build:
