@@ -19,4 +19,4 @@ deploy-prod : build-prod
 		public/ susanoo:/websites/deathbynumbers.org/ | egrep -v '^\.'
 	@echo "Finished deploying the site to production with rsync."
 
-.PHONY : preview build deploy
+.PHONY : preview build deploy-prod

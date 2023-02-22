@@ -10,7 +10,6 @@
       "figcaption",
       "figure",
       "footer",
-      "h1",
       "h2",
       "h3",
       "h4",
@@ -27,7 +26,6 @@
       "p",
       "path",
       "pre",
-      "script",
       "section",
       "span",
       "strong",
@@ -256,7 +254,6 @@
       "xs:h-44"
     ],
     "ids": [
-      "api-reference",
       "bills",
       "but-didnt-people-bake-their-own-bread",
       "causes-of-death-data",
