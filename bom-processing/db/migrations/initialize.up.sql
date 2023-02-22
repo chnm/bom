@@ -9,14 +9,14 @@
 -- Table Definition: Years ----------------------------------------------
 
 CREATE TABLE IF NOT EXISTS bom.year (
+    id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY
     year text PRIMARY KEY,
-    id integer NOT NULL,
 );
 
 -- Table Definition: Weeks ----------------------------------------------
 
 CREATE TABLE IF NOT EXISTS bom.week (
-    id integer NOT NULL,
+    id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     week_id text PRIMARY KEY,
     start_day integer,
     start_month text,
@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS bom.week (
 -- Table Definition: Parishes ----------------------------------------------
 
 CREATE TABLE IF NOT EXISTS bom.parishes (
-    id integer PRIMARY KEY,
+    id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     parish_name text NOT NULL UNIQUE,
     canonical_name text NOT NULL
 );
@@ -38,14 +38,15 @@ CREATE TABLE IF NOT EXISTS bom.parishes (
 -- Table Definition: Parish Collectives ----------------------------------------------
 
 CREATE TABLE IF NOT EXISTS bom.parish_collective (
-    id integer PRIMARY KEY,
-    collective_id text NOT NULL
+    id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    collective_id text NOT NULL,
+    collective_name text NOT NULL
 );
 
 -- Table Definition: Christenings ----------------------------------------------
 
 CREATE TABLE IF NOT EXISTS bom.christenings (
-    id integer PRIMARY KEY,
+    id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     christening text NOT NULL,
     count integer,
     week_number text,
@@ -66,23 +67,21 @@ CREATE TABLE IF NOT EXISTS bom.christening_locations (
 -- Table Definition: Causes of Death ----------------------------------------------
 
 CREATE TABLE IF NOT EXISTS bom.causes_of_death (
+    id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     death text,
     count integer,
-    year text REFERENCES bom.year(year),
     week_id text REFERENCES bom.week(week_id),
-    id integer NOT NULL,
-    death_id integer
+    description text
 );
 
 -- Table Definition: Bills of Mortality --------------------------
 
 CREATE TABLE IF NOT EXISTS bom.bill_of_mortality (
-    id integer PRIMARY KEY,
-    parish_id integer NOT NULL REFERENCES bom.parishes(id),
+    id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    parish_id text NOT NULL REFERENCES bom.parishes(parish_name),
     collective_id integer REFERENCES bom.parish_collective(id),
     count_type text NOT NULL,
     count integer,
-    year_id text NOT NULL REFERENCES bom.year(year),
     week_id text NOT NULL REFERENCES bom.week(week_id),
     bill_type text
 );
