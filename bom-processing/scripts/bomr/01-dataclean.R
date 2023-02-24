@@ -33,12 +33,46 @@ wellcome_causes_long <- raw_wellcome_causes |>
     names_to = "death",
     values_to = "count"
   ) |>
-  mutate(death = str_trim(death))
+  mutate(death = str_trim(death)) |>
+  mutate(`Unique Identifier` = str_trim(`Unique Identifier`)) |>
+  mutate(join_id = paste0(
+    `Start Day`, 
+    `Start Month`, 
+    `End Day`, 
+    `End Month`, 
+    Year, "-", 
+    death, "-", 
+    `Unique Identifier`))
+
+# We create a lookup table that includes the unique identifier,
+# the descriptive text, Start Day, Start Month, End Day, End Month, and death type.
+wellcome_descriptions_lookup <- raw_wellcome_causes |>
+  select(!1:5) |>
+  select(contains("(Descriptive Text)"), `Unique Identifier`, `Start Day`, `Start Month`, `End Day`, `End Month`, Year) |>
+  pivot_longer(1:4,
+   names_to = "death_type",
+   values_to = "descriptive_text"
+  ) |>
+  mutate(`Unique Identifier` = str_trim(`Unique Identifier`)) |>
+  # remove (Descriptive Text)
+  mutate(death_type = str_remove(death_type, regex("\\(Descriptive Text\\)"))) |>
+  mutate(death_type = str_trim(death_type)) |>
+  mutate(join_id = paste0(`Start Day`, `Start Month`, `End Day`, `End Month`, Year, "-", death_type, "-", `Unique Identifier`)) |> 
+  # now we can drop the start day, start month, etc. since that will be added with the long table
+  select(-`Start Day`, -`Start Month`, -`End Day`, -`End Month`, -Year, -`Unique Identifier`, death_type)
+
+# Now, we left_join on the join_id
+wellcome_descriptions <- wellcome_causes_long |>
+  left_join(wellcome_descriptions_lookup, by = "join_id") |>
+  select(-join_id, -death_type)
 
 # Lowercase column names and replace spaces with underscores
 names(wellcome_causes_long) <- tolower(names(wellcome_causes_long))
 names(wellcome_causes_long) <- gsub(" ", "_", names(wellcome_causes_long))
+names(wellcome_descriptions) <- tolower(names(wellcome_descriptions))
+names(wellcome_descriptions) <- gsub(" ", "_", names(wellcome_descriptions))
 
+### Laxton causes for 1700 -----------------------------------------------
 laxton_causes_1700_long <- raw_laxton_1700_causes |>
   select(!1:4) |>
   select(!contains("(Descriptive")) |>
@@ -46,11 +80,57 @@ laxton_causes_1700_long <- raw_laxton_1700_causes |>
     names_to = "death",
     values_to = "count"
   ) |>
-  mutate(death = str_trim(death))
+  mutate(death = str_trim(death)) |>
+  mutate(`Unique Identifier` = str_trim(`Unique Identifier`)) |>
+  mutate(join_id = paste0(
+    `Start Day`,
+    `Start Month`,
+    `End Day`,
+    `End Month`,
+    Year, "-",
+    death, "-",
+    `Unique Identifier`))
+
+# We create a lookup table that includes the unique identifier,
+# the descriptive text, Start Day, Start Month, End Day, End Month, and death type.
+causes_laxton_1700_long_descriptions_lookup <- raw_laxton_1700_causes |>
+  select(!1:4) |>
+  select(contains("(Descriptive Text)"), `Unique Identifier`, `Start Day`, `Start Month`, `End Day`, `End Month`, Year) |>
+  pivot_longer(1:4,
+   names_to = "death_type",
+   values_to = "descriptive_text"
+  ) |>
+  mutate(`Unique Identifier` = str_trim(`Unique Identifier`)) |>
+  # remove (Descriptive Text)
+  mutate(death_type = str_remove(death_type, regex("\\(Descriptive Text\\)"))) |>
+  mutate(death_type = str_trim(death_type)) |>
+  mutate(join_id = paste0(`Start Day`, `Start Month`, `End Day`, `End Month`, Year, "-", death_type, "-", `Unique Identifier`)) |> 
+  # now we can drop the start day, start month, etc. since that will be added with the long table
+  select(-`Start Day`, -`Start Month`, -`End Day`, -`End Month`, -Year, -`Unique Identifier`, death_type)
+
+# Now, we left_join on the join_id
+laxton_causes_1700_long_descriptions <- laxton_causes_1700_long |>
+  left_join(laxton_causes_1700_long_descriptions_lookup, by = "join_id") |>
+  select(-join_id, -death_type)
 
 # Lowercase column names and replace spaces with underscores
 names(laxton_causes_1700_long) <- tolower(names(laxton_causes_1700_long))
 names(laxton_causes_1700_long) <- gsub(" ", "_", names(laxton_causes_1700_long))
+names(laxton_causes_1700_long_descriptions) <- tolower(names(laxton_causes_1700_long_descriptions))
+names(laxton_causes_1700_long_descriptions) <- gsub(" ", "_", names(laxton_causes_1700_long_descriptions))
+
+# laxton_causes_1700_long <- raw_laxton_1700_causes |>
+#   select(!1:4) |>
+#   select(!contains("(Descriptive")) |>
+#   pivot_longer(8:125,
+#     names_to = "death",
+#     values_to = "count"
+#   ) |>
+#   mutate(death = str_trim(death))
+
+# # Lowercase column names and replace spaces with underscores
+# names(laxton_causes_1700_long) <- tolower(names(laxton_causes_1700_long))
+# names(laxton_causes_1700_long) <- gsub(" ", "_", names(laxton_causes_1700_long))
 
 laxton_causes_long <- raw_laxton_causes |>
   select(!1:4) |>
@@ -61,6 +141,19 @@ laxton_causes_long <- raw_laxton_causes |>
     values_to = "count"
   ) |>
   mutate(death = str_trim(death))
+
+# We need a table that includes the unique identifier,
+# the descriptive text, and the death type.
+laxton_descriptions <- raw_laxton_causes |>
+  select(!1:5) |>
+  select(contains("(Descriptive Text)"), `Unique Identifier`) |>
+  pivot_longer(1:4,
+   names_to = "death_type",
+   values_to = "descriptive_text"
+  ) |>
+  mutate(descriptive_text = str_trim(descriptive_text)) |>
+  # remove (Descriptive Text)
+  mutate(death_type = str_remove(death_type, regex("\\(Descriptive Text\\)")))
 
 # Lowercase column names and replace spaces with underscores
 names(laxton_causes_long) <- tolower(names(laxton_causes_long))
