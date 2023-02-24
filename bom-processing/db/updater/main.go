@@ -6,20 +6,21 @@ import (
 	"os"
 
 	pgx "github.com/jackc/pgx/v4"
-	log "github.com/sirupsen/logrus"
+	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 )
 
 func readCsv(filepath string) [][]string {
 	f, err := os.Open(filepath)
 	if err != nil {
-		log.Fatal("Unable to read file input: "+filepath, err)
+		log.Print("Unable to read file input: "+filepath, err)
 	}
 	defer f.Close()
 
 	csvReader := csv.NewReader(f)
 	records, err := csvReader.ReadAll()
 	if err != nil {
-		log.Fatal("Unable to read file as CSV for "+filepath, err)
+		log.Print("Unable to read file as CSV for "+filepath, err)
 	}
 
 	// Drop the header row
@@ -29,6 +30,8 @@ func readCsv(filepath string) [][]string {
 }
 
 func main() {
+
+	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
 
 	// Parse the records from the CSV files
 	parishRecords := readCsv("../../scripts/bomr/data/parishes_unique.csv")
@@ -41,10 +44,11 @@ func main() {
 	// Connect to the database
 	conn, err := pgx.Connect(context.Background(), os.Getenv("BOM_DB_STR_LOCAL"))
 	if err != nil {
-		log.Fatal("Unable to connect to database: ", err)
+		log.Error().Stack().Err(err).Msg("Unable to connect to the database.")
+		return
 	}
 	if err == nil {
-		log.Info("Connected to database.")
+		log.Info().Msg("Sucessfully connected to the database.")
 	}
 	defer conn.Close(context.Background())
 
@@ -57,38 +61,36 @@ func main() {
 	// 1. Unique years -------------------------------------------------------------
 	// Copy the data from the CSV file into the database.
 	yearsQuery := `
-		INSERT INTO bom.year (id, year_id, year)
-		VALUES ($1, $2, $3)
+		INSERT INTO bom.year (year)
+		VALUES ($1)
 		ON CONFLICT DO NOTHING
 	`
 
 	// Assign variables to the values in the CSV file
 	for _, yearRecord := range yearRecords {
-		id := yearRecord[0]
-		yearID := yearRecord[1]
-		year := yearRecord[2]
+		year := yearRecord[0]
 
 		// Execute the query
-		_, err = conn.Exec(context.Background(), yearsQuery, id, yearID, year)
+		_, err = conn.Exec(context.Background(), yearsQuery, year)
 		if err != nil {
-			log.Fatal("Unable to insert unique years: ", err)
+			log.Error().Stack().Err(err).Msg("Unable to insert unique years data.")
+			return
 		}
 	}
 
 	// 2. Unique weeks -------------------------------------------------------------
 	// Insert the unique weeks into the bom.weeks table. On conflict, do nothing.
 	weeksQuery := `
-		INSERT INTO bom.week (id, week_id, week_no, start_day, start_month, end_day, end_month, year, split_year)
+		INSERT INTO bom.week (year, week_no, start_day, start_month, end_day, end_month, week_id, split_year)
 		VALUES (
-			CASE WHEN $1 = '' THEN NULL ELSE $1::int END, 
-			$2,
-			CASE WHEN $3 = '' THEN NULL ELSE $3::int END, 
-			CASE WHEN $4 = '' THEN NULL ELSE $4::int END, 
-			$5, 
-			CASE WHEN $6 = '' THEN NULL ELSE $6::int END,
-			$7, 
-			$8, 
-			$9
+			$1,
+			CASE WHEN $2 = '' THEN NULL ELSE $2::int END,
+			CASE WHEN $3 = '' THEN NULL ELSE $3::int END,
+			$4,
+			CASE WHEN $5 = '' THEN NULL ELSE $5::int END,
+			$6,
+			$7,
+			$8
 		)
 		ON CONFLICT DO NOTHING
 	`
@@ -97,28 +99,28 @@ func main() {
 	// the CSV header row. We are skipping the unique_identifier column [5] and the
 	// year_range [7] column.
 	for _, weekRecord := range weekRecords {
-		weekNum := weekRecord[0]
-		startDay := weekRecord[1]
-		endDay := weekRecord[2]
-		startMonth := weekRecord[3]
-		endMonth := weekRecord[4]
-		weekID := weekRecord[6]
-		year := weekRecord[8]
-		splitYear := weekRecord[9]
-		id := weekRecord[10]
+		year := weekRecord[0]
+		weekNum := weekRecord[1]
+		startDay := weekRecord[2]
+		endDay := weekRecord[3]
+		startMonth := weekRecord[4]
+		endMonth := weekRecord[6]
+		weekID := weekRecord[8]
+		splitYear := weekRecord[10]
 
 		// Execute the query
-		_, err = conn.Exec(context.Background(), weeksQuery, id, weekID, weekNum, startDay, startMonth, endDay, endMonth, year, splitYear)
+		_, err = conn.Exec(context.Background(), weeksQuery, year, weekNum, startDay, startMonth, endDay, endMonth, weekID, splitYear)
 		if err != nil {
-			log.Fatal("Unable to insert unique weeks data: \n\t", err)
+			log.Error().Stack().Err(err).Msg("Unable to insert unique weeks data.")
+			return
 		}
 	}
 
 	// 3. Unique parish names -------------------------------------------------------
 	// Insert the parishRecords into the bom.parishes table. On conflict, do nothing.
 	parishNamesQuery := `
-		INSERT INTO bom.parishes (id, parish_name, canonical_name) 
-		VALUES ($1, $2, $3)
+		INSERT INTO bom.parishes (parish_name, canonical_name) 
+		VALUES ($1, $2)
 		ON CONFLICT DO NOTHING
 	`
 
@@ -126,25 +128,24 @@ func main() {
 	for _, parishRecord := range parishRecords {
 		parishName := parishRecord[0]
 		canonicalName := parishRecord[1]
-		parishID := parishRecord[2]
 
 		// Execute the query
-		_, err = conn.Exec(context.Background(), parishNamesQuery, parishID, parishName, canonicalName)
+		_, err = conn.Exec(context.Background(), parishNamesQuery, parishName, canonicalName)
 		if err != nil {
-			log.Fatal("Unable to insert parish names: ", err)
+			log.Error().Stack().Err(err).Msg("Unable to insert parish names.")
+			return
 		}
 	}
 
 	// 4. Causes of death ---------------------------------------------------------
 	// Insert the causes of death into the bom.causes table. On conflict, do nothing.
 	causesQuery := `
-		INSERT INTO bom.causes_of_death (death, count, year, week_id, id)
+		INSERT INTO bom.causes_of_death (death, count, week_id, description)
 		VALUES (
 			$1, 
-			CASE WHEN $2 = '' THEN NULL ELSE $2::int END, 
+			CASE WHEN $2 = '' THEN NULL ELSE $2::int END,
 			$3, 
-			$4, 
-			$5
+			$4
 		)
 		ON CONFLICT DO NOTHING
 	`
@@ -153,21 +154,21 @@ func main() {
 	for _, causeRecord := range causesRecords {
 		death := causeRecord[1]
 		count := causeRecord[2]
-		year := causeRecord[3]
-		weekID := causeRecord[4]
-		id := causeRecord[6]
+		description := causeRecord[3]
+		weekID := causeRecord[5]
 
 		// Execute the query
-		_, err = conn.Exec(context.Background(), causesQuery, death, count, year, weekID, id)
+		_, err = conn.Exec(context.Background(), causesQuery, death, count, weekID, description)
 		if err != nil {
-			log.Fatal("Unable to insert causes of death: ", err)
+			log.Error().Stack().Err(err).Msg("Unable to insert causes of death.")
+			return
 		}
 	}
 
 	// 5. All bills ----------------------------------------------------------------
 	// Insert the all bills into the bom.bills table. On conflict, do nothing.
 	billsQuery := `
-		INSERT INTO bom.bill_of_mortality (id, parish_id, collective_id, count_type, count, year, week_id, bill_type)
+		INSERT INTO bom.bill_of_mortality (id, parish_id, collective_id, count_type, count, week_id, bill_type)
 		VALUES (
 			$1, 
 			$2, 
@@ -175,8 +176,7 @@ func main() {
 			$4, 
 			CASE WHEN $5 = '' THEN NULL ELSE $5::int END,
 			$6, 
-			$7, 
-			$8
+			$7
 		)
 		ON CONFLICT DO NOTHING
 	`
@@ -189,13 +189,13 @@ func main() {
 		parishID := billRecord[3]
 		weekID := billRecord[4]
 		collectiveID := 0 // make sure this exists in parish_collective table
-		yearID := billRecord[6]
 		id := billRecord[8]
 
 		// Execute the query
-		_, err = conn.Exec(context.Background(), billsQuery, id, parishID, collectiveID, countType, count, yearID, weekID, billType)
+		_, err = conn.Exec(context.Background(), billsQuery, id, parishID, collectiveID, countType, count, weekID, billType)
 		if err != nil {
-			log.Fatal("Unable to insert all bills: \n\t", err)
+			log.Error().Stack().Err(err).Msg("Unable to insert all bills.")
+			return
 		}
 	}
 
@@ -233,12 +233,13 @@ func main() {
 		// Execute the query
 		_, err = conn.Exec(context.Background(), christeningsQuery, year, weekNum, startDay, startMonth, endDay, endMonth, christening, count, id)
 		if err != nil {
-			log.Fatal("Unable to insert christenings: \n\t", err)
+			log.Error().Stack().Err(err).Msg("Unable to insert christenings data.")
+			return
 		}
 	}
 
 	// Wrap up
-	log.Info("Successfully inserted all data into the database.")
-	log.Info("Closing connection to database.")
+	log.Info().Msg("Successfully inserted all data into the database.")
+	log.Info().Msg("Closing connection to database.")
 	conn.Close(context.Background())
 }
