@@ -48,7 +48,15 @@ wellcome_causes_long <- raw_wellcome_causes |>
 # the descriptive text, Start Day, Start Month, End Day, End Month, and death type.
 wellcome_descriptions_lookup <- raw_wellcome_causes |>
   select(!1:5) |>
-  select(contains("(Descriptive Text)"), `Unique Identifier`, `Start Day`, `Start Month`, `End Day`, `End Month`, Year) |>
+  select(contains(
+    "(Descriptive Text)"),
+    `Unique Identifier`,
+    `Start Day`,
+    `Start Month`,
+    `End Day`,
+    `End Month`,
+    Year
+  ) |>
   pivot_longer(1:4,
    names_to = "death_type",
    values_to = "descriptive_text"
@@ -95,8 +103,16 @@ laxton_causes_1700_long <- raw_laxton_1700_causes |>
 # the descriptive text, Start Day, Start Month, End Day, End Month, and death type.
 causes_laxton_1700_long_descriptions_lookup <- raw_laxton_1700_causes |>
   select(!1:4) |>
-  select(contains("(Descriptive Text)"), `Unique Identifier`, `Start Day`, `Start Month`, `End Day`, `End Month`, Year) |>
-  pivot_longer(1:4,
+  select(contains(
+    "(Descriptive Text)"),
+     `Unique Identifier`,
+     `Start Day`,
+     `Start Month`,
+     `End Day`,
+     `End Month`,
+     Year
+  ) |>
+  pivot_longer(1:8,
    names_to = "death_type",
    values_to = "descriptive_text"
   ) |>
@@ -110,7 +126,7 @@ causes_laxton_1700_long_descriptions_lookup <- raw_laxton_1700_causes |>
 
 # Now, we left_join on the join_id
 laxton_causes_1700_long_descriptions <- laxton_causes_1700_long |>
-  left_join(laxton_causes_1700_long_descriptions_lookup, by = "join_id") |>
+  left_join(causes_laxton_1700_long_descriptions_lookup, by = "join_id") |>
   select(-join_id, -death_type)
 
 # Lowercase column names and replace spaces with underscores
@@ -119,48 +135,74 @@ names(laxton_causes_1700_long) <- gsub(" ", "_", names(laxton_causes_1700_long))
 names(laxton_causes_1700_long_descriptions) <- tolower(names(laxton_causes_1700_long_descriptions))
 names(laxton_causes_1700_long_descriptions) <- gsub(" ", "_", names(laxton_causes_1700_long_descriptions))
 
-# laxton_causes_1700_long <- raw_laxton_1700_causes |>
-#   select(!1:4) |>
-#   select(!contains("(Descriptive")) |>
-#   pivot_longer(8:125,
-#     names_to = "death",
-#     values_to = "count"
-#   ) |>
-#   mutate(death = str_trim(death))
-
-# # Lowercase column names and replace spaces with underscores
-# names(laxton_causes_1700_long) <- tolower(names(laxton_causes_1700_long))
-# names(laxton_causes_1700_long) <- gsub(" ", "_", names(laxton_causes_1700_long))
-
+### Laxton causes for pre-1700 -----------------------------------------------
 laxton_causes_long <- raw_laxton_causes |>
   select(!1:4) |>
   select(!contains("(Descriptive")) |>
-  select(!contains("Christened (")) |>
-  pivot_longer(8:122,
+  mutate(across(
+    8:125,
+    as.character
+  )) |> 
+  pivot_longer(8:125,
     names_to = "death",
     values_to = "count"
   ) |>
-  mutate(death = str_trim(death))
+  mutate(death = str_trim(death)) |>
+  mutate(`Unique Identifier` = str_trim(`Unique Identifier`)) |>
+  mutate(join_id = paste0(
+    `Start Day`,
+    `Start Month`,
+    `End Day`,
+    `End Month`,
+    Year, "-",
+    death, "-",
+    `Unique Identifier`))
 
-# We need a table that includes the unique identifier,
-# the descriptive text, and the death type.
-laxton_descriptions <- raw_laxton_causes |>
-  select(!1:5) |>
-  select(contains("(Descriptive Text)"), `Unique Identifier`) |>
-  pivot_longer(1:4,
+# We create a lookup table that includes the unique identifier,
+# the descriptive text, Start Day, Start Month, End Day, End Month, and death type.
+laxton_causes_long_descriptions_lookup <- raw_laxton_causes |>
+  select(!1:4) |>
+  select(contains(
+    "(Descriptive Text)"),
+     `Unique Identifier`,
+     `Start Day`,
+     `Start Month`,
+     `End Day`,
+     `End Month`,
+     Year
+  ) |>
+  pivot_longer(1:8,
    names_to = "death_type",
    values_to = "descriptive_text"
   ) |>
-  mutate(descriptive_text = str_trim(descriptive_text)) |>
+  mutate(`Unique Identifier` = str_trim(`Unique Identifier`)) |>
   # remove (Descriptive Text)
-  mutate(death_type = str_remove(death_type, regex("\\(Descriptive Text\\)")))
+  mutate(death_type = str_remove(death_type, regex("\\(Descriptive Text\\)"))) |>
+  mutate(death_type = str_trim(death_type)) |>
+  mutate(join_id = paste0(`Start Day`, `Start Month`, `End Day`, `End Month`, Year, "-", death_type, "-", `Unique Identifier`)) |> 
+  # now we can drop the start day, start month, etc. since that will be added with the long table
+  select(-`Start Day`, -`Start Month`, -`End Day`, -`End Month`, -Year, -`Unique Identifier`, death_type)
+
+# Now, we left_join on the join_id
+laxton_causes_long_descriptions <- laxton_causes_long |>
+  left_join(laxton_causes_long_descriptions_lookup, by = "join_id") |>
+  select(-join_id, -death_type)
 
 # Lowercase column names and replace spaces with underscores
-names(laxton_causes_long) <- tolower(names(laxton_causes_long))
-names(laxton_causes_long) <- gsub(" ", "_", names(laxton_causes_long))
+names(laxton_causes_long_descriptions) <- tolower(names(laxton_causes_long_descriptions))
+names(laxton_causes_long_descriptions) <- gsub(" ", "_", names(laxton_causes_long_descriptions))
+names(laxton_causes_1700_long_descriptions) <- tolower(names(laxton_causes_1700_long_descriptions))
+names(laxton_causes_1700_long_descriptions) <- gsub(" ", "_", names(laxton_causes_1700_long_descriptions))
+
+# Clean up our environment and remove the lookup tables and original long tables.
+rm(causes_laxton_1700_long_descriptions_lookup)
+rm(causes_wellcome_long_descriptions_lookup)
+rm(laxton_causes_1700_long)
+rm(laxton_causes_long)
+rm(wellcome_causes_long)
 
 # Types of death with unique ID
-deaths_unique_wellcome <- wellcome_causes_long |>
+deaths_unique_wellcome <- wellcome_descriptions |>
   select(death) |>
   distinct() |>
   filter(!str_detect(death, regex("\\bBuried ", ignore_case = FALSE))) |>
@@ -171,14 +213,14 @@ deaths_unique_wellcome <- wellcome_causes_long |>
   filter(!str_detect(death, regex("\\bParishes Clear", ignore_case = FALSE))) |>
   filter(!str_detect(death, regex("\\bParishes Infected", ignore_case = FALSE)))
 
-deaths_unique_laxton_1700 <- laxton_causes_1700_long |>
+deaths_unique_laxton_1700 <- laxton_causes_1700_long_descriptions |>
   select(death) |>
   distinct() |>
   filter(!str_detect(death, regex("\\bBuried ", ignore_case = FALSE))) |>
   filter(!str_detect(death, regex("\\bChristened ", ignore_case = FALSE))) |>
   filter(!str_detect(death, regex("\\bIncrease/Decrease", ignore_case = FALSE)))
 
-deaths_unique_laxton <- laxton_causes_long |>
+deaths_unique_laxton <- laxton_causes_long_descriptions |>
   select(death) |>
   distinct() |>
   filter(!str_detect(death, regex("\\bChristened ", ignore_case = FALSE))) |>
@@ -191,9 +233,9 @@ deaths_unique <- deaths_unique |>
   mutate(death_id = row_number())
 
 # Write data
-write_csv(wellcome_causes_long, "bom-processing/scripts/bomr/data/wellcome_causes.csv", na = "")
-write_csv(laxton_causes_long, "bom-processing/scripts/bomr/data/laxton_causes.csv", na = "")
-write_csv(laxton_causes_1700_long, "bom-processing/scripts/bomr/data/laxton_causes_1700.csv", na = "")
+write_csv(wellcome_descriptions, "bom-processing/scripts/bomr/data/wellcome_causes.csv", na = "")
+write_csv(laxton_causes_long_descriptions, "bom-processing/scripts/bomr/data/laxton_causes.csv", na = "")
+write_csv(laxton_causes_1700_long_descriptions, "bom-processing/scripts/bomr/data/laxton_causes_1700.csv", na = "")
 write_csv(deaths_unique, "bom-processing/scripts/bomr/data/deaths_unique.csv", na = "")
 
 # ----------------------------------------------------------------------
@@ -467,7 +509,7 @@ week_unique_weekly <- weekly_bills |>
   mutate(year_range = str_sub(week_id, 1, 9)) |>
   select(-week_tmp, -week_comparator)
 
-week_unique_wellcome <- wellcome_causes_long |>
+week_unique_wellcome <- wellcome_descriptions |>
   select(
     year,
     week_number,
@@ -495,7 +537,7 @@ week_unique_wellcome <- wellcome_causes_long |>
   mutate(year_range = str_sub(week_id, 1, 9)) |>
   select(-week_tmp, -week_comparator)
 
-all_laxton_weekly_causes <- rbind(laxton_causes_1700_long, laxton_causes_long)
+all_laxton_weekly_causes <- rbind(laxton_causes_1700_long_descriptions, laxton_causes_long_descriptions)
 
 laxton_weeks_from_causes <- all_laxton_weekly_causes |>
   select(
@@ -571,7 +613,7 @@ week_unique <- week_unique |>
 
 # Filter out extraneous data and assign
 # unique week IDs to the deaths long table.
-wellcome_deaths_cleaned <- wellcome_causes_long |>
+wellcome_deaths_cleaned <- wellcome_descriptions |>
   filter(!str_detect(death, regex("\\bBuried ", ignore_case = FALSE))) |>
   filter(!str_detect(death, regex("\\bChristened ", ignore_case = FALSE))) |>
   filter(!str_detect(death, regex("\\bPlague Deaths", ignore_case = FALSE))) |>
@@ -580,7 +622,7 @@ wellcome_deaths_cleaned <- wellcome_causes_long |>
   filter(!str_detect(death, regex("\\bParishes Clear", ignore_case = FALSE))) |>
   filter(!str_detect(death, regex("\\bParishes Infected", ignore_case = FALSE))) # |>
 
-all_laxton_causes <- rbind(laxton_causes_long, laxton_causes_1700_long)
+all_laxton_causes <- rbind(laxton_causes_long_descriptions, laxton_causes_1700_long_descriptions)
 
 laxton_deaths_cleaned <- all_laxton_causes |>
   filter(!str_detect(death, regex("\\bBuried ", ignore_case = FALSE))) |>
