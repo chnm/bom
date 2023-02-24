@@ -1,4 +1,4 @@
-year,week_number,unique_identifier,start_day,start_month,end_day,end_month,death,count,descriptive_text
+Year,Week Number,Unique Identifier,Start Day,Start Month,End Day,End Month,death,count,descriptive_text
 1668,1,1668-01-verso,22,December,29,December,Abortive,1,
 1668,1,1668-01-verso,22,December,29,December,Aged,10,
 1668,1,1668-01-verso,22,December,29,December,Ague,,
