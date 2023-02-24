@@ -7,7 +7,6 @@ categories:
   - "context"
 tags: 
   - "adasme"
-  - "adasme-herrera"
   - "defoe"
   - "journal-of-the-plague-year"
 ---

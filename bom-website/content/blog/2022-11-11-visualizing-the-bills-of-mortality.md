@@ -4,7 +4,10 @@ author:
   - Jason Heppler
 date: "2022-11-11"
 categories: 
-  - "analysis"
+  - analysis
+tags: 
+  - heppler
+  - visualization
 ---
 
 One of the ways we are using the transcribed bills of mortality is in data visualization and mapping, in an effort to ask new questions and revisit old ones.

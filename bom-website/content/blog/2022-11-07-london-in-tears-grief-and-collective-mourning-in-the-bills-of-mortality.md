@@ -4,11 +4,10 @@ date: "2022-11-07"
 author: 
   - Hernán Adasme
 categories: 
-  - "context"
+  - context
 tags: 
-  - "adasme"
-  - "adasme-herrera"
-  - "background"
+  - adasme
+  - grief
 ---
 
 “London might be said to be all in tears; the mourners did not go about the streets indeed, for nobody put on black or made a formal dress of mourning for their nearests friends; but the voice of mourners was truly heard in the Streets” (Defoe, 19). Although Daniel Defoe’s description of London during the outbreak of 1665-1666 jogs our memories during the early days of the Sars-CoV- 2 virus—where the sick passed away separated from their loved ones, and families were forced to say goodbye apart from their kin—the culture of grief has indeed changed. This blog post examines grief as a vehicle for the exploration of some aspects of the death culture in early Modern England. The experiences of grief and mourning shed light on both the idea of loss at an individual level, and on changing commemorative and memorial practices in England during the eighteenth-century.

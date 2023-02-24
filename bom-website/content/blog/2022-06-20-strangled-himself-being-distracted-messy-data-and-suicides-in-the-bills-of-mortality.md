@@ -3,8 +3,9 @@ title: "Strangled himself (being distracted): Messy Data and Suicides in the Bil
 date: "2022-06-20"
 author:
   - Jessica Otis
+  - Emily Meyers
 categories: 
-  - "workflows"
+  - "context"
 tags: 
   - "messy-data"
   - "meyers"

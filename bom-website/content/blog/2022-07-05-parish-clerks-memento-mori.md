@@ -2,13 +2,11 @@
 title: "The Parish Clerks' memento mori: Iconography of Death and trademark in The London Bills of Mortality, 1727-1752"
 date: "2022-07-05"
 author:
-  - Hernán Adasme Herrera
+  - Hernán Adasme
 categories: 
   - "context"
 tags: 
   - "adasme"
-  - "adasme-herrera"
-  - "background"
   - "printing"
 ---
 

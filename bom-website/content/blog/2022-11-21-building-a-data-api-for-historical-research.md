@@ -5,9 +5,10 @@ author:
 date: "2022-11-21"
 tags: 
     - database
-    - data visualization
+    - visualization
+    - heppler
 categories: 
-  - "infrastructure"
+  - "workflows"
 ---
 
 We are in the process of building out a data [API](https://en.wikipedia.org/wiki/API) to support the data work we're undertaking with the transcription of the plague bills. We anticipate hundreds of thousands of rows of data by the end of our transcription process, and we wanted an easy and efficient way to work with that data.

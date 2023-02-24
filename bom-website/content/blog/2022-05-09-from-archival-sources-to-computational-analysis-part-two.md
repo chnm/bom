@@ -3,6 +3,7 @@ title: "From Archival Sources to Computational Analysis, Part Two"
 date: "2022-05-09"
 author:
   - Megan Brett
+  - Megan Mitchell
 categories: 
   - "workflows"
 tags: 
