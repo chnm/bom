@@ -2,7 +2,10 @@ module updater
 
 go 1.18
 
-require github.com/jackc/pgx/v4 v4.17.1
+require (
+	github.com/jackc/pgx/v4 v4.17.1
+	github.com/rs/zerolog v1.29.0
+)
 
 require (
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
@@ -13,8 +16,9 @@ require (
 	github.com/jackc/pgservicefile v0.0.0-20200714003250-2b9c44734f2b // indirect
 	github.com/jackc/pgtype v1.12.0 // indirect
 	github.com/lib/pq v1.10.6 // indirect
-	github.com/sirupsen/logrus v1.9.0 // indirect
+	github.com/mattn/go-colorable v0.1.13 // indirect
+	github.com/mattn/go-isatty v0.0.17 // indirect
 	golang.org/x/crypto v0.0.0-20220722155217-630584e8d5aa // indirect
-	golang.org/x/sys v0.0.0-20220715151400-c0bba94af5f8 // indirect
+	golang.org/x/sys v0.5.0 // indirect
 	golang.org/x/text v0.3.7 // indirect
 )
