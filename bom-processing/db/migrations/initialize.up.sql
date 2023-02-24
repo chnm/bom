@@ -9,28 +9,28 @@
 -- Table Definition: Years ----------------------------------------------
 
 CREATE TABLE IF NOT EXISTS bom.year (
-    id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY
-    year text PRIMARY KEY,
+    id integer GENERATED ALWAYS AS IDENTITY,
+    year text PRIMARY KEY
 );
 
 -- Table Definition: Weeks ----------------------------------------------
 
 CREATE TABLE IF NOT EXISTS bom.week (
-    id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    id integer GENERATED ALWAYS AS IDENTITY,
     week_id text PRIMARY KEY,
+    week_no integer,
     start_day integer,
     start_month text,
     end_day integer,
     end_month text,
     year text REFERENCES bom.year(year),
-    week_no integer,
     split_year text
 );
 
 -- Table Definition: Parishes ----------------------------------------------
 
 CREATE TABLE IF NOT EXISTS bom.parishes (
-    id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    id integer GENERATED ALWAYS AS IDENTITY,
     parish_name text NOT NULL UNIQUE,
     canonical_name text NOT NULL
 );
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS bom.parishes (
 -- Table Definition: Parish Collectives ----------------------------------------------
 
 CREATE TABLE IF NOT EXISTS bom.parish_collective (
-    id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    id integer GENERATED ALWAYS AS IDENTITY,
     collective_id text NOT NULL,
     collective_name text NOT NULL
 );
