@@ -16,6 +16,6 @@ You can directly use them in pages and other components without the need to impo
 - `<TheNavBar>` | `<the-nav-bar>` (components/TheNavBar.vue)
 - `<ViewMore>` | `<view-more>` (components/ViewMore.vue)
 - `<WeeklyBillsTable>` | `<weekly-bills-table>` (components/WeeklyBillsTable.vue)
-- `<TablesSelectCountType>` | `<tables-select-count-type>` (components/tables/SelectCountType.vue)
 - `<VisualizationsCausesBarChart>` | `<visualizations-causes-bar-chart>` (components/visualizations/CausesBarChart.vue)
 - `<VisualizationsPlagueDeathsChart>` | `<visualizations-plague-deaths-chart>` (components/visualizations/PlagueDeathsChart.vue)
+- `<TablesSelectCountType>` | `<tables-select-count-type>` (components/tables/SelectCountType.vue)

@@ -73,6 +73,10 @@ h1, h2, h3, h4, h5, h6 {
 /* This fixes an issue with the filter accordion toggle */
 .collapse { visibility: inherit; }
 
+.accordion-button:not(.collapsed) {
+  @apply text-dbn-yellowdark;
+}
+
 // Footer
 footer .logos {
     display: flex;

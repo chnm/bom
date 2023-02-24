@@ -198,7 +198,6 @@
       :rows="totalParishes"
       :total-rows="totalRecords"
       max-height="600px"
-      :fixed-header="true"
       :pagination-options="{
         enabled: true,
         position: 'bottom',
@@ -220,7 +219,7 @@
       <template slot="table-column" slot-scope="props">
         <span v-if="props.column.label == 'Parish'">
           <span
-            class="hint--bottom z-50"
+            class="hint--right z-50"
             aria-label="The names of the parishes."
           >
             {{ props.column.label }}

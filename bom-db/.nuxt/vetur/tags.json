@@ -29,13 +29,13 @@
   "WeeklyBillsTable": {
     "description": "Auto imported from components/WeeklyBillsTable.vue"
   },
-  "TablesSelectCountType": {
-    "description": "Auto imported from components/tables/SelectCountType.vue"
-  },
   "VisualizationsCausesBarChart": {
     "description": "Auto imported from components/visualizations/CausesBarChart.vue"
   },
   "VisualizationsPlagueDeathsChart": {
     "description": "Auto imported from components/visualizations/PlagueDeathsChart.vue"
+  },
+  "TablesSelectCountType": {
+    "description": "Auto imported from components/tables/SelectCountType.vue"
   }
 }

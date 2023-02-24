@@ -8,9 +8,9 @@ export { default as TheFooter } from '../../components/TheFooter.vue'
 export { default as TheNavBar } from '../../components/TheNavBar.vue'
 export { default as ViewMore } from '../../components/ViewMore.vue'
 export { default as WeeklyBillsTable } from '../../components/WeeklyBillsTable.vue'
-export { default as TablesSelectCountType } from '../../components/tables/SelectCountType.vue'
 export { default as VisualizationsCausesBarChart } from '../../components/visualizations/CausesBarChart.vue'
 export { default as VisualizationsPlagueDeathsChart } from '../../components/visualizations/PlagueDeathsChart.vue'
+export { default as TablesSelectCountType } from '../../components/tables/SelectCountType.vue'
 
 // nuxt/nuxt.js#8607
 function wrapFunctional(options) {

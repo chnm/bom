@@ -153,7 +153,6 @@
       :rows="totalDeaths"
       :total-rows="totalRecords"
       max-height="600px"
-      :fixed-header="true"
       :pagination-options="{
         enabled: true,
         position: 'bottom',
@@ -173,22 +172,22 @@
     >
       <template slot="table-column" slot-scope="props">
         <span v-if="props.column.label == 'Cause'">
-          <span class="hint--top" aria-label="The cause of death.">
+          <span class="hint--right z-50" aria-label="The cause of death.">
             {{ props.column.label }}
           </span>
         </span>
         <span v-else-if="props.column.label == 'Count'">
-          <span class="hint--top" aria-label="The total cause of death.">
+          <span class="hint--bottom z-50" aria-label="The total cause of death.">
             {{ props.column.label }}
           </span>
         </span>
         <span v-else-if="props.column.label == 'Week Number'">
-          <span class="hint--top" aria-label="The week number in the year.">
+          <span class="hint--bottom z-50" aria-label="The week number in the year.">
             {{ props.column.label }}
           </span>
         </span>
         <span v-else-if="props.column.label == 'Year'">
-          <span class="hint--top" aria-label="The year for the data.">
+          <span class="hint--left z-50" aria-label="The year for the data.">
             {{ props.column.label }}
           </span>
         </span>
