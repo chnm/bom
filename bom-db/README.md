@@ -1,5 +1,7 @@
 # Bills of Mortality database
 
+This is a Nuxt application for displaying and filtering the Bills of Motality database.
+
 ## Build Setup
 
 ```bash
