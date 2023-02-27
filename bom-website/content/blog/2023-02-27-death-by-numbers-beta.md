@@ -47,7 +47,7 @@ started on include:
 
 If you find any problems with our beta site, we'd love to hear about it!
 We have open issue tracking at
-[https://github.com/chnm/bom/issues](https://github.com/chnm/bom/issues&sa=D&source=editors&ust=1677528374712904&usg=AOvVaw2NDJOrJOoAzzP72Y1W09Py) and
+[https://github.com/chnm/bom/issues](https://github.com/chnm/bom/issues) and
 you're welcome to open an issue to let us know if something's gone
 wonky. If you do open an issue, please let us know the [device type,
 operating system, browser and browser version that you're using,
