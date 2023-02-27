@@ -4,10 +4,10 @@
       <ul class="flex mb-0 list-none flex-wrap pt-3 pb-4 flex-row">
         <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
           <a
-            class="text-xs font-bold uppercase px-5 py-3 rounded block leading-normal border-solid border-2 border-dbn-yellow"
+            class="text-xs font-bold uppercase px-5 py-3 rounded block leading-normal border-none"
             :class="{
-              'text-black bg-white': openTab !== 1,
-              'text-white bg-dbn-yellow': openTab === 1,
+              'text-black bg-dbn-blue': openTab !== 1,
+              'text-black bg-slate-200': openTab === 1,
             }"
             @click="toggleTabs(1)"
           >
@@ -16,10 +16,10 @@
         </li>
         <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
           <a
-            class="text-xs font-bold uppercase px-5 py-3 rounded block leading-normal border-solid border-2 border-dbn-yellow"
+          class="text-xs font-bold uppercase px-5 py-3 rounded block leading-normal border-none"
             :class="{
-              'text-black bg-white': openTab !== 2,
-              'text-white bg-dbn-yellow': openTab === 2,
+              'text-black bg-dbn-blue': openTab !== 2,
+              'text-black bg-slate-200': openTab === 2,
             }"
             @click="toggleTabs(2)"
           >
@@ -28,10 +28,10 @@
         </li>
         <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
           <a
-            class="text-xs font-bold uppercase px-5 py-3 rounded block leading-normal border-solid border-2 border-dbn-yellow"
+          class="text-xs font-bold uppercase px-5 py-3 rounded block leading-normal border-none"
             :class="{
-              'text-black bg-white': openTab !== 3,
-              'text-white bg-dbn-yellow': openTab === 3,
+              'text-black bg-dbn-blue': openTab !== 3,
+              'text-black bg-slate-200': openTab === 3,
             }"
             @click="toggleTabs(3)"
           >
@@ -40,10 +40,10 @@
         </li>
         <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
           <a
-            class="text-xs font-bold uppercase px-5 py-3 rounded block leading-normal border-solid border-2 border-dbn-yellow"
+          class="text-xs font-bold uppercase px-5 py-3 rounded block leading-normal border-none"
             :class="{
-              'text-black bg-white': openTab !== 4,
-              'text-white bg-dbn-yellow': openTab === 4,
+              'text-black bg-dbn-blue': openTab !== 4,
+              'text-black bg-slate-200': openTab === 4,
             }"
             @click="toggleTabs(4)"
           >
