@@ -2,6 +2,9 @@
   "App": {
     "description": "Auto imported from components/App.vue"
   },
+  "AppAccordion": {
+    "description": "Auto imported from components/AppAccordion.vue"
+  },
   "ChristeningsDataTable": {
     "description": "Auto imported from components/ChristeningsDataTable.vue"
   },
@@ -28,12 +31,6 @@
   },
   "WeeklyBillsTable": {
     "description": "Auto imported from components/WeeklyBillsTable.vue"
-  },
-  "VisualizationsCausesBarChart": {
-    "description": "Auto imported from components/visualizations/CausesBarChart.vue"
-  },
-  "VisualizationsPlagueDeathsChart": {
-    "description": "Auto imported from components/visualizations/PlagueDeathsChart.vue"
   },
   "TablesSelectCountType": {
     "description": "Auto imported from components/tables/SelectCountType.vue"
