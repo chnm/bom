@@ -1,21 +1,21 @@
 <template>
   <div id="app">
-    <TheNavBar />
+    <NavBar />
     <App />
-    <TheFooter />
+    <Footer />
   </div>
 </template>
 
 <script type="text/javascript">
-import TheNavBar from "~/components/TheNavBar.vue";
+import NavBar from "~/components/NavBar.vue";
 import App from "~/components/App.vue";
-import TheFooter from "~/components/TheFooter.vue";
+import Footer from "~/components/Footer.vue";
 
 export default {
   components: {
-    TheNavBar,
+    NavBar,
     App,
-    TheFooter,
+    Footer,
   },
 };
 </script>
