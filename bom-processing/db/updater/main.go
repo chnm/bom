@@ -22,6 +22,9 @@ func readCsv(filepath string) [][]string {
 	if err != nil {
 		log.Print("Unable to read file as CSV for "+filepath, err)
 	}
+	if err == nil {
+		log.Info().Msg("Successfully parsed CSV for " + filepath)
+	}
 
 	// Drop the header row
 	records = records[1:]
@@ -67,6 +70,7 @@ func main() {
 	`
 
 	// Assign variables to the values in the CSV file
+	log.Info().Msg("Inserting unique years...")
 	for _, yearRecord := range yearRecords {
 		year := yearRecord[0]
 
@@ -75,6 +79,9 @@ func main() {
 		if err != nil {
 			log.Error().Stack().Err(err).Msg("Unable to insert unique years data.")
 			return
+		}
+		if err == nil {
+			log.Info().Msg("Sucessfully inserted unique years data.")
 		}
 	}
 
@@ -98,6 +105,7 @@ func main() {
 	// Assign variables to the values in the CSV file. The order here must match
 	// the CSV header row. We are skipping the unique_identifier column [5] and the
 	// year_range [7] column.
+	log.Info().Msg("Inserting unique weeks...")
 	for _, weekRecord := range weekRecords {
 		year := weekRecord[0]
 		weekNum := weekRecord[1]
@@ -114,6 +122,9 @@ func main() {
 			log.Error().Stack().Err(err).Msg("Unable to insert unique weeks data.")
 			return
 		}
+		if err == nil {
+			log.Info().Msg("Sucessfully inserted unique weeks data.")
+		}
 	}
 
 	// 3. Unique parish names -------------------------------------------------------
@@ -125,6 +136,7 @@ func main() {
 	`
 
 	// Assign variables to the values in the CSV file
+	log.Info().Msg("Inserting parish names...")
 	for _, parishRecord := range parishRecords {
 		parishName := parishRecord[0]
 		canonicalName := parishRecord[1]
@@ -135,12 +147,15 @@ func main() {
 			log.Error().Stack().Err(err).Msg("Unable to insert parish names.")
 			return
 		}
+		if err == nil {
+			log.Info().Msg("Sucessfully inserted parish: " + parishName + " (" + canonicalName + ")" + "")
+		}
 	}
 
 	// 4. Causes of death ---------------------------------------------------------
 	// Insert the causes of death into the bom.causes table. On conflict, do nothing.
 	causesQuery := `
-		INSERT INTO bom.causes_of_death (death, count, week_id, description)
+		INSERT INTO bom.causes_of_death (death, count, descriptive_text, week_id)
 		VALUES (
 			$1, 
 			CASE WHEN $2 = '' THEN NULL ELSE $2::int END,
@@ -154,14 +169,17 @@ func main() {
 	for _, causeRecord := range causesRecords {
 		death := causeRecord[1]
 		count := causeRecord[2]
-		description := causeRecord[3]
-		weekID := causeRecord[5]
+		weekID := causeRecord[4]
+		description := causeRecord[7]
 
 		// Execute the query
 		_, err = conn.Exec(context.Background(), causesQuery, death, count, weekID, description)
 		if err != nil {
 			log.Error().Stack().Err(err).Msg("Unable to insert causes of death.")
 			return
+		}
+		if err == nil {
+			log.Info().Msg("Sucessfully inserted causes of death.")
 		}
 	}
 
@@ -196,6 +214,9 @@ func main() {
 		if err != nil {
 			log.Error().Stack().Err(err).Msg("Unable to insert all bills.")
 			return
+		}
+		if err == nil {
+			log.Info().Msg("Sucessfully inserted all bills.")
 		}
 	}
 
@@ -235,6 +256,9 @@ func main() {
 		if err != nil {
 			log.Error().Stack().Err(err).Msg("Unable to insert christenings data.")
 			return
+		}
+		if err == nil {
+			log.Info().Msg("Sucessfully inserted christenings data.")
 		}
 	}
 
