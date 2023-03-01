@@ -155,7 +155,6 @@ lookup_laxton <- raw_laxton_causes |>
   # now we can drop the start day, start month, etc. since that will be added with the long table
   select(-`Start Day`, -`Start Month`, -`End Day`, -`End Month`, -Year, -`Unique Identifier`, death_type)
 
-
 # ----------------------------------------------------------------------
 # Types of death table
 # ----------------------------------------------------------------------
@@ -277,12 +276,6 @@ deaths_unique <- left_join(deaths_unique, deaths_unique_laxton_1700)
 deaths_unique <- deaths_unique |>
   arrange(death) |>
   mutate(death_id = row_number())
-
-# Write data
-write_csv(causes_wellcome, "bom-processing/scripts/bomr/data/wellcome_causes.csv", na = "")
-write_csv(causes_laxton, "bom-processing/scripts/bomr/data/laxton_causes.csv", na = "")
-write_csv(causes_laxton_1700, "bom-processing/scripts/bomr/data/laxton_causes_1700.csv", na = "")
-write_csv(deaths_unique, "bom-processing/scripts/bomr/data/deaths_unique.csv", na = "")
 
 # ----------------------------------------------------------------------
 # Weekly Bills
@@ -650,9 +643,9 @@ week_unique_weekly <- rename(week_unique_weekly, "week_number" = "week")
 
 week_unique <- rbind(
   week_unique_weekly,
+  week_unique_general,
   week_unique_wellcome,
-  week_unique_laxton,
-  week_unique_general
+  week_unique_laxton
 )
 
 # We determine here whether a year should be a split year by looking at the
@@ -664,7 +657,10 @@ week_unique <- week_unique |>
     paste0(year - 1, "/", year),
     paste0(year)
   )) |>
-  distinct(week_id, .keep_all = TRUE) |>
+  # TODO: this next line (distinct()) might be causing the bug with data not returning
+  # may be better to think of this table as a week lookup rather than
+  # distinct set of weeks...
+  # distinct(week_id, .keep_all = TRUE) |>
   mutate(id = row_number())
 
 # Filter out extraneous data and assign
@@ -676,7 +672,7 @@ wellcome_deaths_cleaned <- causes_wellcome |>
   filter(!str_detect(death, regex("\\bOunces in", ignore_case = FALSE))) |>
   filter(!str_detect(death, regex("\\bIncrease/Decrease", ignore_case = FALSE))) |>
   filter(!str_detect(death, regex("\\bParishes Clear", ignore_case = FALSE))) |>
-  filter(!str_detect(death, regex("\\bParishes Infected", ignore_case = FALSE))) # |>
+  filter(!str_detect(death, regex("\\bParishes Infected", ignore_case = FALSE)))
 
 all_laxton_causes <- rbind(causes_laxton, causes_laxton_1700)
 
@@ -692,15 +688,15 @@ laxton_deaths_cleaned <- all_laxton_causes |>
 total_causes <- rbind(laxton_deaths_cleaned, wellcome_deaths_cleaned)
 
 # Now that we have all potential causes, we drop their date information and combine
-# the unique identifiers against the unique_weeks week ID to keep the date information
-# consistent. This data is joined in Postgres.
+# the unique identifiers against the week_unique week_id column to keep the date 
+# information consistent. This data is joined in Postgres.
+# TODO: A bug is introduced here causing the week_id to sometimes end up NULL, 
+# which breaks our foreign key constraints.
 deaths_long <- total_causes |>
   select(-week_number, -start_day, -end_day, -start_month, -end_month, -year) |>
-  dplyr::left_join(week_unique, by = "unique_identifier") |>
+  dplyr::left_join(week_unique, by = "unique_identifier", multiple = "all") |>
   select(-week_number, -start_day, -end_day, -start_month, -end_month) |>
   mutate(id = row_number())
-
-write_csv(deaths_long, na = "", "bom-processing/scripts/bomr/data/causes_of_death.csv")
 
 # Unique year values
 # ------------------
@@ -768,7 +764,57 @@ general_bills <- general_bills |>
 all_bills <- rbind(weekly_bills, general_bills)
 all_bills <- all_bills |> mutate(id = row_number())
 
-# Write data to csv
+# --------------------------------------------------
+# Write data
+# --------------------------------------------------
+
+# Clean up the R environment
+rm(
+  raw_bodleian,
+  raw_bodleian_v2,
+  raw_laxton_1700_causes,
+  raw_laxton_causes,
+  raw_laxton_weekly,
+  raw_millar_general,
+  raw_wellcome_causes,
+  raw_wellcome_weekly
+)
+
+rm(
+  lookup_laxton,
+  lookup_laxton_1700,
+  lookup_wellcome
+)
+
+rm(
+  wellcome_weekly,
+  wellcome_descriptions,
+  wellcome_deaths_cleaned,
+  week_unique_wellcome,
+  week_unique_weekly,
+  week_unique_laxton,
+  week_unique_general,
+  millar_long,
+  parish_canonical,
+  laxton_weekly,
+  laxton_deaths_cleaned,
+  deaths_unique_wellcome,
+  deaths_unique_laxton_1700,
+  deaths_unique_laxton,
+  bodleian_weekly,
+  bodleian_weekly_v2,
+  all_laxton_causes,
+  all_laxton_weekly_causes
+)
+
+# Write data to csv: causes of death
+write_csv(causes_wellcome, "bom-processing/scripts/bomr/data/wellcome_causes.csv", na = "")
+write_csv(causes_laxton, "bom-processing/scripts/bomr/data/laxton_causes.csv", na = "")
+write_csv(causes_laxton_1700, "bom-processing/scripts/bomr/data/laxton_causes_1700.csv", na = "")
+write_csv(deaths_unique, "bom-processing/scripts/bomr/data/deaths_unique.csv", na = "")
+write_csv(deaths_long, na = "", "bom-processing/scripts/bomr/data/causes_of_death.csv")
+
+# Write data to csv: parishes and bills
 write_csv(weekly_bills, "bom-processing/scripts/bomr/data/bills_weekly.csv", na = "")
 write_csv(general_bills, "bom-processing/scripts/bomr/data/bills_general.csv", na = "")
 write_csv(all_bills, "bom-processing/scripts/bomr/data/all_bills.csv", na = "")
