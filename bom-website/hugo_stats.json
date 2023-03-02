@@ -255,6 +255,7 @@
       "xs:h-44"
     ],
     "ids": [
+      "TableOfContents",
       "bills",
       "but-didnt-people-bake-their-own-bread",
       "causes-of-death-data",
@@ -292,6 +293,7 @@
       "fnref:9",
       "got-feedback",
       "metadata",
+      "overview",
       "preparing-digital-images-for-import-into-omeka-s",
       "primary-sources",
       "problem-number-1-forgetting-about-the-data",

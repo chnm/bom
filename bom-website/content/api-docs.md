@@ -3,6 +3,10 @@ title: "API Documentation"
 url: /api/
 ---
 
+{{< toc >}}
+
+## Overview
+
 The Bills of Mortality API is organized around [REST](https://en.wikipedia.org/wiki/Representational_state_transfer) and returns JSON-encoded responses from our PostgreSQL database using standard HTTP response codes and verbs. 
 
 The API currently provides three endpoints for returning data.
@@ -37,7 +41,7 @@ The final endpoint is `christenings`, which powers the *Christenings* tab of the
 - Week Number: The week number for a given bill.
 - Year: The year of the given bill.
 - Split Year: The split year for the given cause of death.
-- Location ID: A unique identifier for the *Description* field.
+- Location ID: A unique identifier for the **Description** field.
 
 ## Web Application
 
