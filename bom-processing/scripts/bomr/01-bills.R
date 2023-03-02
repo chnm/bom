@@ -473,6 +473,9 @@ parish_canonical <- read_csv("bom-processing/scripts/bomr/data/London Parish Aut
 parishes_unique <- parishes_unique |>
   left_join(parish_canonical, by = "parish_name")
 
+# We assign our own ID to the parish name rather than having PostgreSQL 
+# generate it. This is because data transformations below expect a consistent
+# ID for each parish.
 parishes_unique <- parishes_unique |>
   mutate(canonical = coalesce(canonical_name, parish_name)) |>
   select(-canonical_name) |>
@@ -660,14 +663,12 @@ week_unique <- week_unique |>
   distinct(joinid, .keep_all = TRUE)
 
 # Now that we have all potential causes, we drop their date information and combine
-# the unique identifiers against the week_unique week_id column to keep the date 
+# the unique identifiers against the week_unique joinid column to keep the date 
 # information consistent. This data is joined in Postgres.
-# TODO: A bug is introduced here causing the week_id to sometimes end up NULL, 
-# which breaks our foreign key constraints.
 deaths_long <- total_causes |>
   select(-week_number, -start_day, -end_day, -start_month, -end_month, -year, -unique_identifier) |>
   dplyr::left_join(week_unique, by = "joinid") |>
-  select(-week_number, -start_day, -end_day, -start_month, -end_month, -unique_identifier, -joinid)
+  select(-week_number, -start_day, -end_day, -start_month, -end_month, -unique_identifier)
 
 # Unique year values
 # ------------------
