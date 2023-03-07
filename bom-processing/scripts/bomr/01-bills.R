@@ -18,7 +18,7 @@ raw_wellcome_weekly <- read_csv("bom-data/data-csvs/2022-04-06-1669-1670-Wellcom
 raw_wellcome_causes <- read_csv("bom-data/data-csvs/2022-04-06-Wellcome-weeklybills-causes.csv")
 raw_millar_general <- read_csv("bom-data/data-csvs/2022-04-06-millar-generalbills-postplague-parishes.csv")
 
-raw_laxton_weekly <- read_csv("bom-data/data-csvs/2022-11-02-Laxton-weeklybills-parishes.csv")
+raw_laxton_weekly <- read_csv("bom-data/data-csvs/2023-03-03-Laxton-weeklybills-parishes.csv")
 raw_laxton_1700_causes <- read_csv("bom-data/data-csvs/2022-06-15-Laxton-1700-weeklybills-causes.csv")
 raw_laxton_causes <- read_csv("bom-data/data-csvs/2022-11-02-Laxton-weeklybills-causes.csv")
 
@@ -263,6 +263,11 @@ deaths_unique <- deaths_unique |>
 # Weekly Bills
 # ----------------------------------------------------------------------
 laxton_weekly <- raw_laxton_weekly |>
+  select(-c(starts_with("is_illegible")))
+laxton_weekly <- laxton_weekly |>
+  select(-c(starts_with("is_missing")))
+
+laxton_weekly <- laxton_weekly |>
   select(!1:4) |>
   pivot_longer(8:167, names_to = "parish_name", values_to = "count" )
 
@@ -339,6 +344,10 @@ burials_tmp <- filtered_entries |>
 plague_tmp <- filtered_entries |>
   dplyr::filter(plague_detect == TRUE) |>
   select(-christening_detect, -burials_detect, -plague_detect)
+
+# We keep this data since we want to keep track of christenings
+# by parish.
+write_csv(christenings_tmp, "bom-processing/scripts/bomr/data/christenings_by_parish.csv")
 
 filtered_entries <- filtered_entries |>
   dplyr::filter(
