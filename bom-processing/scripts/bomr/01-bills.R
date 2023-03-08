@@ -5,7 +5,7 @@
 #
 # Jason A. Heppler | jason@jasonheppler.org
 # Roy Rosenzweig Center for History and New Media
-# Updated: 2023-02-24
+# Updated: 2023-03-08
 
 library(tidyverse)
 
@@ -23,7 +23,7 @@ raw_laxton_1700_causes <- read_csv("bom-data/data-csvs/2022-06-15-Laxton-1700-we
 raw_laxton_causes <- read_csv("bom-data/data-csvs/2022-11-02-Laxton-weeklybills-causes.csv")
 
 raw_bodleian <- read_csv("bom-data/data-csvs/2023-02-22-BodleianV1-weeklybills-parishes.csv")
-raw_bodleian_v2 <- read_csv("bom-data/data-csvs/2023-02-22-BodleianV2-weeklybills-parishes.csv")
+raw_bodleian_v2 <- read_csv("bom-data/data-csvs/2023-03-08-BodleianV2-weeklybills-parishes.csv")
 
 # ----------------------------------------------------------------------
 # Lookup tables
