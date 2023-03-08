@@ -13,6 +13,7 @@ You can directly use them in pages and other components without the need to impo
 - `<FoodstuffsDataTable>` | `<foodstuffs-data-table>` (components/FoodstuffsDataTable.vue)
 - `<Footer>` | `<footer>` (components/Footer.vue)
 - `<GeneralBillsTable>` | `<general-bills-table>` (components/GeneralBillsTable.vue)
+- `<Instructions>` | `<instructions>` (components/Instructions.vue)
 - `<Modal>` | `<modal>` (components/Modal.vue)
 - `<NavBar>` | `<nav-bar>` (components/NavBar.vue)
 - `<ViewMore>` | `<view-more>` (components/ViewMore.vue)

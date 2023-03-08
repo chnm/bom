@@ -20,6 +20,9 @@
   "GeneralBillsTable": {
     "description": "Auto imported from components/GeneralBillsTable.vue"
   },
+  "Instructions": {
+    "description": "Auto imported from components/Instructions.vue"
+  },
   "Modal": {
     "description": "Auto imported from components/Modal.vue"
   },

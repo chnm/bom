@@ -1,6 +1,6 @@
 <script>
 export default {
-  name: "Modal",
+  name: "InstructionsModal",
   methods: {
     close() {
       this.$emit("close");
@@ -10,7 +10,7 @@ export default {
 </script>
 
 <template>
-<div>
+  <div>
     <div
       class="fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 z-50"
     >
@@ -34,27 +34,26 @@ export default {
               <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                 <div class="sm:flex sm:items-start">
                   <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-
-                    <div
-                      class="modal"
-                      role="dialog"
-                      aria-labelledby="modalTitle"
-                      aria-describedby="modalDescription"
+                    <h3
+                      id="modal-title"
+                      class="text-base font-semibold leading-6 text-gray-900"
                     >
-                      <header id="modalTitle" class="modal-header text-base font-semibold leading-6 text-gray-900">
-                        <slot name="header"> Default title </slot>
-                      </header>
-
-                      <div class="mt-2">
-                      <section class="modal-body text-sm text-gray-500">
-                        <slot name="body"> Default body text. </slot>
-                      </section>
-                      </div>
+                      How to use this table
+                    </h3>
+                    <div class="mt-2">
+                      <p class="text-sm text-gray-500">
+                        Lorem, ipsum dolor sit amet consectetur adipisicing
+                        elit. Quia, porro. Non a excepturi, voluptatibus ipsam
+                        magnam, eligendi, accusantium ipsa quae quis praesentium
+                        voluptate saepe ullam sint ea itaque consectetur
+                        impedit?
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
               <div
-                class="px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6"
+                class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6"
               >
                 <button
                   type="button"
@@ -70,6 +69,5 @@ export default {
         </div>
       </div>
     </div>
-  </div>
   </div>
 </template>

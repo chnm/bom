@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div class="bg-white">
     <!-- start of filters -->
-    <div id="filters" class="accordion bg-white">
+    <div id="filters" class="accordion">
       <app-accordion
-        class="mb-4 pt-6 pb-6 ml-4 mr-4 border-slate-200 border-t-2 border-b-2"
+        class="mb-4 pt-6 pb-6 ml-4 mr-4"
       >
         <template #title>
           <span class="font-semibold text-base">Filter by</span>
@@ -55,7 +55,7 @@
             <div>
               <div class="accordion-body py-4 px-5">
                 <div class="font-semibold text-base">Year Range</div>
-                <div class="slider-container">
+                <div class="slider-container mt-4">
                   <vue-slider
                     v-model="filteredYears"
                     :min="1636"
@@ -107,22 +107,15 @@
               >
                 Apply Filters
               </button>
+
+              <div
+                  class="text-xs font-bold uppercase px-1 py-3 m-0.5 leading-normal text-black hover:underline"
+                  @click="($event) => showInstructionsModal()"
+                >
+                  How to use this table
+                </div>
             </div>
           </div>
-        </template>
-      </app-accordion>
-
-      <app-accordion class="pb-6 ml-4 mr-4 border-slate-200">
-        <template #title>
-          <span class="font-semibold text-base">How to use the table</span>
-        </template>
-        <template #content>
-          <p>
-            <b>Lorem</b>, ipsum dolor sit amet consectetur adipisicing elit.
-            Quia, porro. Non a excepturi, voluptatibus ipsam magnam, eligendi,
-            accusantium ipsa quae quis praesentium voluptate saepe ullam sint ea
-            itaque consectetur impedit?
-          </p>
         </template>
       </app-accordion>
     </div>
@@ -221,6 +214,73 @@
         This is a new modal footer.
       </template>
     </Modal>
+    <!-- instructions -->
+    <div
+      v-if="showInstructions"
+      class="fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 z-50"
+    >
+      <div
+        class="relative z-10"
+        aria-labelledby="modal-title"
+        role="dialog"
+        aria-modal="true"
+      >
+        <div
+          class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+        ></div>
+        <div class="fixed inset-0 z-10 overflow-y-auto">
+          <div
+            class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0"
+          >
+            <div
+              class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg"
+            >
+              <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div class="sm:flex sm:items-start">
+                  <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                    <h3
+                      id="modal-title"
+                      class="text-base font-semibold leading-6 text-gray-900"
+                    >
+                      How to use this table
+                    </h3>
+                    <div class="mt-2">
+                      <p class="text-sm text-gray-500 pb-3">
+                        The filter is divided into three areas: parishes, years, and 
+                        count types. You can select one or more options from each area.
+                        The parishes can be searched by typing in the search box. 
+                        "Count type" refers to whether you wish to see the count of people
+                        buried, people with the plague, or both.
+                      </p>
+                      <p class="text-sm text-gray-500 pb-3">
+                        Once you've made adjustments to the filters, click "Apply Filters"
+                        to update the table. Click "Reset Filters" to reset the table to its 
+                        default state.
+                      </p>
+                      <p class="text-sm text-gray-500 pb-3">
+                        You can click on an individual row to view additional information.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6"
+              >
+                <button
+                  type="button"
+                  class="inline-flex w-full justify-center rounded-md bg-dbn-red px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+                  aria-label="Close instructions"
+                  @click="close"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -282,6 +342,8 @@ export default {
       filteredParishIDs: [],
       filteredYears: [1636, 1754],
       isModalVisible: false,
+      showInstructions: false,
+
       // Always show vue-slider tooltips
       dotOptions: [
         {
@@ -313,7 +375,7 @@ export default {
   mounted() {
     axios
       .get(
-        "https://data.chnm.org/bom/bills?start-year=" +
+        "http://localhost:8090/bom/bills?start-year=" +
           this.serverParams.year[0] +
           "&end-year=" +
           this.serverParams.year[1] +
@@ -342,7 +404,7 @@ export default {
         console.log(this.errors);
       });
     axios
-      .get("https://data.chnm.org/bom/parishes")
+      .get("http://localhost:8090/bom/parishes")
       .then((response) => {
         this.parishNames = response.data;
       })
@@ -352,7 +414,7 @@ export default {
         console.log(this.errors);
       });
     axios
-      .get("https://data.chnm.org/bom/totalbills?type=Weekly")
+      .get("http://localhost:8090/bom/totalbills?type=Weekly")
       .then((response) => {
         this.totalRecords = response.data[0].total_records;
       })
@@ -390,6 +452,16 @@ export default {
       this.loadItems();
     },
 
+    // display instructions
+    showInstructionsModal() {
+      this.showInstructions = true;
+    },
+
+    // close instructions
+    close() {
+      this.showInstructions = false;
+    },
+
     // TODO: Add table sorting.
     // onSortChange(params) {
     //   this.updateParams({
@@ -406,7 +478,7 @@ export default {
     loadItems() {
       return axios
         .get(
-          "https://data.chnm.org/bom/bills?start-year=" +
+          "http://localhost:8090/bom/bills?start-year=" +
             this.serverParams.year[0] +
             "&end-year=" +
             this.serverParams.year[1] +
@@ -441,7 +513,6 @@ export default {
     updateFilteredYearsArray(newYears) {
       this.filteredYears = newYears;
       // eslint-disable-next-line no-console
-      console.log(newYears);
       this.updateParams({
         year: newYears,
       });

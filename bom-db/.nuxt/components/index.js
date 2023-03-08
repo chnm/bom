@@ -5,6 +5,7 @@ export { default as DeathCausesTable } from '../../components/DeathCausesTable.v
 export { default as FoodstuffsDataTable } from '../../components/FoodstuffsDataTable.vue'
 export { default as Footer } from '../../components/Footer.vue'
 export { default as GeneralBillsTable } from '../../components/GeneralBillsTable.vue'
+export { default as Instructions } from '../../components/Instructions.vue'
 export { default as Modal } from '../../components/Modal.vue'
 export { default as NavBar } from '../../components/NavBar.vue'
 export { default as ViewMore } from '../../components/ViewMore.vue'
