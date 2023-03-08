@@ -345,9 +345,11 @@ plague_tmp <- filtered_entries |>
   dplyr::filter(plague_detect == TRUE) |>
   select(-christening_detect, -burials_detect, -plague_detect)
 
-# We keep this data since we want to keep track of christenings
+# We keep the christenings_tmp data since we want to keep track of christenings
 # by parish.
-write_csv(christenings_tmp, "bom-processing/scripts/bomr/data/christenings_by_parish.csv")
+christenings_tmp <- christenings_tmp  |> 
+    mutate(joinid = paste0(start_day, start_month, end_day, end_month, year))
+write_csv(christenings_tmp, "bom-processing/scripts/bomr/data/christenings_by_parish.csv", na = "")
 
 filtered_entries <- filtered_entries |>
   dplyr::filter(

@@ -76,9 +76,6 @@ wellcome_christenings_long <- wellcome_christenings |>
 
 christenings <- rbind(wellcome_christenings_long, laxton_christenings_long)
 
-christenings <- christenings |>
-  mutate(id = row_number())
-
 names(christenings) <- tolower(names(christenings))
 names(christenings) <- gsub(" ", "_", names(christenings))
 
