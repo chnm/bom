@@ -4,14 +4,14 @@ preview :
 
 build :
 	@echo "\nBuilding the site with Hugo ..."
-	hugo --cleanDestinationDir --buildDrafts --buildFuture --baseURL http://hugo.deathbynumbers.org/
+	hugo --cleanDestinationDir --buildDrafts --buildFuture --baseURL http://dev.deathbynumbers.org/
 	@echo "Website finished building."
 
 build-dev : build
 	@echo "\nDeploying the site to development with rsync ..."
 	rsync --delete --itemize-changes --omit-dir-times \
 		--checksum -avz --no-t --no-perms --exclude-from=rsync-excludes \
-		public/ susanoo:/websites/hugo.deathbynumbers.org/ | egrep -v '^\.'
+		public/ susanoo:/websites/dev.deathbynumbers.org/ | egrep -v '^\.'
 	@echo "Finished deploying the site to development with rsync."
 
 build-prod :
