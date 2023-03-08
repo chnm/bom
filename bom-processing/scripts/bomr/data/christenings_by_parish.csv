@@ -2024,9 +2024,9 @@ year,week,unique_identifier,start_day,start_month,end_day,end_month,parish_name,
 1713,24,Laxton-1713-24-recto,,,2,June,Christened in the 97 parishes within the walls,30,Weekly,NANA2June1713
 1713,24,Laxton-1713-24-recto,,,2,June,Christened in the parishes without the walls,83,Weekly,NANA2June1713
 1713,24,Laxton-1713-24-recto,,,2,June,Christened in the Parishes and Liberties of Westminster,53,Weekly,NANA2June1713
-1713,25,1713-25-recto,,,9,June,Christened in the 97 parishes within the walls,15,Weekly,NANA9June1713
-1713,25,1713-25-recto,,,9,June,Christened in the parishes without the walls,72,Weekly,NANA9June1713
-1713,25,1713-25-recto,,,9,June,Christened in the Parishes and Liberties of Westminster,63,Weekly,NANA9June1713
+1713,25,Laxton-1713-25-recto,,,9,June,Christened in the 97 parishes within the walls,15,Weekly,NANA9June1713
+1713,25,Laxton-1713-25-recto,,,9,June,Christened in the parishes without the walls,72,Weekly,NANA9June1713
+1713,25,Laxton-1713-25-recto,,,9,June,Christened in the Parishes and Liberties of Westminster,63,Weekly,NANA9June1713
 1713,26,Laxton-1713-26-recto,,,16,June,Christened in the 97 parishes within the walls,40,Weekly,NANA16June1713
 1713,26,Laxton-1713-26-recto,,,16,June,Christened in the parishes without the walls,88,Weekly,NANA16June1713
 1713,26,Laxton-1713-26-recto,,,16,June,Christened in the Parishes and Liberties of Westminster,54,Weekly,NANA16June1713
@@ -2678,9 +2678,9 @@ year,week,unique_identifier,start_day,start_month,end_day,end_month,parish_name,
 1740,1,Laxton-1740-01-recto,,,23,December,Christened in the 97 parishes within the walls,23,Weekly,NANA23December1740
 1740,1,Laxton-1740-01-recto,,,23,December,Christened in the parishes without the walls,58,Weekly,NANA23December1740
 1740,1,Laxton-1740-01-recto,,,23,December,Christened in the Parishes and Liberties of Westminster,56,Weekly,NANA23December1740
-1740,2,Laxton-1700-02-recto,30,December,,,Christened in the 97 parishes within the walls,33,Weekly,30DecemberNANA1740
-1740,2,Laxton-1700-02-recto,30,December,,,Christened in the parishes without the walls,61,Weekly,30DecemberNANA1740
-1740,2,Laxton-1700-02-recto,30,December,,,Christened in the Parishes and Liberties of Westminster,78,Weekly,30DecemberNANA1740
+1740,2,Laxton-1700-02-recto,,,30,December,Christened in the 97 parishes within the walls,33,Weekly,NANA30December1740
+1740,2,Laxton-1700-02-recto,,,30,December,Christened in the parishes without the walls,61,Weekly,NANA30December1740
+1740,2,Laxton-1700-02-recto,,,30,December,Christened in the Parishes and Liberties of Westminster,78,Weekly,NANA30December1740
 1740,3,Laxton-1740-03-recto,,,6,January,Christened in the 97 parishes within the walls,30,Weekly,NANA6January1740
 1740,3,Laxton-1740-03-recto,,,6,January,Christened in the parishes without the walls,66,Weekly,NANA6January1740
 1740,3,Laxton-1740-03-recto,,,6,January,Christened in the Parishes and Liberties of Westminster,87,Weekly,NANA6January1740
@@ -2762,15 +2762,15 @@ year,week,unique_identifier,start_day,start_month,end_day,end_month,parish_name,
 1741,35,Laxton-1741-35-recto,,,18,August,Christened in the 97 parishes within the walls,28,Weekly,NANA18August1741
 1741,35,Laxton-1741-35-recto,,,18,August,Christened in the parishes without the walls,83,Weekly,NANA18August1741
 1741,35,Laxton-1741-35-recto,,,18,August,Christened in the Parishes and Liberties of Westminster,41,Weekly,NANA18August1741
-1741,52,Laxton-1741-52-Laxton,,,15,December,Christened in the 97 parishes within the walls,19,Weekly,NANA15December1741
-1741,52,Laxton-1741-52-Laxton,,,15,December,Christened in the parishes without the walls,77,Weekly,NANA15December1741
-1741,52,Laxton-1741-52-Laxton,,,15,December,Christened in the Parishes and Liberties of Westminster,88,Weekly,NANA15December1741
-1752,38,1752-38-recto,,,1,September,Christened in the 97 parishes within the walls,23,Weekly,NANA1September1752
-1752,38,1752-38-recto,,,1,September,Christened in the parishes without the walls,78,Weekly,NANA1September1752
-1752,38,1752-38-recto,,,1,September,Christened in the Parishes and Liberties of Westminster,69,Weekly,NANA1September1752
-1720,2,Laxton-1720-02-recto  Text,,,27,December,Christened in the 97 parishes within the walls,22,Weekly,NANA27December1720
-1720,2,Laxton-1720-02-recto  Text,,,27,December,Christened in the parishes without the walls,81,Weekly,NANA27December1720
-1720,2,Laxton-1720-02-recto  Text,,,27,December,Christened in the Parishes and Liberties of Westminster,50,Weekly,NANA27December1720
+1741,52,Laxton-1741-52-recto,,,15,December,Christened in the 97 parishes within the walls,19,Weekly,NANA15December1741
+1741,52,Laxton-1741-52-recto,,,15,December,Christened in the parishes without the walls,77,Weekly,NANA15December1741
+1741,52,Laxton-1741-52-recto,,,15,December,Christened in the Parishes and Liberties of Westminster,88,Weekly,NANA15December1741
+1752,38,Laxton-1752-38-recto,,,1,September,Christened in the 97 parishes within the walls,23,Weekly,NANA1September1752
+1752,38,Laxton-1752-38-recto,,,1,September,Christened in the parishes without the walls,78,Weekly,NANA1September1752
+1752,38,Laxton-1752-38-recto,,,1,September,Christened in the Parishes and Liberties of Westminster,69,Weekly,NANA1September1752
+1720,2,Laxton-1720-02-recto,,,27,December,Christened in the 97 parishes within the walls,22,Weekly,NANA27December1720
+1720,2,Laxton-1720-02-recto,,,27,December,Christened in the parishes without the walls,81,Weekly,NANA27December1720
+1720,2,Laxton-1720-02-recto,,,27,December,Christened in the Parishes and Liberties of Westminster,50,Weekly,NANA27December1720
 1720,3,Laxton-1720-03-recto,,,3,January,Christened in the 97 parishes within the walls,28,Weekly,NANA3January1720
 1720,3,Laxton-1720-03-recto,,,3,January,Christened in the parishes without the walls,112,Weekly,NANA3January1720
 1720,3,Laxton-1720-03-recto,,,3,January,Christened in the Parishes and Liberties of Westminster,71,Weekly,NANA3January1720
