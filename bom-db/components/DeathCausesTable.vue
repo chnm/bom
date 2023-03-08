@@ -317,7 +317,7 @@ export default {
   mounted() {
     axios
       .get(
-        "http://localhost:8090/bom/causes?start-year=" +
+        "https://data.chnm.org/bom/causes?start-year=" +
           this.serverParams.year[0] +
           "&end-year=" +
           this.serverParams.year[1] +
@@ -337,7 +337,7 @@ export default {
         console.log(this.errors);
       });
     axios
-      .get("http://localhost:8090/bom/totalbills?type=Causes")
+      .get("https://data.chnm.org/bom/totalbills?type=Causes")
       .then((response) => {
         this.totalRecords = response.data[0].total_records;
       })
@@ -347,7 +347,7 @@ export default {
         console.log(this.errors);
       });
     axios
-      .get("http://localhost:8090/bom/list-deaths")
+      .get("https://data.chnm.org/bom/list-deaths")
       .then((response) => {
         this.causesList = response.data;
       })
@@ -399,7 +399,7 @@ export default {
     loadItems() {
       return axios
         .get(
-          "http://localhost:8090/bom/causes?start-year=" +
+          "https://data.chnm.org/bom/causes?start-year=" +
             this.filteredYears[0] +
             "&end-year=" +
             this.filteredYears[1] +
