@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS bom.test_christenings (
     id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     christening text NOT NULL,
     count integer,
-    week_number text,
+    week_number integer,
     start_month text,
     end_month text,
     year integer REFERENCES bom.test_year(year),
@@ -88,3 +88,8 @@ CREATE TABLE IF NOT EXISTS bom.test_bill_of_mortality (
     week_id text NOT NULL REFERENCES bom.test_week(joinid),
     bill_type text
 );
+
+-- Derive the christenings_location data from the christenings table
+INSERT INTO bom.test_christening_locations(name)
+SELECT DISTINCT bom.test_christenings.christening
+FROM bom.test_christenings;
