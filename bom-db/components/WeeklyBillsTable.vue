@@ -397,6 +397,7 @@ export default {
       )
       .then((response) => {
         this.totalParishes = response.data;
+        this.getTotalRecords();
       })
       .catch((e) => {
         this.errors.push(e);
@@ -413,18 +414,11 @@ export default {
         // eslint-disable-next-line no-console
         console.log(this.errors);
       });
-    axios
-      .get("https://data.chnm.org/bom/totalbills?type=Weekly")
-      .then((response) => {
-        this.totalRecords = response.data[0].total_records;
-      })
-      .catch((e) => {
-        this.errors.push(e);
-        // eslint-disable-next-line no-console
-        console.log(this.errors);
-      });
   },
   methods: {
+    getTotalRecords() {
+      this.totalRecords = this.totalParishes[0].totalrecords;
+    },
     showModal(params) {
       this.params = params;
       this.isModalVisible = true;
@@ -458,7 +452,7 @@ export default {
     },
 
     // close instructions
-    close() {
+    closeInstructionsModal() {
       this.showInstructions = false;
     },
 
@@ -499,6 +493,7 @@ export default {
         )
         .then((response) => {
           this.totalParishes = response.data;
+          this.getTotalRecords();
         })
         .catch((e) => {
           this.errors.push(e);
