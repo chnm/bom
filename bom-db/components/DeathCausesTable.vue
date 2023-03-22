@@ -160,7 +160,7 @@
       </template>
       <template v-if="params.row" #body>
         <div v-if="params.row.descriptive_text">
-          This cause of death is described as: "{{ params.row.descriptive_text }}.
+          This cause of death is described as: "{{ params.row.descriptive_text }}"
         </div>
         <!-- if params.row.descriptive_text is an empty string, display a different message-->
         <div v-else>
