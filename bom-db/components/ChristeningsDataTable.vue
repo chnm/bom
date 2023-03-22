@@ -32,7 +32,7 @@
                     aria-labelledby="parish-selection-menu"
                   >
                   <li
-                            v-for="(christening, index) in christeningsList"
+                            v-for="(christening, index) in filterList"
                             :key="index"
                           >
                             <input
@@ -256,6 +256,8 @@ export default {
     return {
       errors: [],
       params: {},
+      search: "",
+      searchFilter: [],
       totalChristenings: [],
       christeningsList: [],
       totalRecords: 0,
@@ -305,6 +307,13 @@ export default {
       },
     };
   },
+  computed: {
+    filterList() {
+      return this.christeningsList.filter((parish) => {
+        return parish.name.toLowerCase().includes(this.search.toLowerCase());
+      });
+    },
+  },
   mounted() {
     axios
       .get(
@@ -332,7 +341,6 @@ export default {
       .get("https://data.chnm.org/bom/list-christenings")
       .then((response) => {
         this.christeningsList = response.data;
-        console.log("christenings", this.christeningsList);
       })
       .catch((e) => {
         this.errors.push(e);
@@ -390,6 +398,17 @@ export default {
           // eslint-disable-next-line no-console
           console.log(this.errors);
         });
+    },
+
+    // When a user adjusts the year range sliders, those years are added to the
+    // filteredYears array. That array then updates the serverParams.year array and submits
+    // a new request to the server.
+    updateFilteredYearsArray(newYears) {
+      this.filteredYears = newYears;
+      // eslint-disable-next-line no-console
+      this.updateParams({
+        year: newYears,
+      });
     },
 
     onPageChange(params) {

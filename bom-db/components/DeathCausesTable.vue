@@ -352,8 +352,6 @@ export default {
     getTotalRecords() {
       // the total records are the in the totalrecords property of the first item in the array
       this.totalRecords = this.totalDeaths[0].totalrecords;
-      // eslint-disable-next-line no-console
-      console.log(this.totalRecords);
     },
     showModal(params) {
       this.params = params;
@@ -415,6 +413,16 @@ export default {
           // eslint-disable-next-line no-console
           console.log(this.errors);
         });
+    },
+    // When a user adjusts the year range sliders, those years are added to the
+    // filteredYears array. That array then updates the serverParams.year array and submits
+    // a new request to the server.
+    updateFilteredYearsArray(newYears) {
+      this.filteredYears = newYears;
+      // eslint-disable-next-line no-console
+      this.updateParams({
+        year: newYears,
+      });
     },
     // When the user clicks the Apply Filters button, we use the
     // v-model data in filteredParishIDs, filteredYears, and

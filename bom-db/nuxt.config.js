@@ -7,7 +7,7 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'bom-db',
+    title: 'Bills of Mortality Database',
     htmlAttrs: {
       lang: 'en'
     },
