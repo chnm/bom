@@ -13,7 +13,7 @@
             <!-- parishes -->
             <app-accordion class="pb-6 ml-4 mr-4 border-slate-200">
               <template #title>
-                <span class="font-semibold text-base">Causes of death</span>
+                <span class="font-semibold text-base">Parishes</span>
               </template>
               <template #content>
                 <div
@@ -321,16 +321,7 @@ export default {
       )
       .then((response) => {
         this.totalChristenings = response.data;
-      })
-      .catch((e) => {
-        this.errors.push(e);
-        // eslint-disable-next-line no-console
-        console.log(this.errors);
-      });
-    axios
-      .get("https://data.chnm.org/bom/totalbills?type=Christenings")
-      .then((response) => {
-        this.totalRecords = response.data[0].total_records;
+        this.getTotalRecords();
       })
       .catch((e) => {
         this.errors.push(e);
@@ -341,6 +332,7 @@ export default {
       .get("https://data.chnm.org/bom/list-christenings")
       .then((response) => {
         this.christeningsList = response.data;
+        console.log("christenings", this.christeningsList);
       })
       .catch((e) => {
         this.errors.push(e);
@@ -349,6 +341,9 @@ export default {
       });
   },
   methods: {
+    getTotalRecords() {
+      this.totalRecords = this.totalChristenings[0].totalrecords;
+    },
     showModal(params) {
       this.params = params;
       this.isModalVisible = true;
@@ -388,6 +383,7 @@ export default {
         )
         .then((response) => {
           this.totalChristenings = response.data;
+          this.getTotalRecords();
         })
         .catch((e) => {
           this.errors.push(e);
