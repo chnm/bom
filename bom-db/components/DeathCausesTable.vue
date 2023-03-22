@@ -160,7 +160,7 @@
       </template>
       <template v-if="params.row" #body>
         <div v-if="params.row.descriptive_text">
-          This cause of death is described as: "{{ params.row.descriptive_text }}.
+          This cause of death is described as: "{{ params.row.descriptive_text }}"
         </div>
         <!-- if params.row.descriptive_text is an empty string, display a different message-->
         <div v-else>
@@ -309,8 +309,8 @@ export default {
   },
   computed: {
     filterCausesList() {
-      return this.causesList.filter((parish) => {
-        return parish.name.toLowerCase().includes(this.search.toLowerCase());
+      return this.causesList.filter((cause) => {
+        return cause.name.toLowerCase().includes(this.search.toLowerCase());
       });
     },
   },
@@ -330,16 +330,7 @@ export default {
       )
       .then((response) => {
         this.totalDeaths = response.data;
-      })
-      .catch((e) => {
-        this.errors.push(e);
-        // eslint-disable-next-line no-console
-        console.log(this.errors);
-      });
-    axios
-      .get("https://data.chnm.org/bom/totalbills?type=Causes")
-      .then((response) => {
-        this.totalRecords = response.data[0].total_records;
+        this.getTotalRecords();
       })
       .catch((e) => {
         this.errors.push(e);
@@ -358,6 +349,12 @@ export default {
       });
   },
   methods: {
+    getTotalRecords() {
+      // the total records are the in the totalrecords property of the first item in the array
+      this.totalRecords = this.totalDeaths[0].totalrecords;
+      // eslint-disable-next-line no-console
+      console.log(this.totalRecords);
+    },
     showModal(params) {
       this.params = params;
       this.isModalVisible = true;
@@ -366,7 +363,6 @@ export default {
       this.isModalVisible = false;
     },
     onRowClick(params) {
-      console.log(params);
       this.showModal(params);
     },
     updateParams(newProps) {
@@ -412,6 +408,7 @@ export default {
         )
         .then((response) => {
           this.totalDeaths = response.data;
+          this.getTotalRecords();
         })
         .catch((e) => {
           this.errors.push(e);
