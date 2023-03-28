@@ -1,0 +1,29 @@
+{{ define "main" }}
+
+<div class="relative w-full px-6 py-12 bg-white md:max-w-3xl md:mx-auto lg:max-w-4xl lg:pt-16 lg:pb-28">
+  <div class="mx-auto">
+    <div class="flex font-light text-lg">
+        <p><span class="font-bold text-dbn-orange">|</span> {{ .Params.abstract }} &middot; Published: {{ .Params.created | dateFormat "January 2, 2006" }}</p>
+
+    </div>
+    <h2 class="text-4xl font-medium">{{ .Title }}</h2>
+    <div class="prose prose-lg">{{ .Content }}</div>
+  </div>
+</div>
+
+{{ if hugo.Environment | eq "development" }}
+{{/* Only minify for production; in development, keep things verbose for debugging and troubleshooting. */}}
+{{ $cssStyle := resources.Get .Params.styles }}
+<link rel="stylesheet" href="{{ $cssStyle.Permalink }}" integrity="{{ $cssStyle.Data.Integrity }}">
+{{ $script := resources.Get .Params.script | js.Build (dict "target" "es2020") }}
+<script defer type="module" src="{{ $script.Permalink }}" integrity="{{ $script.Data.Integrity }}"></script>
+
+{{ else }}
+
+{{ $cssStyle := resources.Get .Params.styles | resources.Fingerprint }}
+<link rel="stylesheet" href="{{ $cssStyle.Permalink }}" integrity="{{ $cssStyle.Data.Integrity }}">
+{{ $script := resources.Get .Params.script | js.Build (dict "target" "es2020") | resources.Fingerprint }}
+<script defer type="module" src="{{ $script.Permalink }}" integrity="{{ $script.Data.Integrity }}"></script>
+{{ end }}
+
+{{ end }}
