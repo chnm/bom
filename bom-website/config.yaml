@@ -21,7 +21,14 @@ author:
 build:
   writeStats: true
 
+# We need this for embedding visualizations
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+
 sitemap:
   changefreq: weekly
   priority: 0.5
   filename: sitemap.xml
+

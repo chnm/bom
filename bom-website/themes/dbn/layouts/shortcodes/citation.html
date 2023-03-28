@@ -1,0 +1,12 @@
+{{ $url := .Page.Permalink | absURL }}
+{{ $year := .Page.Params.updated | dateFormat "2006" }}
+{{ $doi := .Page.Params.doi }}
+{{ $author := .Page.Params.author }}
+
+<blockquote class="sample-citation">
+    {{ if $author }}{{ $author }}, {{ end }}&ldquo;{{ .Page.Title }},&rdquo; <em>Death by Numbers</em>, Roy
+    Rosenzweig
+    Center for History and New Media, George Mason University ({{ $year }}): <a href="{{ $url }}">{{ $url }}</a>, <a
+        href="{{$doi}}">
+        {{ $doi }}</a>.
+</blockquote>
