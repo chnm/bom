@@ -16,10 +16,6 @@ raw_laxton_causes <- read_csv("bom-data/data-csvs/2022-11-02-Laxton-weeklybills-
 # ----------------------------------------------------------------------
 # Christenings
 # ----------------------------------------------------------------------
-# TODO: Currently these does not reference the week_unique data as a unique id
-# because the unique_identifier needs the verso side and those are not currently
-# included in week_unique.
-
 laxton_christenings <- raw_laxton_causes |>
   select(5:11)
 
@@ -80,13 +76,10 @@ wellcome_christenings_long <- wellcome_christenings |>
 
 christenings <- rbind(wellcome_christenings_long, laxton_christenings_long)
 
-christenings <- christenings |>
-  mutate(id = row_number())
-
 names(christenings) <- tolower(names(christenings))
 names(christenings) <- gsub(" ", "_", names(christenings))
 
 # Write data
 write_csv(wellcome_christenings_long, "bom-processing/scripts/bomr/data/wellcome_christenings.csv", na = "")
 write_csv(laxton_christenings, "bom-processing/scripts/bomr/data/laxton_christenings.csv", na = "")
-write_csv(christenings, "bom-processing/scripts/bomr/data/all_christenings.csv", na = "")
+write_csv(christenings, "bom-processing/scripts/bomr/data/christenings_by_gender.csv", na = "")

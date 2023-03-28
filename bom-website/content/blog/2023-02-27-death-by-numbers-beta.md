@@ -6,7 +6,7 @@ date: "2023-02-27"
 tags: 
     - otis
 categories: 
-  - "announcement"
+  - "announcements"
 ---
 
 Welcome to the relaunch of our blog and the formal beta launch of the

@@ -16,7 +16,7 @@ deploy-dev : build
 
 build-prod :
 	@echo "\nBuilding the prod site with Hugo ..."
-	hugo --cleanDestinationDir --minify
+	hugo --cleanDestinationDir --minify --baseURL https://deathbynumbers.org/
 	@echo "Website finished building."
 
 deploy-prod : build-prod

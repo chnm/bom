@@ -27,7 +27,7 @@ Were the numbers on the bills an apodictic truth in the representation of the ou
 
 More than simple forensic accounts, the bills were printed artifacts that constructed the social texture of seventeen-century London. Analyzing literary pieces like Defoe’s A Journal of the Plague Year help unfold not only the variety of social facts that existed beyond the inert numbers, but also the historical realities being constructed by the process of producing the Bills. Stay tuned for an in depth analysis of 1665’s bills and a side-to-side comparison with Defoe’s figures.
 
-\- Hernán Adasme
+- Hernán Adasme
 
 ## Works Cited
 

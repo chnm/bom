@@ -14,9 +14,4 @@ deploy : build
 			dist/ susanoo:/websites/database.deathbynumbers.org/ | egrep -v '^\.'
 	@echo "Finished deploying the site to dev with rsync."
 
-build-prod : 
-	@echo "\nBuilding the site with Nuxt ..."
-	npm run generate 
-	@echo "Website finished building."
-
 .PHONY : preview build deploy

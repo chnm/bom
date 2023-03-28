@@ -1,196 +1,125 @@
 <template>
-  <div>
+  <div class="bg-white">
     <!-- start of filters -->
     <div id="filters" class="accordion">
-      <div class="filter-item bg-white border border-gray-200 rounded-none">
-        <h2 id="headingOne" class="accordion-header mb-0">
-          <button
-            class="accordion-button relative flex items-center w-full py-4 px-5 text-base text-dbn-purple text-left bg-white border-0 rounded-none transition focus:outline-none"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#collapseOne"
-            aria-expanded="true"
-            aria-controls="collapseOne"
-          >
-            Filter By
-          </button>
-        </h2>
-        <div
-          id="collapseOne"
-          class="accordion-collapse collapse show"
-          aria-labelledby="headingOne"
-          data-bs-parent="#accordionFilters"
-        >
-          <div class="accordion-body py-4 px-5">
-            <div class="grid grid-cols-4 gap-4 pb-6">
-              <div class="overflow-y-auto h-48 px-4 py-4">
+      <app-accordion
+        class="mb-4 pt-6 pb-6 ml-4 mr-4"
+      >
+        <template #title>
+          <span class="font-semibold text-base">Filter by</span>
+        </template>
+        <template #content>
+          <div class="grid grid-cols-4 gap-4 pb-6">
+            <!-- parishes -->
+            <app-accordion class="pb-6 ml-4 mr-4 border-slate-200">
+              <template #title>
+                <span class="font-semibold text-base">Parishes</span>
+              </template>
+              <template #content>
                 <div
-                  id="accordionParishes"
-                  class="accordion accordion-flush border-2 border-slate-300"
+                  class="accordion-body py-4 px-5 max-h-64 overflow-scroll border border-slate-200"
                 >
-                  <div class="accordion-item rounded-none">
-                    <h2 id="parish-headingOne" class="accordion-header mb-0">
-                      <button
-                        class="accordion-button collapsed relative flex items-center w-full py-4 px-5 text-base text-gray-800 text-left bg-white border-0 rounded-none transition focus:outline-none"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#flush-collapseOne"
-                        aria-expanded="false"
-                        aria-controls="flush-collapseOne"
-                      >
-                        Parishes
-                      </button>
-                    </h2>
-                    <div
-                      id="flush-collapseOne"
-                      class="accordion-collapse border-0 collapse show"
-                      aria-labelledby="flush-headingOne"
-                      data-bs-parent="#accordion"
-                    >
-                      <div class="accordion-body py-4 px-5">
-                        <div id="search-wrapper" class="py-3">
-                          <input
-                            v-model="search"
-                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            type="text"
-                            placeholder="Search parishes"
-                          />
-                        </div>
-                        <ul
-                          class="dropdown-menu"
-                          aria-labelledby="parish-selection-menu"
-                        >
-                          <li
-                            v-for="(name, index) in filterParishNamesList"
-                            :key="index"
-                          >
-                            <input
-                              :id="name.canonical_name"
-                              v-model="filteredParishIDs"
-                              :value="name.id"
-                              name="parish"
-                              type="checkbox"
-                              class="dropdown-item"
-                            />
-                            <label :for="name.canonical_name"
-                              ><span>{{ name.canonical_name }}</span></label
-                            >
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
+                  <div id="search-wrapper" class="py-3">
+                    <input
+                      v-model="search"
+                      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      type="text"
+                      placeholder="Search parishes"
+                    />
                   </div>
-                </div>
-              </div>
-              <div class="overflow-y-auto h-48 px-4 py-4">
-                <div
-                  id="accordionYears"
-                  class="accordion accordion-flush border-2 border-slate-300"
-                >
-                  <div class="accordion-item rounded-none">
-                    <h2 id="years-headingOne" class="accordion-header mb-0">
-                      <button
-                        class="accordion-button collapsed relative flex items-center w-full py-4 px-5 text-base text-gray-800 text-left bg-white border-0 rounded-none transition focus:outline-none"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#flush-collapseYear"
-                        aria-expanded="false"
-                        aria-controls="flush-collapseYear"
-                      >
-                        Year Range
-                      </button>
-                    </h2>
-                    <div
-                      id="flush-collapseYear"
-                      class="accordion-collapse border-0 collapse show h-24"
-                      aria-labelledby="flush-headingOne"
-                      data-bs-parent="#accordion"
+                  <ul
+                    class="dropdown-menu"
+                    aria-labelledby="parish-selection-menu"
+                  >
+                    <li
+                      v-for="(name, index) in filterParishNamesList"
+                      :key="index"
                     >
-                      <div class="accordion-body py-4 px-5">
-                        <div class="slider-container">
-                          <vue-slider
-                            v-model="filteredYears"
-                            :min="1636"
-                            :max="1754"
-                            :interval="1"
-                            :enable-cross="false"
-                            :lazy="true"
-                            :dot-options="dotOptions"
-                            @change="updateFilteredYearsArray"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="overflow-y-auto h-48 px-4 py-4">
-                <div
-                  id="accordionCount"
-                  class="accordion accordion-flush border-2 border-slate-300"
-                >
-                  <div class="accordion-item rounded-none">
-                    <h2 id="count-headingOne" class="accordion-header mb-0">
-                      <button
-                        class="accordion-button collapsed relative flex items-center w-full py-4 px-5 text-base text-gray-800 text-left bg-white border-0 rounded-none transition focus:outline-none"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#flush-collapseCount"
-                        aria-expanded="false"
-                        aria-controls="flush-collapseCount"
+                      <input
+                        :id="name.canonical_name"
+                        v-model="filteredParishIDs"
+                        :value="name.id"
+                        name="parish"
+                        type="checkbox"
+                        class="dropdown-item"
+                      />
+                      <label :for="name.canonical_name"
+                        ><span>{{ name.canonical_name }}</span></label
                       >
-                        Count Type
-                      </button>
-                    </h2>
-                    <div
-                      id="flush-collapseCount"
-                      class="accordion-collapse border-0 collapse show h-24"
-                      aria-labelledby="flush-headingOne"
-                      data-bs-parent="#accordion"
-                    >
-                      <div class="accordion-body py-4 px-5">
-                        <div class="dropdown relative">
-                          <select
-                            v-model="filteredCountType"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                            arias-expanded="false"
-                            @change="updateFilteredCountType($event)"
-                          >
-                            <option
-                              v-for="(name, index) in countType"
-                              :key="index"
-                              :value="name"
-                              class="dropdown-menu min-w-max text-base float-left"
-                            >
-                              {{ name }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                    </li>
+                  </ul>
                 </div>
-              </div>
-              <div class="overflow-y-auto h-48 px-4 py-4">
-                <button
-                  class="text-xs font-bold uppercase px-5 py-3 m-0.5 w-40 rounded block leading-normal border-solid border-2 border-dbn-yellow text-white bg-dbn-yellow hover:bg-dbn-yellowdark"
-                  @click="resetFilters"
-                >
-                  Reset Filters
-                </button>
-
-                <button
-                  class="text-xs font-bold uppercase px-5 py-3 m-0.5 w-40 rounded block leading-normal border-solid border-2 border-dbn-yellow text-white bg-dbn-yellow hover:bg-dbn-yellowdark"
-                  @click="applyFilters()"
-                >
-                  Apply Filters
-                </button>
+              </template>
+            </app-accordion>
+            <!-- year range -->
+            <div>
+              <div class="accordion-body py-4 px-5">
+                <div class="font-semibold text-base">Year Range</div>
+                <div class="slider-container mt-4">
+                  <vue-slider
+                    v-model="filteredYears"
+                    :min="1636"
+                    :max="1754"
+                    :interval="1"
+                    :enable-cross="false"
+                    :lazy="true"
+                    :dot-options="dotOptions"
+                    @change="updateFilteredYearsArray"
+                  />
+                </div>
               </div>
             </div>
+            <!-- count type -->
+            <div>
+              <div class="accordion-body py-4 px-5">
+                <div class="text-base">Count Type</div>
+                <div class="dropdown relative">
+                  <select
+                    v-model="filteredCountType"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    arias-expanded="false"
+                    @change="updateFilteredCountType($event)"
+                  >
+                    <option
+                      v-for="(name, index) in countType"
+                      :key="index"
+                      :value="name"
+                      class="dropdown-menu min-w-max text-base float-left"
+                    >
+                      {{ name }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <!-- buttons -->
+            <div class="overflow-y-auto h-48 px-4 py-4">
+              <button
+                class="text-xs font-bold uppercase px-5 py-3 m-0.5 w-40 rounded block leading-normal border-solid border-2 border-dbn-yellow text-white bg-dbn-yellow hover:bg-dbn-yellowdark"
+                @click="resetFilters"
+              >
+                Reset Filters
+              </button>
+
+              <button
+                class="text-xs font-bold uppercase px-5 py-3 m-0.5 w-40 rounded block leading-normal border-solid border-2 border-dbn-yellow text-white bg-dbn-yellow hover:bg-dbn-yellowdark"
+                @click="applyFilters()"
+              >
+                Apply Filters
+              </button>
+
+              <div
+                  class="text-xs font-bold uppercase px-1 py-3 m-0.5 leading-normal text-black hover:underline"
+                  @click="($event) => showInstructionsModal()"
+                >
+                  How to use this table
+                </div>
+            </div>
           </div>
-        </div>
-      </div>
+        </template>
+      </app-accordion>
     </div>
+
     <!-- end of filter -->
     <vue-good-table
       mode="remote"
@@ -269,39 +198,104 @@
     </vue-good-table>
     <!-- Modal must wait for a user to trigger onRowClick, otherwise there's no data
     and we get an error. -->
-    <Modal 
-      v-show="isModalVisible" 
-      :params="params"
-      @close="closeModal"
-    >
-      <template 
-        v-if="params.row"
-        #header>
+    <Modal v-show="isModalVisible" :params="params" @close="closeModal">
+      <template v-if="params.row" #header>
         <h3 class="text-xl font-bold">
           <!-- show the params -->
           {{ params.row.name }}
         </h3>
       </template>
-      <template
-        v-if="params.row"
-        #body> Period of time between {{ params.row.start_month }} {{ params.row.start_day }} and {{ params.row.end_month }} {{ params.row.end_day}}, {{ params.row.year }}.</template>
-      <template
-        v-if="params.row"
-        #footer> This is a new modal footer. </template>
+      <template v-if="params.row" #body>
+        Period of time between {{ params.row.start_month }}
+        {{ params.row.start_day }} and {{ params.row.end_month }}
+        {{ params.row.end_day }}, {{ params.row.year }}.</template
+      >
+      <template v-if="params.row" #footer>
+        This is a new modal footer.
+      </template>
     </Modal>
+    <!-- instructions -->
+    <div
+      v-if="showInstructions"
+      class="fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 z-50"
+    >
+      <div
+        class="relative z-10"
+        aria-labelledby="modal-title"
+        role="dialog"
+        aria-modal="true"
+      >
+        <div
+          class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+        ></div>
+        <div class="fixed inset-0 z-10 overflow-y-auto">
+          <div
+            class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0"
+          >
+            <div
+              class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg"
+            >
+              <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div class="sm:flex sm:items-start">
+                  <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                    <h3
+                      id="modal-title"
+                      class="text-base font-semibold leading-6 text-gray-900"
+                    >
+                      How to use this table
+                    </h3>
+                    <div class="mt-2">
+                      <p class="text-sm text-gray-500 pb-3">
+                        The filter is divided into three areas: parishes, years, and 
+                        count types. You can select one or more options from each area.
+                        The parishes can be searched by typing in the search box. 
+                        "Count type" refers to whether you wish to see the count of people
+                        buried, people with the plague, or both.
+                      </p>
+                      <p class="text-sm text-gray-500 pb-3">
+                        Once you've made adjustments to the filters, click "Apply Filters"
+                        to update the table. Click "Reset Filters" to reset the table to its 
+                        default state.
+                      </p>
+                      <p class="text-sm text-gray-500 pb-3">
+                        You can click on an individual row to view additional information.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6"
+              >
+                <button
+                  type="button"
+                  class="inline-flex w-full justify-center rounded-md bg-dbn-red px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+                  aria-label="Close instructions"
+                  @click="close"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import VueSlider from "vue-slider-component";
-import modal from "@/components/Modal.vue";
+import Modal from "@/components/Modal.vue";
+import AppAccordion from "@/components/AppAccordion.vue";
 
 export default {
   name: "WeeklyBillsTable",
   components: {
     VueSlider,
-    modal,
+    Modal,
+    AppAccordion,
   },
   data() {
     return {
@@ -348,6 +342,8 @@ export default {
       filteredParishIDs: [],
       filteredYears: [1636, 1754],
       isModalVisible: false,
+      showInstructions: false,
+
       // Always show vue-slider tooltips
       dotOptions: [
         {
@@ -401,6 +397,7 @@ export default {
       )
       .then((response) => {
         this.totalParishes = response.data;
+        this.getTotalRecords();
       })
       .catch((e) => {
         this.errors.push(e);
@@ -417,18 +414,11 @@ export default {
         // eslint-disable-next-line no-console
         console.log(this.errors);
       });
-    axios
-      .get("https://data.chnm.org/bom/totalbills?type=Weekly")
-      .then((response) => {
-        this.totalRecords = response.data[0].total_records;
-      })
-      .catch((e) => {
-        this.errors.push(e);
-        // eslint-disable-next-line no-console
-        console.log(this.errors);
-      });
   },
   methods: {
+    getTotalRecords() {
+      this.totalRecords = this.totalParishes[0].totalrecords;
+    },
     showModal(params) {
       this.params = params;
       this.isModalVisible = true;
@@ -454,6 +444,16 @@ export default {
     onPerPageChange(params) {
       this.updateParams({ perPage: params.currentPerPage });
       this.loadItems();
+    },
+
+    // display instructions
+    showInstructionsModal() {
+      this.showInstructions = true;
+    },
+
+    // close instructions
+    closeInstructionsModal() {
+      this.showInstructions = false;
     },
 
     // TODO: Add table sorting.
@@ -493,6 +493,7 @@ export default {
         )
         .then((response) => {
           this.totalParishes = response.data;
+          this.getTotalRecords();
         })
         .catch((e) => {
           this.errors.push(e);
@@ -507,7 +508,6 @@ export default {
     updateFilteredYearsArray(newYears) {
       this.filteredYears = newYears;
       // eslint-disable-next-line no-console
-      console.log(newYears);
       this.updateParams({
         year: newYears,
       });

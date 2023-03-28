@@ -10,103 +10,66 @@ export default {
 </script>
 
 <template>
-  <transition name="modal-fade">
-    <div class="modal-backdrop">
+<div>
+    <div
+      class="fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 z-50"
+    >
       <div
-        class="modal"
+        class="relative z-10"
+        aria-labelledby="modal-title"
         role="dialog"
-        aria-labelledby="modalTitle"
-        aria-describedby="modalDescription"
+        aria-modal="true"
       >
-        <header id="modalTitle" class="modal-header">
-          <slot name="header"> Default title </slot>
-        </header>
+        <div
+          class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+        ></div>
 
-        <section class="modal-body">
-          <slot name="body"> Default body text. </slot>
-        </section>
+        <div class="fixed inset-0 z-10 overflow-y-auto">
+          <div
+            class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0"
+          >
+            <div
+              class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg"
+            >
+              <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div class="sm:flex sm:items-start">
+                  <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
 
-        <section class="modal-footer">
-          <slot name="footer"> Default footer text. </slot>
-          <button type="button" class="btn-green" aria-label="Close modal" @click="close">Close</button>
-        </section>
+                    <div
+                      class="modal"
+                      role="dialog"
+                      aria-labelledby="modalTitle"
+                      aria-describedby="modalDescription"
+                    >
+                      <header id="modalTitle" class="modal-header text-base font-semibold leading-6 text-gray-900">
+                        <slot name="header"> Default title </slot>
+                      </header>
+
+                      <div class="mt-2">
+                      <section class="modal-body text-sm text-gray-500">
+                        <slot name="body"> Default body text. </slot>
+                      </section>
+                      </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6"
+              >
+                <button
+                  type="button"
+                  class="inline-flex w-full justify-center rounded-md bg-dbn-red px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+                  aria-label="Close instructions"
+                  @click="close"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </transition>
+  </div>
+  </div>
 </template>
-
-<style scoped>
-.modal-backdrop {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: rgba(0, 0, 0, 0.3);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.modal {
-  background: #ffffff;
-  box-shadow: 2px 2px 20px 1px;
-  overflow-x: auto;
-  display: flex;
-  flex-direction: column;
-}
-
-.modal-header,
-.modal-footer {
-  padding: 15px;
-  display: flex;
-}
-
-.modal-header {
-  position: relative;
-  border-bottom: 1px solid #eeeeee;
-  color: #4aae9b;
-  justify-content: space-between;
-}
-
-.modal-footer {
-  border-top: 1px solid #eeeeee;
-  flex-direction: column;
-  justify-content: flex-end;
-}
-
-.modal-body {
-  position: relative;
-  padding: 20px 10px;
-}
-
-.btn-close {
-  position: absolute;
-  top: 0;
-  right: 0;
-  border: none;
-  font-size: 20px;
-  padding: 10px;
-  cursor: pointer;
-  font-weight: bold;
-  color: #4aae9b;
-  background: transparent;
-}
-
-.btn-green {
-  color: white;
-  background: #4aae9b;
-  border: 1px solid #4aae9b;
-  border-radius: 2px;
-}
-
-.modal-fade-enter,
-.modal-fade-leave-to {
-  opacity: 0;
-}
-
-.modal-fade-enter-active,
-.modal-fade-leave-active {
-  transition: opacity 0.5s ease;
-}
-</style>

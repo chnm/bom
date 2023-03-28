@@ -7,7 +7,7 @@
         {{- else }}
         {{- partial "header.html" . -}}
         {{- end }}
-        <div class="bg-white" id="content">
+        <div class="bg-white min-h-screen" id="content">
         {{- block "main" . }}{{- end }}
         </div>
         {{- partial "footer.html" . -}}

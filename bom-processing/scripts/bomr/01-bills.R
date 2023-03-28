@@ -5,7 +5,7 @@
 #
 # Jason A. Heppler | jason@jasonheppler.org
 # Roy Rosenzweig Center for History and New Media
-# Updated: 2023-02-24
+# Updated: 2023-03-08
 
 library(tidyverse)
 
@@ -18,12 +18,12 @@ raw_wellcome_weekly <- read_csv("bom-data/data-csvs/2022-04-06-1669-1670-Wellcom
 raw_wellcome_causes <- read_csv("bom-data/data-csvs/2022-04-06-Wellcome-weeklybills-causes.csv")
 raw_millar_general <- read_csv("bom-data/data-csvs/2022-04-06-millar-generalbills-postplague-parishes.csv")
 
-raw_laxton_weekly <- read_csv("bom-data/data-csvs/2022-11-02-Laxton-weeklybills-parishes.csv")
+raw_laxton_weekly <- read_csv("bom-data/data-csvs/2023-03-03-Laxton-weeklybills-parishes.csv")
 raw_laxton_1700_causes <- read_csv("bom-data/data-csvs/2022-06-15-Laxton-1700-weeklybills-causes.csv")
 raw_laxton_causes <- read_csv("bom-data/data-csvs/2022-11-02-Laxton-weeklybills-causes.csv")
 
 raw_bodleian <- read_csv("bom-data/data-csvs/2023-02-22-BodleianV1-weeklybills-parishes.csv")
-raw_bodleian_v2 <- read_csv("bom-data/data-csvs/2023-02-22-BodleianV2-weeklybills-parishes.csv")
+raw_bodleian_v2 <- read_csv("bom-data/data-csvs/2023-03-08-BodleianV2-weeklybills-parishes.csv")
 
 # ----------------------------------------------------------------------
 # Lookup tables
@@ -38,44 +38,40 @@ raw_bodleian_v2 <- read_csv("bom-data/data-csvs/2023-02-22-BodleianV2-weeklybill
 # the descriptive text, Start Day, Start Month, End Day, End Month, and death type.
 lookup_wellcome <- raw_wellcome_causes |>
   select(!1:5) |>
-  select(contains(
-    "(Descriptive Text)"),
-    `Unique Identifier`,
-    `Start Day`,
-    `Start Month`,
-    `End Day`,
-    `End Month`,
+  select(
+    contains("(Descriptive Text)"), 
+    `Unique Identifier`, 
+    `Start Day`, 
+    `Start Month`, 
+    `End Day`, 
+    `End Month`, 
     Year
   ) |>
-  pivot_longer(1:4,
-   names_to = "death_type",
-   values_to = "descriptive_text"
-  ) |>
+  pivot_longer(1:4, names_to = "death_type", values_to = "descriptive_text" ) |>
   mutate(`Unique Identifier` = str_trim(`Unique Identifier`)) |>
   # remove (Descriptive Text)
-  mutate(death_type = str_remove(
-      death_type, 
-      regex("\\(Descriptive Text\\)"))
+  mutate(death_type = str_remove( 
+    death_type, 
+    regex("\\(Descriptive Text\\)"))
   ) |>
   mutate(death_type = str_trim(death_type)) |>
   mutate(join_id = paste0(
-    `Start Day`,
-    `Start Month`,
-    `End Day`,
-    `End Month`,
-    Year, "-",
-    death_type, "-",
-    `Unique Identifier`)
-  ) |>
+    `Start Day`, 
+    `Start Month`, 
+    `End Day`, 
+    `End Month`, 
+    Year, "-", 
+    death_type, "-", 
+    `Unique Identifier`)) |>
   # We can drop the start day, start month, etc. since that will be added with 
   # the long table
   select(
-    -`Start Day`,
-    -`Start Month`,
-    -`End Day`,
-    -`End Month`,
-    -Year,
-    -`Unique Identifier`,
+    -`Start Day`, 
+    -`Start Month`, 
+    -`End Day`, 
+    -`End Month`, 
+    -Year, 
+    -`Unique Identifier`, 
     death_type
   )
 
@@ -86,44 +82,40 @@ lookup_wellcome <- raw_wellcome_causes |>
 # and death type.
 lookup_laxton_1700 <- raw_laxton_1700_causes |>
   select(!1:4) |>
-  select(contains(
-    "(Descriptive Text)"),
-     `Unique Identifier`,
-     `Start Day`,
-     `Start Month`,
-     `End Day`,
-     `End Month`,
-     Year
-  ) |>
-  pivot_longer(1:8,
-   names_to = "death_type",
-   values_to = "descriptive_text"
-  ) |>
+  select(
+    contains("(Descriptive Text)"), 
+    `Unique Identifier`, 
+    `Start Day`, 
+    `Start Month`, 
+    `End Day`, 
+    `End Month`, 
+    Year) |>
+  pivot_longer(1:8, names_to = "death_type", values_to = "descriptive_text" ) |>
   mutate(`Unique Identifier` = str_trim(`Unique Identifier`)) |>
   # Remove (Descriptive Text) so we just have the cause of death
-  mutate(death_type = str_remove(
-    death_type,
-    regex("\\(Descriptive Text\\)"))
+  mutate(death_type = str_remove( 
+    death_type, 
+    regex("\\(Descriptive Text\\)")) 
   ) |>
   mutate(death_type = str_trim(death_type)) |>
   mutate(join_id = paste0(
-    `Start Day`,
-    `Start Month`,
-    `End Day`,
-    `End Month`,
-    Year, "-",
-    death_type, "-",
+    `Start Day`, 
+    `Start Month`, 
+    `End Day`, 
+    `End Month`, 
+    Year, "-", 
+    death_type, "-", 
     `Unique Identifier`)
   ) |>
   # Now we can drop the start day, start month, etc. since that will be added 
   # with the long table
   select(
-    -`Start Day`,
-    -`Start Month`,
-    -`End Day`,
-    -`End Month`,
-    -Year,
-    -`Unique Identifier`,
+    -`Start Day`, 
+    -`Start Month`, 
+    -`End Day`, 
+    -`End Month`, 
+    -Year, 
+    -`Unique Identifier`, 
     death_type
   )
 
@@ -134,27 +126,42 @@ lookup_laxton_1700 <- raw_laxton_1700_causes |>
 # and death type.
 lookup_laxton <- raw_laxton_causes |>
   select(!1:4) |>
-  select(contains(
-    "(Descriptive Text)"),
-     `Unique Identifier`,
-     `Start Day`,
-     `Start Month`,
-     `End Day`,
-     `End Month`,
-     Year
+  select(
+    contains("(Descriptive Text)"), 
+    `Unique Identifier`, 
+    `Start Day`, 
+    `Start Month`, 
+    `End Day`, 
+    `End Month`, 
+    Year
   ) |>
-  pivot_longer(1:8,
-   names_to = "death_type",
-   values_to = "descriptive_text"
+  pivot_longer(1:8, 
+    names_to = "death_type", 
+    values_to = "descriptive_text" 
   ) |>
   mutate(`Unique Identifier` = str_trim(`Unique Identifier`)) |>
   # remove (Descriptive Text)
   mutate(death_type = str_remove(death_type, regex("\\(Descriptive Text\\)"))) |>
   mutate(death_type = str_trim(death_type)) |>
-  mutate(join_id = paste0(`Start Day`, `Start Month`, `End Day`, `End Month`, Year, "-", death_type, "-", `Unique Identifier`)) |> 
+  mutate(join_id = paste0(
+    `Start Day`,
+    `Start Month`,
+    `End Day`,
+    `End Month`,
+    Year, "-",
+    death_type, "-",
+    `Unique Identifier`)
+  ) |>
   # now we can drop the start day, start month, etc. since that will be added with the long table
-  select(-`Start Day`, -`Start Month`, -`End Day`, -`End Month`, -Year, -`Unique Identifier`, death_type)
-
+  select(
+    -`Start Day`,
+    -`Start Month`,
+    -`End Day`,
+    -`End Month`,
+    -Year,
+    -`Unique Identifier`,
+    death_type
+  )
 
 # ----------------------------------------------------------------------
 # Types of death table
@@ -162,19 +169,16 @@ lookup_laxton <- raw_laxton_causes |>
 causes_wellcome <- raw_wellcome_causes |>
   select(!1:5) |>
   select(!contains("(Descriptive")) |>
-  pivot_longer(8:109,
-    names_to = "death",
-    values_to = "count"
-  ) |>
+  pivot_longer(8:109, names_to = "death", values_to = "count" ) |>
   mutate(death = str_trim(death)) |>
   mutate(`Unique Identifier` = str_trim(`Unique Identifier`)) |>
   mutate(join_id = paste0(
-    `Start Day`,
-    `Start Month`,
-    `End Day`,
-    `End Month`,
-    Year, "-",
-    death, "-",
+    `Start Day`, 
+    `Start Month`, 
+    `End Day`, 
+    `End Month`, 
+    Year, "-", 
+    death, "-", 
     `Unique Identifier`)
   )
 
@@ -191,20 +195,10 @@ names(causes_wellcome) <- gsub(" ", "_", names(causes_wellcome))
 causes_laxton_1700 <- raw_laxton_1700_causes |>
   select(!1:4) |>
   select(!contains("(Descriptive")) |>
-  pivot_longer(8:125,
-    names_to = "death",
-    values_to = "count"
-  ) |>
+  pivot_longer(8:125, names_to = "death", values_to = "count" ) |>
   mutate(death = str_trim(death)) |>
   mutate(`Unique Identifier` = str_trim(`Unique Identifier`)) |>
-  mutate(join_id = paste0(
-    `Start Day`,
-    `Start Month`,
-    `End Day`,
-    `End Month`,
-    Year, "-",
-    death, "-",
-    `Unique Identifier`))
+  mutate(join_id = paste0( `Start Day`, `Start Month`, `End Day`, `End Month`, Year, "-", death, "-", `Unique Identifier`))
 
 # Now, we left_join the lookup table on the join_id
 causes_laxton_1700 <- causes_laxton_1700 |>
@@ -219,24 +213,11 @@ names(causes_laxton_1700) <- gsub(" ", "_", names(causes_laxton_1700))
 causes_laxton <- raw_laxton_causes |>
   select(!1:4) |>
   select(!contains("(Descriptive")) |>
-  mutate(across(
-    8:125,
-    as.character
-  )) |>
-  pivot_longer(8:125,
-    names_to = "death",
-    values_to = "count"
-  ) |>
+  mutate(across( 8:125, as.character )) |>
+  pivot_longer(8:125, names_to = "death", values_to = "count" ) |>
   mutate(death = str_trim(death)) |>
   mutate(`Unique Identifier` = str_trim(`Unique Identifier`)) |>
-  mutate(join_id = paste0(
-    `Start Day`,
-    `Start Month`,
-    `End Day`,
-    `End Month`,
-    Year, "-",
-    death, "-",
-    `Unique Identifier`))
+  mutate(join_id = paste0( `Start Day`, `Start Month`, `End Day`, `End Month`, Year, "-", death, "-", `Unique Identifier`))
 
 # Now, we left_join on the join_id
 causes_laxton <- causes_laxton |>
@@ -278,28 +259,21 @@ deaths_unique <- deaths_unique |>
   arrange(death) |>
   mutate(death_id = row_number())
 
-# Write data
-write_csv(causes_wellcome, "bom-processing/scripts/bomr/data/wellcome_causes.csv", na = "")
-write_csv(causes_laxton, "bom-processing/scripts/bomr/data/laxton_causes.csv", na = "")
-write_csv(causes_laxton_1700, "bom-processing/scripts/bomr/data/laxton_causes_1700.csv", na = "")
-write_csv(deaths_unique, "bom-processing/scripts/bomr/data/deaths_unique.csv", na = "")
-
 # ----------------------------------------------------------------------
 # Weekly Bills
 # ----------------------------------------------------------------------
 laxton_weekly <- raw_laxton_weekly |>
+  select(-c(starts_with("is_illegible")))
+laxton_weekly <- laxton_weekly |>
+  select(-c(starts_with("is_missing")))
+
+laxton_weekly <- laxton_weekly |>
   select(!1:4) |>
-  pivot_longer(8:167,
-    names_to = "parish_name",
-    values_to = "count"
-  )
+  pivot_longer(8:167, names_to = "parish_name", values_to = "count" )
 
 wellcome_weekly <- raw_wellcome_weekly |>
   select(!1:4) |>
-  pivot_longer(8:285,
-    names_to = "parish_name",
-    values_to = "count"
-  )
+  pivot_longer(8:285, names_to = "parish_name", values_to = "count" )
 
 bodleian_weekly <- raw_bodleian |>
   select(-c(starts_with("is_illegible")))
@@ -308,10 +282,7 @@ bodleian_weekly <- bodleian_weekly |>
 
 bodleian_weekly <- bodleian_weekly |>
   select(!1:4) |>
-  pivot_longer(8:266,
-    names_to = "parish_name",
-    values_to = "count"
-  )
+  pivot_longer(8:266, names_to = "parish_name", values_to = "count" )
 
 bodleian_weekly_v2 <- raw_bodleian_v2 |>
   select(-c(starts_with("is_illegible")))
@@ -320,10 +291,7 @@ bodleian_weekly_v2 <- bodleian_weekly_v2 |>
 
 bodleian_weekly_v2 <- bodleian_weekly_v2 |>
   select(!1:4) |>
-  pivot_longer(8:266,
-    names_to = "parish_name",
-    values_to = "count"
-  )
+  pivot_longer(8:266, names_to = "parish_name", values_to = "count" )
 
 # Lowercase column names and replace spaces with underscores.
 names(laxton_weekly) <- tolower(names(laxton_weekly))
@@ -340,13 +308,8 @@ names(laxton_weekly)[3] <- "unique_identifier"
 names(bodleian_weekly)[3] <- "unique_identifier"
 names(bodleian_weekly_v2)[3] <- "unique_identifier"
 
-weekly_bills <- rbind(
-  wellcome_weekly,
-  laxton_weekly,
-  bodleian_weekly,
-  bodleian_weekly_v2
-) |>
-mutate(bill_type = "Weekly")
+weekly_bills <- rbind( wellcome_weekly, laxton_weekly, bodleian_weekly, bodleian_weekly_v2 ) |>
+  mutate(bill_type = "Weekly")
 
 weekly_bills <- weekly_bills |>
   mutate(start_day = as.integer(start_day)) |>
@@ -381,6 +344,12 @@ burials_tmp <- filtered_entries |>
 plague_tmp <- filtered_entries |>
   dplyr::filter(plague_detect == TRUE) |>
   select(-christening_detect, -burials_detect, -plague_detect)
+
+# We keep the christenings_tmp data since we want to keep track of christenings
+# by parish.
+christenings_tmp <- christenings_tmp  |> 
+    mutate(joinid = paste0(start_day, start_month, end_day, end_month, year))
+write_csv(christenings_tmp, "bom-processing/scripts/bomr/data/christenings_by_parish.csv", na = "")
 
 filtered_entries <- filtered_entries |>
   dplyr::filter(
@@ -515,6 +484,9 @@ parish_canonical <- read_csv("bom-processing/scripts/bomr/data/London Parish Aut
 parishes_unique <- parishes_unique |>
   left_join(parish_canonical, by = "parish_name")
 
+# We assign our own ID to the parish name rather than having PostgreSQL 
+# generate it. This is because data transformations below expect a consistent
+# ID for each parish.
 parishes_unique <- parishes_unique |>
   mutate(canonical = coalesce(canonical_name, parish_name)) |>
   select(-canonical_name) |>
@@ -536,7 +508,7 @@ week_unique_weekly <- weekly_bills |>
     end_month,
     unique_identifier
   ) |>
-  distinct() |>
+  # distinct() |>
   mutate(year = as.integer(year)) |>
   # To get a leading zero and not mess with the math below, we create a temporary
   # column to pad the week number with a leading zero and use that for
@@ -565,7 +537,7 @@ week_unique_wellcome <- causes_wellcome |>
     end_month,
     unique_identifier
   ) |>
-  distinct() |>
+  # distinct() |>
   mutate(year = as.integer(year)) |>
   # To get a leading zero and not mess with the math below, we create a temporary
   # column to pad the week number with a leading zero and use that for
@@ -595,7 +567,7 @@ week_unique_laxton <- all_laxton_weekly_causes |>
     end_month,
     unique_identifier
   ) |>
-  distinct() |>
+  # distinct() |>
   mutate(year = as.integer(year)) |>
   mutate(week_tmp = str_pad(week_number, 2, pad = "0")) |>
   mutate(week_comparator = as.integer(week_number)) |>
@@ -630,7 +602,7 @@ week_unique_general <- general_bills |>
     end_month,
     unique_identifier
   ) |>
-  distinct() |>
+  # distinct() |>
   mutate(year = as.integer(year)) |>
   mutate(week_tmp = str_pad(week, 2, pad = "0")) |>
   mutate(week_comparator = as.integer(week)) |>
@@ -650,9 +622,9 @@ week_unique_weekly <- rename(week_unique_weekly, "week_number" = "week")
 
 week_unique <- rbind(
   week_unique_weekly,
+  week_unique_general,
   week_unique_wellcome,
-  week_unique_laxton,
-  week_unique_general
+  week_unique_laxton
 )
 
 # We determine here whether a year should be a split year by looking at the
@@ -663,9 +635,13 @@ week_unique <- week_unique |>
     week_number > 15,
     paste0(year - 1, "/", year),
     paste0(year)
-  )) |>
-  distinct(week_id, .keep_all = TRUE) |>
-  mutate(id = row_number())
+  ))
+  # TODO: this next line (distinct()) might be causing the bug with data not returning
+  # may be better to think of this table as a week lookup rather than
+  # distinct set of weeks...
+  # distinct(week_id, .keep_all = TRUE) |>
+
+# week_unique <- week_unique |> distinct(week_id, .keep_all = TRUE)
 
 # Filter out extraneous data and assign
 # unique week IDs to the deaths long table.
@@ -676,7 +652,7 @@ wellcome_deaths_cleaned <- causes_wellcome |>
   filter(!str_detect(death, regex("\\bOunces in", ignore_case = FALSE))) |>
   filter(!str_detect(death, regex("\\bIncrease/Decrease", ignore_case = FALSE))) |>
   filter(!str_detect(death, regex("\\bParishes Clear", ignore_case = FALSE))) |>
-  filter(!str_detect(death, regex("\\bParishes Infected", ignore_case = FALSE))) # |>
+  filter(!str_detect(death, regex("\\bParishes Infected", ignore_case = FALSE)))
 
 all_laxton_causes <- rbind(causes_laxton, causes_laxton_1700)
 
@@ -690,17 +666,20 @@ laxton_deaths_cleaned <- all_laxton_causes |>
   filter(!str_detect(death, regex("\\bParishes Infected", ignore_case = FALSE)))
 
 total_causes <- rbind(laxton_deaths_cleaned, wellcome_deaths_cleaned)
+total_causes <- total_causes |>
+  mutate(joinid = paste0(start_day, start_month, end_day, end_month, year))
+
+week_unique <- week_unique |>
+  mutate(joinid = paste0(start_day, start_month, end_day, end_month, year)) |> 
+  distinct(joinid, .keep_all = TRUE)
 
 # Now that we have all potential causes, we drop their date information and combine
-# the unique identifiers against the unique_weeks week ID to keep the date information
-# consistent. This data is joined in Postgres.
+# the unique identifiers against the week_unique joinid column to keep the date 
+# information consistent. This data is joined in Postgres.
 deaths_long <- total_causes |>
-  select(-week_number, -start_day, -end_day, -start_month, -end_month, -year) |>
-  dplyr::left_join(week_unique, by = "unique_identifier") |>
-  select(-week_number, -start_day, -end_day, -start_month, -end_month) |>
-  mutate(id = row_number())
-
-write_csv(deaths_long, na = "", "bom-processing/scripts/bomr/data/causes_of_death.csv")
+  select(-week_number, -start_day, -end_day, -start_month, -end_month, -year, -unique_identifier) |>
+  dplyr::left_join(week_unique, by = "joinid") |>
+  select(-week_number, -start_day, -end_day, -start_month, -end_month, -unique_identifier)
 
 # Unique year values
 # ------------------
@@ -768,7 +747,56 @@ general_bills <- general_bills |>
 all_bills <- rbind(weekly_bills, general_bills)
 all_bills <- all_bills |> mutate(id = row_number())
 
-# Write data to csv
+# --------------------------------------------------
+# Write data
+# --------------------------------------------------
+
+# Clean up the R environment
+rm(
+  raw_bodleian,
+  raw_bodleian_v2,
+  raw_laxton_1700_causes,
+  raw_laxton_causes,
+  raw_laxton_weekly,
+  raw_millar_general,
+  raw_wellcome_causes,
+  raw_wellcome_weekly
+)
+
+rm(
+  lookup_laxton,
+  lookup_laxton_1700,
+  lookup_wellcome
+)
+
+rm(
+  wellcome_weekly,
+  wellcome_deaths_cleaned,
+  week_unique_wellcome,
+  week_unique_weekly,
+  week_unique_laxton,
+  week_unique_general,
+  millar_long,
+  parish_canonical,
+  laxton_weekly,
+  laxton_deaths_cleaned,
+  deaths_unique_wellcome,
+  deaths_unique_laxton_1700,
+  deaths_unique_laxton,
+  bodleian_weekly,
+  bodleian_weekly_v2,
+  all_laxton_causes,
+  all_laxton_weekly_causes
+)
+
+# Write data to csv: causes of death
+write_csv(causes_wellcome, "bom-processing/scripts/bomr/data/wellcome_causes.csv", na = "")
+write_csv(causes_laxton, "bom-processing/scripts/bomr/data/laxton_causes.csv", na = "")
+write_csv(causes_laxton_1700, "bom-processing/scripts/bomr/data/laxton_causes_1700.csv", na = "")
+write_csv(deaths_unique, "bom-processing/scripts/bomr/data/deaths_unique.csv", na = "")
+write_csv(deaths_long, na = "", "bom-processing/scripts/bomr/data/causes_of_death.csv")
+
+# Write data to csv: parishes and bills
 write_csv(weekly_bills, "bom-processing/scripts/bomr/data/bills_weekly.csv", na = "")
 write_csv(general_bills, "bom-processing/scripts/bomr/data/bills_general.csv", na = "")
 write_csv(all_bills, "bom-processing/scripts/bomr/data/all_bills.csv", na = "")
