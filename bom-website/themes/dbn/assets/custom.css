@@ -30,3 +30,8 @@ h6 {
     @apply text-dbn-purple;
   }
 }
+
+.aside {
+  @apply bg-gray-400;
+  border: 1px solid #ccc;
+}

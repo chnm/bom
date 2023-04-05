@@ -26,6 +26,12 @@ h6 {
   font-family: "Work Sans", sans-serif;
 }
 
+.aside {
+  --tw-bg-opacity: 1;
+  background-color: rgb(156 163 175 / var(--tw-bg-opacity));
+  border: 1px solid #ccc;
+}
+
 /*
 ! tailwindcss v3.2.4 | MIT License | https://tailwindcss.com
 */
@@ -2584,6 +2590,10 @@ a {
   border-width: 1px;
 }
 
+.border-l-4 {
+  border-left-width: 4px;
+}
+
 .border-solid {
   border-style: solid;
 }
@@ -2596,6 +2606,10 @@ a {
 .border-slate-200 {
   --tw-border-opacity: 1;
   border-color: rgb(226 232 240 / var(--tw-border-opacity));
+}
+
+.border-dbn-orange {
+  border-color: #c75000ff;
 }
 
 .bg-white {
@@ -2626,6 +2640,11 @@ a {
 .bg-dbn-blue {
   --tw-bg-opacity: 1;
   background-color: rgb(150 173 200 / var(--tw-bg-opacity));
+}
+
+.bg-orange-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 237 213 / var(--tw-bg-opacity));
 }
 
 .object-cover {
@@ -2662,6 +2681,10 @@ a {
 
 .p-2 {
   padding: 0.5rem;
+}
+
+.p-4 {
+  padding: 1rem;
 }
 
 .px-4 {
