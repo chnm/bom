@@ -31,7 +31,14 @@ h6 {
   }
 }
 
-.aside {
-  @apply bg-gray-400;
-  border: 1px solid #ccc;
+.prose figure {
+  /* center align text and figure */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+} 
+
+.prose figure figcaption {
+  /* smaller width */
+  max-width: 80%;
 }
