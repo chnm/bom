@@ -26,12 +26,12 @@ To create a new blog post, the following steps will get you going:
 title: ""
 date: ""
 author: 
-	- fname lname
+    - fname lname
 tags: 
-	- tag1
-	- tag2
+    - tag1
+    - tag2
 categories: 
-	- category
+    - category
 ---
 ```
 
