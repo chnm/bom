@@ -2,7 +2,6 @@
 title: "Strangled himself (being distracted): Messy Data and Suicides in the Bills of Mortality"
 date: "2022-06-20"
 author:
-  - Jessica Otis
   - Emily Meyers
 categories: 
   - "context"
@@ -11,11 +10,9 @@ tags:
   - "meyers"
 ---
 
-**\*\*Content Warning\*\***
+{{< alert >}}
 
-**This post contains subject matter that some may find sensitive or disturbing, be advised. If uncomfortable with this topic, you may support Death By Numbers in other posts.**
-
-This blog post will be a bit different than a few of our previous posts. Now that we have discussed our project workflow, we are going to begin to discuss the content of the Bills themselves. One thing that we immediately noticed on beginning this project is that suicides are reported on the Bills in a variety of ways that lead to more questions than answers regarding the weekly suicide rate in London. The variety of reports had a lot to do with the religious and legal views on suicide in this era. 
+This blog post will be a bit different than a few of our previous posts. Now that we have discussed our project workflow, we are going to begin to discuss the content of the Bills themselves. One thing that we immediately noticed on beginning this project is that suicides are reported on the Bills in a variety of ways that lead to more questions than answers regarding the weekly suicide rate in London. The variety of reports had a lot to do with the religious and legal views on suicide in this era.
 
 When looking at suicide rates, _Sleepless Souls_ by Michael MacDonald and Terence R. Murphy state in Table 7.1 _Sex Ratio of Selected Groups, 1485-1714,_ that male to female suicide was in a range of 4 to 7.5:1 in the large of England. He compares that to suicides in the Bills, which is London focused, that still hold a male to female rate of approximately 1.8:1. That is a wide gap of information to be working with and there are quite a few reasons for this. 
 
