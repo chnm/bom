@@ -41,7 +41,7 @@ categories:
 ![Creating new files.](docs/new_file.png)
 
 5. Add your YAML block at the top of the document. Fill in the appropriate values for each metadata item. Remember you can consult the [website](https://deathbynumbers.org/blog/) for a list of current tags and categories.
-6. Copy your text over from the document you drafted your original post. Paste this into the Github text editor. You may need to turn on "soft wrap" from the dropdown in the upper-right of the document editor. Double check your paragraph spacing and ensure the Markdown formatting is correct throughout the document. Refer to [this Markdown documentation]() for information about markdown formatting.
+6. Copy your text over from the document you drafted your original post. Paste this into the Github text editor. You may need to turn on "soft wrap" from the dropdown in the upper-right of the document editor. Double check your paragraph spacing and ensure the Markdown formatting is correct throughout the document. Refer to [this Markdown documentation](https://markdownguide.org) for information about markdown formatting.
 
 ![Docuemnt editing.](docs/creating-editing.png)
 
