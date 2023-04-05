@@ -35,21 +35,21 @@ categories:
 ---
 ```
 
-1. After the branch exists, you can add files. From the `content/blog` folder, select either "Add new file" or "Upload file" from the upper-right. If you add a new file, GitHub will open a simple text editor for you to work in.
-2. First, provide a file name in the top line. The file name should follow the convention `YYYY-MM-DD-short-title.md`, where the date appears as YEAR-MONTH-DAY. If MONTH or DAY is a single integer, it should include a leading zero (e.g., April will be `04`, September will be `09`, the sixth day of a month will be `06`, and so on). 
+3. After the branch exists, you can add files. From the `content/blog` folder, select either "Add new file" or "Upload file" from the upper-right. If you add a new file, GitHub will open a simple text editor for you to work in.
+4. First, provide a file name in the top line. The file name should follow the convention `YYYY-MM-DD-short-title.md`, where the date appears as YEAR-MONTH-DAY. If MONTH or DAY is a single integer, it should include a leading zero (e.g., April will be `04`, September will be `09`, the sixth day of a month will be `06`, and so on). 
 
 ![Creating new files.](docs/new_file.png)
 
-3. Add your YAML block at the top of the document. Fill in the appropriate values for each metadata item. Remember you can consult the [website](https://deathbynumbers.org/blog/) for a list of current tags and categories.
-4. Copy your text over from the document you drafted your original post. Paste this into the Github text editor. You may need to turn on "soft wrap" from the dropdown in the upper-right of the document editor. Double check your paragraph spacing and ensure the Markdown formatting is correct throughout the document. Refer to [this Markdown documentation]() for information about markdown formatting.
+5. Add your YAML block at the top of the document. Fill in the appropriate values for each metadata item. Remember you can consult the [website](https://deathbynumbers.org/blog/) for a list of current tags and categories.
+6. Copy your text over from the document you drafted your original post. Paste this into the Github text editor. You may need to turn on "soft wrap" from the dropdown in the upper-right of the document editor. Double check your paragraph spacing and ensure the Markdown formatting is correct throughout the document. Refer to [this Markdown documentation]() for information about markdown formatting.
 
 ![Docuemnt editing.](docs/creating-editing.png)
 
-5. Commit the document by navigating to "Commit new file" on the bottom of the page. GitHub will ask you for a short commit message (you can ignore the long description text field), double-check that you're committing to the correct branch, and then select "Commit new file." 
+7. Commit the document by navigating to "Commit new file" on the bottom of the page. GitHub will ask you for a short commit message (you can ignore the long description text field), double-check that you're committing to the correct branch, and then select "Commit new file." 
 
 ![Committing files.](docs/committing.png)
 
-6. If you need to edit a post, navigate to the post file in `content/blog` and select the pencil icon in the far upper-right. GitHub will open the text editor and you will follow the same steps in (5) to commit the changes. 
+8. If you need to edit a post, navigate to the post file in `content/blog` and select the pencil icon in the far upper-right. GitHub will open the text editor and you will follow the same steps in (5) to commit the changes. 
 
 ### Including Images
 
