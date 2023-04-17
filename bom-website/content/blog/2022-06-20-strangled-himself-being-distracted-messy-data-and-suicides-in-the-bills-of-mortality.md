@@ -51,5 +51,3 @@ For the UK: EU [Emotional Support](https://www.supportline.org.uk/) Helpline is 
 Shout Crisis Text Line: Text "SHOUT" to 85258
 
 The NHS has a larger list of wider resources here: [Phone a helpline](https://www.nhs.uk/mental-health/feelings-symptoms-behaviours/behaviours/help-for-suicidal-thoughts/)
-
-— Emily Meyers
