@@ -51,8 +51,8 @@ ON CONFLICT DO NOTHING;
 -- -- bom.christenings
 -- -- This table contains the unique christenings in the dataset.
 CREATE TEMPORARY TABLE IF NOT EXISTS temp_christening (
-    year text,
-    week text,
+    year integer,
+    week integer,
     unique_identifier text,
     start_day int,
     start_month text,
@@ -75,7 +75,7 @@ CREATE TEMPORARY TABLE IF NOT EXISTS temp_causes_of_death (
     count int,
     descriptive_text text,
     joinid text,
-    year text,
+    year integer,
     week_id text,
     year_range text,
     split_year text
@@ -93,7 +93,7 @@ CREATE TEMPORARY TABLE IF NOT EXISTS temp_bills (
     count int,
     bill_type text,
     parish_id int,
-    year text,
+    year integer,
     week_id text,
     year_range text,
     split_year text,
@@ -104,4 +104,3 @@ COPY temp_bills FROM '/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects
 INSERT INTO bom.bill_of_mortality (parish_id, count_type, count, year_id, week_id, bill_type)
 SELECT DISTINCT parish_id, count_type, count, year, joinid, bill_type FROM temp_bills
 ON CONFLICT DO NOTHING;
-
