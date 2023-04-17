@@ -69,13 +69,13 @@ jobs:
           path: /usr/share/nginx/html/
 
       - name: Archive build artifact
-        run: tar czvf dist.tar.gz -C ${{ steps.extract.outputs.destination }}/html .
+        run: tar czvf bom-website.tar.gz -C ${{ steps.extract.outputs.destination }}/html .
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v3
         with:
-          path: ./dist.tar.gz
-          name: dist
+          path: ./bom-website.tar.gz
+          name: bom-website
 
   release:
     needs: build
@@ -100,6 +100,6 @@ jobs:
       github-ref-type: "${{ github.ref_type }}"
       github-ref: "${{ github.ref }}"
       github-sha: "${{ github.sha }}"
-      build-artifact-name: "dist"
-      release-artifact-tarball-filename: "dist.tar.gz"
+      build-artifact-name: "bom-website"
+      release-artifact-tarball-filename: "bom-website.tar.gz"
       release-tag-name-type: "iso"
