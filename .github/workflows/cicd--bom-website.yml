@@ -76,3 +76,30 @@ jobs:
         with:
           path: ./dist.tar.gz
           name: dist
+
+  release:
+    needs: build
+    uses: chnm/.github/.github/workflows/create-release.yml@feature/initial-reusable-workflows
+    secrets: inherit
+    with:
+      github-run-id: "${{ github.run_id }}"
+      github-workflow: "${{ github.workflow }}"
+      github-workflow-ref: "${{ github.workflow_ref }}"
+      github-workflow-sha: "${{ github.workflow_sha }}"
+      github-workspace: "${{ github.workspace }}"
+      github-repository: "${{ github.repository }}"
+      github-repository-owner: "${{ github.repository_owner }}"
+      github-repository-name: "${{ github.event.repository.name }}"
+      github-repository-url: "${{ github.repository-url }}"
+      github-action-ref: "${{ github.action_ref }}"
+      github-event-name: "${{ github.event_name }}"
+      github-actor: "${{ github.actor }}"
+      github-triggering-actor: "${{ github.triggering_actor }}"
+      github-base-ref: "${{ github.base_ref }}"
+      github-ref-name: "${{ github.ref_name }}"
+      github-ref-type: "${{ github.ref_type }}"
+      github-ref: "${{ github.ref }}"
+      github-sha: "${{ github.sha }}"
+      build-artifact-name: "dist"
+      release-artifact-tarball-filename: "dist.tar.gz"
+      release-tag-name-type: "iso"
