@@ -1,0 +1,8 @@
+name: Build & Publish
+
+on:
+  push:
+    branchs:
+      - feature/**
+    paths:
+      - 'bom-website/**'
