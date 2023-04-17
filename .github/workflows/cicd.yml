@@ -1,8 +1,78 @@
-name: Build & Publish
+name: "[bom-website] Build & Publish"
 
 on:
   push:
     branchs:
-      - feature/**
+      - "feature/**"
     paths:
-      - 'bom-website/**'
+      - ".github/workflows/**"  # todo: remove
+      - "bom-website/**"
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: "ghcr.io/${{ github.repository }}-website"
+  CONTEXT_ROOT: "bom-website"
+  DEVL_URL: "http://dev.deathbynumbers.org/"
+  PROD_URL: "https://deathbynumbers.org/"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    permissions:
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: ${{ env.REGISTRY }}
+
+      - name: Build and Push Docker Image for Local Dev
+        uses: docker/build-push-action@v4
+        with:
+          context: "${{ env.CONTEXT_ROOT }}"
+          push: true
+          tags: "${{ env.IMAGE_NAME }}:latest"
+          platforms: linux/amd64
+
+      - name: Build Docker Image (devl)
+        if: github.ref == 'refs/heads/preview'
+        uses: docker/build-push-action@v4
+        with:
+          context: "${{ env.CONTEXT_ROOT }}"
+          push: false
+          tags: "${{ env.IMAGE_NAME }}:latest"
+          platforms: linux/amd64
+          build-args: |
+            hugobuildargs="--cleanDestinationDir --buildDrafts --buildFuture --baseURL ${DEVL_URL}"
+
+      - name: Build Docker Image (prod)
+        if: github.ref == 'refs/heads/main'
+        uses: docker/build-push-action@v4
+        with:
+          context: "${{ env.CONTEXT_ROOT }}"
+          push: false
+          tags: "${{ env.IMAGE_NAME }}:latest"
+          platforms: linux/amd64
+          build-args: |
+            hugobuildargs="--cleanDestinationDir --minify --baseURL ${PROD_URL}"
+
+      - name: Extract build artifact from docker image
+        uses: shrink/actions-docker-extract@v2
+        id: extract
+        with:
+          image: "${{ env.IMAGE_NAME }}:latest"
+          path: /usr/share/nginx/html/
+
+      - name: Archive build artifact
+        run: tar czvf dist.tar.gz -C ${{ steps.extract.outputs.destination }}/html .
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          path: ./dist.tar.gz
+          name: dist
