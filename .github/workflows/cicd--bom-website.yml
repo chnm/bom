@@ -79,7 +79,7 @@ jobs:
 
   release:
     needs: build
-    uses: chnm/.github/.github/workflows/create-release.yml@feature/initial-reusable-workflows
+    uses: chnm/.github/.github/workflows/create-release.yml@main
     secrets: inherit
     with:
       github-run-id: "${{ github.run_id }}"
