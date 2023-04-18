@@ -3,9 +3,9 @@ name: "[bom-website] Build & Publish"
 on:
   push:
     branchs:
-      - "feature/**"
+      - "preview"
+      - "main"
     paths:
-      - ".github/workflows/**"  # todo: remove
       - "bom-website/**"
 env:
   REGISTRY: ghcr.io
