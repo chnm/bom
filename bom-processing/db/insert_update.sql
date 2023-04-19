@@ -6,14 +6,15 @@
 -- bom.years
 -- This table contains the unique years in the dataset.
 CREATE TEMPORARY TABLE IF NOT EXISTS temp_year (
-    year text,
+    year integer,
     year_id integer,
     id integer
 );
 COPY temp_year FROM '/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/bom-processing/scripts/bomr/data/year_unique.csv' DELIMITER ',' CSV HEADER;
 INSERT INTO bom.year (year)
 SELECT DISTINCT year FROM temp_year
-ON CONFLICT DO NOTHING;
+WHERE year IS NOT NULL
+ON CONFLICT (year) DO NOTHING;
 
 -- bom.weeks
 -- This table contains the unique weeks in the dataset.
@@ -34,7 +35,7 @@ CREATE TEMPORARY TABLE IF NOT EXISTS temp_week (
 COPY temp_week FROM '/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/bom-processing/scripts/bomr/data/week_unique.csv' DELIMITER ',' CSV HEADER;
 INSERT INTO bom.week (joinid, start_day, start_month, end_day, end_month, year, week_no, split_year)
 SELECT DISTINCT joinid, start_day, start_month, end_day, end_month, year, week_number, split_year FROM temp_week
-ON CONFLICT DO NOTHING;
+ON CONFLICT (joinid) DO NOTHING;
 
 -- -- bom.parishes
 -- -- This table contains the unique parishes in the dataset.
@@ -46,7 +47,7 @@ CREATE TEMPORARY TABLE IF NOT EXISTS temp_parish (
 COPY temp_parish FROM '/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/bom-processing/scripts/bomr/data/parishes_unique.csv' DELIMITER ',' CSV HEADER;
 INSERT INTO bom.parishes (id, parish_name, canonical_name)
 SELECT DISTINCT parish_id, parish_name, canonical_name FROM temp_parish
-ON CONFLICT DO NOTHING;
+ON CONFLICT (parish_name) DO NOTHING;
 
 -- -- bom.christenings
 -- -- This table contains the unique christenings in the dataset.
@@ -104,3 +105,4 @@ COPY temp_bills FROM '/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects
 INSERT INTO bom.bill_of_mortality (parish_id, count_type, count, year_id, week_id, bill_type)
 SELECT DISTINCT parish_id, count_type, count, year, joinid, bill_type FROM temp_bills
 ON CONFLICT DO NOTHING;
+
