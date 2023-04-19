@@ -2,11 +2,12 @@ name: "[bom-website] Build & Publish"
 
 on:
   push:
-    branchs:
+    branches:
       - "preview"
       - "main"
     paths:
       - "bom-website/**"
+      - ".github/workflows/cicd--bom-website.yml"
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: "ghcr.io/${{ github.repository }}-website"
@@ -48,7 +49,7 @@ jobs:
           tags: "${{ env.IMAGE_NAME }}:latest"
           platforms: linux/amd64
           build-args: |
-            hugobuildargs="--cleanDestinationDir --buildDrafts --buildFuture --baseURL ${{ env.DEVL_URL }}"
+            hugobuildargs=--cleanDestinationDir --buildDrafts --buildFuture --baseURL ${{ env.DEVL_URL }}
 
       - name: Build Docker Image (prod)
         if: github.ref == 'refs/heads/main'
@@ -59,7 +60,7 @@ jobs:
           tags: "${{ env.IMAGE_NAME }}:latest"
           platforms: linux/amd64
           build-args: |
-            hugobuildargs="--cleanDestinationDir --minify --baseURL ${{ env.PROD_URL}}"
+            hugobuildargs=--cleanDestinationDir --minify --baseURL ${{ env.PROD_URL }}
 
       - name: Extract build artifact from docker image
         uses: shrink/actions-docker-extract@v2
