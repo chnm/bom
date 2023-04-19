@@ -23,7 +23,7 @@ raw_laxton_1700_causes <- read_csv("bom-data/data-csvs/2022-06-15-Laxton-1700-we
 raw_laxton_causes <- read_csv("bom-data/data-csvs/2022-11-02-Laxton-weeklybills-causes.csv")
 
 raw_bodleian <- read_csv("bom-data/data-csvs/2023-02-22-BodleianV1-weeklybills-parishes.csv")
-raw_bodleian_v2 <- read_csv("bom-data/data-csvs/2023-03-08-BodleianV2-weeklybills-parishes.csv")
+raw_bodleian_v2 <- read_csv("bom-data/data-csvs/2023-03-28-BodleianV2-weeklybills-parishes.csv")
 raw_bodleian_v3 <- read_csv("bom-data/data-csvs/2023-04-19-BodleianV3-weeklybills-parishes.csv")
 
 # ----------------------------------------------------------------------
@@ -301,7 +301,7 @@ bodleian_weekly_v3 <- bodleian_weekly_v3 |>
 
 bodleian_weekly_v3 <- bodleian_weekly_v3 |>
   select(!1:4) |>
-  pivot_longer(8:266, names_to = "parish_name", values_to = "count" )
+  pivot_longer(8:83, names_to = "parish_name", values_to = "count" )
 
 # Lowercase column names and replace spaces with underscores.
 names(laxton_weekly) <- tolower(names(laxton_weekly))
@@ -314,6 +314,7 @@ names(bodleian_weekly_v2) <- tolower(names(bodleian_weekly_v2))
 names(bodleian_weekly_v2) <- gsub(" ", "_", names(bodleian_weekly_v2))
 names(bodleian_weekly_v3) <- tolower(names(bodleian_weekly_v3))
 names(bodleian_weekly_v3) <- gsub(" ", "_", names(bodleian_weekly_v3))
+
 
 # The unique ID column is mis-named in the Laxton data so we fix it here
 names(laxton_weekly)[3] <- "unique_identifier"
