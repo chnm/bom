@@ -1,0 +1,52 @@
+---
+title: "Mapping the parish plague"
+---
+
+This is a leaflet map of the parish counts for London. 
+
+```{python}
+import pandas as pd
+import geopandas as gpd
+import matplotlib.pyplot as plt
+import folium 
+
+# Read in our shapefiles. The shapefiles contain all the data we need. 
+plague_shp = gpd.read_file('parishes-merged.shp')
+```
+
+First, let's look at the columns of the shapefile.
+
+```{python}
+plague_shp.columns
+```
+
+And we can look at the available years. 
+
+```{python}
+plague_shp['printedYea'].unique()
+```
+
+We can filter the data to only include the year 1665. 
+
+```{python}
+plague_1665 = plague_shp[plague_shp['printedYea'] == 1665]
+```
+
+Now we can create the map. Here's one for 1665.
+
+```{python}
+m = folium.Map(location=[51.5, -0.1], zoom_start=10, tiles='cartodbpositron')
+
+folium.Choropleth(
+    geo_data=plague_1665,
+    name='choropleth',
+    data=plague_1665,
+    columns=['parish', 'count'],
+    key_on='feature.properties.parish',
+    fill_color='YlGn',
+    fill_opacity=0.7,
+    line_opacity=0.2,
+    legend_name='Plague deaths in 1665'
+).add_to(m)
+m
+```
