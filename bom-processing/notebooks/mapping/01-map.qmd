@@ -1,0 +1,98 @@
+---
+title: "Mapping the parish plague"
+---
+
+This is a leaflet map of the parish counts for London. 
+
+```{python}
+import pandas as pd
+import geopandas as gpd
+import matplotlib.pyplot as plt
+import folium 
+import contextily as ctx
+
+# Read in our shapefiles. The shapefiles contain all the data we need. 
+plague_shp = gpd.read_file('parishes-merged.shp')
+```
+
+First, let's look at the columns of the shapefile.
+
+```{python}
+plague_shp.columns
+```
+
+And we can look at the available years. 
+
+```{python}
+plague_shp['printedYea'].unique()
+```
+
+We can filter the data for specific printed years.
+
+```{python}
+plague_1665 = plague_shp[plague_shp['printedYea'] == 1665]
+plague_1666 = plague_shp[plague_shp['printedYea'] == 1666]
+plague_1667 = plague_shp[plague_shp['printedYea'] == 1667]
+plague_1668 = plague_shp[plague_shp['printedYea'] == 1668]
+plague_1669 = plague_shp[plague_shp['printedYea'] == 1669]
+```
+
+Now we can create the map. Here's one for 1665.
+
+```{python}
+m = folium.Map(location=[51.5, -0.1], zoom_start=10, tiles='cartodbpositron')
+
+folium.Choropleth(
+    geo_data=plague_1666,
+    name='choropleth',
+    data=plague_1666,
+    columns=['parish', 'count'],
+    key_on='feature.properties.parish',
+    fill_color='YlGn',
+    fill_opacity=0.7,
+    line_opacity=0.2,
+    legend_name='Plague deaths in 1666'
+).add_to(m)
+m
+```
+
+Let's make a small multiple of each year using Contextily for our basemap.
+
+```{python}
+fig, ax = plt.subplots(nrows=2, ncols=3, figsize=(20, 15))
+# delete the last subplot
+fig.delaxes(ax[1,2])
+
+# Add our maps 
+for i, ax in enumerate(ax.flatten()):
+    if i == 0:
+        plague_1665.plot(ax=ax, column='parishTota', cmap='YlGn', legend=True)
+        ax.set_title('Parish totals in 1665')
+        ax.axis('off')
+        ctx.add_basemap(ax, crs=plague_1665.crs.to_string(), source=ctx.providers.CartoDB.Positron)
+    elif i == 1:
+        plague_1666.plot(ax=ax, column='parishTota', cmap='YlGn', legend=True)
+        ax.set_title('Parish totals in 1666')
+        ax.axis('off')
+        ctx.add_basemap(ax, crs=plague_1666.crs.to_string(), source=ctx.providers.CartoDB.Positron)
+    elif i == 2:
+        plague_1667.plot(ax=ax, column='parishTota', cmap='YlGn', legend=True)
+        ax.set_title('Parish totals in 1667')
+        ax.axis('off')
+        ctx.add_basemap(ax, crs=plague_1667.crs.to_string(), source=ctx.providers.CartoDB.Positron)
+    elif i == 3:
+        plague_1668.plot(ax=ax, column='parishTota', cmap='YlGn', legend=True)
+        ax.set_title('Parish totals in 1668')
+        ax.axis('off')
+        ctx.add_basemap(ax, crs=plague_1668.crs.to_string(), source=ctx.providers.CartoDB.Positron)
+    elif i == 4:
+        plague_1669.plot(ax=ax, column='parishTota', cmap='YlGn', legend=True)
+        ax.set_title('Parish totals in 1669')
+        ax.axis('off')
+        ctx.add_basemap(ax, crs=plague_1669.crs.to_string(), source=ctx.providers.CartoDB.Positron)
+
+plt.show()
+
+# save
+fig.savefig('plague_small_multiple.png', dpi=300)
+```

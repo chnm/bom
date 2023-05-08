@@ -5,7 +5,7 @@
 #
 # Jason A. Heppler | jason@jasonheppler.org
 # Roy Rosenzweig Center for History and New Media
-# Updated: 2023-03-08
+# Updated: 2023-04-19
 
 library(tidyverse)
 
@@ -23,7 +23,8 @@ raw_laxton_1700_causes <- read_csv("bom-data/data-csvs/2022-06-15-Laxton-1700-we
 raw_laxton_causes <- read_csv("bom-data/data-csvs/2022-11-02-Laxton-weeklybills-causes.csv")
 
 raw_bodleian <- read_csv("bom-data/data-csvs/2023-02-22-BodleianV1-weeklybills-parishes.csv")
-raw_bodleian_v2 <- read_csv("bom-data/data-csvs/2023-03-08-BodleianV2-weeklybills-parishes.csv")
+raw_bodleian_v2 <- read_csv("bom-data/data-csvs/2023-03-28-BodleianV2-weeklybills-parishes.csv")
+raw_bodleian_v3 <- read_csv("bom-data/data-csvs/2023-04-19-BodleianV3-weeklybills-parishes.csv")
 
 # ----------------------------------------------------------------------
 # Lookup tables
@@ -293,6 +294,15 @@ bodleian_weekly_v2 <- bodleian_weekly_v2 |>
   select(!1:4) |>
   pivot_longer(8:266, names_to = "parish_name", values_to = "count" )
 
+bodleian_weekly_v3 <- raw_bodleian_v3 |>
+  select(-c(starts_with("is_illegible")))
+bodleian_weekly_v3 <- bodleian_weekly_v3 |>
+  select(-c(starts_with("is_missing")))
+
+bodleian_weekly_v3 <- bodleian_weekly_v3 |>
+  select(!1:4) |>
+  pivot_longer(8:83, names_to = "parish_name", values_to = "count" )
+
 # Lowercase column names and replace spaces with underscores.
 names(laxton_weekly) <- tolower(names(laxton_weekly))
 names(laxton_weekly) <- gsub(" ", "_", names(laxton_weekly))
@@ -302,13 +312,17 @@ names(bodleian_weekly) <- tolower(names(bodleian_weekly))
 names(bodleian_weekly) <- gsub(" ", "_", names(bodleian_weekly))
 names(bodleian_weekly_v2) <- tolower(names(bodleian_weekly_v2))
 names(bodleian_weekly_v2) <- gsub(" ", "_", names(bodleian_weekly_v2))
+names(bodleian_weekly_v3) <- tolower(names(bodleian_weekly_v3))
+names(bodleian_weekly_v3) <- gsub(" ", "_", names(bodleian_weekly_v3))
+
 
 # The unique ID column is mis-named in the Laxton data so we fix it here
 names(laxton_weekly)[3] <- "unique_identifier"
 names(bodleian_weekly)[3] <- "unique_identifier"
 names(bodleian_weekly_v2)[3] <- "unique_identifier"
+names(bodleian_weekly_v3)[3] <- "unique_identifier"
 
-weekly_bills <- rbind( wellcome_weekly, laxton_weekly, bodleian_weekly, bodleian_weekly_v2 ) |>
+weekly_bills <- rbind( wellcome_weekly, laxton_weekly, bodleian_weekly, bodleian_weekly_v2, bodleian_weekly_v3 ) |>
   mutate(bill_type = "Weekly")
 
 weekly_bills <- weekly_bills |>
@@ -755,6 +769,7 @@ all_bills <- all_bills |> mutate(id = row_number())
 rm(
   raw_bodleian,
   raw_bodleian_v2,
+  raw_bodleian_v3,
   raw_laxton_1700_causes,
   raw_laxton_causes,
   raw_laxton_weekly,
@@ -785,6 +800,7 @@ rm(
   deaths_unique_laxton,
   bodleian_weekly,
   bodleian_weekly_v2,
+  bodleian_weekly_v3,
   all_laxton_causes,
   all_laxton_weekly_causes
 )

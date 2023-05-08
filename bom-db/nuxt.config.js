@@ -46,8 +46,6 @@ export default {
     '@nuxtjs/tailwindcss',
     '@nuxt/postcss8',
     '@nuxtjs/composition-api/module',
-    // https://pinia.vuejs.org
-    ['@pinia/nuxt', { disableVuex: true }]
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules

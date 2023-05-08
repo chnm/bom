@@ -1,8 +1,0 @@
-pandas
-numpy
-openpyxl
-geopandas
-fiona
-pyproj
-rtree
-shapley

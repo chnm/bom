@@ -6,14 +6,15 @@
 -- bom.years
 -- This table contains the unique years in the dataset.
 CREATE TEMPORARY TABLE IF NOT EXISTS temp_year (
-    year text,
+    year integer,
     year_id integer,
     id integer
 );
 COPY temp_year FROM '/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/bom-processing/scripts/bomr/data/year_unique.csv' DELIMITER ',' CSV HEADER;
 INSERT INTO bom.year (year)
 SELECT DISTINCT year FROM temp_year
-ON CONFLICT DO NOTHING;
+WHERE year IS NOT NULL
+ON CONFLICT (year) DO NOTHING;
 
 -- bom.weeks
 -- This table contains the unique weeks in the dataset.
@@ -34,7 +35,7 @@ CREATE TEMPORARY TABLE IF NOT EXISTS temp_week (
 COPY temp_week FROM '/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/bom-processing/scripts/bomr/data/week_unique.csv' DELIMITER ',' CSV HEADER;
 INSERT INTO bom.week (joinid, start_day, start_month, end_day, end_month, year, week_no, split_year)
 SELECT DISTINCT joinid, start_day, start_month, end_day, end_month, year, week_number, split_year FROM temp_week
-ON CONFLICT DO NOTHING;
+ON CONFLICT (joinid) DO NOTHING;
 
 -- -- bom.parishes
 -- -- This table contains the unique parishes in the dataset.
@@ -46,13 +47,13 @@ CREATE TEMPORARY TABLE IF NOT EXISTS temp_parish (
 COPY temp_parish FROM '/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/bom-processing/scripts/bomr/data/parishes_unique.csv' DELIMITER ',' CSV HEADER;
 INSERT INTO bom.parishes (id, parish_name, canonical_name)
 SELECT DISTINCT parish_id, parish_name, canonical_name FROM temp_parish
-ON CONFLICT DO NOTHING;
+ON CONFLICT (parish_name) DO NOTHING;
 
 -- -- bom.christenings
 -- -- This table contains the unique christenings in the dataset.
 CREATE TEMPORARY TABLE IF NOT EXISTS temp_christening (
-    year text,
-    week text,
+    year integer,
+    week integer,
     unique_identifier text,
     start_day int,
     start_month text,
@@ -75,7 +76,7 @@ CREATE TEMPORARY TABLE IF NOT EXISTS temp_causes_of_death (
     count int,
     descriptive_text text,
     joinid text,
-    year text,
+    year integer,
     week_id text,
     year_range text,
     split_year text
@@ -93,7 +94,7 @@ CREATE TEMPORARY TABLE IF NOT EXISTS temp_bills (
     count int,
     bill_type text,
     parish_id int,
-    year text,
+    year integer,
     week_id text,
     year_range text,
     split_year text,

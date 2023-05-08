@@ -15,7 +15,6 @@ import { setContext, getLocation, getRouteData, normalizeError } from './utils'
 import nuxt_plugin_plugin_2cd8dc8a from 'nuxt_plugin_plugin_2cd8dc8a' // Source: ./components/plugin.js (mode: 'all')
 import nuxt_plugin_plugin_0077741c from 'nuxt_plugin_plugin_0077741c' // Source: ./composition-api/plugin.mjs (mode: 'all')
 import nuxt_plugin_axios_054a06a0 from 'nuxt_plugin_axios_054a06a0' // Source: ./axios.js (mode: 'all')
-import nuxt_plugin_distplugin73f7e516_7fb1b708 from 'nuxt_plugin_distplugin73f7e516_7fb1b708' // Source: ./dist.plugin.73f7e516.mjs (mode: 'all')
 import nuxt_plugin_vuegoodtable_6479f65b from 'nuxt_plugin_vuegoodtable_6479f65b' // Source: ../plugins/vue-good-table (mode: 'client')
 import nuxt_plugin_indexmin_eebce6ec from 'nuxt_plugin_indexmin_eebce6ec' // Source: ../node_modules/tw-elements/dist/js/index.min.js (mode: 'client')
 import nuxt_plugin_meta_4988f584 from 'nuxt_plugin_meta_4988f584' // Source: ./composition-api/meta.mjs (mode: 'all')
@@ -192,10 +191,6 @@ async function createApp(ssrContext, config = {}) {
 
   if (typeof nuxt_plugin_axios_054a06a0 === 'function') {
     await nuxt_plugin_axios_054a06a0(app.context, inject)
-  }
-
-  if (typeof nuxt_plugin_distplugin73f7e516_7fb1b708 === 'function') {
-    await nuxt_plugin_distplugin73f7e516_7fb1b708(app.context, inject)
   }
 
   if (process.client && typeof nuxt_plugin_vuegoodtable_6479f65b === 'function') {
