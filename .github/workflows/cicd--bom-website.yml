@@ -12,7 +12,7 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: "ghcr.io/${{ github.repository }}-website"
   CONTEXT_ROOT: "bom-website"
-  DEVL_URL: "http://dev.deathbynumbers.org/"
+  DEVL_URL: "https://dev.deathbynumbers.org/"
   PROD_URL: "https://deathbynumbers.org/"
 
 jobs:
