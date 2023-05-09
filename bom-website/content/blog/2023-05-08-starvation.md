@@ -5,6 +5,8 @@ author:
 date: "2023-05-08"
 tags: 
   - shuman
+  - food
+  - 1665-1670
 categories: 
  - analysis
 ---
