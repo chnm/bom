@@ -23,4 +23,10 @@ The Death by Numbers’s transcription process of the causes of death in DataScr
 
 {{< figure sec="/images/Fig_1_transcription_form.png" caption="Fig 1. View of the transcription form fields designed to capture the text about drowning deaths." alt="" >}} 
 
+Once exported from DataScribe and loaded into a Jupyter Notebook using Pandas, the data frame looks like this.
+
+{{< figure sec="/images/Fig_2_exported data_frame.png" caption="Fig 2. View of the causes of death exported data frame." alt="The image has been slightly modified to display the drowning column next to the metadata columns
+" >}} 
+
+
 
