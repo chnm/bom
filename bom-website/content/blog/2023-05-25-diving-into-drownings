@@ -1,0 +1,24 @@
+---
+title: "Diving into Drownings: exploring Text Analysis Techniques to retrieve text information from the London Bills of Mortality"
+date: "May 25, 2023"
+author: 
+    - Hernán Adasme
+tags: 
+    - drownings
+    - text analysus
+    - adasme
+categories: 
+    - workflow
+format: hugo-md
+jupyter: python3
+---
+
+This blog post explores how we can draw on text analysis techniques to better understand drowning as a cause of death. Alongside plague counts by parish, the Death by Numbers project is also transcribing textual information about the causes of death recorded in the verso of the bills. Transcribing these descriptive texts will eventually create a considerable –although not massive– corpus of textual data suitable for the application of several text analysis techniques, as a way to automate the extraction of information. For the purpose of this blog entry, I will not focus on text as text, but only on text as a container of relevant information for the exploration of drownings as a historical phenomenon. Put differently, I will use text analysis as a tool to retrieve information from drowning descriptions, and not as a method to discover hidden patterns or underlying meanings of a corpus of texts. Eventually, the techniques explored in this blog post will be a good fit to extract data from other causes of death recorded as unstructured text in the London Bills of Mortality.
+
+The following analysis was conducted in Python language and performed in a Jupyter notebook. I am using a causes of death dataset transcribed by the Death by Numbers’ transcription team, which covers mostly from 1701 to 1705, and also includes scattered data from 1740, 1722, 1732 and 1752. For a detailed description of the code, check the interactive notebook.
+
+Drowned into Data
+
+The Death by Numbers’s transcription process of the causes of death in DataScribe creates a dataset in which each record of a weekly bill is a row and all causes of death are columns. As mentioned above, drowning data appears in the Bills as an unstructured text that includes a count of the total weekly immersion deaths, and a description of the drowning events. Other causes of death, like killed, executed, suicide and found dead, followed the same twofold –counts and text– recording structure in the Bills. Drowning’s descriptive text highlights the location (at Christ Church in Surry; at the London Bridge; at the River Lee), a brief characterization of circumstances (accidentally; by misfortune; in a ditch; in a tub of soap suds), and occasionally some data about the drowned person (an unknown man; two brothers; a boy). To both capture and provide structure to the text, our transcription team fills out two fields in the DataScribe transcription form: one for the count and one for the text.
+
+{{< figure sec="/images/" caption="" alt="" >}}
