@@ -246,6 +246,8 @@ plt.show()
 ```
 I took the 10 most frequent terms computed by the word cloud, and I created two biannual data sets (one with 1701-1702 and another with 1703-1704) only containing those 10 terms to track them weekly. The idea is to get a sense of the weekly distribution of the locations where immersion deaths took place. Having the week_id is useful because we can track down weeks in the dictionary and check the original line of text.In both data frames, the most frequent term is, unsurprisingly, Thames. For the 1701-1702 data, Thames appeared 3 times in the week 21 of 1702. 
 
+{{< figure sec="/images/Fig_1_transcription_form.png" caption="Fig 1. View of the transcription form fields designed to capture the text about drowning deaths." alt="" >}}
+
 ```python
 '1702_21': 'One accidentally in the River of **Thames** at Alhallows 
 the Less One accidentally in a Pond of Water 
@@ -255,6 +257,8 @@ at St Paul at Shadwel’
 ```
 
 In the 1703-704, the term Thames appeared four times in the 34th week of 1704. 
+
+{{< figure sec="/images/Fig_1_transcription_form.png" caption="Fig 1. View of the transcription form fields designed to capture the text about drowning deaths." alt="" >}}
 
 ```python
 {'1704_34': 'One in the **Thames** at Christ Church in Surry 
