@@ -17,9 +17,9 @@ This blog post explores how we can draw on text analysis techniques to better un
 
 The following analysis was conducted in Python language and performed in a Jupyter notebook. I am using a causes of death dataset transcribed by the Death by Numbers’ transcription team, which covers mostly from 1701 to 1705, and also includes scattered data from 1740, 1722, 1732 and 1752. For a detailed description of the code, check the interactive notebook.
 
-Drowned into Data
+**Drowned into Data**
 
-The Death by Numbers’s transcription process of the causes of death in DataScribe creates a dataset in which each record of a weekly bill is a row and all causes of death are columns. As mentioned above, drowning data appears in the Bills as an unstructured text that includes a count of the total weekly immersion deaths, and a description of the drowning events. Other causes of death, like killed, executed, suicide and found dead, followed the same twofold –counts and text– recording structure in the Bills. Drowning’s descriptive text highlights the location (at Christ Church in Surry; at the London Bridge; at the River Lee), a brief characterization of circumstances (accidentally; by misfortune; in a ditch; in a tub of soap suds), and occasionally some data about the drowned person (an unknown man; two brothers; a boy). To both capture and provide structure to the text, our transcription team fills out two fields in the DataScribe transcription form: one for the count and one for the text.
+The Death by Numbers’s transcription process of the causes of death in DataScribe creates a dataset in which each record of a weekly bill is a row and all causes of death are columns. As mentioned above, drowning data appears in the  Bills as an unstructured text that includes a count of the total weekly immersion deaths, and a description of the drowning events. Other causes of death, like *killed*, *executed*, *suicide* and *found dead,* followed the same twofold --counts and text-- recording structure in the Bills. Drowning's descriptive text highlights the location (*at Christ Church in Surry; at the London Bridge; at the River Lee),* a brief characterization of circumstances (*accidentally; by misfortune; in a ditch; in a tub of soap suds*), and occasionally some data about the drowned person (*an unknown man; two brothers; a boy*). To both capture and provide structure to the text, our transcription team fills out two fields in the DataScribe transcription form: one for the count and one for the text.
 
 {{< figure sec="/images/Fig_1_transcription_form.png" caption="Fig 1. View of the transcription form fields designed to capture the text about drowning deaths." alt="" >}} 
 
@@ -28,13 +28,14 @@ Once exported from DataScribe and loaded into a Jupyter Notebook using Pandas, t
 {{< figure sec="/images/Fig_2_exported_data_frame.png" caption="Fig 2. View of the causes of death exported data frame." alt="The image has been slightly modified to display the drowning column next to the metadata columns
 " >}} 
 
-Two approaches: n-gram tokenization and document-term-matrix
+**Two approaches: n-gram tokenization and document-term-matrix**
 
-N-gram tokenization
+*N-gram tokenization*
 
-To obtain relevant information from the dataset, I rehearsed two approaches. First, I extracted the `Drowned (Descriptive Text Column)` row by row from the causes of death data frame, and I stored each line of text into a list of strings. In this list, each line of text from the data frame represents a document, and the whole list is our text analysis corpus.
+To obtain relevant information from the dataset, I rehearsed two approaches. First, I extracted the `Drowned (Descriptive Text Column)` row by row from the causes of death data frame, and I stored each line of text into a list of strings. In this list, each line of text from the data frame represents a document, and the whole list is our text analysis corpus.  
 
-`drowned_loop = []
+```python
+drowned_loop = []
 for lab, row in lax_caus.iterrows():
     text = row['Drowned (Descriptive Text)']
     drowned_loop.append(text)
@@ -44,6 +45,224 @@ print(drowned_loop[:10])
 'One at St Mary at Rotherheth, and one in the River of Thames at St Paul at Shadwel. ', 'One by Misfortune in the River of Thames out of a Row Barge, Buried at St Alphage, and one at the Tower- Wharf, Buried at St. Ann within Alderfgate', 
 'One in Thomas at St Dustan at Stepney, and one drowned herself in the New River-Head, Buried at James Clerkenwel.', 'One accidentally in a Ditch at St George in Southwark; And one in the River of Thames at St Dunstan at Stepney', 
 'Drowned in the Thames, Buried at St Peter in Cornhil', 'Two accidentally: whereof one in a Tan-Fatt at St Olave in Southwark; and one an Infant in a Tub of Water at St Giles in the Fields; One in a Tub of Water at St Leonard in Shoreditch; and one at St Mary at Retherheth',
- 'Drowned accidentally in the Thames at St Mary at Retherheth 1']`
+ 'Drowned accidentally in the Thames at St Mary at Retherheth 1']
+ 
+Why N-grams instead of simple single word tokenization? If my goal is to identify parishes in a text, a single tokenization or 1-grams approach would fail to distinguish between St. Giles *in the Fields* and St. Giles *Without Cripplegate.* The following code block shows **an example of a tokenization process performed with [TextBlob](https://textblob.readthedocs.io/en/dev/index.html).  The `blob.noun_phrases()` method extracts nouns from a given text using the part-of-speech tagging functionality in TextBlob.  Although the method captures correctly the written abbreviation for Saint  -St- before the name of the parish -St Mary- it neither identifies the rest -at Rotherhithe- as a part of the **St. Mary Rotherhithe, nor distinguishes St. Mary Somerset from St Mary Abchurch. 
 
+```python
+blob = TextBlob(drowned_txt)
+tokens = blob.noun_phrases
+blob_tokens = pd.value_counts(np.array(tokens))
+blob_tokens.head()
+#print the first five lines
+thames        90
+drowned       43
+st mary       35
+st dunstan    32
+stepney       28
+dtype: int64
+```
 
+I was able to capture whole parish names for most parishes by using a 6-gram vectorizer. Adjusting the `n_gram parameter` in the `CountVectorizer`  class from python’s scikit-learn library allows the extraction of sequences of words. Using a sequence of 6 words I was able to retrieve both parishes and information about the circumstances surrounding the drowning event by capturing phrases like “accidentally at st andrew in holborn” or “by oversetting of his boat at”
+
+```python
+from sklearn.feature_extraction.text import CountVectorizer
+# Build the vectorizer and fit it
+drowned_vect = CountVectorizer(ngram_range=(6, 6))
+drowned_vect.fit(drowned_str)
+drowned_6_grams = drowned_vect.get_feature_names()
+#print the first 20 elements 
+drowned_6_grams[:20]
+
+['abchurch and one in the tub',
+ 'accidentally at shadwel buried at st',
+ 'accidentally at st andrew in holborn',
+ 'accidentally at st botolph without aldgate',
+ 'accidentally at st dunstan in the',
+ 'accidentally at st james at garlickhith',
+ 'accidentally at st john at wapping',
+ 'accidentally at st katharin by rhe',
+ 'accidentally at st katherine by the',
+ 'accidentally at st margaret in westminster']
+```
+
+We can pull different combinations of 6_grams from the vectorizer and then transform them (correct spelling if necessary, eliminate unnecessary words that do not account for the parish names) to finally generate counts of the locations. In this case, I withdrew 6_grams starting with the preposition “at”, which are followed by either parish names or location names. If we remove the preposition “at” we can get all the parishes in which an drowing event took place.
+
+```python
+at_parishes = []
+for n_gram in drowned_6_grams:
+    if n_gram.startswith('at'):
+        at_parishes.append(n_gram)
+parishes_no_at = []
+for item in at_parishes:
+    temp = re.sub(r'at ', '', item)
+    parishes_no_at.append(temp)
+
+locus_counts = Counter(parishes_no_at)
+print(locus_counts[)
+#print the first 20 elements of the counter object
+for item, count in locus_counts.most_common(10):
+    print(item, count)
+
+st dunstan stepney 5
+st mary rotherhithe 5
+christ church in surry 4
+st katherine the tower 4
+st andrew in holborn 3
+st olave in southwark 3
+st saviour in southwark 3
+stepney in the thames 3
+rotherhithe in the 2
+shadwel st 2
+```
+
+Finally, we can turn the Counter object with the parish counts into a Pandas data frame to start doing some calculations with it. 
+
+```python
+my_dict = dict(locus_counts)
+# transform the dictionary into a DataFrame
+df_counts = pd.DataFrame.from_dict(my_dict, orient='index', columns=['count'])
+df_counts = df_counts.reset_index()
+df_counts.head()
+
+The downside of this approach to work with the bills’ textual data is that we lose track of the weeks and the bills from which those texts where pulled from. This would make it very difficult to perform a time-to-event analysis of the disaggregated data about drowning occurrences extracted from the descriptions. In addition, the countings extracted from n-grams won’t make for a numerically accurate representation of drownings per week; they would only be of use to reveal interesting pieces of information about the drownings. 
+
+*Building a data frame and a DTM*
+
+The second approach is intended to retain the metadata from the Bills, particularly the date and week number. The goal is to build a new data set in which each row is a record, and the columns are the terms we tokenized from the whole corpus, that is, all the records present in the dataset. In this case, I transferred the text data into a Python dictionary after making a copy of the data frame and adding a new column called week_id. Python dictionaries are collections of key-value pairs that are unordered and mutable. In this dictionary the keys are the weeks, and the values are the text strings extracted from the `Drowned (Descriptive Text Column)`. 
+
+```python
+drowned_untokenized = {row['week_id']: row['drowned_text'] 
+for index, row in lax.iterrows() if not pd.isna(row['drowned_text'])}
+drowned_untokenized
+{'1701_14': 'Drowned accidentally in the River Lee, Buried at St John at Hackney',
+ '1701_15': 'One accidentally at St. Dunstan in the East, and one at Saviour in Southwark. ',
+ '1701_16': 'One at St Mary at Rotherheth, and one in the River of Thames at St Paul at Shadwel. ',
+ '1701_17': 'One by Misfortune in the River of Thames out of a Row Barge, Buried at St Alphage, and one at the Tower- Wharf, Buried at St. Ann within Alderfgate',
+ '1701_18': 'One in Thomas at St Dustan at Stepney, and one drowned herself in the New River-Head, Buried at James Clerkenwel.',
+ '1701_20': 'One accidentally in a Ditch at St George in Southwark; And one in the River of Thames at St Dunstan at Stepney',
+ '1701_21': 'Drowned in the Thames, Buried at St Peter in Cornhil',
+ '1701_22': 'Two accidentally: whereof one in a Tan-Fatt at St Olave in Southwark; and one an Infant in a Tub of Water at St Giles in the Fields; One in a Tub of Water at St Leonard in Shoreditch; and one at St Mary at Retherheth',
+ '1701_23': 'Drowned accidentally in the Thames at St Mary at Retherheth 1',
+ '1701_24': 'Drowned accidentally in the Thames at St Mary at Retherheth 1',
+ '1701_25': 'One in the Thames at St Paul at Shadwel. And two at St Martin in the Fields.',
+ '1701_26': 'Drowned accidently in the River of Thames 2. One at Thomas the Apostle. And one at St Olave in Southwark.'...}
+```
+
+The next step was to create a nested dictionary within `drowned_untokenized`, where each key is a word and the values the frequency of the word within the string. Bear in mind that this approach does not append all the text together into a list, but rather treats each drowning description as a separate item, to avoid losing sight of its week and year. Here is how I created the nested dictionary, from a corrected version of the dictionary `drowned_untokenized` named `corrected_nopunct`.  The code also includes some lines to concatenate parish names and reconstruct some nouns into single tokens. 
+
+```python
+#creating a new dictionary that stores the date, and a nested dictionary 
+#with the tokens and the countings for each token
+tokens_dict = {}
+for key, value in corrected_nopunct.items():
+    tokens = value.split()
+    value_counts = {}
+    i = 0
+    while i < len(tokens):
+        token = tokens[i]
+        if token.endswith('St') and i < len(tokens) - 1:
+            token += ' ' + tokens[i+1]
+            i += 1
+        if token.endswith('River') and i < len(tokens) - 1:
+            token += ' ' + tokens[i+1]
+            i += 1
+        if token.endswith('Christ') and i < len(tokens) - 1:
+            token += ' ' + tokens[i+1]
+            i += 1
+        if token not in stopwords:
+            if token in value_counts:
+                value_counts[token] += 1
+            else:
+                value_counts[token] = 1
+        i += 1
+    tokens_dict[key] = value_counts   
+tokens_dict
+{'1701_14': {'Drowned': 1,
+  'accidentally': 1,
+  'River Lee': 1,
+  'Buried': 1,
+  'at': 2,
+  'St John': 1,
+  'Hackney': 1},
+ '1701_15': {'One': 1,
+  'accidentally': 1,
+  'at': 2,
+  'St Dunstan': 1,
+  'East': 1,
+  'one': 1,
+  'Saviour': 1,
+  'Southwark': 1}...}
+```
+
+At this point, we have two options: we can transform the nested dictionary into a Document Term Matrix using again `CountVectorizer`from scikit-lear, or we can skip the DTM and go directly from the nested dictionary ‘tokens_dict’ to the data frame. The first approach retains the affordances of a DTM for text analysis, since it provides a more structured representation of text data that optimizes the computation of text analysis metrics and computations. This code line creates a document term matrix with each row representing a document and each column representing a term. The values in the matrix are the frequency of the corresponding term in the corresponding document.
+
+```python
+# Create a list of strings from the nested dictionary
+list_of_strings = ["".join([f"{k} " * v for k, v in tokens_dict[doc].items()]) for doc in tokens_dict]
+
+# Create the document-term matrix
+vectorizer = CountVectorizer(lowercase=False)
+dtm_dict = vectorizer.fit_transform(list_of_strings)
+vocab = vectorizer.get_feature_names()
+
+# Convert the dtm to a pandas dataframe
+df_dtm_dict = pd.DataFrame(dtm_dict.toarray(), index=tokens_dict.keys(), columns=vocab)
+dt_dtm_dict.head()
+
+The downside is that it retokenizes the reconstructed Parishes causing that the nouns that we managed to rebuild are splitted again. Since we won’t be performing any sophisticated text analysis or NLP algorithms with the textual data, and we are mostly interested in counting how many times a parish is mentioned in the drowning’s texts, building a data frame from the dictionary and skipping the matrix appears the right way forward.
+
+```python
+#creating dataframe
+df_drowned = pd.DataFrame.from_dict(tokens_dict, orient='index').fillna(0)
+df_drowned.index.name = 'week_id'
+```
+
+After cleaning and double checking the spelling of parishes, this is what the data frame looks like. 
+
+Finally, I left joined the new data frame with the original one to create a new master data frame. The master data frame preserves the metadata of each document (a record), but also serves as a document-term-matrix that includes all terms that appear in the collection of drowning descriptions withdrawn from the bill’s records. The values in this data frame are the frequencies of the terms in each of the corresponding terms. Note that most values are zero, because most words do not appear in most documents.
+
+```python
+df_drowned = pd.merge(lax, lax_counts, on='week_id', how='left')
+df_drowned
+```
+**Visualizations**
+
+With the data properly structured into a data frame in which the rows are drowning descriptions extracted from each week’s bill, and the columns are the terms, we can start creating visualizations to gain new insights about the data. The first one is a good old word cloud to get a sense of the most frequent Parishes. I created the word cloud with the `wordcloud` library, including only place names and filtering out other terms like *boy*, *child*, *man*, *person*, etc. 
+
+```python
+# create a wordcloud object
+wc = WordCloud(width=480, height=480, background_color="white", colormap="viridis", max_words = 150)
+
+# generate the wordcloud from the DTM
+wc.generate_from_frequencies(data_copy.sum(axis=0))
+
+# display the wordcloud
+fig, ax = plt.subplots(figsize=(20, 10))
+plt.imshow(wc, interpolation='bilinear')
+plt.axis("off")
+plt.savefig('word_cloud.png')
+plt.show()
+```
+I took the 10 most frequent terms computed by the word cloud, and I created two biannual data sets (one with 1701-1702 and another with 1703-1704) only containing those 10 terms to track them weekly. The idea is to get a sense of the weekly distribution of the locations where immersion deaths took place. Having the week_id is useful because we can track down weeks in the dictionary and check the original line of text.In both data frames, the most frequent term is, unsurprisingly, Thames. For the 1701-1702 data, Thames appeared 3 times in the week 21 of 1702. 
+
+```python
+'1702_21': 'One accidentally in the River of **Thames** at Alhallows 
+the Less One accidentally in a Pond of Water 
+at St Olave in Southwark Two accidentally in the 
+River of **Thames** at St John Wapping One in the River of **Thames** 
+at St Paul at Shadwel’
+```
+
+In the 1703-704, the term Thames appeared four times in the 34th week of 1704. 
+
+```python
+{'1704_34': 'One in the **Thames** at Christ Church in Surry 
+One in the **Thames** at St Dunstan at Stepney One accidentally in 
+the **Thames** at St John at Wapping And one in the **Thames** at St Margaret 
+in Westminster'}
+```
+
+**Conclusion and Next Steps**
+
+Text analysis provides useful techniques to dive into the lines of texts the Death by Numbers project is generating. Although for this blog I only worked with four years of data, we will eventually have textual descriptions from 1636 to 1754: that’s when text analysis will come in handy. By extracting the locations of not only drownings, but also suicides, killings and found dead, it will be possible to use GIS to build a spatial representation of these unfortunate events. By mixing the single token with the N-gram approach, we might also be able to provide context for those deadly occurrences. For the moment, we are only interested in what these texts are telling about drownings and sudden deaths in Early Modern London, and not in the patterns of the texts themselves. That does not mean that, in the future, and provided that we have a larger amount of text, we can focus on how the parish clerks wrote about dying in a water incident.
