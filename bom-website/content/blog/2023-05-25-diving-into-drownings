@@ -21,4 +21,4 @@ Drowned into Data
 
 The Death by Numbers’s transcription process of the causes of death in DataScribe creates a dataset in which each record of a weekly bill is a row and all causes of death are columns. As mentioned above, drowning data appears in the Bills as an unstructured text that includes a count of the total weekly immersion deaths, and a description of the drowning events. Other causes of death, like killed, executed, suicide and found dead, followed the same twofold –counts and text– recording structure in the Bills. Drowning’s descriptive text highlights the location (at Christ Church in Surry; at the London Bridge; at the River Lee), a brief characterization of circumstances (accidentally; by misfortune; in a ditch; in a tub of soap suds), and occasionally some data about the drowned person (an unknown man; two brothers; a boy). To both capture and provide structure to the text, our transcription team fills out two fields in the DataScribe transcription form: one for the count and one for the text.
 
-{{< figure sec="/images/" caption="" alt="" >}}
+{{< figure sec="/images/" caption="" alt="" >}} 
