@@ -93,12 +93,12 @@ Promise.all(urls.map((url) => d3.json(url)))
 
 
     // Now we can initialize the visualization.
-    const chart = new PlagueBillsBarChart(
-      "#barchart",
-      { plague: dataArray },
-      { width: 960, height: 500 }
-    );
-    chart.render();
+    // const chart = new PlagueBillsBarChart(
+    //   "#barchart",
+    //   { plague: dataArray },
+    //   { width: 960, height: 500 }
+    // );
+    // chart.render();
 
     const multiplechart = new PlagueBillsBarChartWeekly(
       "#barchart-multiple",
