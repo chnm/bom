@@ -2469,8 +2469,8 @@ a {
   height: 2.5rem;
 }
 
-.max-h-56 {
-  max-height: 14rem;
+.h-40 {
+  height: 10rem;
 }
 
 .min-h-screen {
@@ -2512,6 +2512,10 @@ a {
 
 .w-44 {
   width: 11rem;
+}
+
+.w-60 {
+  width: 15rem;
 }
 
 .max-w-3xl {
@@ -2795,22 +2799,6 @@ a {
 
 .pt-5 {
   padding-top: 1.25rem;
-}
-
-.pt-2 {
-  padding-top: 0.5rem;
-}
-
-.pr-0 {
-  padding-right: 0px;
-}
-
-.pb-0 {
-  padding-bottom: 0px;
-}
-
-.pl-0 {
-  padding-left: 0px;
 }
 
 .text-left {
