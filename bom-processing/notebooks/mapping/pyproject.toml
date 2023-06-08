@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "mapping notebook"
+version = "0.4.0"
+description = "Mapping notebook for the Bills of Mortality"
+authors = ["Jason Heppler <jason.heppler@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pandas = "^2.0.1"
+geopandas = "^0.13.0"
+matplotlib = "^3.7.1"
+folium = "^0.14.0"
+contextily = "^1.3.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

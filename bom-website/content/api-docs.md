@@ -9,7 +9,7 @@ url: /api/
 
 The Bills of Mortality API is organized around [REST](https://en.wikipedia.org/wiki/Representational_state_transfer) and returns JSON-encoded responses from our PostgreSQL database using standard HTTP response codes and verbs. 
 
-The API currently provides three endpoints for returning data.
+The API currently provides [three data endpoints](https://data.chnm.org) for returning data.
 
 The first endpoint, `bills`, accepts three required parameters: the start year, the end year, and the bill type (Weekly or General). This is built this way to operate the year range slider and specific bills to display in the web application. As you adjust the year slider, the new year values are stored until "Apply Filters" is clicked, which then passes stored data to the endpoint and fetches the updated parameters. Optionally, you can include a count type parameter (Buried or Plague) to filter specific values.
 
