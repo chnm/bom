@@ -16,7 +16,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 <div id="row">
     <h3>Causes of Death by Year</h3>
     <div class="loading_chart">Loading data...</div>
-    <svg id="chart" width="100%"></svg>
+    <svg id="chart"></svg>
     <figcaption>This figure updates regularly as new data is transcribed and added to the database.</figcaption>
 </div>
 

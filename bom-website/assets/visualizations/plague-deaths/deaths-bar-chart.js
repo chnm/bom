@@ -14,9 +14,8 @@ export default class DeathsChart extends Visualization {
   render() {
     const plot = Plot.plot({
       width: 800,
-      height: 1100,
+      height: 2000,
       marginLeft: 150,
-      marginBottom: 50,
       x: {
         tickFormat: d3.format("d")
       },
