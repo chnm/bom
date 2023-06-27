@@ -12,12 +12,22 @@ export default class WordCloudChart extends Visualization {
 
   // Draw the plot
   render() {
-    const causes = this.data.causes.map((d) => {
-      return { cause: d.death, count: d.count };
-    });
-    
+    // causes needs to be an array of objects with a text and size property, 
+    // which will group each word together and add together each of their d.count
+    // values. To do this we'll loop through the data and create a new object
+    // for each unique word, and add the count to the size property. We use
+    // d3.rollups to do this.
+    const causes = d3.rollups(
+      this.data.causes,
+      (v) => d3.sum(v, (d) => d.count),
+      (d) => d.death,
+    ).map(([text, size]) => ({ text, size }));
+
     const wordcloud = WordCloud(causes, {
-      word: (d) => d.cause,
+      size: (group) => {
+        return group.reduce((acc, cur) => acc + cur.size * 0.01, 0);
+      },
+      word: (d) => d.text,
     });
 
     d3.select(".loading_chart").remove();
@@ -35,9 +45,9 @@ function WordCloud(text, {
   marginLeft = 0, // left margin, in pixels
   width = 640, // outer width, in pixels
   height = 400, // outer height, in pixels
-  maxWords = 900, // maximum number of words to extract from the text
+  maxWords = 1200, // maximum number of words to extract from the text
   fontFamily = "serif", // font family
-  fontScale = 15, // base font size
+  fontScale = 14, // base font size
   padding = 0, // amount of padding between the words (in pixels)
   rotate = 0, // a constant or function to rotate the words
 } = {}) {

@@ -1,12 +1,12 @@
 ---
-title: "Wordcloud"
-created: 2023-03-27
-updated: 2023-03-28
+title: "Causes of Death as a Cloud"
+created: 2023-06-27
+updated: 2023-06-27
 abstract: "Charting the causes of death"
 script: visualizations/wordcloud/main.js
 styles: visualizations/wordcloud/style.css
 layout: visualizations
-thumbnail: plaguechart.png
+thumbnail: wordcloud.png
 thumbdesc: "A screenshot showing..."
 author:
 ---
