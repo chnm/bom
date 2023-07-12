@@ -11,7 +11,7 @@ thumbdesc: "A screenshot showing..."
 author:
 ---
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Aliquet enim tortor at auctor urna nunc id cursus. Nunc mi ipsum faucibus vitae. Tortor id aliquet lectus proin nibh. Tincidunt eget nullam non nisi est sit amet facilisis. Varius quam quisque id diam vel quam elementum pulvinar. Et netus et malesuada fames ac turpis egestas maecenas. A arcu cursus vitae congue mauris rhoncus aenean vel elit. Pharetra massa massa ultricies mi quis. Faucibus pulvinar elementum integer enim. Pellentesque eu tincidunt tortor aliquam nulla. Adipiscing elit pellentesque habitant morbi tristique senectus et. Lorem ipsum dolor sit amet consectetur adipiscing.
+This visualization illustrates the causes of death over time. The darker the shade of red indicates a higher number of deaths for a particular cause. Each column corresponds to a year in the database (listed on the x-axis label at the bottom of the graphic) and it's corresponding cause (on the y-axis).This graphic updates regularly as new bills are added to the database.
 
 <div id="row">
     <h3>Causes of Death by Year</h3>
