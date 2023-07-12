@@ -451,8 +451,7 @@ export default {
       this.showInstructions = true;
     },
 
-    // close instructions
-    closeInstructionsModal() {
+    close() {
       this.showInstructions = false;
     },
 

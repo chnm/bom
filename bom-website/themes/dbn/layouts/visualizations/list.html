@@ -1,10 +1,23 @@
 {{ define "main" }}
 <main>
-<div class="flex min-h-screen items-center justify-start bg-white mx-auto w-full lg:max-w-screen-lg sm:max-w-screen-sm md:max-w-screen-md">
-    <div class="mx-auto w-full max-w-lg text-center">
+<div class="flex min-h-screen pt-5 justify-start bg-white mx-auto w-full lg:max-w-screen-lg sm:max-w-screen-sm md:max-w-screen-md">
+    <div class="mx-auto w-full prose prose-lg">
       <h2 class="text-4xl font-medium">Visualizations</h2>
       {{.Content}}
+      <div id="content" class="posts">
+          <div class="grid grid-cols-12 sm:px-5 gap-x-8 gap-y-16">
+          {{ range .Pages }}
+          <div class="flex flex-col items-start col-span-10 space-y-3 sm:col-span-6 xl:col-span-4">
+            <a href="{{.Permalink}}" class="image-link"><img class="h-40 w-60 object-cover mb-2 overflow-hidden rounded-lg shadow-sm" src="/images/viz/{{.Params.thumbnail}}"
+                title="{{.Params.thumbdesc}}" /></a>
+            <h2 class="text-lg font-bold sm:text-xl md:text-xl"><a href="{{.Permalink}}">{{.Title}}</a></h2>
+            <p class="text-sm text-black">{{.Params.abstract}}<span class="inline text-xs font-medium mt-0 mr-1 mb-0 ml-1">· {{ .Params.created | dateFormat "January 2, 2006" }}</span></p>
+          </p>
+          </div>
+          {{end}}
+        </div>
+      </div>
+      </div>
     </div>
-  </div>
 </main>
 {{ end }}

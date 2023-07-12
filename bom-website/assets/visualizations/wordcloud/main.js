@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import DeathsChart from "visualizations/plague-deaths/deaths-bar-chart";
+import WordCloudChart from "visualizations/wordcloud/wordcloud";
 
 // Load data
 const urls = [
@@ -11,12 +11,12 @@ urls.forEach((url) => promises.push(d3.json(url)));
 // Once the data is loaded, initialize the visualization.
 Promise.all(urls.map((url) => d3.json(url)))
   .then((data) => {
-    const deathschart = new DeathsChart(
+    const wordcloud = new WordCloudChart(
       "#chart",
       { causes: data[0] },
-      { width: 960, height: 2000 }
+      { width: 800, height: 400 }
     );
-    deathschart.render();
+    wordcloud.render();
   })
   .catch((error) => {
     console.error("There was an error fetching the data.", error);

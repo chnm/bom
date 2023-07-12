@@ -1,0 +1,28 @@
+:root {
+    --color-orange: #c75000ff;
+    --color-white: #f7f4f3;
+    --color-blue: #9eb3c2;
+    --color-purple: #7f5a83;
+    --color-red: #ef3054;
+    --color-black: #2e282a;
+    --color-green: #3E3E32;
+    --color-yellow: #B1A569;
+    --color-yellow-dark: #7D744A;
+    --color-link-primary: #0060b1;
+    --color-link-hover: #005398;
+  }
+  
+  .tooltip {
+    background: rgba(101, 104, 109, 0.9);
+    border-radius: .2rem;
+    color: #fff;
+    display: inline-block;
+    font-size: 12px;
+    max-width: 400px;
+    padding: .2rem .4rem;
+    position: absolute;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    z-index: 300;
+    visibility: hidden;
+    }

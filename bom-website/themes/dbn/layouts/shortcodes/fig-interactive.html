@@ -1,0 +1,20 @@
+<figure>
+	{{ if .Get "title" }}
+	<h4>{{ .Get "title" | markdownify }}</h4>
+	{{ end }}
+	{{ $id := .Get "id" }}
+	<div id="{{ $id }}" class="interactive-fig"></div>
+	<figcaption>
+		<p>{{ .Get "caption" | markdownify }}</p>
+	</figcaption>
+</figure>
+
+{{ $path := printf "visualizations/%s.js" $id }}
+{{ $opts := dict "targetPath" $path "minify" "true" "params" (dict "id" $id)}}
+{{ $script := resources.Get (.Get "script") | js.Build $opts  }}
+<script type="text/javascript" src="{{ $script.Permalink }}" defer></script>
+
+{{ if .Get "style" }}
+{{ $style := resources.Get (.Get "style") | resources.Minify | resources.Fingerprint }}
+<link rel="stylesheet" href="{{ $style.Permalink }}">
+{{ end}}
