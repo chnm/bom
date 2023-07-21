@@ -14,17 +14,23 @@ library(tidyverse)
 # Each of these are separate DataScribe exports that we are preparing for
 # the PostgreSQL database.
 # ----------------------------------------------------------------------
-raw_wellcome_weekly <- read_csv("bom-data/data-csvs/2022-04-06-1669-1670-Wellcome-weeklybills-parishes.csv")
-raw_wellcome_causes <- read_csv("bom-data/data-csvs/2022-04-06-Wellcome-weeklybills-causes.csv")
+# General
 raw_millar_general <- read_csv("bom-data/data-csvs/2022-04-06-millar-generalbills-postplague-parishes.csv")
 
-raw_laxton_weekly <- read_csv("bom-data/data-csvs/2023-03-03-Laxton-weeklybills-parishes.csv")
-raw_laxton_1700_causes <- read_csv("bom-data/data-csvs/2022-06-15-Laxton-1700-weeklybills-causes.csv")
-raw_laxton_causes <- read_csv("bom-data/data-csvs/2022-11-02-Laxton-weeklybills-causes.csv")
-
+# Weekly
+raw_wellcome_weekly <- read_csv("bom-data/data-csvs/2022-04-06-1669-1670-Wellcome-weeklybills-parishes.csv")
+raw_laxton_weekly <- read_csv("bom-data/data-csvs/2023-07-18-Laxton-weeklybills-parishes.csv")
 raw_bodleian <- read_csv("bom-data/data-csvs/2023-02-22-BodleianV1-weeklybills-parishes.csv")
 raw_bodleian_v2 <- read_csv("bom-data/data-csvs/2023-03-28-BodleianV2-weeklybills-parishes.csv")
 raw_bodleian_v3 <- read_csv("bom-data/data-csvs/2023-04-19-BodleianV3-weeklybills-parishes.csv")
+raw_bodleian_blv1 <- read_csv("bom-data/data-csvs/2023-07-18-BLV1-weeklybills-parishes.csv")
+raw_bodleian_blv2 <- read_csv("bom-data/data-csvs/2023-07-18-BLV2-weeklybills-parishes.csv")
+
+# Causes
+raw_laxton_1700_causes <- read_csv("bom-data/data-csvs/2022-06-15-Laxton-1700-weeklybills-causes.csv")
+raw_laxton_causes <- read_csv("bom-data/data-csvs/2022-11-02-Laxton-weeklybills-causes.csv")
+raw_wellcome_causes <- read_csv("bom-data/data-csvs/2022-04-06-Wellcome-weeklybills-causes.csv")
+raw_bodliean_causes <- read_csv("bom-data/data-csvs/2023-07-18-BodleianV1-weeklybills-causes.csv")
 
 # ----------------------------------------------------------------------
 # Lookup tables
