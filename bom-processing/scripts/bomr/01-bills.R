@@ -389,6 +389,16 @@ bodleian_v2_weekly_transformed <- bodleian_weekly_cleaned |>
 # Now we join bodleian_weekly_transformed with bodleian_weekly_missing_illegible
 bodleian_weekly_v2 <- bind_rows(bodleian_weekly_transformed, bodleian_weekly_missing_transform, bodleian_weekly_illegible_transform)
 
+## Wellcome data prep ----------------------------------------
+wellcome_weekly_illegible <- `1669_1670_Wellcome_weeklybills_parishes` |>
+  select(!1:4) |> 
+  pivot_longer(8:285, names_to = "parish_name", values_to = "count" )
+
+wellcome_weekly_illegible <- wellcome_weekly_illegible |> 
+  mutate(missing = FALSE) |> 
+  mutate(illegible = FALSE)
+wellcome_weekly <- wellcome_weekly_illegible
+
 # Lowercase column names and replace spaces with underscores.
 names(laxton_weekly) <- tolower(names(laxton_weekly))
 names(laxton_weekly) <- gsub(" ", "_", names(laxton_weekly))
@@ -399,12 +409,13 @@ names(bodleian_weekly_v1) <- gsub(" ", "_", names(bodleian_weekly_v1))
 names(bodleian_weekly_v2) <- tolower(names(bodleian_weekly_v2))
 names(bodleian_weekly_v2) <- gsub(" ", "_", names(bodleian_weekly_v2))
 
-
 # The unique ID column is mis-named in the Laxton data so we fix it here
 names(laxton_weekly)[3] <- "unique_identifier"
+names(wellcome_weekly)[3] <- "unique_identifier"
 names(bodleian_weekly_v1)[3] <- "unique_identifier"
 names(bodleian_weekly_v2)[3] <- "unique_identifier"
 
+# Combine all weekly data into a single frame
 weekly_bills <- rbind(wellcome_weekly, laxton_weekly, bodleian_weekly_v1, bodleian_weekly_v2) |>
   mutate(bill_type = "Weekly")
 
@@ -446,7 +457,7 @@ plague_tmp <- filtered_entries |>
 # by parish.
 christenings_tmp <- christenings_tmp  |> 
     mutate(joinid = paste0(start_day, start_month, end_day, end_month, year))
-write_csv(christenings_tmp, "bom-processing/scripts/bomr/data/christenings_by_parish.csv", na = "")
+write_csv(christenings_tmp, "data/christenings_by_parish.csv", na = "")
 
 filtered_entries <- filtered_entries |>
   dplyr::filter(
@@ -573,7 +584,7 @@ parishes_unique <- parishes_tmp |>
   mutate(parish_name = str_trim(parish_name))
 
 # Combine unique parishes with the canonical Parish name list.
-parish_canonical <- read_csv("bom-processing/scripts/bomr/data/London Parish Authority File.csv") |>
+parish_canonical <- read_csv("data/London Parish Authority File.csv") |>
   select(`Canonical DBN Name`, `Omeka Parish Name`) |>
   mutate(canonical_name = `Canonical DBN Name`, parish_name = `Omeka Parish Name`) |>
   select(canonical_name, parish_name)
@@ -841,6 +852,10 @@ general_bills <- general_bills |>
 general_bills <- general_bills |>
   select(-start_year, -end_year)
 
+general_bills <- general_bills |> 
+  mutate(missing = FALSE) |> 
+  mutate(illegible = FALSE)
+
 all_bills <- rbind(weekly_bills, general_bills)
 all_bills <- all_bills |> mutate(id = row_number())
 
@@ -851,14 +866,13 @@ all_bills <- all_bills |> mutate(id = row_number())
 # Clean up the R environment
 rm(
   BodleianV1_weeklybills_parishes,
-  BodleianV1_weeklybills_parishes_v2,
-  BodleianV1_weeklybills_parishes_v3,
+  BodleianV2_weeklybills_parishes_v2,
   Laxton_1700_weeklybills_causes,
   Laxton_weeklybills_causes,
   Laxton_weeklybills_parishes,
   millar_generalbills_postplague_parishes,
   Wellcome_weeklybills_causes,
-  1669_1670_Wellcome_weeklybills_parishes
+  `1669_1670_Wellcome_weeklybills_parishes`
 )
 
 rm(
@@ -881,24 +895,23 @@ rm(
   deaths_unique_wellcome,
   deaths_unique_laxton_1700,
   deaths_unique_laxton,
-  bodleian_weekly,
+  bodleian_weekly_v1,
   bodleian_weekly_v2,
-  bodleian_weekly_v3,
   all_laxton_causes,
   all_laxton_weekly_causes
 )
 
 # Write data to csv: causes of death
-write_csv(causes_wellcome, "bom-processing/scripts/bomr/data/wellcome_causes.csv", na = "")
-write_csv(causes_laxton, "bom-processing/scripts/bomr/data/laxton_causes.csv", na = "")
-write_csv(causes_laxton_1700, "bom-processing/scripts/bomr/data/laxton_causes_1700.csv", na = "")
-write_csv(deaths_unique, "bom-processing/scripts/bomr/data/deaths_unique.csv", na = "")
-write_csv(deaths_long, na = "", "bom-processing/scripts/bomr/data/causes_of_death.csv")
+write_csv(causes_wellcome, "data/wellcome_causes.csv", na = "")
+write_csv(causes_laxton, "data/laxton_causes.csv", na = "")
+write_csv(causes_laxton_1700, "data/laxton_causes_1700.csv", na = "")
+write_csv(deaths_unique, "data/deaths_unique.csv", na = "")
+write_csv(deaths_long, na = "", "data/causes_of_death.csv")
 
 # Write data to csv: parishes and bills
-write_csv(weekly_bills, "bom-processing/scripts/bomr/data/bills_weekly.csv", na = "")
-write_csv(general_bills, "bom-processing/scripts/bomr/data/bills_general.csv", na = "")
-write_csv(all_bills, "bom-processing/scripts/bomr/data/all_bills.csv", na = "")
-write_csv(parishes_unique, "bom-processing/scripts/bomr/data/parishes_unique.csv", na = "")
-write_csv(week_unique, "bom-processing/scripts/bomr/data/week_unique.csv", na = "")
-write_csv(year_unique, "bom-processing/scripts/bomr/data/year_unique.csv", na = "")
+write_csv(weekly_bills, "data/bills_weekly.csv", na = "")
+write_csv(general_bills, "data/bills_general.csv", na = "")
+write_csv(all_bills, "data/all_bills.csv", na = "")
+write_csv(parishes_unique, "data/parishes_unique.csv", na = "")
+write_csv(week_unique, "data/week_unique.csv", na = "")
+write_csv(year_unique, "data/year_unique.csv", na = "")
