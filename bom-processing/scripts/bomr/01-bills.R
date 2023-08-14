@@ -5,7 +5,7 @@
 #
 # Jason A. Heppler | jason@jasonheppler.org
 # Roy Rosenzweig Center for History and New Media
-# Updated: 2023-04-19
+# Updated: 2023-08-14
 
 library(tidyverse)
 
@@ -14,23 +14,27 @@ library(tidyverse)
 # Each of these are separate DataScribe exports that we are preparing for
 # the PostgreSQL database.
 # ----------------------------------------------------------------------
-# General
-raw_millar_general <- read_csv("bom-data/data-csvs/2022-04-06-millar-generalbills-postplague-parishes.csv")
+## The following reads each CSV file in our directory and creates a ew variable 
+## for each one based on its filename. Then, use tidyverse::read_csv to read the
+## CSV file and assign it to a variable.
 
-# Weekly
-raw_wellcome_weekly <- read_csv("bom-data/data-csvs/2022-04-06-1669-1670-Wellcome-weeklybills-parishes.csv")
-raw_laxton_weekly <- read_csv("bom-data/data-csvs/2023-07-18-Laxton-weeklybills-parishes.csv")
-raw_bodleian <- read_csv("bom-data/data-csvs/2023-02-22-BodleianV1-weeklybills-parishes.csv")
-raw_bodleian_v2 <- read_csv("bom-data/data-csvs/2023-03-28-BodleianV2-weeklybills-parishes.csv")
-raw_bodleian_v3 <- read_csv("bom-data/data-csvs/2023-04-19-BodleianV3-weeklybills-parishes.csv")
-raw_bodleian_blv1 <- read_csv("bom-data/data-csvs/2023-07-18-BLV1-weeklybills-parishes.csv")
-raw_bodleian_blv2 <- read_csv("bom-data/data-csvs/2023-07-18-BLV2-weeklybills-parishes.csv")
+  # Get all the CSV files in the directory
+  files <- list.files("../../../bom-data/data-csvs", pattern = "*.csv", full.names = TRUE)
+  # Loop through the files and assign them to a variable based on the csv filename
+  for (file in files) {
+    # Get the filename without the path
+    filename <- basename(file)
+    # Remove the .csv extension
+    filename <- str_remove(filename, ".csv")
+    # Remove the prepended date string yyyy-mm-dd from the filename so it's not
+    # included as part of the variable.
+    filename <- str_remove(filename, "^[0-9]{4}-[0-9]{2}-[0-9]{2}-")
+    # Replace any dashes with underscores
+    filename <- gsub("-", "_", filename)
+    # Read the CSV file and assign it to a variable
+    assign(filename, read_csv(file))
+  }
 
-# Causes
-raw_laxton_1700_causes <- read_csv("bom-data/data-csvs/2022-06-15-Laxton-1700-weeklybills-causes.csv")
-raw_laxton_causes <- read_csv("bom-data/data-csvs/2022-11-02-Laxton-weeklybills-causes.csv")
-raw_wellcome_causes <- read_csv("bom-data/data-csvs/2022-04-06-Wellcome-weeklybills-causes.csv")
-raw_bodliean_causes <- read_csv("bom-data/data-csvs/2023-07-18-BodleianV1-weeklybills-causes.csv")
 
 # ----------------------------------------------------------------------
 # Lookup tables
@@ -43,7 +47,7 @@ raw_bodliean_causes <- read_csv("bom-data/data-csvs/2023-07-18-BodleianV1-weekly
 # ======================================================================
 # We create a lookup table that includes the unique identifier,
 # the descriptive text, Start Day, Start Month, End Day, End Month, and death type.
-lookup_wellcome <- raw_wellcome_causes |>
+lookup_wellcome <- Wellcome_weeklybills_causes |>
   select(!1:5) |>
   select(
     contains("(Descriptive Text)"), 
@@ -87,7 +91,7 @@ lookup_wellcome <- raw_wellcome_causes |>
 # We create a lookup table that includes the unique identifier,
 # the descriptive text, Start Day, Start Month, End Day, End Month,
 # and death type.
-lookup_laxton_1700 <- raw_laxton_1700_causes |>
+lookup_laxton_1700 <- Laxton_1700_weeklybills_causes |>
   select(!1:4) |>
   select(
     contains("(Descriptive Text)"), 
@@ -131,7 +135,7 @@ lookup_laxton_1700 <- raw_laxton_1700_causes |>
 # We create a lookup table that includes the unique identifier,
 # the descriptive text, Start Day, Start Month, End Day, End Month, 
 # and death type.
-lookup_laxton <- raw_laxton_causes |>
+lookup_laxton <- Laxton_weeklybills_causes |>
   select(!1:4) |>
   select(
     contains("(Descriptive Text)"), 
@@ -173,7 +177,7 @@ lookup_laxton <- raw_laxton_causes |>
 # ----------------------------------------------------------------------
 # Types of death table
 # ----------------------------------------------------------------------
-causes_wellcome <- raw_wellcome_causes |>
+causes_wellcome <- Wellcome_weeklybills_causes |>
   select(!1:5) |>
   select(!contains("(Descriptive")) |>
   pivot_longer(8:109, names_to = "death", values_to = "count" ) |>
@@ -199,7 +203,7 @@ names(causes_wellcome) <- tolower(names(causes_wellcome))
 names(causes_wellcome) <- gsub(" ", "_", names(causes_wellcome))
 
 ### Laxton causes for 1700 -----------------------------------------------
-causes_laxton_1700 <- raw_laxton_1700_causes |>
+causes_laxton_1700 <- Laxton_1700_weeklybills_causes |>
   select(!1:4) |>
   select(!contains("(Descriptive")) |>
   pivot_longer(8:125, names_to = "death", values_to = "count" ) |>
@@ -217,7 +221,7 @@ names(causes_laxton_1700) <- tolower(names(causes_laxton_1700))
 names(causes_laxton_1700) <- gsub(" ", "_", names(causes_laxton_1700))
 
 ### Laxton causes for pre-1700 -----------------------------------------------
-causes_laxton <- raw_laxton_causes |>
+causes_laxton <- Laxton_weeklybills_causes |>
   select(!1:4) |>
   select(!contains("(Descriptive")) |>
   mutate(across( 8:125, as.character )) |>
@@ -269,45 +273,86 @@ deaths_unique <- deaths_unique |>
 # ----------------------------------------------------------------------
 # Weekly Bills
 # ----------------------------------------------------------------------
-laxton_weekly <- raw_laxton_weekly |>
+# To handle this data, we need to create two separate tables and then rejoin them.
+# The first table removes any is_missing and is_illegible columns. The second
+# includes both of those values. We then rejoin them and create a single table
+# that includes all of the data.
+laxton_weekly_illegible <- Laxton_weeklybills_parishes |>
+  select(!1:4) |>
+  select(-c(2, 3, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18, 20, 21)) |> 
+  select(`Year`, `Week`, `Unique ID`, `Start Day`, `Start Month`, `End Day`, `End month`, contains("is_illegible"))
+laxton_weekly_missing <- Laxton_weeklybills_parishes |>
+  select(!1:4) |>
+  select(-c(2, 3, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18, 20, 21)) |> 
+  select(`Year`, `Week`, `Unique ID`, `Start Day`, `Start Month`, `End Day`, `End month`, contains("is_missing"))
+
+# Now, we pivot the data from wide to long format.
+laxton_weekly_illegible_transform <- laxton_weekly_illegible |>
+  pivot_longer(8:167, names_to = "illegible_missing", values_to = "illegible") |> 
+  select(!`illegible_missing`) |>
+  # change NA to false and 1 to true
+  mutate(illegible = ifelse(is.na(illegible), FALSE, TRUE))
+
+laxton_weekly_missing_transform <- laxton_weekly_missing |>
+  pivot_longer(8:167, names_to = "illegible_missing", values_to = "missing") |> 
+  select(!`illegible_missing`) |> 
+  # change NA to false and 1 to true
+  mutate(missing = ifelse(is.na(missing), FALSE, TRUE))
+
+# Then, we set up the table without the illegible or missing values
+laxton_weekly_illegible_cleaned <- Laxton_weeklybills_parishes |>
   select(-c(starts_with("is_illegible")))
-laxton_weekly <- laxton_weekly |>
+laxton_weekly_cleaned <- laxton_weekly_illegible_cleaned |>
   select(-c(starts_with("is_missing")))
 
-laxton_weekly <- laxton_weekly |>
+laxton_weekly_transformed <- laxton_weekly_cleaned |> 
   select(!1:4) |>
   pivot_longer(8:167, names_to = "parish_name", values_to = "count" )
 
-wellcome_weekly <- raw_wellcome_weekly |>
-  select(!1:4) |>
-  pivot_longer(8:285, names_to = "parish_name", values_to = "count" )
+# Now we join laxton_weekly_transformed with laxton_weekly_missing_illegible
+laxton_weekly <- bind_rows(laxton_weekly_transformed, laxton_weekly_missing_transform, laxton_weekly_illegible_transform)
 
-bodleian_weekly <- raw_bodleian |>
+rm(laxton_weekly_illegible)
+rm(laxton_weekly_illegible_transform)
+rm(laxton_weekly_missing)
+rm(laxton_weekly_missing_transform)
+
+## Bodleian V1 data prep
+bodleian_weekly_illegible <- BodleianV1_weeklybills_parishes |>
+  select(!1:4) |>
+  select(-c(2, 3, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18, 20, 21)) |> 
+  select(`Year`, `Week`, `Unique ID`, `Start Day`, `Start Month`, `End Day`, `End month`, contains("is_illegible"))
+bodleian_weekly_missing <- BodleianV1_weeklybills_parishes |>
+  select(!1:4) |>
+  select(-c(2, 3, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18, 20, 21)) |> 
+  select(`Year`, `Week`, `Unique ID`, `Start Day`, `Start Month`, `End Day`, `End month`, contains("is_missing"))
+
+# Now, we pivot the data from wide to long format.
+bodleian_weekly_illegible_transform <- bodleian_weekly_illegible |>
+  pivot_longer(8:266, names_to = "illegible_missing", values_to = "illegible") |> 
+  select(!`illegible_missing`) |>
+  # change NA to false and 1 to true
+  mutate(illegible = ifelse(is.na(illegible), FALSE, TRUE))
+
+bodleian_weekly_missing_transform <- bodleian_weekly_missing |>
+  pivot_longer(8:266, names_to = "illegible_missing", values_to = "missing") |> 
+  select(!`illegible_missing`) |> 
+  # change NA to false and 1 to true
+  mutate(missing = ifelse(is.na(missing), FALSE, TRUE))
+
+# Then, we set up the table without the illegible or missing values
+bodleian_weekly_illegible_cleaned <- BodleianV1_weeklybills_parishes |>
   select(-c(starts_with("is_illegible")))
-bodleian_weekly <- bodleian_weekly |>
+bodleian_weekly_cleaned <- bodleian_weekly_illegible_cleaned |>
   select(-c(starts_with("is_missing")))
 
-bodleian_weekly <- bodleian_weekly |>
+bodleian_weekly_transformed <- bodleian_weekly_cleaned |> 
   select(!1:4) |>
   pivot_longer(8:266, names_to = "parish_name", values_to = "count" )
 
-bodleian_weekly_v2 <- raw_bodleian_v2 |>
-  select(-c(starts_with("is_illegible")))
-bodleian_weekly_v2 <- bodleian_weekly_v2 |>
-  select(-c(starts_with("is_missing")))
+# Now we join bodleian_weekly_transformed with bodleian_weekly_missing_illegible
+bodleian_weekly_v1 <- bind_rows(bodleian_weekly_transformed, bodleian_weekly_missing_transform, bodleian_weekly_illegible_transform)
 
-bodleian_weekly_v2 <- bodleian_weekly_v2 |>
-  select(!1:4) |>
-  pivot_longer(8:266, names_to = "parish_name", values_to = "count" )
-
-bodleian_weekly_v3 <- raw_bodleian_v3 |>
-  select(-c(starts_with("is_illegible")))
-bodleian_weekly_v3 <- bodleian_weekly_v3 |>
-  select(-c(starts_with("is_missing")))
-
-bodleian_weekly_v3 <- bodleian_weekly_v3 |>
-  select(!1:4) |>
-  pivot_longer(8:83, names_to = "parish_name", values_to = "count" )
 
 # Lowercase column names and replace spaces with underscores.
 names(laxton_weekly) <- tolower(names(laxton_weekly))
@@ -328,7 +373,7 @@ names(bodleian_weekly)[3] <- "unique_identifier"
 names(bodleian_weekly_v2)[3] <- "unique_identifier"
 names(bodleian_weekly_v3)[3] <- "unique_identifier"
 
-weekly_bills <- rbind( wellcome_weekly, laxton_weekly, bodleian_weekly, bodleian_weekly_v2, bodleian_weekly_v3 ) |>
+weekly_bills <- rbind(wellcome_weekly, laxton_weekly, bodleian_weekly, bodleian_weekly_v2, bodleian_weekly_v3 ) |>
   mutate(bill_type = "Weekly")
 
 weekly_bills <- weekly_bills |>
@@ -453,7 +498,7 @@ parishes_unique <- weekly_bills |>
 # General Bills
 # ----------------------------------------------------------------------
 
-millar_long <- raw_millar_general |>
+millar_long <- millar_generalbills_postplague_parishes |>
   select(!1:4) |>
   pivot_longer(8:168,
     names_to = "parish_name",
@@ -773,15 +818,15 @@ all_bills <- all_bills |> mutate(id = row_number())
 
 # Clean up the R environment
 rm(
-  raw_bodleian,
-  raw_bodleian_v2,
-  raw_bodleian_v3,
-  raw_laxton_1700_causes,
-  raw_laxton_causes,
-  raw_laxton_weekly,
-  raw_millar_general,
-  raw_wellcome_causes,
-  raw_wellcome_weekly
+  BodleianV1_weeklybills_parishes,
+  BodleianV1_weeklybills_parishes_v2,
+  BodleianV1_weeklybills_parishes_v3,
+  Laxton_1700_weeklybills_causes,
+  Laxton_weeklybills_causes,
+  Laxton_weeklybills_parishes,
+  millar_generalbills_postplague_parishes,
+  Wellcome_weeklybills_causes,
+  1669_1670_Wellcome_weeklybills_parishes
 )
 
 rm(
