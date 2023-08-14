@@ -317,7 +317,7 @@ rm(laxton_weekly_illegible_transform)
 rm(laxton_weekly_missing)
 rm(laxton_weekly_missing_transform)
 
-## Bodleian V1 data prep
+## Bodleian V1 data prep ----------------------------------------
 bodleian_weekly_illegible <- BodleianV1_weeklybills_parishes |>
   select(!1:4) |>
   select(-c(2, 3, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18, 20, 21)) |> 
@@ -353,27 +353,59 @@ bodleian_weekly_transformed <- bodleian_weekly_cleaned |>
 # Now we join bodleian_weekly_transformed with bodleian_weekly_missing_illegible
 bodleian_weekly_v1 <- bind_rows(bodleian_weekly_transformed, bodleian_weekly_missing_transform, bodleian_weekly_illegible_transform)
 
+## Bodleian V2 data prep ----------------------------------------
+bodleian_v2_weekly_illegible <- BodleianV2_weeklybills_parishes |>
+  select(!1:4) |>
+  select(-c(2, 3, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18, 20, 21)) |> 
+  select(`Year`, `Week`, `Unique ID`, `Start Day`, `Start Month`, `End Day`, `End month`, contains("is_illegible"))
+bodleian_v2_weekly_missing <- BodleianV2_weeklybills_parishes |>
+  select(!1:4) |>
+  select(-c(2, 3, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18, 20, 21)) |> 
+  select(`Year`, `Week`, `Unique ID`, `Start Day`, `Start Month`, `End Day`, `End month`, contains("is_missing"))
+
+# Now, we pivot the data from wide to long format.
+bodleian_v2_weekly_illegible_transform <- bodleian_v2_weekly_illegible |>
+  pivot_longer(8:266, names_to = "illegible_missing", values_to = "illegible") |> 
+  select(!`illegible_missing`) |>
+  # change NA to false and 1 to true
+  mutate(illegible = ifelse(is.na(illegible), FALSE, TRUE))
+
+bodleian_v2_weekly_missing_transform <- bodleian_v2_weekly_missing |>
+  pivot_longer(8:266, names_to = "illegible_missing", values_to = "missing") |> 
+  select(!`illegible_missing`) |> 
+  # change NA to false and 1 to true
+  mutate(missing = ifelse(is.na(missing), FALSE, TRUE))
+
+# Then, we set up the table without the illegible or missing values
+bodleian_v2_weekly_illegible_cleaned <- BodleianV2_weeklybills_parishes |>
+  select(-c(starts_with("is_illegible")))
+bodleian_v2_weekly_cleaned <- bodleian_v2_weekly_illegible_cleaned |>
+  select(-c(starts_with("is_missing")))
+
+bodleian_v2_weekly_transformed <- bodleian_weekly_cleaned |> 
+  select(!1:4) |>
+  pivot_longer(8:266, names_to = "parish_name", values_to = "count" )
+
+# Now we join bodleian_weekly_transformed with bodleian_weekly_missing_illegible
+bodleian_weekly_v2 <- bind_rows(bodleian_weekly_transformed, bodleian_weekly_missing_transform, bodleian_weekly_illegible_transform)
 
 # Lowercase column names and replace spaces with underscores.
 names(laxton_weekly) <- tolower(names(laxton_weekly))
 names(laxton_weekly) <- gsub(" ", "_", names(laxton_weekly))
 names(wellcome_weekly) <- tolower(names(wellcome_weekly))
 names(wellcome_weekly) <- gsub(" ", "_", names(wellcome_weekly))
-names(bodleian_weekly) <- tolower(names(bodleian_weekly))
-names(bodleian_weekly) <- gsub(" ", "_", names(bodleian_weekly))
+names(bodleian_weekly_v1) <- tolower(names(bodleian_weekly_v1))
+names(bodleian_weekly_v1) <- gsub(" ", "_", names(bodleian_weekly_v1))
 names(bodleian_weekly_v2) <- tolower(names(bodleian_weekly_v2))
 names(bodleian_weekly_v2) <- gsub(" ", "_", names(bodleian_weekly_v2))
-names(bodleian_weekly_v3) <- tolower(names(bodleian_weekly_v3))
-names(bodleian_weekly_v3) <- gsub(" ", "_", names(bodleian_weekly_v3))
 
 
 # The unique ID column is mis-named in the Laxton data so we fix it here
 names(laxton_weekly)[3] <- "unique_identifier"
-names(bodleian_weekly)[3] <- "unique_identifier"
+names(bodleian_weekly_v1)[3] <- "unique_identifier"
 names(bodleian_weekly_v2)[3] <- "unique_identifier"
-names(bodleian_weekly_v3)[3] <- "unique_identifier"
 
-weekly_bills <- rbind(wellcome_weekly, laxton_weekly, bodleian_weekly, bodleian_weekly_v2, bodleian_weekly_v3 ) |>
+weekly_bills <- rbind(wellcome_weekly, laxton_weekly, bodleian_weekly_v1, bodleian_weekly_v2) |>
   mutate(bill_type = "Weekly")
 
 weekly_bills <- weekly_bills |>
