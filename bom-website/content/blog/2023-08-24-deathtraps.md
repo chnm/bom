@@ -1,4 +1,15 @@
-London, 1665: Living in a Deathtrap.
+---
+title: "London, 1665: Living in a Deathtrap"
+author: 
+    - Cecilia Ward
+date: "2024-08-24"
+tags: 
+    - ward
+    - visualization
+    - geography
+categories: 
+  - analysis
+---
 
 Samuel Pepys is primarily remembered for his decade-long diary, which recorded major events in 17th century English history including the Great Plague Outbreak (1665).[^1] Just before the height of the plague, on September 7, 1665, Pepys wrote in his diary, “[I] sent for the Weekely Bill, and find 8,252 dead in all, and of them 6,878 of the plague; which is a most dreadfull number, and shows reason to fear the plague hath got that hold that it will yet continue among us.” While Pepys’ remark over the number of plague deaths was numerically incorrect (our records indicate the number of plague deaths was actually 6,978), Pepys was right to worry about the amount of death and the vice grip that plague held in London. 
 
@@ -10,11 +21,16 @@ Seventeenth century London was a death trap. For over eighty years, the number o
 
 Fig. 1 Total Burials, Christenings, and their difference per year (1656-1680)
 
-	Because of the peculiarity of 1665 as a major plague year, as well as other factors, the data in the above graph appears a bit strange. The X-axis represents the year of the general bill, beginning in 1656-1657 and ending with the 1750-1751 bill. Yellow represents burials, blue represents christenings. The former always surpasses the latter. There are a few other important things to note about the general bills charted above: Most obviously, 1664-1665 boasts over 97,000 burials due to an upsurge in plague that year. In addition, christenings are not recorded from 1656 until 1665. The last major complication with this graph is that it does not make it obvious that many parishes did not report burials from late 1666 through 1668, due to having been destroyed during the Great Fire of London. 
+Because of the peculiarity of 1665 as a major plague year, as well as other factors, the data in the above graph appears a bit strange. The X-axis represents the year of the general bill, beginning in 1656-1657 and ending with the 1750-1751 bill. Yellow represents burials, blue represents christenings. The former always surpasses the latter. There are a few other important things to note about the general bills charted above: Most obviously, 1664-1665 boasts over 97,000 burials due to an upsurge in plague that year. In addition, christenings are not recorded from 1656 until 1665. The last major complication with this graph is that it does not make it obvious that many parishes did not report burials from late 1666 through 1668, due to having been destroyed during the Great Fire of London. 
 
 Fig. 2. Percent of deaths reported in 1665 by Causes of Death.
+
 The leading cause of death in 1665 was unsurprisingly plague, caused by the bacteria known as y. pestis. Untreated bubonic plague (y. pests in the lymph system) has approximately a fifty percent mortality rate, while pneumatic (y. pestis in the lungs) and septicemic (y. pestis in the bloodstream) plague are almost universally fatal. While people as rich as Pepys and Evelyn could afford to send their family outside of the locus of infection, not all Londoners were that fortunate. 
+
 In 1666, King Charles II passed a document containing the “Rules and Orders” to prevent further outbreaks of plague. This document not only prevented individuals from entering towns without a certificate of health, but also banned public gatherings, and required all towns to erect a pesthouse if necessary to quarantine the infected until their death or recovery. These rules seem common sense to a modern audience, with our current understanding of plague and quarantines. But this document also set in place a few other rules that helped improve life in England regardless of the plague, such as restricting the sale of spoiled foods, promoting clean living quarters, and using church collections to aid the poor. These preventative actions were necessary to the recovery of London in the years following, but buboes were not the only thing “plaguing” Londoners in 1665.
+
 While plague is easily understood as deadly, it was not nearly the only cause of death Londoners feared at this time. “Ague and Fever” as well as “Consumption and Tissick” also accounted for many deaths in 1665, killing 5,257 and 4,808 individuals respectively. It is important to note that these categories of death often include multiple ailments or diseases that may or may not be directly related. For instance, “Ague and Fever” is thought to contain deaths similar to both influenza and malaria. Conversely, “Consumption and Tissick (phtisic)” are believed to be two different names for the same disease, tuberculosis, a disease that, while treatable, still kills over millions of people a year around the globe. Both influenza and tuberculosis are spread by droplets containing the disease, so it’s unsurprisingly that London was particularly affected. Malaria, while transferred through insects and blood, does not seem as infectious as illnesses from droplets, but it still largely affected Londoners due to nearby marshlands.  
+
 Christening rates are lower than burial rates not only because deaths outpaced births each year, but also because many children were not christened before they died. The number of “abortive or stillborn” deaths was significantly fewer in 1665, totaling only 617, likely due to depressed rates of pregnancy and childbirth from the plague, or, in the case of wealthier Londoners, the ability to travel outside the city to raise one’s family. This does not count children born who died of other causes before they could be christened. Especially during the height of the plague, it may have been difficult to christen young children due to the time required for a priest to travel to the child or the fear of exposure to the plague by visiting priests, though this could be assuaged by parents performing emergency christenings on ailing children without the presence of a priest.  
+
 While 1665 is “the plague year,” plague was not the only concern of Londoners at the time. Plague was not a monolith, other diseases also ravaged the population and contributed to the unsettling statistic that more people died than were christened for so many years. Despite the abundance of death, Londoners found ways to protect themselves by enforcing quarantine rules and laws about public health, as well as more personal methods of protection like relocation. 
