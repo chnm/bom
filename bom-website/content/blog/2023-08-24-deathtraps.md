@@ -2,7 +2,7 @@
 title: "London, 1665: Living in a Deathtrap"
 author: 
     - Cecilia Ward
-date: "2024-08-24"
+date: "2023-08-24"
 tags: 
     - ward
     - visualization
