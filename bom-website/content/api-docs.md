@@ -73,7 +73,7 @@ HTTP Status Code Summary
 
 The current API has five endpoints, two for serving user interfaces and three for returning the data to an interactive table.
 
-The endpoints can accept `limit` and `offset` values, but also provides them as defaults. The limit is set to 25 records, and offset to 0. This means in each endpoint you are seeing records 1-25. We're using limit and offset to handle pagination in the web application. You can also provide `limit` (and `offset`) to return a greater number of records. 
+The endpoints can accept `limit` and `offset` values, but also provides them as defaults. The limit is set to 25 records, and offset to 0 by default. This means in each endpoint you are seeing records 1-25, but this number can be adjusted higher. We're using limit and offset to handle pagination in the web application. You can also provide `limit` (and `offset`) to return a greater number of records. If no limit or offset is provided, the endpoint will return all of the data in the database.
 
 <https://data.chnm.org/bom/bills?start-year=1648&end-year=1754&bill-type=Weekly&limit=500&offset=0>
 
@@ -206,9 +206,9 @@ Optionally, you can provide the `/bills` endpoint with the `parishes` parameter,
 
 #### Total bills
 
-To return the entire dataset with both Weekly and General bills, you must set the `bill-type` and `count-type` parameters to "All".
+To return the entire dataset with both Weekly and General bills, simply leave off the parameters for `bill-type` and `count-type`.
 
-<https://data.chnm.org/bom/bills?start-year=1648&end-year=1754&bill-type=All&count-type=All>
+<https://data.chnm.org/bom/bills?start-year=1648&end-year=1754&limit=50>
 
 ```js
 [
