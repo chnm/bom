@@ -336,7 +336,7 @@ export default {
       filteredBillsData: [],
       totalParishes: [],
       totalRecords: 0,
-      countType: ["Total", "Plague", "Buried"],
+      countType: ["Total"],
       filteredCountType: "Total",
       filteredParishIDs: [],
       filteredYears: [1636, 1754],
@@ -354,7 +354,7 @@ export default {
       serverParams: {
         limit: 25,
         offset: 0,
-        count_type: "Total",
+        count_type: "",
         bill_type: "General",
         parishes: "",
         year: [1636, 1754],
@@ -373,26 +373,7 @@ export default {
   mounted() {
     axios
       .get(
-        "https://data.chnm.org/bom/bills?start-year=" +
-          this.serverParams.year[0] +
-          "&end-year=" +
-          this.serverParams.year[1] +
-          "&bill-type=" +
-          this.serverParams.bill_type +
-          "&count-type=" +
-          // if count-type is not All, don't include it in the URL
-          (this.serverParams.count_type === "All" ||
-          this.serverParams.count_type === "Total"
-            ? ""
-            : this.serverParams.count_type) +
-          // if parish is not empty, use it in the URL to send a query
-          (this.serverParams.parishes === ""
-            ? ""
-            : "&parishes=" + this.serverParams.parishes) +
-          "&limit=" +
-          this.serverParams.limit +
-          "&offset=" +
-          this.serverParams.offset
+        `https://data.chnm.org/bom/bills?start-year=${this.serverParams.year[0]}&end-year=${this.serverParams.year[1]}&bill-type=${this.serverParams.bill_type}&count-type=${this.serverParams.count_type}&parish=${this.serverParams.parishes}&limit=${this.serverParams.limit}&offset=${this.serverParams.offset}`
       )
       .then((response) => {
         this.totalParishes = response.data;
@@ -471,25 +452,7 @@ export default {
     loadItems() {
       return axios
         .get(
-          "https://data.chnm.org/bom/bills?start-year=" +
-            this.serverParams.year[0] +
-            "&end-year=" +
-            this.serverParams.year[1] +
-            "&bill-type=" +
-            this.serverParams.bill_type +
-            // if count-type is All, don't include it in the URL to get the right query
-            (this.serverParams.count_type === "All" ||
-            this.serverParams.count_type === "Total"
-              ? ""
-              : "&count-type=" + this.serverParams.count_type) +
-            // if parish is not empty, use it in the URL to send a query
-            (this.serverParams.parishes === ""
-              ? ""
-              : "&parishes=" + this.serverParams.parishes) +
-            "&limit=" +
-            this.serverParams.limit +
-            "&offset=" +
-            this.serverParams.offset
+          `https://data.chnm.org/bom/bills?start-year=${this.serverParams.year[0]}&end-year=${this.serverParams.year[1]}&bill-type=${this.serverParams.bill_type}&count-type=${this.serverParams.count_type}&parish=${this.serverParams.parishes}&limit=${this.serverParams.limit}&offset=${this.serverParams.offset}`
         )
         .then((response) => {
           this.totalParishes = response.data;
@@ -516,7 +479,7 @@ export default {
     // When a user selects a count type, that count type is changed in the serverParams.count_type.
     updateFilteredCountType(event) {
       this.updateParams({
-        count_type: event.target.value,
+        count_type: event.target.value === "Total" ? "" : event.target.value,
       });
     },
 
@@ -528,7 +491,8 @@ export default {
       this.updateParams({
         parishes: this.filteredParishIDs,
         year: this.filteredYears,
-        count_type: this.filteredCountType,
+        count_type: this.filteredCountType === "Total" ? "" : this.filteredCountType,
+
       });
       this.loadItems();
     },
@@ -541,7 +505,7 @@ export default {
       this.search = "";
       this.updateParams({
         parishes: [],
-        count_type: "Total",
+        count_type: "",
         year: [1636, 1754],
       });
       this.loadItems();
