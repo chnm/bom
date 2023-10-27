@@ -1,5 +1,5 @@
 ---
-title: "2023-10-25-infant-mortality-in-the-monarchical-bills-of-mortality-1665-1669"
+title: "Infant Mortality In The Monarchical Bills of Mortality, 1665-1669"
 author:
   - Katie Kania
   - Jessica Otis
