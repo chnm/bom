@@ -1,5 +1,6 @@
 ---
 title: "Death by Numbers: the Monarchical Bills of Mortality, 1665-1669"
+slug: "death-by-numbers-the-monarchical-bills"
 author:
   - Katie Kania
   - Jessica Otis
