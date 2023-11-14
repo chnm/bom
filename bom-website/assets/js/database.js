@@ -7,6 +7,7 @@ document.addEventListener("alpine:init", () => {
       instructionsOpen: false,
       modalBill: [],
       disabled: false,
+      openTab: 1,
       filters: {
         selectedParishes: [],
         selectedBillType: "Weekly",
@@ -66,9 +67,15 @@ document.addEventListener("alpine:init", () => {
         // After the data is ready, we set it to our bills object and the DOM updates
         this.bills = data;
         this.pagination.total = data[0].totalrecords;
-        console.log(data);
+
         this.meta.loading = false;
         this.updateUrl();
+      },
+      toggleTabs(tabNum) {
+        // toggle between interfaces for Weekly, General, Total Deaths, and Christenings
+        // if a user selects a different tab, switch to that one
+        console.log("tab number", tabNum);
+        this.openTab = tabNum;
       },
       getTotalPages() {
         return this.pagination.total;

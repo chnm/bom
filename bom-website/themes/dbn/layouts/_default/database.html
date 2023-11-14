@@ -40,21 +40,21 @@
             </li>
           </ul>
           <div :class="{ hidden: openTab !== 1, block: openTab === 1 }">
-            <WeeklyBillsTable />
+            <p>weeklies</p>
           </div>
           <div :class="{ hidden: openTab !== 2, block: openTab === 2 }">
             <div>
-              <GeneralBillsTable />
+              <p>general</p>
             </div>
           </div>
           <div :class="{ hidden: openTab !== 3, block: openTab === 3 }">
             <div>
-              <DeathCausesTable />
+              <p>deaths</p>
             </div>
           </div>
           <div :class="{ hidden: openTab !== 4, block: openTab === 4 }">
             <div>
-              <ChristeningsDataTable />
+              <p>christenings</p>
             </div>
           </div>
         </div>
