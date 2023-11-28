@@ -31,7 +31,7 @@ document.addEventListener("alpine:init", () => {
     pageSize: 25,
     pagination: {
       pageOffset: 25, // number of pages to show on either side of the current page
-      total: null, // total number of records from /totalbills
+      total: null, // total number of records from /totalbills endpoint
     },
     init() {
       // Fetch the data.
@@ -50,13 +50,15 @@ document.addEventListener("alpine:init", () => {
           console.error("There was an error fetching parish data:", error);
         });
     },
-    async fetchData() {
+    async fetchData(billType) {
       // Data that will update with user selections.
       this.meta.loading = true;
+      // billType defaults to filters.selectedBillType unless one is provided by the app
+      console.log("billType", billType);
 
       // 1. Bills data.
       let response = await fetch(
-        `https://data.chnm.org/bom/bills?start-year=${this.filters.selectedStartYear}&end-year=${this.filters.selectedEndYear}&bill-type=${this.filters.selectedBillType}&count-type=${this.filters.selectedCountType}&parish=${this.filters.selectedParishes}&limit=${this.server.limit}&offset=${this.server.offset}`,
+        `https://data.chnm.org/bom/bills?start-year=${this.filters.selectedStartYear}&end-year=${this.filters.selectedEndYear}&bill-type=${billType}&count-type=${this.filters.selectedCountType}&parish=${this.filters.selectedParishes}&limit=${this.server.limit}&offset=${this.server.offset}`,
       );
       let data = await response.json();
       if (data.error) {
@@ -155,7 +157,7 @@ document.addEventListener("alpine:init", () => {
         this.filters.selectedStartYear = 1636;
         this.filters.selectedEndYear = 1754;
         this.filters.selectedCountType = "";
-        this.filters.selectedBillType = "Weekly";
+        this.selectedBillType = "Weekly";
         this.filters.selectedParishes = [];
         this.fetchData();
       };
@@ -180,7 +182,6 @@ document.addEventListener("alpine:init", () => {
       return int;
     },
     goToLastPage() {
-      // currently 272627 total rows
       this.server.offset = this.getTotalPages() - this.server.limit;
       this.fetchData();
     },
