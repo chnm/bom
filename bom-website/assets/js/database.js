@@ -1,6 +1,8 @@
 document.addEventListener("alpine:init", () => {
   Alpine.data("billsData", () => ({
     bills: [],
+    christenings: [],
+    causes: [],
     parishes: null,
     sort: false,
     modalOpen: false,
@@ -8,7 +10,6 @@ document.addEventListener("alpine:init", () => {
     modalBill: [],
     disabled: false,
     openTab: 1,
-    active: 1,
     filters: {
       selectedParishes: [],
       selectedBillType: "Weekly",
@@ -35,9 +36,10 @@ document.addEventListener("alpine:init", () => {
       total: null, // total number of records from /totalbills endpoint
     },
     init() {
-      // Fetch the data.
+      // Fetch the initial date. We don't fetch server data here but wait for user interaction.
       this.fetchStaticData();
-      this.fetchData();
+      // We default to the initial view of Weekly data
+      this.fetchData(this.filters.selectedBillType);
     },
     async fetchStaticData() {
       // Data used for populating UI elements in the app.
@@ -71,6 +73,48 @@ document.addEventListener("alpine:init", () => {
 
       // After the data is ready, we set it to our bills object and the DOM updates
       this.bills = data;
+      this.pagination.total = data[0].totalrecords;
+
+      this.meta.loading = false;
+      this.updateUrl();
+    },
+    async fetchChristenings() {
+      this.meta.loading = true;
+      let response = await fetch(
+        `https://data.chnm.org/bom/christenings?start-year=${this.filters.selectedStartYear}&end-year=${this.filters.selectedEndYear}&limit=${this.server.limit}&offset=${this.server.offset}`,
+      );
+      let data = await response.json();
+      if (data.error) {
+        console.log(
+          "There was an error fetching the christenings data:",
+          data.error,
+        );
+        this.meta.loading = false;
+        return;
+      }
+      data.forEach((d, i) => (d.id = i));
+      this.christenings = data;
+      this.pagination.total = data[0].totalrecords;
+
+      this.meta.loading = false;
+      this.updateUrl();
+    },
+    async fetchDeaths() {
+      this.meta.loading = true;
+      let response = await fetch(
+        `https://data.chnm.org/bom/causes?start-year=${this.filters.selectedStartYear}&end-year=${this.filters.selectedEndYear}`,
+      );
+      let data = await response.json();
+      if (data.error) {
+        console.log(
+          "There was an error fetching the causes of death data:",
+          data.error,
+        );
+        this.meta.loading = false;
+        return;
+      }
+      data.forEach((d, i) => (d.id = i));
+      this.causes = data;
       this.pagination.total = data[0].totalrecords;
 
       this.meta.loading = false;

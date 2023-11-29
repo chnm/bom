@@ -11,7 +11,7 @@
               <a
                 class="text-xs font-bold uppercase px-5 py-3 rounded block leading-normal border-none bg-slate-200 text-black hover:bg-slate-300"
             :class="{ 'bg-slate-500 text-white': openTab === 1, 'bg-slate-200 hover:bg-slate-300': openTab !==1 }"
-                x-on:click="openTab = 1"
+                x-on:click="openTab = 1; fetchData('Weekly')"
               >
                 Weekly Bills
               </a>
@@ -20,7 +20,7 @@
               <a
                 class="text-xs font-bold uppercase px-5 py-3 rounded block leading-normal border-none bg-slate-200 text-black hover:bg-slate-300"
               :class="{ 'bg-slate-500 text-white': openTab === 2, 'bg-slate-200 hover:bg-slate-300': openTab !==2 }"
-                x-on:click="openTab = 2"
+                x-on:click="openTab = 2; fetchData('General')"
               >
                 General Bills
               </a>
@@ -29,7 +29,7 @@
               <a
                 class="text-xs font-bold uppercase px-5 py-3 rounded block leading-normal border-none text-black bg-slate-200 hover:text-black hover:bg-slate-300"
             :class="{ 'bg-slate-500 text-white': openTab === 3, 'bg-slate-200 hover:bg-slate-300': openTab !==3 }"
-                x-on:click="openTab = 3"
+                x-on:click="openTab = 3; fetchDeaths()"
               >
                 Total Deaths
               </a>
@@ -38,7 +38,7 @@
               <a
                 class="text-xs font-bold uppercase px-5 py-3 rounded block leading-normal border-none text-black bg-slate-200 hover:text-black hover:bg-slate-300"
               :class="{ 'bg-slate-500 text-white': openTab === 4, 'bg-slate-200 hover:bg-slate-300': openTab !==4 }"
-                x-on:click="openTab = 4"
+                x-on:click="openTab = 4; fetchChristenings()"
               >
                 Christenings
               </a>
@@ -54,12 +54,12 @@
           </div>
           <div x-show="openTab === 3">
             <div>
-              <p>total deaths...</p>
+            {{ partial "tables/deaths.html" }}
             </div>
           </div>
           <div x-show="openTab === 4">
             <div>
-              <p>christenings...</p>
+              {{ partial "tables/christenings.html" }}
             </div>
           </div>
         </div>
