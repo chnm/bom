@@ -8,6 +8,7 @@ document.addEventListener("alpine:init", () => {
     modalBill: [],
     disabled: false,
     openTab: 1,
+    active: 1,
     filters: {
       selectedParishes: [],
       selectedBillType: "Weekly",
@@ -78,7 +79,6 @@ document.addEventListener("alpine:init", () => {
     toggleTabs(tabNum) {
       // toggle between interfaces for Weekly, General, Total Deaths, and Christenings
       // if a user selects a different tab, switch to that one
-      console.log("tab number", tabNum);
       this.openTab = tabNum;
     },
     getTotalPages() {
