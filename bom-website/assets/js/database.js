@@ -39,6 +39,17 @@ document.addEventListener("alpine:init", () => {
     init() {
       // Fetch the initial date. We don't fetch server data here but wait for user interaction.
       this.fetchStaticData();
+
+      // Read URL parameters
+      let params = new URLSearchParams(window.location.search);
+
+      // Update filters and page based on URL parameters
+      if (params.has('start-year')) this.filters.selectedStartYear = parseInt(params.get('start-year'));
+      if (params.has('end-year')) this.filters.selectedEndYear = parseInt(params.get('end-year'));
+      if (params.has('count-type')) this.filters.selectedCountType = params.get('count-type');
+      if (params.has('parish')) this.filters.selectedParishes = params.get('parish').split(',');
+      if (params.has('page')) this.page = parseInt(params.get('page'));
+
       this.fetchData();
     },
     async fetchStaticData() {
