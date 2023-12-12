@@ -24,6 +24,7 @@ document.addEventListener("alpine:init", () => {
     },
     meta: {
       loading: false,
+      fetching: false,
     },
     server: {
       limit: 25,
@@ -38,8 +39,7 @@ document.addEventListener("alpine:init", () => {
     init() {
       // Fetch the initial date. We don't fetch server data here but wait for user interaction.
       this.fetchStaticData();
-      // We default to the initial view of Weekly data
-      this.fetchData(this.filters.selectedBillType);
+      this.fetchData();
     },
     async fetchStaticData() {
       // Data used for populating UI elements in the app.
@@ -54,10 +54,14 @@ document.addEventListener("alpine:init", () => {
         });
     },
     async fetchData(billType) {
+      if (this.meta.fetching) {
+        return;
+      }
       // Data that will update with user selections.
       this.meta.loading = true;
+      this.meta.fetching = true;
       // billType defaults to filters.selectedBillType unless one is provided by the app
-      console.log("billType", billType);
+      billType = billType || this.filters.selectedBillType;
 
       // 1. Bills data.
       let response = await fetch(
@@ -65,17 +69,23 @@ document.addEventListener("alpine:init", () => {
       );
       let data = await response.json();
       if (data.error) {
-        console.error("There was an error fetching bills data:", data.error);
+        console.error("There was an error fetching weekly bills data:", data.error);
         this.meta.loading = false;
+        this.meta.fetching = false;
         return;
       }
       data.forEach((d, i) => (d.id = i));
+
+      console.log('filtered data url: ', 
+      `https://data.chnm.org/bom/bills?start-year=${this.filters.selectedStartYear}&end-year=${this.filters.selectedEndYear}&bill-type=${billType}&count-type=${this.filters.selectedCountType}&parish=${this.filters.selectedParishes}&limit=${this.server.limit}&offset=${this.server.offset}`,
+      )
 
       // After the data is ready, we set it to our bills object and the DOM updates
       this.bills = data;
       this.pagination.total = data[0].totalrecords;
 
       this.meta.loading = false;
+      this.meta.fetching = false;
       this.updateUrl();
     },
     async fetchChristenings() {
@@ -268,7 +278,7 @@ document.addEventListener("alpine:init", () => {
       params.set("start-year", this.filters.selectedStartYear);
       params.set("end-year", this.filters.selectedEndYear);
       params.set("count-type", this.filters.selectedCountType);
-      params.set("parishes", this.filters.selectedParishes);
+      params.set("parish", this.filters.selectedParishes);
       params.set("page", this.getCurrentPage());
 
       // Use the history API to update the URL

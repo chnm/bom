@@ -14,16 +14,16 @@
               class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
               width="20%" @click="sort('count_type')">Count Type</th>
             <th scope="col"
-              class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
+              class="py-3 px-6 text-xs font-medium text-center tracking-wider text-gray-700 uppercase dark:text-gray-400"
               width="20%" @click="sort('count')">Count</th>
             <th scope="col"
-              class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
+              class="py-3 px-6 text-xs font-medium tracking-wider text-center text-gray-700 uppercase dark:text-gray-400"
               width="10%" @click="sort('week_no')">Week Number</th>
             <th scope="col"
-              class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
+              class="py-3 px-6 text-xs font-medium tracking-wider text-center text-gray-700 uppercase dark:text-gray-400"
               width="10%" @click="sort('year')">Year</th>
             <th scope="col"
-              class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
+              class="py-3 px-6 text-xs font-medium tracking-wider text-center text-gray-700 uppercase dark:text-gray-400"
               width="20%">Split Year</th>
           </tr>
         </thead>
@@ -34,13 +34,13 @@
                 x-text="bill.name"></td>
               <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
                 x-text="bill.count_type"></td>
-              <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                x-text="bill.count"></td>
-              <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
+              <td class="py-4 px-6 text-sm font-medium text-center text-gray-900 whitespace-nowrap dark:text-white"
+                x-text="bill.count ? bill.count : '-'"></td>
+              <td class="py-4 px-6 text-sm font-medium text-center text-gray-900 whitespace-nowrap dark:text-white"
                 x-text="bill.week_no"></td>
-              <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
+              <td class="py-4 px-6 text-sm font-medium text-center text-gray-900 whitespace-nowrap dark:text-white"
                 x-text="bill.year"></td>
-              <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
+              <td class="py-4 px-6 text-sm font-medium text-center text-gray-900 whitespace-nowrap dark:text-white"
                 x-text="bill.split_year"></td>
             </tr>
           </template>
@@ -79,7 +79,7 @@
                 x-text="modalBill.end_day"></span>, <span x-text="modalBill.year"></span> (<span
                 x-text="modalBill.split_year"></span>)</p>
             <p class="mt-2 text-sm text-gray-800"><strong>Count Type</strong>: <span x-text="modalBill.count_type"></p>
-            <p class="mt-2 text-sm text-gray-800"><strong>Count</strong>: <span x-text="modalBill.count"></p>
+            <p class="mt-2 text-sm text-gray-800"><strong>Count</strong>: <span x-text="modalBill.count ? modalBill.count : 'No count available.'"></p>
             <p class="mt-2 text-sm text-gray-800"><strong>Week Number</strong>: <span x-text="modalBill.week_no"></span>
             <div x-data="{ isMissing: false }">
               <!-- if missing is True, display "record has missing values" -->
