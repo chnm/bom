@@ -5,6 +5,7 @@ A. Millar's 1759 Collection of Yearly Bills of Mortality, from 1657 to 1758 Incl
 Paul Laxton's London Bills of Mortality, 1701-1829
 weekly bills held at the Wellcome Library in London
 weekly bills held at the Bodleian Library, University of Oxford
+weekly bills held at the British Library in London
 
 General bills are annual summaries of the previous year's worth of weekly bills.
 "Parish" are the parish-by-parish listing of total deaths and plague deaths for each week or year.
@@ -12,7 +13,7 @@ General bills are annual summaries of the previous year's worth of weekly bills.
 
 The datasets currently available are:
 
-1. Bodleian V1 and V2 Weekly Bills Parishes contains mortality information from weekly bills published in the 1630s through 1650s. It contains parish-by-parish counts of plague mortality and total mortality for the parish, along with subtotals and totals of christenings (births registered within the Church of England) and burials (deaths registered within the Church of England).
+1. Bodleian Weekly Bills Parishes contains mortality information from weekly bills published in the 1630s through 1670s. It contains parish-by-parish counts of plague mortality and total mortality for the parish, along with subtotals and totals of christenings (births registered within the Church of England) and burials (deaths registered within the Church of England).
 2. Wellcome Weekly Bills 1669-1670 Parishes contains mortality information from weekly bills published in the late 17th century. It contains parish-by-parish counts of plague mortality and total mortality for the parish, along with subtotals and totals of christenings (births registered within the Church of England) and burials (deaths registered within the Church of England).
 3. Wellcome Weekly Bills Causes contains mortality information from weekly bills published in the late 17th century. It contains city-wide (including local suburbs) death counts for various causes of death, along with information about christenings (births registered within the Church of England), burials (deaths registered within the Church of England), plague deaths, and bread prices.
 4. Laxton 1700 Weekly Bills Causes contains mortality information from weekly bills published in the year 1700. It contains city-wide (including local suburbs) death counts for various causes of death.
@@ -21,7 +22,8 @@ The datasets currently available are:
 7. Laxton Weekly Bills Parishes contains mortality information from weekly bills published in the early 18th century. It contains parish-by-parish counts of total mortality for the parish along with subtotals and totals of christenings (births registered within the Church of England) and burials (deaths registered within the Church of England).
 8. Laxton Weekly Bills Causes contains mortality information from weekly bills published in the early eighteenth century. It contains city-wide (including local suburbs) death counts for various causes of death.
 9. Millar General Bills PostPlague Parishes contains mortality information from "general" or annual summary bills published in the early 18th century. It contains parish-by-parish counts of total mortality for the parish along with subtotals and totals of christenings (births registered within the Church of England) and burials (deaths registered within the Church of England).
+10. BL Weekly Bills Parishes contains mortality information from weekly bills published from the 1660s onwards. It contains parish-by-parish counts of plague mortality and total mortality for the parish, along with subtotals and totals of christenings (births registered within the Church of England) and burials (deaths registered within the Church of England).
 
-Currently, the Bodleian Weekly Bills Parishes dataset uses the "is illegible" flag to indicate when a piece of data is illegible or there was some doubt as to its correct transcription; the "is missing" flag to indicate when a parish does not yet exist on the forms; and both the "is illegible" and "is missing" flags when a piece of data is physically missing because a bill is torn or otherwise damaged.
+Currently, the Bodleian and BL Weekly Bills Parishes datasets use the "is illegible" flag to indicate when a piece of data is illegible or there was some doubt as to its correct transcription; the "is missing" flag to indicate when a parish does not yet exist on the forms; and both the "is illegible" and "is missing" flags when a piece of data is physically missing because a bill is torn or otherwise damaged.
 
 All other datasets use an earlier transcription convention where the "is illegible" flag indicates when a piece of data is illegible or there was some doubt as to its correct transcription and the "is missing" flag to indicate when no data was printed for an extant parish or the parish did not yet exist on the forms. Current data exports do not yet show these flags and we may hold off on updating the exports to show flags until after we have transitioned these datasets to the newer transcription convention.

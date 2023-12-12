@@ -55,7 +55,9 @@ CREATE TABLE IF NOT EXISTS bom.christenings (
     end_month text,
     year integer REFERENCES bom.year(year),
     start_day integer,
-    end_day integer
+    end_day integer,
+    missing text,
+    illegible text
 );
 
 -- Table Definition: Christenings locations ----------------------------------------------
@@ -86,7 +88,9 @@ CREATE TABLE IF NOT EXISTS bom.bill_of_mortality (
     count integer,
     year_id integer NOT NULL REFERENCES bom.year(year),
     week_id text NOT NULL REFERENCES bom.week(joinid),
-    bill_type text
+    bill_type text,
+    missing text,
+    illegible text
 );
 
 -- Derive the christenings_location data from the christenings table

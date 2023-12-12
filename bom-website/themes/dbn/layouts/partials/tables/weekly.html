@@ -1,0 +1,136 @@
+{{/* This is the Weekly Bills table. */}}
+
+      {{ partial "tables/filter.html" }}
+
+      {{/* begin: weeklies table */}}
+      <div x-data="fetchData('Weekly')">
+      <table class="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-700">
+        <thead class="bg-gray-100 dark:bg-gray-700">
+          <tr>
+            <th scope="col"
+              class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
+              width="30%" @click="sort('name')">Parish</th>
+            <th scope="col"
+              class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
+              width="20%" @click="sort('count_type')">Count Type</th>
+            <th scope="col"
+              class="py-3 px-6 text-xs font-medium text-center tracking-wider text-gray-700 uppercase dark:text-gray-400"
+              width="20%" @click="sort('count')">Count</th>
+            <th scope="col"
+              class="py-3 px-6 text-xs font-medium tracking-wider text-center text-gray-700 uppercase dark:text-gray-400"
+              width="10%" @click="sort('week_no')">Week Number</th>
+            <th scope="col"
+              class="py-3 px-6 text-xs font-medium tracking-wider text-center text-gray-700 uppercase dark:text-gray-400"
+              width="10%" @click="sort('year')">Year</th>
+            <th scope="col"
+              class="py-3 px-6 text-xs font-medium tracking-wider text-center text-gray-700 uppercase dark:text-gray-400"
+              width="20%">Split Year</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
+          <template x-for="bill in bills" :key="bill.id">
+            <tr class="hover:bg-gray-100 dark:hover:bg-gray-700" @click="modalOpen =!modalOpen; modalBill = bill">
+              <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                x-text="bill.name"></td>
+              <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                x-text="bill.count_type"></td>
+              <td class="py-4 px-6 text-sm font-medium text-center text-gray-900 whitespace-nowrap dark:text-white"
+                x-text="bill.count ? bill.count : '-'"></td>
+              <td class="py-4 px-6 text-sm font-medium text-center text-gray-900 whitespace-nowrap dark:text-white"
+                x-text="bill.week_no"></td>
+              <td class="py-4 px-6 text-sm font-medium text-center text-gray-900 whitespace-nowrap dark:text-white"
+                x-text="bill.year"></td>
+              <td class="py-4 px-6 text-sm font-medium text-center text-gray-900 whitespace-nowrap dark:text-white"
+                x-text="bill.split_year"></td>
+            </tr>
+          </template>
+        </tbody>
+      </table>
+
+      {{ partial "tables/instructions.html" }}
+
+      <modal x-show="modalOpen" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog"
+        aria-modal="true">
+        <div class="flex items-end justify-center min-h-screen px-4 text-center md:items-center sm:block sm:p-0">
+          <div x-cloak @click="modalOpen = false" x-show="modalOpen"
+            x-transition:enter="transition ease-out duration-300 transform" x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200 transform"
+            x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+            class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-40" aria-hidden="true"></div>
+          <div x-cloak x-show="modalOpen" x-transition:enter="transition ease-out duration-300 transform"
+            x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+            x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+            x-transition:leave="transition ease-in duration-200 transform"
+            x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+            x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+            class="inline-block w-full max-w-xl p-8 my-20 overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl 2xl:max-w-2xl">
+            <div class="flex items-center justify-between space-x-4">
+              <h3 class="text-lg font-medium leading-6 text-gray-900" id="modal-title" x-text="modalBill.name"></h3>
+              <button @click="modalOpen = false" class="text-gray-600 focus:outline-none hover:text-gray-700">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </button>
+            </div>
+            <p class="mt-2 text-sm text-gray-500">Data for the week of <span x-text="modalBill.start_month"></span> <span
+                x-text="modalBill.start_day"></span> to <span x-text="modalBill.end_month"></span> <span
+                x-text="modalBill.end_day"></span>, <span x-text="modalBill.year"></span> (<span
+                x-text="modalBill.split_year"></span>)</p>
+            <p class="mt-2 text-sm text-gray-800"><strong>Count Type</strong>: <span x-text="modalBill.count_type"></p>
+            <p class="mt-2 text-sm text-gray-800"><strong>Count</strong>: <span x-text="modalBill.count ? modalBill.count : 'No count available.'"></p>
+            <p class="mt-2 text-sm text-gray-800"><strong>Week Number</strong>: <span x-text="modalBill.week_no"></span>
+            <div x-data="{ isMissing: false }">
+              <!-- if missing is True, display "record has missing values" -->
+              <p class="mt-2 text-sm text-gray-800" x-show="isMissing"><strong>Record has missing values</strong></p>
+            </div>
+            <div x-data="{ isIllegible: false }">
+              <!-- if missing is True, display "record has missing values" -->
+              <p class="mt-2 text-sm text-gray-800" x-show="isIllegible"><strong>Record has illegible values</strong></p>
+            </div>
+              
+            </p>
+          </div>
+        </div>
+      </modal>
+  
+      <div class="flex md:flex md:flex-grow flex-row justify-end space-x-1">
+        <p class="text-sm text-gray-700 py-1" x-html="getSummary"></p>
+      </div>
+  
+      <div id="control" class="pb-10">
+        <div class="flex-1 flex items-center">
+          <div class="flex items-center pr-5">
+            <button
+              class="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 ml-0 rounded-l-lg leading-tight py-2 px-3 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+              :class="{'disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none': page === 1}"
+              @click="changePage(1)" :disabled="page === 1">First</button>
+            <button
+              class="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 leading-tight py-2 px-3 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+              :class="{'disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none': page === 1}"
+              @click="changePage(page - 1)" :disabled="page === 1">Previous</button>
+            <button
+              class="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 rounded-r-lg leading-tight py-2 px-3 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+              :class="{'disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none': page === pagination.lastPage}"
+              @click="changePage(page + 1)" :disabled="page === pagination.lastPage">Next</button>
+          </div>
+  
+          <div
+            class="bg-white border border-gray-300 text-gray-500 ml-0 rounded-l-lg leading-tight py-2 px-3 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+            Items per page</div>
+          <div class="w-1/2 inline-block relative">
+            <select
+              class="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 rounded-r-lg leading-tight py-2 px-3 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+              @change="setLimit()" x-model="server.limit">
+              <option value="25">25</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+          </div>
+        </div>
+  
+      </div>
+    </div>
+    {{/* end: weeklies table */}}
+

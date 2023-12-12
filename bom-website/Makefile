@@ -12,4 +12,10 @@ build-prod :
 	hugo --cleanDestinationDir --minify --baseURL https://deathbynumbers.org/
 	@echo "Website finished building."
 
+tailwind :
+	@echo "\nBuilding the tailwind css ..."
+	cd themes/dbn && npm run build-tw
+	@echo "Tailwind css finished building."
+	cd ../../
+
 .PHONY : preview build-prod
