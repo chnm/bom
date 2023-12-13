@@ -1,3 +1,10 @@
+import Alpine from "alpinejs";
+import collapse from '@alpinejs/collapse';
+
+// initialize Alpine
+window.Alpine = Alpine;
+Alpine.plugin(collapse);
+
 document.addEventListener("alpine:init", () => {
   Alpine.data("billsData", () => ({
     bills: [],
@@ -37,7 +44,7 @@ document.addEventListener("alpine:init", () => {
       total: null, // total number of records from /totalbills endpoint
     },
     init() {
-      // Fetch the initial date. We don't fetch server data here but wait for user interaction.
+      // Fetch the static data
       this.fetchStaticData();
 
       // Read URL parameters
@@ -49,6 +56,7 @@ document.addEventListener("alpine:init", () => {
       if (params.has('count-type')) this.filters.selectedCountType = params.get('count-type');
       if (params.has('parish')) this.filters.selectedParishes = params.get('parish').split(',');
       if (params.has('page')) this.page = parseInt(params.get('page'));
+      // if (params.has('openTab')) this.openTab = parseInt(params.get('openTab'));
 
       this.fetchData();
     },
@@ -291,9 +299,12 @@ document.addEventListener("alpine:init", () => {
       params.set("count-type", this.filters.selectedCountType);
       params.set("parish", this.filters.selectedParishes);
       params.set("page", this.getCurrentPage());
+      // params.set("openTab", this.openTab);
 
       // Use the history API to update the URL
       history.pushState({}, "", `${location.pathname}?${params}`);
     },
   }));
 });
+
+Alpine.start();
