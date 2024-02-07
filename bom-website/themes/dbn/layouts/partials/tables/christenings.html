@@ -1,6 +1,6 @@
 {{/* This is the Christenings table. */}}
 
-      {{ partial "tables/filter.html" }}
+      {{ partial "tables/christenings_filter.html" }}
 
       {{/* begin: christenings table */}}
     <div>
@@ -55,7 +55,7 @@
             x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             class="inline-block w-full max-w-xl p-8 my-20 overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl 2xl:max-w-2xl">
             <div class="flex items-center justify-between space-x-4">
-              <h3 class="text-lg font-medium leading-6 text-gray-900" id="modal-title" x-text="modalBill.name"></h3>
+              <h3 class="text-lg font-medium leading-6 text-gray-900" id="modal-title" x-text="modalBill.christening"></h3>
               <button @click="modalOpen = false" class="text-gray-600 focus:outline-none hover:text-gray-700">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
                   stroke="currentColor">
@@ -66,10 +66,8 @@
             </div>
             <p class="mt-2 text-sm text-gray-500">Data for the week of <span x-text="modalBill.start_month"></span> <span
                 x-text="modalBill.start_day"></span> to <span x-text="modalBill.end_month"></span> <span
-                x-text="modalBill.end_day"></span>, <span x-text="modalBill.year"></span> (<span
-                x-text="modalBill.split_year"></span>)</p>
-            <p class="mt-2 text-sm text-gray-800"><strong>Count Type</strong>: <span x-text="modalBill.count_type"></p>
-            <p class="mt-2 text-sm text-gray-800"><strong>Count</strong>: <span x-text="modalBill.count"></p>
+                x-text="modalBill.end_day"></span>, <span x-text="modalBill.year"></span></p>
+            <p class="mt-2 text-sm text-gray-800"><strong>Number of christenings</strong>: <span x-text="modalBill.count"></p>
             <p class="mt-2 text-sm text-gray-800"><strong>Week Number</strong>: <span x-text="modalBill.week_no"></span>
             <div x-data="{ isMissing: false }">
               <!-- if missing is True, display "record has missing values" -->
