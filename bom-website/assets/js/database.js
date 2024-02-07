@@ -11,6 +11,7 @@ document.addEventListener("alpine:init", () => {
     christenings: [],
     causes: [],
     all_causes: [],
+    all_christenings: [],
     parishes: null,
     sort: false,
     modalOpen: false,
@@ -25,6 +26,7 @@ document.addEventListener("alpine:init", () => {
       selectedStartYear: 1636,
       selectedEndYear: 1754,
       selectedCausesOfDeath: [],
+      selectedChristenings: [],
     },
     isMissing: false,
     isIllegible: false,
@@ -81,14 +83,21 @@ document.addEventListener("alpine:init", () => {
         .then((data) => {
           this.all_causes = data;
           this.all_causes.forEach((d, i) => (d.id = i));
-          console.log('all causes: ', this.all_causes)
         })
         .catch((error) => {
           console.error("There was an error fetching causes of death data:", error);
         });
+
+      fetch("https://data.chnm.org/bom/list-christenings")
+        .then((response) => response.json())
+        .then((data) => {
+          this.all_christenings = data;
+        })
+        .catch((error) => {
+          console.error("There was an error fetching christenings data:", error);
+        });
     },
     async fetchData(billType) {
-      console.log('fetching data from fetchData()')
       if (this.meta.fetching) {
         return;
       }
@@ -98,8 +107,7 @@ document.addEventListener("alpine:init", () => {
       // billType defaults to filters.selectedBillType unless one is provided by the app
       billType = billType || this.filters.selectedBillType;
 
-      // Bills data.
-      console.log('await response')
+      // Bills data
       let response = await fetch(
         `https://data.chnm.org/bom/bills?start-year=${this.filters.selectedStartYear}&end-year=${this.filters.selectedEndYear}&bill-type=${billType}&count-type=${this.filters.selectedCountType}&parish=${this.filters.selectedParishes}&limit=${this.server.limit}&offset=${this.server.offset}`,
       );
@@ -122,11 +130,6 @@ document.addEventListener("alpine:init", () => {
       }
       data.forEach((d, i) => (d.id = i));
 
-      console.info(new Date().toLocaleTimeString() + ' - ' + new Date().toLocaleDateString())
-      console.log('filtered data url: ', 
-      `https://data.chnm.org/bom/bills?start-year=${this.filters.selectedStartYear}&end-year=${this.filters.selectedEndYear}&bill-type=${billType}&count-type=${this.filters.selectedCountType}&parish=${this.filters.selectedParishes}&limit=${this.server.limit}&offset=${this.server.offset}`,
-      )
-
       // After the data is ready, we set it to our bills object and the DOM updates
       this.bills = data;
       this.pagination.total = data[0].totalrecords;
@@ -138,11 +141,11 @@ document.addEventListener("alpine:init", () => {
     async fetchChristenings() {
       this.meta.loading = true;
       let response = await fetch(
-        `https://data.chnm.org/bom/christenings?start-year=${this.filters.selectedStartYear}&end-year=${this.filters.selectedEndYear}&limit=${this.server.limit}&offset=${this.server.offset}`,
+        `https://data.chnm.org/bom/christenings?start-year=${this.filters.selectedStartYear}&end-year=${this.filters.selectedEndYear}&id=${this.filters.selectedChristenings}&limit=${this.server.limit}&offset=${this.server.offset}`,
       );
       let data = await response.json();
       if (data.error) {
-        console.log(
+        console.error(
           "There was an error fetching the christenings data:",
           data.error,
         );
@@ -163,9 +166,8 @@ document.addEventListener("alpine:init", () => {
       );
       let data = await response.json();
 
-      console.log('fetch deaths data url', `https://data.chnm.org/bom/causes?start-year=${this.filters.selectedStartYear}&end-year=${this.filters.selectedEndYear}&id=${this.filters.selectedCausesOfDeath}&limit=${this.server.limit}&offset=${this.server.offset}`)
       if (data.error) {
-        console.log(
+        console.error(
           "There was an error fetching the causes of death data:",
           data.error,
         );
@@ -249,13 +251,11 @@ document.addEventListener("alpine:init", () => {
       this.filters.selectedCountType = this.filters.selectedCountType;
 
       this.filters.selectedCausesOfDeath = this.filters.selectedCausesOfDeath;
-      console.log('selectedcausesofdeath: ', this.filters.selectedCausesOfDeath)
+      this.filters.selectedChristenings = this.filters.selectedChristenings;
 
       // we reset pagination to the first page
       this.page = 1;
       this.server.offset = 0;
-
-      console.log("fetching...")
 
       this.fetchData();
       this.fetchChristenings();
@@ -274,6 +274,8 @@ document.addEventListener("alpine:init", () => {
         this.selectedBillType = "Weekly";
         this.filters.selectedParishes = [];
         this.filters.selectedCausesOfDeath = [];
+        this.filters.selectedChristenings = [];
+
         this.fetchData();
         this.fetchChristenings();
         this.fetchDeaths();
