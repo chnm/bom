@@ -1,0 +1,85 @@
+{{/* begin: filter accordion */}}
+<div id="accordion-flush" data-accordion="collapse"
+  data-active-classes="bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
+  data-inactive-classes="text-gray-500 dark:text-gray-400">
+  <div x-data="{ expanded: false }" class="filter__header">
+    <h2 id="accordion-flush-heading-1">
+      <button type="button" @click="expanded = ! expanded"
+        class="flex justify-between items-center py-5 w-full font-medium text-left text-gray-900 border-b border-t border-gray-200 dark:border-gray-700 dark:text-white"
+        data-accordion-target="#accordion-flush-body-1" aria-expanded="true" aria-controls="accordion-flush-body-1">
+        <span>Filter</span>
+        <svg class="w-5 h-5 ml-2 transform" :class="{'rotate-180': expanded}" viewBox="0 0 20 20"
+          fill="currentColor">
+          <path fill-rule="evenodd" d="M10.293 14.95a1 1 0 0 1-1.414 0l-4-4a1 1 0 1 1 1.414-1.414L10
+      12.586l3.293-3.293a1 1 0 1 1 1.414 1.414l-4 4z" clip-rule="evenodd"></path>
+        </svg>
+    </h2>
+    <div id="accordion-flush-body-1" aria-labelledby="accordion-flush-heading-1">
+      <div class="py-5 border-b border-gray-200 dark:border-gray-700">
+        <div x-show="expanded" x-collapse class="filter__header__content">
+          <div class="grid grid-cols-4 gap-4 pb-6">
+            <div>
+              <h3 class="text-base font-medium leading-6 text-gray-900">Causes of Death</h3>
+              <div class="py-4 px-5 max-h-64 overflow-scroll border border-slate-200">
+                <div class="filter__header__content__item" style="height: 200px; overflow-y: scroll;">
+                    <template x-for="cause in all_causes" :key="cause.id">
+                    <div>
+                      <input type="checkbox" :id="cause.name" :value="cause.name"
+                        x-model="filters.selectedCausesOfDeath">
+                      <label :for="cause.name" x-text="cause.name"></label>
+                    </div>
+                  </template>
+                </div>
+              </div>
+            </div>
+            <div>
+              <h3 class="text-base font-medium leading-6 text-gray-900">Year Range</h3>
+              <div>
+                <label for="start-year">Start Year</label>
+                <input
+                  class="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 rounded-lg leading-tight py-2 px-3 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                  type="number" id="start-year" name="start-year" min="1648" max="1754" value="1648"
+                  @change="setStartYear()" x-model="filters.selectedStartYear">
+              </div>
+              <div>
+                <label for="end-year">End Year</label>
+                <input
+                  class="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 rounded-lg leading-tight py-2 px-3 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                  type="number" id="end-year" name="end-year" min="1648" max="1754" value="1754"
+                  @change="setEndYear()" x-model="filters.selectedEndYear">
+              </div>
+            </div>
+            <div>
+              <div class="w-1/2 inline-block relative">
+                <!-- spacer -->
+              </div>
+            </div>
+            <div>
+              <button
+                class="text-xs font-bold uppercase px-5 py-3 m-0.5 w-40 rounded block leading-normal border-solid border-2 border-dbn-yellow text-white bg-dbn-yellow hover:bg-dbn-yellowdark"
+                @click="resetFilters">
+                Reset Filters
+              </button>
+              <button
+              class="text-xs font-bold uppercase px-5 py-3 m-0.5 w-40 rounded block leading-normal border-solid border-2 border-dbn-yellow text-white bg-dbn-yellow hover:bg-dbn-yellowdark"
+              @click="applyFilters">
+                Apply Filters
+              </button>
+
+              <div 
+              class="text-xs font-bold uppercase px-1 py-3 m-0.5 leading-normal text-black hover:underline"
+              @click="instructionsOpen = true"
+              >
+                How to use this table
+              </div>
+        
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>  
+</div>
+</div>
+{{/* end: filter accordion */}}
+
+

@@ -1,8 +1,17 @@
+import Alpine from "alpinejs";
+import collapse from '@alpinejs/collapse';
+
+// initialize Alpine
+window.Alpine = Alpine;
+Alpine.plugin(collapse);
+
 document.addEventListener("alpine:init", () => {
   Alpine.data("billsData", () => ({
     bills: [],
     christenings: [],
     causes: [],
+    all_causes: [],
+    all_christenings: [],
     parishes: null,
     sort: false,
     modalOpen: false,
@@ -16,6 +25,8 @@ document.addEventListener("alpine:init", () => {
       selectedCountType: "",
       selectedStartYear: 1636,
       selectedEndYear: 1754,
+      selectedCausesOfDeath: [],
+      selectedChristenings: [],
     },
     isMissing: false,
     isIllegible: false,
@@ -37,7 +48,7 @@ document.addEventListener("alpine:init", () => {
       total: null, // total number of records from /totalbills endpoint
     },
     init() {
-      // Fetch the initial date. We don't fetch server data here but wait for user interaction.
+      // Fetch the static data
       this.fetchStaticData();
 
       // Read URL parameters
@@ -49,8 +60,11 @@ document.addEventListener("alpine:init", () => {
       if (params.has('count-type')) this.filters.selectedCountType = params.get('count-type');
       if (params.has('parish')) this.filters.selectedParishes = params.get('parish').split(',');
       if (params.has('page')) this.page = parseInt(params.get('page'));
+      // if (params.has('openTab')) this.openTab = parseInt(params.get('openTab'));
 
       this.fetchData();
+      this.fetchChristenings();
+      this.fetchDeaths();
     },
     async fetchStaticData() {
       // Data used for populating UI elements in the app.
@@ -63,6 +77,25 @@ document.addEventListener("alpine:init", () => {
         .catch((error) => {
           console.error("There was an error fetching parish data:", error);
         });
+
+      fetch("https://data.chnm.org/bom/list-deaths")
+        .then((response) => response.json())
+        .then((data) => {
+          this.all_causes = data;
+          this.all_causes.forEach((d, i) => (d.id = i));
+        })
+        .catch((error) => {
+          console.error("There was an error fetching causes of death data:", error);
+        });
+
+      fetch("https://data.chnm.org/bom/list-christenings")
+        .then((response) => response.json())
+        .then((data) => {
+          this.all_christenings = data;
+        })
+        .catch((error) => {
+          console.error("There was an error fetching christenings data:", error);
+        });
     },
     async fetchData(billType) {
       if (this.meta.fetching) {
@@ -74,11 +107,21 @@ document.addEventListener("alpine:init", () => {
       // billType defaults to filters.selectedBillType unless one is provided by the app
       billType = billType || this.filters.selectedBillType;
 
-      // 1. Bills data.
+      // Bills data
       let response = await fetch(
         `https://data.chnm.org/bom/bills?start-year=${this.filters.selectedStartYear}&end-year=${this.filters.selectedEndYear}&bill-type=${billType}&count-type=${this.filters.selectedCountType}&parish=${this.filters.selectedParishes}&limit=${this.server.limit}&offset=${this.server.offset}`,
       );
+
+      if (!response.ok) {
+        console.error("There was an error fetching weekly bills data:", response);
+        this.meta.loading = false;
+        this.meta.fetching = false;
+        this.messages.loading = "No data available. Please try again with different filters.";
+        return;
+      }
+
       let data = await response.json();
+
       if (data.error) {
         console.error("There was an error fetching weekly bills data:", data.error);
         this.meta.loading = false;
@@ -86,10 +129,6 @@ document.addEventListener("alpine:init", () => {
         return;
       }
       data.forEach((d, i) => (d.id = i));
-
-      console.log('filtered data url: ', 
-      `https://data.chnm.org/bom/bills?start-year=${this.filters.selectedStartYear}&end-year=${this.filters.selectedEndYear}&bill-type=${billType}&count-type=${this.filters.selectedCountType}&parish=${this.filters.selectedParishes}&limit=${this.server.limit}&offset=${this.server.offset}`,
-      )
 
       // After the data is ready, we set it to our bills object and the DOM updates
       this.bills = data;
@@ -102,11 +141,11 @@ document.addEventListener("alpine:init", () => {
     async fetchChristenings() {
       this.meta.loading = true;
       let response = await fetch(
-        `https://data.chnm.org/bom/christenings?start-year=${this.filters.selectedStartYear}&end-year=${this.filters.selectedEndYear}&limit=${this.server.limit}&offset=${this.server.offset}`,
+        `https://data.chnm.org/bom/christenings?start-year=${this.filters.selectedStartYear}&end-year=${this.filters.selectedEndYear}&id=${this.filters.selectedChristenings}&limit=${this.server.limit}&offset=${this.server.offset}`,
       );
       let data = await response.json();
       if (data.error) {
-        console.log(
+        console.error(
           "There was an error fetching the christenings data:",
           data.error,
         );
@@ -123,11 +162,12 @@ document.addEventListener("alpine:init", () => {
     async fetchDeaths() {
       this.meta.loading = true;
       let response = await fetch(
-        `https://data.chnm.org/bom/causes?start-year=${this.filters.selectedStartYear}&end-year=${this.filters.selectedEndYear}`,
+        `https://data.chnm.org/bom/causes?start-year=${this.filters.selectedStartYear}&end-year=${this.filters.selectedEndYear}&id=${this.filters.selectedCausesOfDeath}&limit=${this.server.limit}&offset=${this.server.offset}`,
       );
       let data = await response.json();
+
       if (data.error) {
-        console.log(
+        console.error(
           "There was an error fetching the causes of death data:",
           data.error,
         );
@@ -159,6 +199,8 @@ document.addEventListener("alpine:init", () => {
 
       // After the new limit/offset is ready, we'll fetch the data again.
       this.fetchData();
+      this.fetchChristenings();
+      this.fetchDeaths();
     },
     setStartYear() {
       // store the start year in the filters object
@@ -187,6 +229,8 @@ document.addEventListener("alpine:init", () => {
 
       // After the new offset is ready, we'll fetch the data again.
       this.fetchData();
+      this.fetchChristenings();
+      this.fetchDeaths();
     },
     sort(col) {
       if (this.sortCol == col) this.sort = !this.sort;
@@ -206,11 +250,16 @@ document.addEventListener("alpine:init", () => {
       this.filters.selectedEndYear = parseInt(this.filters.selectedEndYear);
       this.filters.selectedCountType = this.filters.selectedCountType;
 
+      this.filters.selectedCausesOfDeath = this.filters.selectedCausesOfDeath;
+      this.filters.selectedChristenings = this.filters.selectedChristenings;
+
       // we reset pagination to the first page
       this.page = 1;
       this.server.offset = 0;
 
       this.fetchData();
+      this.fetchChristenings();
+      this.fetchDeaths();
     },
     updateLimitVal() {
       // If a user changes the dropdown to a new value, we need to update the limit value.
@@ -224,7 +273,12 @@ document.addEventListener("alpine:init", () => {
         this.filters.selectedCountType = "";
         this.selectedBillType = "Weekly";
         this.filters.selectedParishes = [];
+        this.filters.selectedCausesOfDeath = [];
+        this.filters.selectedChristenings = [];
+
         this.fetchData();
+        this.fetchChristenings();
+        this.fetchDeaths();
       };
     },
     getCurrentPage() {
@@ -249,6 +303,8 @@ document.addEventListener("alpine:init", () => {
     goToLastPage() {
       this.server.offset = this.getTotalPages() - this.server.limit;
       this.fetchData();
+      this.fetchChristenings();
+      this.fetchDeaths();
     },
     getTotalRows: function () {
       return parseInt(this.server.total);
@@ -291,9 +347,12 @@ document.addEventListener("alpine:init", () => {
       params.set("count-type", this.filters.selectedCountType);
       params.set("parish", this.filters.selectedParishes);
       params.set("page", this.getCurrentPage());
+      // params.set("openTab", this.openTab);
 
       // Use the history API to update the URL
       history.pushState({}, "", `${location.pathname}?${params}`);
     },
   }));
 });
+
+Alpine.start();

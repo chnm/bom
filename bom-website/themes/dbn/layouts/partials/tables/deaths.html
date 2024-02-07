@@ -1,15 +1,15 @@
 {{/* This is the Total Deaths table. */}}
 
-      {{ partial "tables/filter.html" }}
+      {{ partial "tables/cod_filter.html" }}
 
       {{/* begin: deaths table */}}
-    <div>
+    <div x-data="fetchDeaths()">
       <table class="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-700">
         <thead class="bg-gray-100 dark:bg-gray-700">
           <tr>
             <th scope="col"
               class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
-              width="30%" @click="sort('name')">Cause</th>
+              width="30%" @click="sort('death')">Cause</th>
             <th scope="col"
               class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
               width="20%" @click="sort('count')">Count</th>
@@ -55,7 +55,7 @@
             x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             class="inline-block w-full max-w-xl p-8 my-20 overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl 2xl:max-w-2xl">
             <div class="flex items-center justify-between space-x-4">
-              <h3 class="text-lg font-medium leading-6 text-gray-900" id="modal-title" x-text="modalBill.name"></h3>
+              <h3 class="text-lg font-medium leading-6 text-gray-900" id="modal-title" x-text="modalBill.death"></h3>
               <button @click="modalOpen = false" class="text-gray-600 focus:outline-none hover:text-gray-700">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
                   stroke="currentColor">
@@ -68,7 +68,7 @@
                 x-text="modalBill.start_day"></span> to <span x-text="modalBill.end_month"></span> <span
                 x-text="modalBill.end_day"></span>, <span x-text="modalBill.year"></span> (<span
                 x-text="modalBill.split_year"></span>)</p>
-            <p class="mt-2 text-sm text-gray-800"><strong>Count Type</strong>: <span x-text="modalBill.count_type"></p>
+            <p class="mt-2 text-sm text-gray-800"><strong>Description</strong>: <span x-text="modalBill.descriptive_text ? modalBill.descriptive_text : 'No description available.'"></p>
             <p class="mt-2 text-sm text-gray-800"><strong>Count</strong>: <span x-text="modalBill.count"></p>
             <p class="mt-2 text-sm text-gray-800"><strong>Week Number</strong>: <span x-text="modalBill.week_no"></span>
             <div x-data="{ isMissing: false }">
