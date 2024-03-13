@@ -4,7 +4,7 @@ import PlagueBillsBarChartWeekly from "./counts-bar-chart-multiple";
 
 // Load data
 const urls = [
-  "https://data.chnm.org/bom/bills?start-year=1602&end-year=1754",
+  "https://data.chnm.org/bom/bills?start-year=1602&end-year=1754&bill-type=All&count-type=All&limit=300000&offset=0",
 ];
 const promises = [];
 urls.forEach((url) => promises.push(d3.json(url)));
