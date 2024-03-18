@@ -1,0 +1,75 @@
+{{ define "main" }}
+<body>  
+    <div class="container mx-auto w-full h-full" x-data="billsData">
+      <h2 class="text-4xl font-medium pt-4">{{ .Title }}</h2>
+
+      {{/* begin: tab switcher */}}
+      <div class="flex flex-wrap" x-data="{ openTab: 1 }">
+        <div class="w-full px-12 py-8">
+          <ul class="flex mb-0 list-none flex-wrap pt-3 pb-4 flex-row">
+            <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
+              <a
+                class="text-xs font-bold uppercase px-5 py-3 rounded block leading-normal border-none bg-slate-200 text-black hover:bg-slate-300"
+            :class="{ 'bg-slate-500 text-white': openTab === 1, 'bg-slate-200 hover:bg-slate-300': openTab !==1 }"
+                x-on:click="openTab = 1; fetchData('Weekly')"
+              >
+                Weekly Bills
+              </a>
+            </li>
+            <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
+              <a
+                class="text-xs font-bold uppercase px-5 py-3 rounded block leading-normal border-none bg-slate-200 text-black hover:bg-slate-300"
+              :class="{ 'bg-slate-500 text-white': openTab === 2, 'bg-slate-200 hover:bg-slate-300': openTab !==2 }"
+                x-on:click="openTab = 2; fetchData('General')"
+              >
+                General Bills
+              </a>
+            </li>
+            <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
+              <a
+                class="text-xs font-bold uppercase px-5 py-3 rounded block leading-normal border-none text-black bg-slate-200 hover:text-black hover:bg-slate-300"
+            :class="{ 'bg-slate-500 text-white': openTab === 3, 'bg-slate-200 hover:bg-slate-300': openTab !==3 }"
+                x-on:click="openTab = 3; fetchDeaths()"
+              >
+                Total Deaths
+              </a>
+            </li>
+            <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
+              <a
+                class="text-xs font-bold uppercase px-5 py-3 rounded block leading-normal border-none text-black bg-slate-200 hover:text-black hover:bg-slate-300"
+              :class="{ 'bg-slate-500 text-white': openTab === 4, 'bg-slate-200 hover:bg-slate-300': openTab !==4 }"
+                x-on:click="openTab = 4; fetchChristenings()"
+              >
+                Christenings
+              </a>
+            </li>
+          </ul>
+          <div x-show="openTab === 1">
+            {{ partial "tables/weekly.html" }}
+          </div>
+          <div x-show="openTab === 2">
+            <div>
+            {{ partial "tables/general.html" }}
+            </div>
+          </div>
+          <div x-show="openTab === 3">
+            <div>
+            {{ partial "tables/deaths.html" }}
+            </div>
+          </div>
+          <div x-show="openTab === 4">
+            <div>
+              {{ partial "tables/christenings.html" }}
+            </div>
+          </div>
+        </div>
+      </div>
+      {{/* end: tab switcher */}}
+
+    {{ $js := resources.Get "js/database.js" | js.Build | resources.Minify }}
+    {{ $secureJS := $js | resources.Fingerprint "sha512" }}
+    <script type="module" src="{{ $secureJS.Permalink }}" integrity="{{ $secureJS.Data.Integrity }}" async></script>
+  
+  </body>
+
+{{ end }}
