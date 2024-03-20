@@ -20,7 +20,7 @@ The _Death by Numbers_ project is also designed to support dataset reuse by publ
 - Katie Kania, Digital History Research Assistant, 2021-present
 - Alison Langford, Office Manager, 2022-present
 - Luz Mueller, Graduate Research Assistant, 2023-present
-- Laszlo Taba, Graduate Research Assistant, 2024-present
+- Laszlo Taba, Digital History Research Assistant, 2024-present
 - Tony Trinh, Systems Administrator, 2022-present
 - Cecilia Ward, Digital History Research Assistant, 2022-present
 
@@ -57,4 +57,3 @@ The _Death by Numbers_ project is also designed to support dataset reuse by publ
 - Mary Shuman, Digital Public Humanities Intern, 2023
 - Logan Skorupa, Digital History Research Assistant, 2022-2024
 - Rachel Whyte, Graduate Research Assistant, 2023
-
