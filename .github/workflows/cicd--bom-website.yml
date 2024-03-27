@@ -15,7 +15,7 @@ jobs:
     with:
       container-registry: "ghcr.io"
       container-image-name: "bom-website"
-      hugo-context-root: "."
+      hugo-context-root: "bom-website"
       hugo-devl-url: "https://dev.deathbynumbers.org"
       hugo-prod-url: "https://deathbynumbers.org"
       
