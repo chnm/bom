@@ -1,6 +1,7 @@
 name: "[bom-website] Build, Release, Deploy"
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - "preview"
