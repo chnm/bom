@@ -392,6 +392,7 @@
     ],
     "ids": [
       "TableOfContents",
+      "abstracted-from-anne-whitemans-the-compton-census-of-1676",
       "accordion-flush",
       "accordion-flush-body-1",
       "accordion-flush-heading-1",
@@ -402,6 +403,7 @@
       "causes-of-death-data",
       "chart",
       "christenings-data",
+      "citations",
       "conclusion",
       "content",
       "context",
@@ -478,6 +480,7 @@
       "step-2-joining-your-csv-to-your-shp",
       "step-3-making-the-map-actually-say-something",
       "suggested-citation",
+      "table-of-religious-conformity-by-parish-in-1676",
       "technical-specifications",
       "the-sum-of-total-records",
       "time-to-event-analysis",

@@ -11,5 +11,13 @@
         {{- block "main" . }}{{- end }}
         </div>
         {{- partial "footer.html" . -}}
+
+        <script
+            src="https://unpkg.com/littlefoot/dist/littlefoot.js"
+            type="application/javascript"
+        ></script>
+        <script type="application/javascript">
+        littlefoot.littlefoot()
+        </script>
     </body>
 </html>
