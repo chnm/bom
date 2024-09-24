@@ -50,4 +50,9 @@
     rel="stylesheet"
     href="https://unpkg.com/littlefoot/dist/littlefoot.css"
   />
+  {{ $js := resources.Get "js/common.js" | js.Build | resources.Minify }}
+  {{ $secureJS := $js | resources.Fingerprint "sha512" }}
+  <script src="{{ $secureJS.Permalink }}" integrity="{{ $secureJS.Data.Integrity }}" async></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
 </head>
