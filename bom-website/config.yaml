@@ -35,4 +35,4 @@ sitemap:
 taxonomies:
   category: categories
   tag: tags
-  authors: authors
+  author: author
