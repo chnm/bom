@@ -1,7 +1,7 @@
 ---
 title: "Ambiguous Bills and Anonymous Commentators: Reflections on My Experience Transcribing the Bills of Mortality"
 author:
-  - Lazlo Taba
+  - Laszlo Taba
 date: "2024-09-10"
 tags:
   - taba

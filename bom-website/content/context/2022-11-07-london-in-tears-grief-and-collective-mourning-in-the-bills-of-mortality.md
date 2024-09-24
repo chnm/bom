@@ -2,7 +2,7 @@
 title: "London in Tears: Grief and Collective Mourning in the Bills of Mortality"
 date: "2022-11-07"
 author: 
-  - Hernán Adasme
+  - Hernan Adasme
 categories: 
   - context
 tags: 

@@ -2590,12 +2590,12 @@ a {
   margin-right: 0.5rem;
 }
 
-.ml-0 {
-  margin-left: 0px;
-}
-
 .mb-5 {
   margin-bottom: 1.25rem;
+}
+
+.ml-0 {
+  margin-left: 0px;
 }
 
 .mr-1 {
