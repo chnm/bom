@@ -14,7 +14,7 @@ Promise.all(urls.map((url) => d3.json(url)))
     const deathschart = new DeathsChart(
       "#chart",
       { causes: data[0] },
-      { width: 960, height: 2000 }
+      { width: 960, height: 4000 }
     );
     deathschart.render();
   })
