@@ -2602,6 +2602,10 @@ a {
   margin-left: 0px;
 }
 
+.mt-4 {
+  margin-top: 1rem;
+}
+
 .mb-6 {
   margin-bottom: 1.5rem;
 }
@@ -2624,10 +2628,6 @@ a {
 
 .mb-12 {
   margin-bottom: 3rem;
-}
-
-.mt-4 {
-  margin-top: 1rem;
 }
 
 .mt-0 {
@@ -3282,10 +3282,6 @@ a {
   padding-bottom: 5rem;
 }
 
-.pt-5 {
-  padding-top: 1.25rem;
-}
-
 .pb-10 {
   padding-bottom: 2.5rem;
 }
@@ -3599,6 +3595,11 @@ a {
 .hover\:text-dbn-blue:hover {
   --tw-text-opacity: 1;
   color: rgb(150 173 200 / var(--tw-text-opacity));
+}
+
+.hover\:text-gray-800:hover {
+  --tw-text-opacity: 1;
+  color: rgb(31 41 55 / var(--tw-text-opacity));
 }
 
 .hover\:underline:hover {
