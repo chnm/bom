@@ -15,7 +15,14 @@ The following visualization displays a word cloud of causes of death within the 
 
 <div id="row">
     <h3>Word Cloud of Causes of Death</h3>
+    <label for="start-year">Start Year:</label>
+    <input type="number" id="start-year" value="1648">
+    <label for="end-year">End Year:</label>
+    <input type="number" id="end-year" value="1754">
+    <button id="update-button">Update</button>
+    <button id="reset-button">Reset</button>
     <div class="loading_chart">Loading data...</div>
+    <p id="word-info">Mouse over a word to see its count</p>
     <svg id="chart"></svg>
     <figcaption>This figure updates regularly as new data is transcribed and added to the database.</figcaption>
 </div>
