@@ -3,7 +3,7 @@ import WordCloudChart from "./wordcloud";
 
 // Function to fetch data and render the word cloud
 function fetchDataAndRender(startYear, endYear) {
-  const url = `https://data.chnm.org/bom/causes?start-year=${startYear}&end-year=${endYear}&limit=9000`;
+  const url = `https://data.chnm.org/bom/causes?start-year=${startYear}&end-year=${endYear}`;
   
   d3.json(url)
     .then((data) => {

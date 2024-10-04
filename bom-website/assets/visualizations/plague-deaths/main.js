@@ -3,7 +3,7 @@ import DeathsChart from "visualizations/plague-deaths/deaths-bar-chart";
 
 // Load data
 const urls = [
-  "https://data.chnm.org/bom/causes?start-year=1648&end-year=1754&limit=9000",
+  "https://data.chnm.org/bom/causes?start-year=1648&end-year=1754",
 ];
 const promises = [];
 urls.forEach((url) => promises.push(d3.json(url)));

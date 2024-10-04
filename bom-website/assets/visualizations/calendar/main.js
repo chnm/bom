@@ -3,7 +3,7 @@ import CalendarChart from "./calendar";
 
 // Function to fetch data and render the histogram
 function fetchDataAndRender(year) {
-  const url = `https://data.chnm.org/bom/causes?start-year=${year}&end-year=${year}&limit=9000`;
+  const url = `https://data.chnm.org/bom/causes?start-year=${year}&end-year=${year}`;
   
   d3.json(url)
     .then((data) => {
