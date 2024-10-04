@@ -1,12 +1,12 @@
 ---
-title: "Causes Histograms"
+title: "Calendar of Causes"
 created: 2024-10-04
 updated: 2024-10-04
-abstract: "Graphing the causes of death per week"
-script: visualizations/causes-histogram/main.js
-styles: visualizations/causes-histogram/style.css
+abstract: "Graphing the causes of death over time"
+script: visualizations/calendar/main.js
+styles: visualizations/calendar/style.css
 layout: visualizations
-thumbnail: histogram.png
+thumbnail: calendar.png
 thumbdesc: "A screenshot showing the causes of death visualization."
 author:
 ---
@@ -19,10 +19,6 @@ This visualization illustrates the causes of death per week for a given year. Th
     <div class="flex flex-col">
         <label for="year" class="block text-gray-700 text-sm font-bold">Year:</label>
         <input id="year" value="1668" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-    </div>
-    <div class="flex flex-col">
-        <label for="cause" class="block text-gray-700 text-sm font-bold">Cause of death:</label>
-        <select id="cause" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></select>
     </div>
     <div class="flex items-end">
         <button id="update-button" type="button" class="rounded border border-gray-200 bg-white text-sm font-medium px-4 py-2 text-gray-900 hover:bg-dbn-blue hover:text-black focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">Update</button>
