@@ -1,13 +1,18 @@
 ---
 title: "API Documentation"
 slug: /api/
+layout: api-docs
 ---
-
-{{< toc >}}
 
 ## Overview
 
-The Bills of Mortality API is organized around [REST](https://en.wikipedia.org/wiki/Representational_state_transfer) and returns JSON-encoded responses from our PostgreSQL database using standard HTTP response codes and verbs.
+The Bills of Mortality API is organized around [REST](https://en.wikipedia.org/wiki/Representational_state_transfer) and returns JSON-encoded responses from our PostgreSQL database using standard HTTP response codes and verbs. The data held by Death by Numbers are available in machine readable formats (currently JSON and CSV) to aid in research and data visualization. 
+
+The first API was released in 2021, and the second version in 2024. The 2024 version provides new functionality for searching, sorting, and filtering; provides additional endpoints for data; and a set of new documentation for a quick start in exploring the data.
+
+## Datasets
+
+While the API provides an effetive way to retrieve data, for bulk export it is less useful than data delivered through a single file. If you have a project where you want to examine large sets of data, you can find our CSV exports in [our Github repository](/downloads/).
 
 The API currently provides [three data endpoints](https://data.chnm.org) for returning data.
 
@@ -42,6 +47,20 @@ The final endpoint is `christenings`, which powers the _Christenings_ tab of the
 - Year: The year of the given bill.
 - Split Year: The split year for the given cause of death.
 - Location ID: A unique identifier for the **Description** field.
+
+## Citation
+
+If you want to refer to our data or are using the API in an academic publication, you can cite as follows: 
+
+```bibtex
+@software{bom-2024-data-api,
+    author       = {Death by Numbers},
+    title        = {Death by Numbers API v2},
+    year         = 2024,
+    version      = {2},
+    url          = {https://deathbynumbers.org},
+}
+```
 
 ## Web Application
 
