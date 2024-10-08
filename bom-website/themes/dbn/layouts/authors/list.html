@@ -1,0 +1,22 @@
+{{ define "main" }}
+<main class="container mx-auto px-4 py-8">
+  <h1 class="text-4xl font-bold mb-8">Authors</h1>
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+    {{ range $name, $taxonomy := .Site.Taxonomies.authors }}
+    <div class="flex flex-col items-center bg-white p-4 rounded-lg shadow-md">
+      {{ with (index $taxonomy.Pages 0).Params.headshot }}
+      <img src="{{ . }}" alt="{{ $name }}" class="w-24 h-24 rounded-full mb-4">
+      {{ end }}
+      <h2 class="text-2xl font-semibold mb-2">{{ $name }}</h2>
+      {{ with (index $taxonomy.Pages 0).Params.bio }}
+      <p class="text-gray-600 mb-4">{{ . }}</p>
+      {{ end }}
+      <a href="{{ "/authors/" | relURL }}{{ $name | urlize }}" class="text-dbn-green hover:text-dbn-blue">View Posts</a>
+    </div>
+    {{ else }}
+    <p>No authors found.</p>
+    {{ end }}
+  </div>
+  <pre>{{ .Site.Taxonomies.authors }}</pre> <!-- Debug statement -->
+</main>
+{{ end }}

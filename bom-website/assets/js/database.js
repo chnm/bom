@@ -1,5 +1,5 @@
 import Alpine from "alpinejs";
-import collapse from '@alpinejs/collapse';
+import collapse from "@alpinejs/collapse";
 
 // initialize Alpine
 window.Alpine = Alpine;
@@ -51,15 +51,20 @@ document.addEventListener("alpine:init", () => {
       // Fetch the static data
       this.fetchStaticData();
 
-      // Read URL parameters
-      let params = new URLSearchParams(window.location.search);
-
       // Update filters and page based on URL parameters
-      if (params.has('start-year')) this.filters.selectedStartYear = parseInt(params.get('start-year'));
-      if (params.has('end-year')) this.filters.selectedEndYear = parseInt(params.get('end-year'));
-      if (params.has('count-type')) this.filters.selectedCountType = params.get('count-type');
-      if (params.has('parish')) this.filters.selectedParishes = params.get('parish').split(',');
-      if (params.has('page')) this.page = parseInt(params.get('page'));
+      if (params.has("start-year"))
+        this.filters.selectedStartYear = parseInt(params.get("start-year"));
+      if (params.has("end-year"))
+        this.filters.selectedEndYear = parseInt(params.get("end-year"));
+      if (params.has("count-type"))
+        this.filters.selectedCountType = params.get("count-type");
+      if (params.has("parishes")) {
+        const parishParam = params.get("parish");
+        const parishes = parishParam.split(",");
+        this.filters.selectedParishes =
+          parishes.length > 1 ? parishes : [parishParam];
+      }
+      if (params.has("page")) this.page = parseInt(params.get("page"));
       // if (params.has('openTab')) this.openTab = parseInt(params.get('openTab'));
 
       this.fetchData();
@@ -85,7 +90,10 @@ document.addEventListener("alpine:init", () => {
           this.all_causes.forEach((d, i) => (d.id = i));
         })
         .catch((error) => {
-          console.error("There was an error fetching causes of death data:", error);
+          console.error(
+            "There was an error fetching causes of death data:",
+            error,
+          );
         });
 
       fetch("https://data.chnm.org/bom/list-christenings")
@@ -94,7 +102,10 @@ document.addEventListener("alpine:init", () => {
           this.all_christenings = data;
         })
         .catch((error) => {
-          console.error("There was an error fetching christenings data:", error);
+          console.error(
+            "There was an error fetching christenings data:",
+            error,
+          );
         });
     },
     async fetchData(billType) {
@@ -107,23 +118,31 @@ document.addEventListener("alpine:init", () => {
       // billType defaults to filters.selectedBillType unless one is provided by the app
       billType = billType || this.filters.selectedBillType;
 
+
       // Bills data
       let response = await fetch(
         `https://data.chnm.org/bom/bills?start-year=${this.filters.selectedStartYear}&end-year=${this.filters.selectedEndYear}&bill-type=${billType}&count-type=${this.filters.selectedCountType}&parish=${this.filters.selectedParishes}&limit=${this.server.limit}&offset=${this.server.offset}`,
       );
 
       if (!response.ok) {
-        console.error("There was an error fetching weekly bills data:", response);
+        console.error(
+          "There was an error fetching weekly bills data:",
+          response,
+        );
         this.meta.loading = false;
         this.meta.fetching = false;
-        this.messages.loading = "No data available. Please try again with different filters.";
+        this.messages.loading =
+          "No data available. Please try again with different filters.";
         return;
       }
 
       let data = await response.json();
 
       if (data.error) {
-        console.error("There was an error fetching weekly bills data:", data.error);
+        console.error(
+          "There was an error fetching weekly bills data:",
+          data.error,
+        );
         this.meta.loading = false;
         this.meta.fetching = false;
         return;

@@ -1,40 +1,45 @@
 ---
 title: "API Documentation"
-url: /api/
+slug: /api/
+layout: api-docs
 ---
-
-{{< toc >}}
 
 ## Overview
 
-The Bills of Mortality API is organized around [REST](https://en.wikipedia.org/wiki/Representational_state_transfer) and returns JSON-encoded responses from our PostgreSQL database using standard HTTP response codes and verbs. 
+The Bills of Mortality API is organized around [REST](https://en.wikipedia.org/wiki/Representational_state_transfer) and returns JSON-encoded responses from our PostgreSQL database using standard HTTP response codes and verbs. The data held by Death by Numbers are available in machine readable formats (currently JSON and CSV) to aid in research and data visualization. 
+
+The first API was released in 2021, and the second version in 2024. The 2024 version provides new functionality for searching, sorting, and filtering; provides additional endpoints for data; and a set of new documentation for a quick start in exploring the data.
+
+## Datasets
+
+While the API provides an effetive way to retrieve data, for bulk export it is less useful than data delivered through a single file. If you have a project where you want to examine large sets of data, you can find our CSV exports in [our Github repository](/downloads/).
 
 The API currently provides [three data endpoints](https://data.chnm.org) for returning data.
 
 The first endpoint, `bills`, accepts three required parameters: the start year, the end year, and the bill type (Weekly or General). This is built this way to operate the year range slider and specific bills to display in the web application. As you adjust the year slider, the new year values are stored until "Apply Filters" is clicked, which then passes stored data to the endpoint and fetches the updated parameters. Optionally, you can include a count type parameter (Buried or Plague) to filter specific values.
 
-The `bills` data returns the following information: 
+The `bills` data returns the following information:
 
 - Parish name: The name of the parish as recorded for a given date on a given bill.
 - Bill type: Whether the bill is a Weekly or General bill.
 - Count type: There are two records for the weekly bills: how many people were buried and how many had the plague. This column indicates the `count` value for each of these.
-- Count: These values correspond to the *Count Type* column. 
+- Count: These values correspond to the _Count Type_ column.
 - Week Number: This is the week number in a year.
 - Start Day and End Day / Start Month and End Month: This is the date range for a given period.
 - Year: This is the year for a given bill.
 - Split Year: This is to account for the calendar change and indicates where split years are necessary.
 
-The second endpoint is `causes`, which powers the *Total Deaths* tab of the web application. The endpoint requires a year range to return data. You can optionally return a specific cause of death to see values for a specific cause. Currently, this endpoint returns the following: 
+The second endpoint is `causes`, which powers the _Total Deaths_ tab of the web application. The endpoint requires a year range to return data. You can optionally return a specific cause of death to see values for a specific cause. Currently, this endpoint returns the following:
 
 - Death ID: This is a unique ID for the `death` description.
 - Death: A description of the cause of death.
 - Count: The number of the cause for a given week.
 - Week ID: The unique identifier for the week.
 - Start Day and End Day / Start Month and End Month: This is the date range for a given period.
-- Year: The year for a given cause of death. 
+- Year: The year for a given cause of death.
 - Split Year: The split year for the given cause of death.
 
-The final endpoint is `christenings`, which powers the *Christenings* tab of the web application. The endpoint requires a year range to return data. Currently, this endpoint returns the following: 
+The final endpoint is `christenings`, which powers the _Christenings_ tab of the web application. The endpoint requires a year range to return data. Currently, this endpoint returns the following:
 
 - Description (`christenings_desc`): A description as transcribed from the bills.
 - Count: The number of christenings for a given parish.
@@ -43,31 +48,45 @@ The final endpoint is `christenings`, which powers the *Christenings* tab of the
 - Split Year: The split year for the given cause of death.
 - Location ID: A unique identifier for the **Description** field.
 
+## Citation
+
+If you want to refer to our data or are using the API in an academic publication, you can cite as follows: 
+
+```bibtex
+@software{bom-2024-data-api,
+    author       = {Death by Numbers},
+    title        = {Death by Numbers API v2},
+    year         = 2024,
+    version      = {2},
+    url          = {https://deathbynumbers.org},
+}
+```
+
 ## Web Application
 
-The web application currently has four ways of interacting with the table of data. 
+The web application currently has four ways of interacting with the table of data.
 
 - The table itself has built-in tools for interacting with the data. You can change the rows per page (to view 25, 50, or 100 rows at a time), you can page through the results, or you can filter parish names, causes of death, and christenings from the checkboxes.
-- Parishes checkboxes and causes of death checkboxes: Displayed above the table, these allow you to select or unselect specific locations or causes of death you'd like to display within the table. 
-- Years slider: This adjusts the years that are displayed by the table. By default the full extent of years is selected. As you drag the nodes for start and end years, you can see the year value tooltip change. After you let up on your mouse, the new value is stored and waits to be passed to the API by clicking "Apply Filters" and new data fetched for display. 
+- Parishes checkboxes and causes of death checkboxes: Displayed above the table, these allow you to select or unselect specific locations or causes of death you'd like to display within the table.
+- Years slider: This adjusts the years that are displayed by the table. By default the full extent of years is selected. As you drag the nodes for start and end years, you can see the year value tooltip change. After you let up on your mouse, the new value is stored and waits to be passed to the API by clicking "Apply Filters" and new data fetched for display.
 - Count type: This allows you to filter the data based on either the number of burials or number of those infected with the plague. The options for the Weekly bills are "All" (to display all data regardless of count type), "Buried" (to display burial counts), and "Plague" (to display infection counts). The only option currently available for the General bills is "Total" (to display the aggregate data as transcribed from the bills), but will include "Buried" and "Plague" as transcriptions continue.
 
 ## Technical Specifications
 
 ### Errors
 
-The BOM API uses conventional HTTP response codes to indicate the success or failure of an API request. Codes in the `2xx` range indicate success. Codes in the `4xx` range indicate an error with the information provided. Codes in the `5xx` range indicate an error with our servers (these are very rare). 
+The BOM API uses conventional HTTP response codes to indicate the success or failure of an API request. Codes in the `2xx` range indicate success. Codes in the `4xx` range indicate an error with the information provided. Codes in the `5xx` range indicate an error with our servers (these are very rare).
 
-HTTP Status Code Summary 
+HTTP Status Code Summary
 
-| Code  | Summary |
-| ----- | ------- |
-| 200 - OK | Everything worked as expected. |
-| 400 - Bad Request | The request was not accepted due to a missing required parameter. |
-| 402 - Request Failed | The parameters were valid but the request failed.
-| 403 - Forbidden | The API doesn't have permissions to perform a request. |
-| 404 - Not Found | The requested resource doesn't exist. |
-| 500, 502, 503, 504 - Server Errors | Something went wrong on the BOM end. (These are rare.) |
+| Code                               | Summary                                                           |
+| ---------------------------------- | ----------------------------------------------------------------- |
+| 200 - OK                           | Everything worked as expected.                                    |
+| 400 - Bad Request                  | The request was not accepted due to a missing required parameter. |
+| 402 - Request Failed               | The parameters were valid but the request failed.                 |
+| 403 - Forbidden                    | The API doesn't have permissions to perform a request.            |
+| 404 - Not Found                    | The requested resource doesn't exist.                             |
+| 500, 502, 503, 504 - Server Errors | Something went wrong on the BOM end. (These are rare.)            |
 
 ### Endpoints
 
@@ -84,10 +103,11 @@ See below on how to return the entire dataset with `limit`.
 This populates parish names checkboxes in the interface for filtering parish names selected by a user. These are unique values each with their own unique ID, name as recorded from the primary sources, and the canonical name determined by the BOM team. **If you'd like to look up a specific parish from the `bills` endpoint, you will need to find the unique parish ID from this list.**
 
 ```js
-GET /parishes
+GET / parishes;
 ```
 
-Parameters: 
+Parameters:
+
 - none
 
 <http://data.chnm.org/bom/parishes>
@@ -110,13 +130,14 @@ Response JSON (indexed by parish ID):
 This endpoint returns the entirety of the Weekly or General Bills data and populates the table under the `Weekly Bills` and `General Bills` tab. This endpoint is the primary way for viewing and interacting with the full dataset.
 
 ```js
-GET /bills
+GET / bills;
 ```
 
-Parameters: 
+Parameters:
+
 - start-year (required): A four digit number representing the start year.
 - end-year (required): A four digit number representing the end year.
-- bill-type (required): Either "Weekly" or "General" to view specific bill types. 
+- bill-type (required): Either "Weekly" or "General" to view specific bill types.
 - count-type (optional): Either "Buried" or "Plague" to view specific count types.
 - limit (optional): Limit the number of records. Defaults to 25.
 - offset (optional): Offset the number of records. Defaults to 0.
@@ -125,7 +146,7 @@ The `start-year` and `end-year` parameters are required and return the range of 
 
 <http://data.chnm.org/bom/bills?start-year=1669&end-year=1754&bill-type=Weekly>
 
-Response JSON: 
+Response JSON:
 
 ```js
 [
@@ -147,7 +168,7 @@ Response JSON:
 ]
 ```
 
-Optionally, you can provide the `/bills` endpoint with the `parishes` parameter, which accepts an ID value for a parish name. You can find the corresponding parish ID value from the `/parishes` endpoint. 
+Optionally, you can provide the `/bills` endpoint with the `parishes` parameter, which accepts an ID value for a parish name. You can find the corresponding parish ID value from the `/parishes` endpoint.
 
 <http://data.chnm.org/bom/bills?start-year=1648&end-year=1754&bill-type=Weekly&parishes=1,3,17&limit=50&offset=0>
 
@@ -198,7 +219,7 @@ Optionally, you can provide the `/bills` endpoint with the `parishes` parameter,
 		"week_id":"1669-1670-02"
 		},
 		{
-			... 
+			...
 		}
 	...
 ]
@@ -234,10 +255,10 @@ If you wish to get the dataset without the `limit` and `offset` pagination param
 
 #### The sum of total records
 
-The pagination of the web application table requires knowing the sum of total records for a given dataset. This is provided as an endpoint, and could be used to set the `limit` to the max number of values in the database to return all values. 
+The pagination of the web application table requires knowing the sum of total records for a given dataset. This is provided as an endpoint, and could be used to set the `limit` to the max number of values in the database to return all values.
 
 ```js
-GET /totalbills
+GET / totalbills;
 ```
 
 The `totalbills` endpoint requires the parameter `type`, which can be **Causes**, **Weekly**, **General**, or **Christenings**.
@@ -246,21 +267,22 @@ The `totalbills` endpoint requires the parameter `type`, which can be **Causes**
 
 ```js
 [
-	{
-		"total_records":7752
-	}
-]
+  {
+    total_records: 7752,
+  },
+];
 ```
 
 #### Causes of death data
 
-This endpoint returns the causes of death data and populates the table under the `Total Deaths` tab. 
+This endpoint returns the causes of death data and populates the table under the `Total Deaths` tab.
 
 ```js
-GET /causes
+GET / causes;
 ```
 
-Parameters: 
+Parameters:
+
 - start-year (required): A four digit number representing the start year.
 - end-year (required): A four digit number representing the end year.
 - id (optional): An ID for a specific cause of death.
@@ -334,13 +356,14 @@ The complete list of causes of death and their unique IDs can be found using the
 This endpoint returns the christenings data and populates the table under the `Christenings` tab.
 
 ```js
-GET /christenings
+GET / christenings;
 ```
 
-Parameters: 
+Parameters:
+
 - start-year (required): A four digit number representing the start year.
 - end-year (required): A four digit number representing the end year.
-- id (optional):  An ID for a specific christening location.
+- id (optional): An ID for a specific christening location.
 - limit (optional): Limit the number of records. Defaults to 25.
 - offset (optional): Offset the number of records. Defaults to 0.
 
@@ -365,7 +388,7 @@ Response JSON:
 ]
 ```
 
-You can optionally specify `id` parameters to return specific data. 
+You can optionally specify `id` parameters to return specific data.
 
 <https://data.chnm.org/bom/christenings?start-year=1640&end-year=1754&id=3>
 

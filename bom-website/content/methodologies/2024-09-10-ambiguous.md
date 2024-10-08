@@ -1,12 +1,12 @@
 ---
 title: "Ambiguous Bills and Anonymous Commentators: Reflections on My Experience Transcribing the Bills of Mortality"
 author:
-  - Lazlo Taba
+  - Laszlo Taba
 date: "2024-09-10"
 tags:
   - taba
 categories:
-  - "workflow"
+  - "workflows"
 ---
 
 I have had the pleasure over the last several months of transcribing Bills of Mortality for the Death by Numbers team, and what initially most surprised me is the amount of interpretation my role requires. Just because the bills are what historians would describe as “primary sources,” transcribing them is more complicated than just copying them word-for-word.

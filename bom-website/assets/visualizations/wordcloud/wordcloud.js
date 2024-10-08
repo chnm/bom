@@ -43,8 +43,8 @@ function WordCloud(text, {
   marginRight = 0, // right margin, in pixels
   marginBottom = 0, // bottom margin, in pixels
   marginLeft = 0, // left margin, in pixels
-  width = 640, // outer width, in pixels
-  height = 400, // outer height, in pixels
+  width = 900, // outer width, in pixels
+  height = 450, // outer height, in pixels
   maxWords = 1200, // maximum number of words to extract from the text
   fontFamily = "serif", // font family
   fontScale = 14, // base font size
@@ -65,7 +65,7 @@ function WordCloud(text, {
       .attr("text-anchor", "middle")
       .attr("style", "max-width: 100%; height: auto; height: intrinsic;");
 
-  const g = svg.append("g").attr("transform", `translate(${marginLeft},${marginTop})`);
+  const g = svg.append("g").attr("transform", `translate(${width / 2},${height / 2})`);
 
   const cloud = d3Cloud()
       .size([width - marginLeft - marginRight, height - marginTop - marginBottom])
@@ -73,12 +73,26 @@ function WordCloud(text, {
       .padding(padding)
       .rotate(rotate)
       .font(fontFamily)
-      .fontSize(d => Math.sqrt(d.size) * fontScale)
-      .on("word", ({size, x, y, rotate, text}) => {
-        g.append("text")
-            .attr("font-size", size)
-            .attr("transform", `translate(${x},${y}) rotate(${rotate})`)
-            .text(text);
+      .fontSize(d => Math.max(Math.sqrt(d.size) * fontScale, 12))
+      .on("end", words => {
+        const textElements = g.selectAll("text")
+          .data(words)
+          .enter().append("text")
+          .attr("font-size", d => d.size)
+          .attr("transform", d => `translate(${d.x},${d.y}) rotate(${d.rotate})`)
+          .text(d => d.text)
+          .style("cursor", "crosshair");
+
+        // Select the <p> element
+        const infoText = d3.select("#word-info");
+
+        // Add event listeners to update the <p> element
+        textElements.on("mouseover", function(event, d) {
+          infoText.html(`Cause of death: <strong>${d.text}</strong>, Count: <strong>${d.size}</strong>`);
+        })
+        .on("mouseout", function() {
+          infoText.text("Mouse over a word to see its count");
+        });
       });
 
   cloud.start();
