@@ -27,7 +27,6 @@ export default class WordCloudChart extends Visualization {
         (d) => d.death,
       )
       .map(([text, size]) => ({ text, size }));
-    console.log("Check for missing causes:", causes);
 
     const wordcloud = WordCloud(causes, {
       size: (group) => {
@@ -69,7 +68,6 @@ function WordCloud(
     .slice(0, maxWords)
     .map(([key, size]) => ({ text: word(key), size }));
 
-  console.log("data", data);
 
   const svg = d3
     .create("svg")
