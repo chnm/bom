@@ -19,7 +19,21 @@
     title="{{ .Site.Title }}"
   />
 
-  <title>Death by Numbers</title>
+  <title>{{ with .Title }}{{ . }} - {{ end }}{{ .Site.Title }}</title>
+
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="{{ .Title }} - {{ .Site.Title }}" />
+  <meta property="og:description" content="{{ if or (eq .Section "analysis") (eq .Section "context") (eq .Section "methodologies") }}{{ .Summary | truncate 160 }}{{ else }}{{ .Site.Params.description }}{{ end }}" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="{{ .Permalink }}" />
+  <meta property="og:image" content="{{ .Site.BaseURL }}/img/death-by-numbers.jpg" />
+
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="{{ .Title }} - {{ .Site.Title }}" />
+  <meta name="twitter:description" content="{{ if or (eq .Section "analysis") (eq .Section "context") (eq .Section "methodologies") }}{{ .Summary | truncate 160 }}{{ else }}{{ .Site.Params.description }}{{ end }}" />
+  <meta name="twitter:image" content="{{ .Site.BaseURL }}/img/death-by-numbers.jpg" />
+
 
   {{ $style := resources.Get "style.css" }}
   <link rel="stylesheet" href="{{ $style.Permalink }}" />
