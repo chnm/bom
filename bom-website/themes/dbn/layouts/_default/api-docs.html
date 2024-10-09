@@ -1,23 +1,27 @@
 {{ define "main" }}
-<div class="relative px-6 py-12 bg-white mx-auto w-full lg:max-w-screen-lg sm:max-w-screen-sm md:max-w-screen-md">
+<div
+  class="relative px-6 py-12 bg-white mx-auto w-full lg:max-w-screen-lg sm:max-w-screen-sm md:max-w-screen-md"
+>
   <div class="mx-auto">
     <h2 class="text-4xl font-medium mb-5">{{ .Title }}</h2>
-        <div class="container mx-auto flex flex-wrap py-6">
-
-        <!-- TOC Column -->
-        <aside class="w-full md:w-1/4 px-4 md:sticky md:top-0 md:h-screen">
+    <div class="container mx-auto flex flex-wrap py-6">
+      <!-- TOC Column -->
+      <aside class="w-full md:w-1/4 px-4 md:sticky md:top-0 md:h-screen">
         <div class="bg-white p-4">
-            <h2 class="text-xl font-bold mb-4"><i class="fas fa-list-ul"></i> Contents</h2>
-            <div class="text-sm font-sans">{{ .TableOfContents }}</div>
+          <h2 class="text-xl font-bold mb-4">
+            <i class="fas fa-list-ul"></i> Contents
+          </h2>
+          <div class="text-sm font-sans">{{ .TableOfContents }}</div>
         </div>
-        </aside>
-        <!-- Content Column -->
-        <main class="w-full md:w-3/4 px-4">
+      </aside>
+      <!-- Content Column -->
+      <main class="w-full md:w-3/4 px-4">
         <div class="bg-white p-4">
-            <div class="prose prose-lg">{{ .Content }}</div>
+          <div class="prose prose-lg">{{ .Content }}</div>
         </div>
-        </main>
+      </main>
     </div>
   </div>
 </div>
 {{ end }}
+
