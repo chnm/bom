@@ -36,9 +36,35 @@ h6 {
   display: flex;
   flex-direction: column;
   align-items: center;
-} 
+}
 
 .prose figure figcaption {
   /* smaller width */
   max-width: 80%;
+}
+
+/* Custom#TableOfContents styling */
+
+/* Styling the top-level items */
+#TableOfContents ul {
+  @apply list-none pl-0;
+  /* Remove bullets and padding */
+}
+
+/* Style for top-level list items */
+#TableOfContents ul>li {
+  @apply pl-2;
+  /* Slight padding for top-level items */
+}
+
+/* Style for second-level list items (e.g., subheadings under h2) */
+#TableOfContents ul ul {
+  @apply pl-4;
+  /* Indentation for second-level items */
+}
+
+/* Style for third-level list items (e.g., subheadings under h3) */
+#TableOfContents ul ul ul {
+  @apply pl-6;
+  /* Further indentation for deeper nesting */
 }

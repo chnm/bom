@@ -38,6 +38,37 @@ h6 {
   max-width: 80%;
 }
 
+/* Custom#TableOfContents styling */
+
+/* Styling the top-level items */
+
+#TableOfContents ul {
+  list-style-type: none;
+  padding-left: 0px;
+  /* Remove bullets and padding */
+}
+
+/* Style for top-level list items */
+
+#TableOfContents ul>li {
+  padding-left: 0.5rem;
+  /* Slight padding for top-level items */
+}
+
+/* Style for second-level list items (e.g., subheadings under h2) */
+
+#TableOfContents ul ul {
+  padding-left: 1rem;
+  /* Indentation for second-level items */
+}
+
+/* Style for third-level list items (e.g., subheadings under h3) */
+
+#TableOfContents ul ul ul {
+  padding-left: 1.5rem;
+  /* Further indentation for deeper nesting */
+}
+
 /* ! tailwindcss v3.2.4 | MIT License | https://tailwindcss.com */
 
 /*
