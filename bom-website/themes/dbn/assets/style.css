@@ -69,6 +69,46 @@ h6 {
   /* Further indentation for deeper nesting */
 }
 
+/* General styles for the select element */
+
+select {
+  -webkit-appearance: none;
+  /* Remove default styling in Safari */
+  -moz-appearance: none;
+  /* Remove default styling in Firefox */
+  appearance: none;
+  /* Remove default styling in other browsers */
+  background-color: #fff;
+  /* Set background color */
+  border: 1px solid #ccc;
+  /* Set border color */
+  padding: 0.5rem;
+  /* Set padding */
+  font-size: 1rem;
+  /* Set font size */
+  border-radius: 0.25rem;
+  /* Set border radius */
+  background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gray"><path d="M4 6l4 4 4-4z"/></svg>');
+  /* Custom dropdown arrow */
+  background-repeat: no-repeat;
+  /* Prevent repeating the background image */
+  background-position: right 0.5rem center;
+  /* Position the background image */
+  background-size: 1rem;
+  /* Size the background image */
+}
+
+/* Ensure the select element takes full width */
+
+select:focus {
+  outline: none;
+  /* Remove default focus outline */
+  border-color: #3182ce;
+  /* Set focus border color */
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+  /* Set focus box shadow */
+}
+
 /* ! tailwindcss v3.2.4 | MIT License | https://tailwindcss.com */
 
 /*
@@ -2997,6 +3037,12 @@ a {
 
 .overflow-y-auto {
   overflow-y: auto;
+}
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .whitespace-nowrap {

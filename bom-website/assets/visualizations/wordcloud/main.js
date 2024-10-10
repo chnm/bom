@@ -7,6 +7,10 @@ function fetchDataAndRender(startYear, endYear) {
   
   d3.json(url)
     .then((data) => {
+      // Extract unique years from the data
+      const years = Array.from(new Set(data.map(d => d.year))).sort((a, b) => a - b);
+      populateYearDropdowns(years);
+
       // Clear the existing word cloud
       d3.select("#chart").selectAll("*").remove();
 
@@ -22,6 +26,32 @@ function fetchDataAndRender(startYear, endYear) {
     });
 }
 
+// Populate year dropdowns
+function populateYearDropdowns(years) {
+  const startYearSelect = document.getElementById("start-year");
+  const endYearSelect = document.getElementById("end-year");
+
+  // Clear existing options
+  startYearSelect.innerHTML = "";
+  endYearSelect.innerHTML = "";
+
+  years.forEach((year) => {
+    const optionStart = document.createElement("option");
+    optionStart.value = year;
+    optionStart.text = year;
+    startYearSelect.appendChild(optionStart);
+
+    const optionEnd = document.createElement("option");
+    optionEnd.value = year;
+    optionEnd.text = year;
+    endYearSelect.appendChild(optionEnd);
+  });
+
+  // Set default values
+  startYearSelect.value = years[0];
+  endYearSelect.value = years[years.length - 1];
+}
+
 // Initial fetch and render
 fetchDataAndRender(1648, 1754);
 
@@ -34,7 +64,7 @@ document.getElementById("update-button").addEventListener("click", () => {
 
 // Add event listener to the reset button
 document.getElementById("reset-button").addEventListener("click", () => {
-  // Reset the input fields to the original values
+  // Reset the dropdowns to the original values
   document.getElementById("start-year").value = 1648;
   document.getElementById("end-year").value = 1754;
   // Fetch and render the original data
