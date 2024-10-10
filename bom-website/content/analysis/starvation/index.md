@@ -11,7 +11,7 @@ categories:
  - analysis
 ---
 
-{{< figure src="/images/starvation-figure.jpg" caption="Figure 1. A photograph of the bill of mortality for the week of November 14-21, 1665." alt="A photograph of the bill of mortality for the week of November 14-21, 1665." >}}
+{{< figure src="starvation-figure.jpg" caption="Figure 1. A photograph of the bill of mortality for the week of November 14-21, 1665." alt="A photograph of the bill of mortality for the week of November 14-21, 1665." >}}
 
 On the Bill of Mortality for the week of November 14-21st, 1665, plague deaths were finally decreasing from a horrific summer. The total number of plague deaths was still a staggering six hundred and fifty-two, but that did not stop parish officials from recording all the other ways that Londoners were dying. One death stood out as an intriguing mystery: **starved in White Lyon prison at St George in Southwark**. Who was this person? Can we figure it out based on online historical sources? Researching the bills of mortality not only gives the stark numbers of death but also opens historical questions about specific outliers in the numbers, like the one starvation death in prison noted amongst hundreds of deaths due to plague. What can the numbers from the Bills of Mortality tell us, and what can they not?
 

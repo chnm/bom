@@ -30,7 +30,7 @@ If the Bills of Mortality transcription team had a time machine, our first stop 
 
 It's easy to mix up names, and it happens to every transcriber. This is why transcribers need to be familiar with the sources and why careful reviewers are essential. Each project will have sneaky mix ups and subtle nuances. A lot of these types of transcription errors can be anticipated, and while forewarning new transcribers will not stop every mistake, maintaining a running list of potential jumbles can help ease transcriptions.
 
-{{< figure src="/images/image2.png" caption="Figure 1. Excerpt from a bill of mortality showing all the St Mary parishes within the city walls." alt="excerpt from a bill of mortality showing all the St Mary parishes within the city walls" >}}
+{{< figure src="/images/image3.jpg" caption="Figure 1. Excerpt from a bill of mortality showing all the St Mary parishes within the city walls." alt="excerpt from a bill of mortality showing all the St Mary parishes within the city walls" >}}
 
 ### **Problem Number 3: It's… a number?**
 

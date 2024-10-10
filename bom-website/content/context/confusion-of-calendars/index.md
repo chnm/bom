@@ -15,7 +15,7 @@ tags:
 
 One of the first things a [Bill of Mortality](https://deathbynumbers.org/2022/01/31/the-london-bills-of-mortality/) tells the reader is the date. The bill (partially) pictured below covers mortality data for the city of London, in the 3rd week of the current bills’ year, which ran from the 31st of December to the 7th of January in the year 1700 AD (from the Latin, [_Anno Domini_](https://en.wikipedia.org/wiki/Anno_Domini), which was often translated into English as the Year of the Lord).
 
-{{< figure src="/images/1700-03-recto-1024x182.jpg" caption="Figure 1. Annotated bill of mortality with arrows pointing to the city name (London), bill number (3), start and end days ('From the 31st of December to the 7th of January') and AD year (1700)." alt="annotated bill of mortality with arrows pointing to the city name (London), bill number (3), start and end days ('From the 31st of December to the 7th of January') and AD year (1700)." >}}
+{{< figure src="1700-03-recto-1024x182.jpg" caption="Figure 1. Annotated bill of mortality with arrows pointing to the city name (London), bill number (3), start and end days ('From the 31st of December to the 7th of January') and AD year (1700)." alt="annotated bill of mortality with arrows pointing to the city name (London), bill number (3), start and end days ('From the 31st of December to the 7th of January') and AD year (1700)." >}}
 
 Bill excerpted from [_Paul Laxton, ed. The London Bills of Mortality, 1701-1829_](https://www.worldcat.org/title/london-bills-of-mortality-1701-1829/oclc/18494838&referer=brief_results)
 
