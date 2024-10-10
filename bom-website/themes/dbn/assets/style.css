@@ -26,6 +26,10 @@ h6 {
   font-family: "Work Sans", sans-serif;
 }
 
+[x-cloak] {
+  display: none;
+}
+
 .prose figure {
   /* center align text and figure */
   display: flex;
@@ -79,34 +83,23 @@ select {
   appearance: none;
   /* Remove default styling in other browsers */
   background-color: #fff;
-  /* Set background color */
   border: 1px solid #ccc;
-  /* Set border color */
   padding: 0.5rem;
-  /* Set padding */
   font-size: 1rem;
-  /* Set font size */
   border-radius: 0.25rem;
-  /* Set border radius */
   background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gray"><path d="M4 6l4 4 4-4z"/></svg>');
   /* Custom dropdown arrow */
   background-repeat: no-repeat;
-  /* Prevent repeating the background image */
   background-position: right 0.5rem center;
-  /* Position the background image */
   background-size: 1rem;
-  /* Size the background image */
 }
 
 /* Ensure the select element takes full width */
 
 select:focus {
   outline: none;
-  /* Remove default focus outline */
   border-color: #3182ce;
-  /* Set focus border color */
   box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
-  /* Set focus box shadow */
 }
 
 /* ! tailwindcss v3.2.4 | MIT License | https://tailwindcss.com */
@@ -530,7 +523,11 @@ video {
 
 a {
   --tw-text-opacity: 1;
-  color: rgb(127 90 131 / var(--tw-text-opacity));
+  color: rgb(239 48 84 / var(--tw-text-opacity));
+}
+
+a:hover {
+  text-decoration-line: none;
 }
 
 *, ::before, ::after {
@@ -2614,11 +2611,6 @@ a {
   margin-bottom: 1rem;
 }
 
-.mx-6 {
-  margin-left: 1.5rem;
-  margin-right: 1.5rem;
-}
-
 .mx-0 {
   margin-left: 0px;
   margin-right: 0px;
@@ -2675,10 +2667,6 @@ a {
 
 .mt-4 {
   margin-top: 1rem;
-}
-
-.mb-6 {
-  margin-bottom: 1.5rem;
 }
 
 .mr-4 {
@@ -2759,6 +2747,10 @@ a {
 
 .h-32 {
   height: 8rem;
+}
+
+.h-8 {
+  height: 2rem;
 }
 
 .h-10 {
@@ -2848,6 +2840,10 @@ a {
 
 .w-40 {
   width: 10rem;
+}
+
+.min-w-\[200px\] {
+  min-width: 200px;
 }
 
 .min-w-full {
@@ -2998,16 +2994,16 @@ a {
   margin-bottom: calc(2rem * var(--tw-space-y-reverse));
 }
 
-.space-y-3 > :not([hidden]) ~ :not([hidden]) {
-  --tw-space-y-reverse: 0;
-  margin-top: calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));
-  margin-bottom: calc(0.75rem * var(--tw-space-y-reverse));
-}
-
 .space-x-4 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-x-reverse: 0;
   margin-right: calc(1rem * var(--tw-space-x-reverse));
   margin-left: calc(1rem * calc(1 - var(--tw-space-x-reverse)));
+}
+
+.space-y-3 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.75rem * var(--tw-space-y-reverse));
 }
 
 .space-x-1 > :not([hidden]) ~ :not([hidden]) {
@@ -3071,14 +3067,6 @@ a {
   border-bottom-right-radius: 0.5rem;
 }
 
-.rounded-tr-lg {
-  border-top-right-radius: 0.5rem;
-}
-
-.rounded-bl-lg {
-  border-bottom-left-radius: 0.5rem;
-}
-
 .border-0 {
   border-width: 0px;
 }
@@ -3091,16 +3079,16 @@ a {
   border-width: 2px;
 }
 
+.border-t {
+  border-top-width: 1px;
+}
+
 .border-l-4 {
   border-left-width: 4px;
 }
 
 .border-b {
   border-bottom-width: 1px;
-}
-
-.border-t {
-  border-top-width: 1px;
 }
 
 .border-solid {
@@ -3114,6 +3102,11 @@ a {
 .border-gray-300 {
   --tw-border-opacity: 1;
   border-color: rgb(209 213 219 / var(--tw-border-opacity));
+}
+
+.border-dbn-blue {
+  --tw-border-opacity: 1;
+  border-color: rgb(150 173 200 / var(--tw-border-opacity));
 }
 
 .border-slate-200 {
@@ -3173,11 +3166,6 @@ a {
 .bg-slate-300 {
   --tw-bg-opacity: 1;
   background-color: rgb(203 213 225 / var(--tw-bg-opacity));
-}
-
-.bg-gray-200 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(229 231 235 / var(--tw-bg-opacity));
 }
 
 .bg-dbn-blue {
@@ -3247,10 +3235,6 @@ a {
 
 .p-9 {
   padding: 2.25rem;
-}
-
-.p-2 {
-  padding: 0.5rem;
 }
 
 .p-8 {
@@ -3962,10 +3946,6 @@ a {
     height: auto;
   }
 
-  .lg\:w-6\/12 {
-    width: 50%;
-  }
-
   .lg\:w-auto {
     width: auto;
   }
@@ -3998,8 +3978,16 @@ a {
     flex-grow: 1;
   }
 
+  .lg\:items-start {
+    align-items: flex-start;
+  }
+
   .lg\:items-center {
     align-items: center;
+  }
+
+  .lg\:justify-start {
+    justify-content: flex-start;
   }
 
   .lg\:pt-16 {
