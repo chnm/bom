@@ -23,10 +23,13 @@ export default class WordCloudChart extends Visualization {
     const causes = d3
       .rollups(
         this.data.causes,
-        (v) => d3.sum(v, (d) => d.count),
+        (v) => ({
+          size: d3.sum(v, (d) => d.count),
+          count: d3.sum(v, (d) => d.count), // Ensure count is correctly calculated
+        }),
         (d) => d.death,
       )
-      .map(([text, size]) => ({ text, size }));
+      .map(([text, { size, count }]) => ({ text, size, count }));
 
     const wordcloud = WordCloud(causes, {
       size: (group) => {
@@ -66,8 +69,7 @@ function WordCloud(
     .rollups(words, size, (w) => w)
     .sort(([, a], [, b]) => d3.descending(a, b))
     .slice(0, maxWords)
-    .map(([key, size]) => ({ text: word(key), size }));
-
+    .map(([key, size]) => ({ text: word(key), size, count: key.count })); // Ensure count is included
 
   const svg = d3
     .create("svg")
@@ -109,7 +111,7 @@ function WordCloud(
       textElements
         .on("mouseover", function (event, d) {
           infoText.html(
-            `Cause of death: <strong>${d.text}</strong>, Count: <strong>${d.size}</strong>`,
+            `Cause of death: <strong>${d.text}</strong>, Total causes: <strong>${d.count}</strong>`,
           );
         })
         .on("mouseout", function () {

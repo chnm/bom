@@ -1,4 +1,12 @@
 {
+  "author": "Roy Rosenzweig Center for History and New Media",
+  "description": "Website and visualizations for the Death by Numbers project at RRCHNM.",
+  "name": "bom",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chnm/bom.git"
+  },
   "dependencies": {
     "@alpinejs/collapse": "^3.14.1",
     "@observablehq/plot": "^0.6.16",
@@ -6,5 +14,15 @@
     "d3": "^7.9.0",
     "d3-cloud": "^1.2.5",
     "d3-scale-chromatic": "^3.1.0"
-  }
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.3.1",
+    "browser-sync": "^2.27.7",
+    "css-loader": "^5.2.7",
+    "eslint": "^7.30.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.23.4",
+    "style-loader": "^3.1.0"
+  },
+  "version": "1.0.0"
 }
