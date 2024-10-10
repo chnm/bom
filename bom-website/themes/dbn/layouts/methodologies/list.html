@@ -83,7 +83,7 @@
             {{ $currentFontSize := (add $smallestFontSize (mul (sub $tagCount $min) $fontStep) ) }}
             {{ $weight := div (sub (math.Log $tagCount) (math.Log $min)) (sub (math.Log $max) (math.Log $min)) }}
             {{ $currentFontSize := (add $smallestFontSize (mul (sub $largestFontSize $smallestFontSize) $weight)) }}
-            <a class="prose" href="{{ " /tags/" | relURL }}{{ $name | urlize }}" class="tagcloud-item"
+            <a class="prose" href="{{ "/tags/" | relURL }}{{ $name | urlize }}" class="tagcloud-item"
               style="font-size: {{ $currentFontSize }}rem;">
               {{ $name }} <span>({{ $tagCount }})</span>
             </a>
