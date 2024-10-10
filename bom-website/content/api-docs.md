@@ -6,17 +6,21 @@ layout: api-docs
 
 ## Overview
 
-The Bills of Mortality API is organized around [REST](https://en.wikipedia.org/wiki/Representational_state_transfer) and returns JSON-encoded responses from our PostgreSQL database using standard HTTP response codes and verbs. The data held by Death by Numbers are available in machine readable formats (currently JSON and CSV) to aid in research and data visualization. 
+The Bills of Mortality API is organized around [REST](https://en.wikipedia.org/wiki/Representational_state_transfer) and returns JSON-encoded responses from our PostgreSQL database using standard HTTP response codes and verbs. The data held by Death by Numbers are available in machine readable formats (currently JSON and CSV) to aid in research and data visualization.
 
 The first API was released in 2021, and the second version in 2024. The 2024 version provides new functionality for searching, sorting, and filtering; provides additional endpoints for data; and a set of new documentation for a quick start in exploring the data.
 
+If you are unfamiliar with working with REST APIs, we recommend consulting the _Programming Historian_ lesson [Introduction to Populating a Website with API Data](https://programminghistorian.org/en/lessons/introduction-to-populating-a-website-with-api-data).
+
+To get started with the data API, please consult our [Getting Started with the Bills of Mortality Data API](https://observablehq.com/d/7adb8b95df5d51a9) notebook.
+
 ## Datasets
 
-While the API provides an effetive way to retrieve data, for bulk export it is less useful than data delivered through a single file. If you have a project where you want to examine large sets of data, you can find our CSV exports in [our Github repository](/downloads/).
+While the API provides an effective way to retrieve data, for bulk export it is less useful than data delivered through a single file. If you have a project where you want to examine large sets of data, you can find our CSV exports in [our Github repository](/downloads/).
 
-The API currently provides [three data endpoints](https://data.chnm.org) for returning data.
+The API currently provides [three main data endpoints](https://data.chnm.org) for returning full datasets.
 
-The first endpoint, `bills`, accepts three required parameters: the start year, the end year, and the bill type (Weekly or General). This is built this way to operate the year range slider and specific bills to display in the web application. As you adjust the year slider, the new year values are stored until "Apply Filters" is clicked, which then passes stored data to the endpoint and fetches the updated parameters. Optionally, you can include a count type parameter (Buried or Plague) to filter specific values.
+The first endpoint, `/bills`, accepts three required parameters: the start year, the end year, and the bill type (Weekly or General). This is built this way to operate the year range slider and specific bills to display in the web application. As you adjust the year slider, the new year values are stored until "Apply Filters" is clicked, which then passes stored data to the endpoint and fetches the updated parameters. Optionally, you can include a count type parameter (Buried or Plague) to filter specific values.
 
 The `bills` data returns the following information:
 
@@ -29,7 +33,7 @@ The `bills` data returns the following information:
 - Year: This is the year for a given bill.
 - Split Year: This is to account for the calendar change and indicates where split years are necessary.
 
-The second endpoint is `causes`, which powers the _Total Deaths_ tab of the web application. The endpoint requires a year range to return data. You can optionally return a specific cause of death to see values for a specific cause. Currently, this endpoint returns the following:
+The second endpoint is `/causes`, which powers the _Total Deaths_ tab of the web application. The endpoint requires a year range to return data. You can optionally return a specific cause of death to see values for a specific cause. Currently, this endpoint returns the following:
 
 - Death ID: This is a unique ID for the `death` description.
 - Death: A description of the cause of death.
@@ -39,7 +43,7 @@ The second endpoint is `causes`, which powers the _Total Deaths_ tab of the web 
 - Year: The year for a given cause of death.
 - Split Year: The split year for the given cause of death.
 
-The final endpoint is `christenings`, which powers the _Christenings_ tab of the web application. The endpoint requires a year range to return data. Currently, this endpoint returns the following:
+The final endpoint is `/christenings`, which powers the _Christenings_ tab of the web application. The endpoint requires a year range to return data. Currently, this endpoint returns the following:
 
 - Description (`christenings_desc`): A description as transcribed from the bills.
 - Count: The number of christenings for a given parish.
@@ -50,10 +54,10 @@ The final endpoint is `christenings`, which powers the _Christenings_ tab of the
 
 ## Citation
 
-If you want to refer to our data or are using the API in an academic publication, you can cite as follows: 
+If you want to refer to our data or are using the API in an academic publication, you can cite as follows:
 
 ```bibtex
-@software{bom-2024-data-api,
+@software{dbn-2024-data-api,
     author       = {Death by Numbers},
     title        = {Death by Numbers API v2},
     year         = 2024,
@@ -64,7 +68,7 @@ If you want to refer to our data or are using the API in an academic publication
 
 ## Web Application
 
-The web application currently has four ways of interacting with the table of data.
+The [web application](/database/) currently has four ways of interacting with the table of data.
 
 - The table itself has built-in tools for interacting with the data. You can change the rows per page (to view 25, 50, or 100 rows at a time), you can page through the results, or you can filter parish names, causes of death, and christenings from the checkboxes.
 - Parishes checkboxes and causes of death checkboxes: Displayed above the table, these allow you to select or unselect specific locations or causes of death you'd like to display within the table.
@@ -92,11 +96,9 @@ HTTP Status Code Summary
 
 The current API has five endpoints, two for serving user interfaces and three for returning the data to an interactive table.
 
-The endpoints can accept `limit` and `offset` values, but also provides them as defaults. The limit is set to 25 records, and offset to 0 by default. This means in each endpoint you are seeing records 1-25, but this number can be adjusted higher. We're using limit and offset to handle pagination in the web application. You can also provide `limit` (and `offset`) to return a greater number of records. If no limit or offset is provided, the endpoint will return all of the data in the database.
+The endpoints can accept `limit` and `offset` values. No `limit` or `offset` values are provided by default, meaning without them you are returning the entire dataset. We're using limit and offset to handle pagination in the web application. You can also provide `limit` (and `offset`) to return a greater number of records. If no limit or offset is provided, the endpoint will return all of the data in the database. Providing a limit of 500, for example, will give you the first five hundred rows from the database:
 
 <https://data.chnm.org/bom/bills?start-year=1648&end-year=1754&bill-type=Weekly&limit=500&offset=0>
-
-See below on how to return the entire dataset with `limit`.
 
 #### Unique parish names
 
@@ -139,8 +141,8 @@ Parameters:
 - end-year (required): A four digit number representing the end year.
 - bill-type (required): Either "Weekly" or "General" to view specific bill types.
 - count-type (optional): Either "Buried" or "Plague" to view specific count types.
-- limit (optional): Limit the number of records. Defaults to 25.
-- offset (optional): Offset the number of records. Defaults to 0.
+- limit (optional): Limit the number of records.
+- offset (optional): Offset the number of records.
 
 The `start-year` and `end-year` parameters are required and return the range of rows in the database that fall between the two years. You must also set the `bill-type` parameter to Weekly or General.
 
@@ -286,8 +288,8 @@ Parameters:
 - start-year (required): A four digit number representing the start year.
 - end-year (required): A four digit number representing the end year.
 - id (optional): An ID for a specific cause of death.
-- limit (optional): Limit the number of records. Defaults to 25.
-- offset (optional): Offset the number of records. Defaults to 0.
+- limit (optional): Limit the number of records.
+- offset (optional): Offset the number of records.
 
 The `start-year` and `end-year` parameters are required and return the range of rows in the database that fall between the two years.
 
@@ -312,9 +314,9 @@ The `start-year` and `end-year` parameters are required and return the range of 
 ]
 ```
 
-You can optionally include `id` to return specific causes. The `causes` IDs can be found in `/list-deaths` (see below).
+You can optionally include `id` to return specific causes, which can either be a single value or a comma-separated set of values. The full list of `causes` can be found in `/list-deaths` (see below).
 
-<https://data.chnm.org/bom/causes?start-year=1648&end-year=1754&id=4>
+<https://data.chnm.org/bom/causes?start-year=1648&end-year=1754&id=Apoplexy>
 
 ```js
 [
@@ -364,8 +366,8 @@ Parameters:
 - start-year (required): A four digit number representing the start year.
 - end-year (required): A four digit number representing the end year.
 - id (optional): An ID for a specific christening location.
-- limit (optional): Limit the number of records. Defaults to 25.
-- offset (optional): Offset the number of records. Defaults to 0.
+- limit (optional): Limit the number of records.
+- offset (optional): Offset the number of records.
 
 The `start-year` and `end-year` parameters are required and return the range of rows in the database that fall between the two years.
 

@@ -15,7 +15,7 @@ tags:
 
 **Have you ever wondered how a complex project like Death by Numbers comes together?**  This post is the first in a series about the workflow that takes us from archival sources to transcriptions formatted for computational analysis.  Let’s begin with digitization. 
 
-{{< figure src="/images/workflow-erd-1024x654.png" caption="Figure 1. diagram of image preparation workflow showing process from digitization to image processing and CSV creation to omeka s item creation to datascribe transcription." alt="diagram of image preparation workflow showing process from digitization to image processing and csv creation to omeka s item creation to datascribe transcription" >}}
+{{< figure src="workflow-erd-1024x654.png" caption="Figure 1. diagram of image preparation workflow showing process from digitization to image processing and CSV creation to omeka s item creation to datascribe transcription." alt="diagram of image preparation workflow showing process from digitization to image processing and csv creation to omeka s item creation to datascribe transcription" >}}
 
 ### **Digitization of Original Documents** 
 

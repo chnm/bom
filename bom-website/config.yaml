@@ -1,17 +1,16 @@
-baseURL: 'https://deathbynumbers.org'
-languageCode: 'en-us'
-title: 'Death by Numbers'
+baseURL: "https://deathbynumbers.org"
+languageCode: "en-us"
+title: "Death by Numbers"
 description: >-
   Death by Numbers is a digital scholarly research project on the London Plague Bills 
   by the Roy Rosenzweig Center for History and New Media
 copyright: 2021-2023
-
 permalinks:
-  blog: '/:year/:month/:day/:slug/'
-  archive: '/:slug/'
-  page: '/:section/:slug/'
+  blog: "/:year/:month/:day/:slug/"
+  archive: "/:slug/"
+  page: "/:section/:slug/"
 
-theme: 'dbn'
+theme: "dbn"
 
 author:
   name: Roy Rosenzweig Center for History and New Media
@@ -28,7 +27,7 @@ markup:
       unsafe: true
   tableOfContents:
     startLevel: 2
-    endLevel: 2
+    endLevel: 3
 
 sitemap:
   changefreq: weekly
@@ -39,3 +38,4 @@ taxonomies:
   category: categories
   tag: tags
   author: author
+

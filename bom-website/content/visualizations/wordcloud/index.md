@@ -16,18 +16,18 @@ The following visualization displays a word cloud of causes of death within the 
 <div id="row">
     <h3>Word Cloud of Causes of Death</h3>
     <div class="flex flex-wrap items-center space-x-4 mb-6">
-  <div class="flex flex-col space-y-2">
-    <label class="block text-gray-700 text-sm font-bold" for="start-year">
-      Start year:
-    </label>
-    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="start-year" placeholder="1648" value="1648">
-  </div>
-  <div class="flex flex-col space-y-2">
-    <label class="block text-gray-700 text-sm font-bold" for="end-year">
-      End year:
-    </label>
-    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="end-year" placeholder="1754" value="1754">
-  </div>
+      <div class="flex flex-col space-y-2">
+            <label class="block text-gray-700 text-sm font-bold" for="start-year">
+              Start year:
+            </label>
+            <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="start-year"></select>
+          </div>
+          <div class="flex flex-col space-y-2">
+            <label class="block text-gray-700 text-sm font-bold" for="end-year">
+              End year:
+            </label>
+            <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="end-year"></select>
+          </div>
   <div class="flex space-x-2 ml-auto mt-5">
     <button id="update-button" type="button" class="rounded-l-lg border border-gray-200 bg-white text-sm font-medium px-4 py-2 text-gray-900 hover:bg-dbn-blue hover:text-black focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">Update</button>
     <button id="reset-button" type="button" class="rounded-r-md border border-gray-200 bg-white text-sm font-medium px-4 py-2 text-gray-900 hover:bg-dbn-blue hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">Reset</button>

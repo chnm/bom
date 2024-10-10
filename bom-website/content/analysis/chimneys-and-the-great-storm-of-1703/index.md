@@ -16,7 +16,7 @@ tags:
 
 In late November of 1703, a "great storm" or hurricane struck the British Isles. Bad weather began a few days before the heart of the storm made landfall on November 26th, spawning tornadoes, ripping off roofs and chimneys, and destroying entire fleets. One of the most famous tragedies of the storm happened on the Goodwin Sands, a deadly sandbank off the coast of Kent. At least 53 ships were wrecked on the sandbank and over 2,000 men died just six miles from safety.
 
-{{< figure src="/images/image1.png" caption="Figure 1. Ships being tossed about by a storm at sea." alt="ships being tossed about by a storm at sea" >}}
+{{< figure src="image1.png" caption="Figure 1. Ships being tossed about by a storm at sea." alt="ships being tossed about by a storm at sea" >}}
 
 The death and destruction continued throughout southern England, including in the capital city of London. As one contemporary report tells:
 
@@ -36,9 +36,9 @@ Calculating the number of deaths that can actually be attributed to a storm is d
 
 One thing the bills _can_ tell us, however, is where people were dying throughout the city. This is because location data has been recorded for many of the deaths we have identified as storm related. These locations offer another way to analyze the deaths related to the storm. In the first map, we see deaths by week reported. Pale blue is no deaths in any of our three weeks, light blue is one or more deaths in [“week 50” of 1703](https://deathbynumbers.org/2022/02/14/confusion-of-calendars/) (November 23-30), dark blue with stripes is week 51 (November 30-December 7), and turquoise blue is week 52 (December 7-14). In the second map, we see deaths by parish for weeks 50-52 summed. Purple is no deaths, light blue is 1 death, medium blue is 2 deaths, and dark blue is 3 deaths.
 
-{{< figure src="/images/image4.png" caption="Figure." alt="map described in text" >}}
+{{< figure src="image4.png" caption="Figure." alt="map described in text" >}}
 
-{{< figure src="/images/image2.png" caption="Figure." alt="map described in text" >}}
+{{< figure src="image2.png" caption="Figure." alt="map described in text" >}}
 
 As we can see on the map, the majority of the deaths were recorded in the parishes “without the walls”—that is, outside the London Wall—with the exception of St. Bennet Fink and St. Katherine Coleman. The visualization provided by the location data from the bills tells us that the highest number of deaths occurred in the parishes furthest from the center of London. This geographic pattern can partly be explained by the infrastructure and rebuilding of the city after the Great Fire of London in 1666. The areas of London that burnt down in the fire were mostly contained inside the London wall, a Roman structure that circled a “mass of medieval streets, lanes and alleys,” where the houses were mostly built of timber (Mortimer 2017, 10). These wooden medieval houses which were packed together inside the London wall were one of the reasons the fire spread so quickly (Mortimer 2017, 21). After the fire, the areas that were burnt down had been almost entirely rebuilt in brick. This shift to newer, more durable infrastructure in the parishes inside the London wall meant that these houses would stand up better to other natural phenomena, such as the high winds associated with hurricanes. As the maps show, the area inside the London wall has the least number of reported deaths due to the storm, and it is possible that the reconstruction of the city after the fire of 1666 plays a role in these low numbers.
 

@@ -15,7 +15,7 @@ tags:
 
 We have talked on the blog about some of the datasets we are transcribing from the Bills of Mortality - the counts of death by parish, causes of death, and christening and burial numbers. Some of the bills have even more information on them: the price of bread (and eventually other foodstuffs). But why would state-mandated bread prices be included in the Bills of Mortality? To find out, we need to look more closely at the role of bread in early modern England.
 
-{{< figure src="/images/breadLaxton1701-17-1024x370.jpeg" caption="Figure 1. Bill of Mortality 1701 week 17." alt="Detail of the Bill for 1701 week 17 showing the prices for bread and salt." >}}
+{{< figure src="breadLaxton1701-17-1024x370.jpeg" caption="Figure 1. Bill of Mortality 1701 week 17." alt="Detail of the Bill for 1701 week 17 showing the prices for bread and salt." >}}
 
 ## Regulating the price of bread?
 

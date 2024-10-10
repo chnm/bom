@@ -17,23 +17,23 @@ If I am going to share my world with you, I want to start with something positiv
 
 1. Death from itch[^1]
 
-{{< figure src="/images/taba-image8.png" caption="Figure 1. Death from itch" alt="Death from itch" >}}
+{{< figure src="taba-image8.png" caption="Figure 1. Death from itch" alt="Death from itch" >}}
 
 2. Rupture and being scalded in a brewer's mash[^2]
 
-{{< figure src="/images/taba-image10.png" caption="Figure 2. Rupture and being scalded in a brewer's mash" alt="Rupture and being scalded in a brewer's mash" >}}
+{{< figure src="taba-image10.png" caption="Figure 2. Rupture and being scalded in a brewer's mash" alt="Rupture and being scalded in a brewer's mash" >}}
 
 3. Chimney collapse[^3]
 
-{{< figure src="/images/taba-image2.png" caption="Figure 3. Chimney collapse" alt="Chimney collapse" >}}
+{{< figure src="taba-image2.png" caption="Figure 3. Chimney collapse" alt="Chimney collapse" >}}
 
 4. A falling church bell[^4]
 
-{{< figure src="/images/taba-image5.png" caption="Figure 4. A falling church bell" alt="A falling church bell" >}}
+{{< figure src="taba-image5.png" caption="Figure 4. A falling church bell" alt="A falling church bell" >}}
 
 5. Found dead in a sewer.[^6][^7]
 
-{{< figure src="/images/taba-image3.png" caption="Figure 5. Found dead in a sewer" alt="Found dead in a sewer." >}}
+{{< figure src="taba-image3.png" caption="Figure 5. Found dead in a sewer" alt="Found dead in a sewer." >}}
 
 As one might expect, stumbling upon memorable deaths like these is rare. Most of my time as a transcriber involves carefully sifting through numbers of deaths in each of early modern London’s parishes. If a death grabs my attention, I take a few minutes to research it, which inevitably leads to interesting, and sometimes surprising, details about life in London at that time.
 
@@ -43,13 +43,13 @@ If I would continue my search, I would go back into the bills for references to 
 
 The example I just described should give you a sense of my workflow. Typically, it is rare for me to find memorable deaths, so most of my pauses deal with issues in texts. Sometimes, they are more complicated than I initially assume. For instance, the screenshot below is of a bill I recently transcribed dating back to the 1<sup>st</sup> of April of 1746.[^9]
 
-{{< figure src="/images/taba-image6.png" caption="Figure 6. A section of a bill from April 1st, 1746 with what look like handwritten comments on it" alt="Figure 6. A section of a bill from April 1st, 1746 with what look like handwritten comments on it" >}}
+{{< figure src="taba-image6.png" caption="Figure 6. A section of a bill from April 1st, 1746 with what look like handwritten comments on it" alt="Figure 6. A section of a bill from April 1st, 1746 with what look like handwritten comments on it" >}}
 
 I remember my initial reaction to the section I highlighted in the screenshot above. I saw the Xs and assumed someone wrote them because there was a mistake in the printed numbers: the two and three on the left of the horizontal lines are incorrect. That means that the zeros to the right are correct and there were no deaths in Trinity and St. Foster parishes. After consulting other members of the Death by Numbers team, however, I abandoned my initial interpretation and went with the two and three to the left of the horizontal lines.
 
 In retrospect, I learned something important working through this transcription issue: I need to be more careful when interpreting handwritten comments. I know nothing about the person who wrote them. Looking at the image of the entire bill below, I do not see any information about the anonymous commentator.[^10] How can I confirm that that person is a reliable source on the deaths in Trinity and St. Foster?
 
-{{< figure src="/images/taba-image4.jpg" caption="Figure 7. The entire bill from April 1st, 1746" alt="Figure 7. The entire bill from April 1st, 1746" >}}
+{{< figure src="taba-image4.jpg" caption="Figure 7. The entire bill from April 1st, 1746" alt="Figure 7. The entire bill from April 1st, 1746" >}}
 
 Moreover, why should I feel confident about how I interpreted the comments. Why am I assuming that one person made them? There may have been two commentators, one who wrote the Xs and one who wrote the zeros. I can imagine different scenarios in which they wrote their comments. Maybe the first commentator wrote the Xs to highlight that there was an issue in that part of the bill. Then later, a second commentator wrote the horizontal line and the zeros to correct the bill. Alternatively, the second commentator may have written the Xs to indicate that the first commentator’s zeros are incorrect. Unfortunately, this is the only time I have seen Xs like this in the bills, so I do not have previous examples on which to rely.
 
@@ -57,15 +57,15 @@ Now that I have shared an example of my thought process, let me shift focus to y
 
 1. The first example comes from a bill from 1717 that looks like it may have been altered.[^11] Note how the numbers in the red box in the screenshot below seem to be much clearer and sharper than the other numbers on the page. Is that a coincidence from the quality of the digital scan or the original document, or did someone touch them up? In other words, does the image indicate the numbers are originals or did someone change them?
 
-{{< figure src="/images/taba-image1.png" caption="Figure 8. Are the numbers in the red box originals or have they been touched up?" alt="Figure 8. Are the numbers in the red box originals or have they been touched up?" >}}
+{{< figure src="taba-image1.png" caption="Figure 8. Are the numbers in the red box originals or have they been touched up?" alt="Figure 8. Are the numbers in the red box originals or have they been touched up?" >}}
 
 2. The second example is from a bill from 1741.[^12] Is the number in the red box in the screenshot below a 16 or a 19? Did 16 or 19 people die in the parish?
 
-{{< figure src="/images/taba-image9.png" caption="Figure 9. Is that a 16 or a 19?" alt="Figure 9. Is that a 16 or a 19?" >}}
+{{< figure src="taba-image9.png" caption="Figure 9. Is that a 16 or a 19?" alt="Figure 9. Is that a 16 or a 19?" >}}
 
 3. The third example comes from another bill from 1741.[^13] What are the numbers in the red box below? Do you think they are handwritten or printed?
 
-{{< figure src="/images/taba-image7.png" caption="Figure 10. Are those numbers ones, twos, threes, eights?" alt="Figure 10. Are those numbers ones, twos, threes, eights?" >}}
+{{< figure src="taba-image7.png" caption="Figure 10. Are those numbers ones, twos, threes, eights?" alt="Figure 10. Are those numbers ones, twos, threes, eights?" >}}
 
 Finally, here is the list of strategies I mentioned earlier. I compiled them based on my experience transcribing the bills on my own and my conversations with the Death by Numbers team.
 
