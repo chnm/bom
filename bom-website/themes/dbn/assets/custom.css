@@ -27,8 +27,16 @@ h6 {
 
 @layer base {
   a {
-    @apply text-dbn-purple;
+    @apply text-dbn-red;
   }
+  a:hover {
+    @apply no-underline;
+  }
+}
+
+/* Prevent nav dropdowns from appearing until Alpine is initialized */
+[x-cloak] {
+  display: none;
 }
 
 .prose figure {
