@@ -5,9 +5,9 @@ author:
 date: "2024-03-13"
 tags:
   - ward
-  - gis
+  - geography
 categories:
-  - "analysis"
+  - "workflows"
 ---
 
 Recently, I had the pleasure of presenting original research and maps about early modern death at the 2024 American Historical Association in San Francisco. I showcased maps between 1656 and 1680 based on general bill data. That span of years offered interesting data to showcase, including the major plague outbreak in London in 1665 and the Great Fire of London a year later in 1666. But how did I actually map these years?

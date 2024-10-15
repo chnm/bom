@@ -1,13 +1,13 @@
 ---
 title: "Building a Data API for Historical Research"
-author: 
-    - Jason Heppler
+author:
+  - Jason Heppler
 date: "2022-11-21"
-tags: 
-    - database
-    - visualization
-    - heppler
-categories: 
+tags:
+  - data
+  - visualization
+  - heppler
+categories:
   - "workflows"
 ---
 
@@ -21,7 +21,7 @@ The advantage of having our data structured this way is we can keep our data con
 
 An API also gives us the advantage of speed: the queries we send to the data table are fast and flexible, allowing us to really take advantage of the _relational_ connections among datasets. While we provide the [flat data files as downloads for others to work with](https://github.com/chnm/bom), it's much harder to do the kind of web-based querying and recombining we'd like to achieve with flat data files.
 
-We currently provided four key endpoints (the location where an API receives requests from software for data) for our data. The largest is the `bills/` [endpoint](https://data.chnm.org/bom/bills?start-year=1648&end-year=1754&bill-type=All&count-type=All&limit=50&offset=0) that returns all of the weekly and general bills data and the number of people buried or having the plague in an individual parish. These rows are linked together with parishes, years, and weeks that allow us to return the entire dataset or specific queries over time and space. 
+We currently provided four key endpoints (the location where an API receives requests from software for data) for our data. The largest is the `bills/` [endpoint](https://data.chnm.org/bom/bills?start-year=1648&end-year=1754&bill-type=All&count-type=All&limit=50&offset=0) that returns all of the weekly and general bills data and the number of people buried or having the plague in an individual parish. These rows are linked together with parishes, years, and weeks that allow us to return the entire dataset or specific queries over time and space.
 
 ```
 [
@@ -57,7 +57,7 @@ We currently provided four key endpoints (the location where an API receives req
 ]
 ```
 
-We also provided an [endpoint](https://data.chnm.org/bom/causes?start-year=1648&end-year=1754&limit=50&offset=0) labeled `causes/` that returns a particular cause of death and the amount for a given year, week, annual report, or parish. 
+We also provided an [endpoint](https://data.chnm.org/bom/causes?start-year=1648&end-year=1754&limit=50&offset=0) labeled `causes/` that returns a particular cause of death and the amount for a given year, week, annual report, or parish.
 
 ```
 [
