@@ -4,10 +4,8 @@
     class="flex min-h-screen bg-white pt-7 items-start mx-auto w-full lg:max-w-screen-lg sm:max-w-screen-sm md:max-w-screen-md">
     <div class="container mx-auto px-4">
       <h2 class="text-4xl font-medium pb-4">{{ .Title }}</h2>
-      {{ .Content }}
-
       <div class="flex flex-col mb-8 animated fadeIn sm:flex-row">
-        <div class="flex mb-8 sm:w-1/2 md:w-7/12">
+        <div class="flex mb-8 sm:w-2/3">
           <div class="flex flex-wrap w-3/4 prose prose-lg">
             {{ range where (.Paginator 4).Pages "Params.categories" "intersect" (slice "workflows") }}
             <section class="flex prose">
@@ -34,7 +32,7 @@
                     </a>
                   </div>
                   <p class="mb-4 text-sm text-black">
-                    {{.Summary | truncate 250}}
+                    {{.Summary }}
                     {{ if .Truncated }}
                   <div>
                     <a href="{{ .Permalink }}">Read More...</a>
@@ -48,19 +46,21 @@
             {{ end }}
           </div>
         </div>
-        <div class="flex flex-col sm:w-1/2 md:w-5/12 sm:pr-16 p-3 m-3 rounded-lg">
-
-
+        <div class="flex flex-col sm:w-1/3 sm:pr-16 p-3 m-3 rounded-lg">
           <div class="container tagcloud">
-            <h2 class="text-2xl text-gray-600">{{ .Title }} Tags</h2>
+            <div class="mb-10">
+              {{ .Content }}
+            </div>
+
+            <h2 class="text-xl text-gray-600 text-center">{{ .Title }} Tags</h2>
             {{ if ne (len $.Site.Taxonomies.tags) 0 }}
-            {{ $largestFontSize := 1.6 }}
-            {{ $smallestFontSize := 0.9 }}
+            {{ $largestFontSize := 1.3 }}
+            {{ $smallestFontSize := 0.7 }}
             {{ $fontSpread := sub $largestFontSize $smallestFontSize }}
             {{ $max := 0 }}
             {{ $min := 1000000 }}
             {{ $filteredTags := dict }}
-
+      
             {{ range $name, $taxonomy := $.Site.Taxonomies.tags }}
             {{ $filteredPages := where $taxonomy.Pages "Params.categories" "intersect" (slice "workflows") }}
             {{ $tagCount := len $filteredPages }}
@@ -74,17 +74,17 @@
             {{ end }}
             {{ end }}
             {{ end }}
-
+      
             {{ $spread := sub $max $min }}
             {{ $fontStep := div $fontSpread (cond (eq $spread 0) 1 $spread) }}
-
+      
             {{ range $name, $pages := $filteredTags }}
             {{ $tagCount := len $pages }}
             {{ $currentFontSize := (add $smallestFontSize (mul (sub $tagCount $min) $fontStep) ) }}
             {{ $weight := div (sub (math.Log $tagCount) (math.Log $min)) (sub (math.Log $max) (math.Log $min)) }}
             {{ $currentFontSize := (add $smallestFontSize (mul (sub $largestFontSize $smallestFontSize) $weight)) }}
             <a class="prose" href="{{ "/tags/" | relURL }}{{ $name | urlize }}" class="tagcloud-item"
-              style="font-size: {{ $currentFontSize }}rem;">
+              style="font-size: {{ $currentFontSize }}rem;" aria-label="Tag: {{ $name }} with {{ $tagCount }} items">
               {{ $name }} <span>({{ $tagCount }})</span>
             </a>
             {{ end }}

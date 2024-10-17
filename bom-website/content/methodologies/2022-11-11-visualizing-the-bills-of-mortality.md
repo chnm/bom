@@ -1,11 +1,11 @@
 ---
 title: "Visualizing the Bills of Mortality"
-author: 
+author:
   - Jason Heppler
 date: "2022-11-11"
-categories: 
-  - analysis
-tags: 
+categories:
+  - workflows
+tags:
   - heppler
   - visualization
 ---
