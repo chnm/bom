@@ -3,6 +3,16 @@
     <div class="container mx-auto w-full h-full" x-data="billsData">
       <h2 class="text-4xl font-medium pt-4">{{ .Title }}</h2>
 
+     <div 
+      class="text-xs font-bold uppercase px-1 py-3 m-0.5 leading-normal text-black hover:underline"
+      @click="instructionsOpen = true"
+      >
+        How to use this table
+     </div>
+
+
+      {{ partial "tables/instructions.html" }}
+
       {{/* begin: tab switcher */}}
       <div class="flex flex-wrap" x-data="{ openTab: 1 }">
         <div class="w-full px-12 py-8">
@@ -10,7 +20,7 @@
             <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
               <a
                 class="text-xs font-bold uppercase px-5 py-3 rounded block leading-normal border-none bg-slate-200 text-black hover:bg-slate-300"
-            :class="{ 'bg-slate-500 text-white': openTab === 1, 'bg-slate-200 hover:bg-slate-300': openTab !==1 }"
+            :class="{ 'bg-slate-400 text-white': openTab === 1, 'bg-slate-200 hover:bg-slate-300': openTab !==1 }"
                 x-on:click="openTab = 1; fetchData('Weekly')"
               >
                 Weekly Bills
@@ -19,7 +29,7 @@
             <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
               <a
                 class="text-xs font-bold uppercase px-5 py-3 rounded block leading-normal border-none bg-slate-200 text-black hover:bg-slate-300"
-              :class="{ 'bg-slate-500 text-white': openTab === 2, 'bg-slate-200 hover:bg-slate-300': openTab !==2 }"
+              :class="{ 'bg-slate-400 text-white': openTab === 2, 'bg-slate-200 hover:bg-slate-300': openTab !==2 }"
                 x-on:click="openTab = 2; fetchData('General')"
               >
                 General Bills
@@ -28,7 +38,7 @@
             <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
               <a
                 class="text-xs font-bold uppercase px-5 py-3 rounded block leading-normal border-none text-black bg-slate-200 hover:text-black hover:bg-slate-300"
-            :class="{ 'bg-slate-500 text-white': openTab === 3, 'bg-slate-200 hover:bg-slate-300': openTab !==3 }"
+            :class="{ 'bg-slate-400 text-white': openTab === 3, 'bg-slate-200 hover:bg-slate-300': openTab !==3 }"
                 x-on:click="openTab = 3; fetchDeaths()"
               >
                 Total Deaths
@@ -37,7 +47,7 @@
             <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
               <a
                 class="text-xs font-bold uppercase px-5 py-3 rounded block leading-normal border-none text-black bg-slate-200 hover:text-black hover:bg-slate-300"
-              :class="{ 'bg-slate-500 text-white': openTab === 4, 'bg-slate-200 hover:bg-slate-300': openTab !==4 }"
+              :class="{ 'bg-slate-400 text-white': openTab === 4, 'bg-slate-200 hover:bg-slate-300': openTab !==4 }"
                 x-on:click="openTab = 4; fetchChristenings()"
               >
                 Christenings
@@ -73,3 +83,4 @@
   </body>
 
 {{ end }}
+
