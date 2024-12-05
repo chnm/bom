@@ -1,11 +1,5 @@
-import Alpine from "alpinejs";
-import collapse from "@alpinejs/collapse";
-
-// initialize Alpine
-window.Alpine = Alpine;
-Alpine.plugin(collapse);
-
 document.addEventListener("alpine:init", () => {
+  const params = new URLSearchParams(window.location.search);
   Alpine.data("billsData", () => ({
     bills: [],
     christenings: [],
@@ -117,7 +111,6 @@ document.addEventListener("alpine:init", () => {
       this.meta.fetching = true;
       // billType defaults to filters.selectedBillType unless one is provided by the app
       billType = billType || this.filters.selectedBillType;
-
 
       // Bills data
       let response = await fetch(
@@ -373,5 +366,3 @@ document.addEventListener("alpine:init", () => {
     },
   }));
 });
-
-Alpine.start();

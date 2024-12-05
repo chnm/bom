@@ -1,23 +1,18 @@
 <!DOCTYPE html>
 <html>
     {{- partial "head.html" . -}}
-    <body>
+    <body class="min-h-screen flex flex-col">
         {{ if .IsHome }}
         {{- partial "hero.html" . -}}
         {{- else }}
         {{- partial "header.html" . -}}
         {{- end }}
-        <div class="bg-white min-h-screen" id="content">
+        <div class="bg-white flex-grow" id="content">
         {{- block "main" . }}{{- end }}
         </div>
         {{- partial "footer.html" . -}}
-
-        <script
-            src="https://unpkg.com/littlefoot/dist/littlefoot.js"
-            type="application/javascript"
-        ></script>
-        <script type="application/javascript">
-        littlefoot.littlefoot()
-        </script>
+        <script src="https://unpkg.com/littlefoot/dist/littlefoot.js"></script>
+        <script>littlefoot.littlefoot()</script>
     </body>
 </html>
+

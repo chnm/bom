@@ -6,12 +6,10 @@ document.addEventListener("DOMContentLoaded", function () {
       document
         .querySelectorAll("nav .relative ul")
         .forEach((ul) => ul.classList.add("hidden"));
-      document
-        .querySelectorAll(".dropdown-toggle")
-        .forEach((btn) => {
-          btn.classList.remove("dropdown-open");
-          btn.querySelector("svg").classList.remove("rotate-180");
-        });
+      document.querySelectorAll(".dropdown-toggle").forEach((btn) => {
+        btn.classList.remove("dropdown-open");
+        btn.querySelector("svg").classList.remove("rotate-180");
+      });
 
       if (!isOpen) {
         dropdown.classList.remove("hidden");
@@ -26,12 +24,11 @@ document.addEventListener("DOMContentLoaded", function () {
       document
         .querySelectorAll("nav .relative ul")
         .forEach((ul) => ul.classList.add("hidden"));
-      document
-        .querySelectorAll(".dropdown-toggle")
-        .forEach((btn) => {
-          btn.classList.remove("dropdown-open");
-          btn.querySelector("svg").classList.remove("rotate-180");
-        });
+      document.querySelectorAll(".dropdown-toggle").forEach((btn) => {
+        btn.classList.remove("dropdown-open");
+        btn.querySelector("svg").classList.remove("rotate-180");
+      });
     }
   });
 });
+
