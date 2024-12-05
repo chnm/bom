@@ -7,11 +7,12 @@ slug: /team/
 - [Hernán Adasme](/authors/hernan-adasme/), Graduate Research Assistant, 2022-present
 - Donna Baker, Grants Manager, 2023-present
 - Jerusha French, Digital History Research Assistant, 2024-present
+- Mikayla Hart, Digital History Research Assistant, 2024-present
 - [Jason Heppler](/authors/jason-heppler/), Senior Web Developer, 2021-present
 - JD Hubbard, Digital History Research Assistant, 2024-present
 - Kristin Jacobsen, Omeka Designer, 2024-present
-- [Katie Kania](/authors/katie-kania/), Digital History Research Assistant, 2021-present
 - Alison Langford, Office Manager, 2022-present
+- Ha Le, Digital History Research Assistant, 2024-present
 - Francisco Perez, Digital History Research Assistant, 2024-present
 - [Laszlo Taba](/authors/laszlo-taba/), Digital History Research Assistant, 2024-present
 - Tony Trinh, Systems Administrator, 2022-present
@@ -37,6 +38,7 @@ slug: /team/
 - Julia Hoffer, Grants Administrator, 2020-2022
 - [Dan Howlett](/authors/dan-howlett/), Graduate Research Assistant, 2021-2022
 - Jennie Jiang, RRCHNM Summer Intern, 2022
+- [Katie Kania](/authors/katie-kania/), Digital History Research Assistant, 2021-2024
 - God's Will Katchoua, Systems Administrator, 2020-2022
 - Paige Kuester, Graduate Student Assistant, 2018
 - [Emily Meyers](/authors/emily-meyers/), Digital History Research Assistant, 2021-2023
