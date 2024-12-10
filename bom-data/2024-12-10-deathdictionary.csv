@@ -1,78 +1,117 @@
-﻿Cause,Definition,OED Definition
-Abortive,aborted pregnancy; see also miscarriage and stillborn,an aborted fetus; a stillborn child or animal
-Aged,death by natural causes of old age,that has lived or existed for a long time; of advanced age; very old
-Ague,chills and fever; malaria,"an acute or high fever; disease, or a disease, characterized by such fever, esp. when recurring periodically, spec. malaria. Also: a malarial paroxysm, or (esp. in later use) the initial stage of such a paroxysm, marked by an intense feeling of cold and shivering... Frequently with distinguishing word indicating the periodicity of the fever, nature of the paroxysm, etc."
-Apoplex,rupture of an internal organ,"a malady, very sudden in its attack, which arrests more or less completely the powers of sense and motion; it is usually caused by an effusion of blood or serum in the brain, and preceded by giddiness, partial loss of muscular power, etc."
-Asthma,"chronic inflamation of the airways, making it difficult to breathe","difficulty of breathing; spec.. a disease of respiration, characterized by intermittent paroxysms of difficult breathing, with a wheezing sound, a sense of cnostriction in the chest, cough, and expectoration"
-Beaten,beaten,---
-Bleeding,bleeding,---
-Bloody flux,dysentery,"bloody diarrhoea; disease causing such diarrhoea, spec. dysentery of infectious origin"
-Burnt,burned,---
-Calenture,"heat stroke, sunstroke","1593- ; a disease incident to sailors within the tropics, characterized by delirium in which the patient, it is said, fancies the sea to be green fields, and desires to leap into it; The word was also used in the Spanish general sense of 'fever', and sometimes in that of 'sunstroke'"
-Cancer,note: canker separate in some lists,"Originally: any of various types of non-healing sore or ulcer (cf. canker); In later use (chiefly as mass noun): spec. malignant neoplastic disease, in which there is an uncontrolled proliferation of cells, typically with invasion and destruction of adjacent normal tissue, and often with metastatic spread to distant parts of the body via lymphatics or blood vessels; an instance of this, a malignant tumor."
-Childbed,death during childbirth,
-Chrisoms,infant deaths under one month old,"In obituaries and the like, applied to a child that died during the first month or shortly after baptism, and was shrouded in its chrisom-cloth"
-Cold,common cold,"disease attributed to an excess of the quality of coldness within the body or part of the body, to a superfluity of cold humours... or to exposure to low temperatures; (in later use) spec. acute and self-limited catarrhal illness of the upper respiratory tract"
-Collick,colic,"a name given to severe parosysmal griping pains in the belly, due to various affections of the bowels or other parts; also to the affections of which such pains are the characteristic symptom"
-Consumpcon,tuberculosis,"Originally: abnormality or loss of humours, resulting in wasting (extreme weight loss) of the body; such wasting; Later: disease that causes wasting of the body, spec. tuberculosis"
-Convulcon,convulsions,
-Cough,cough,
-Distracted,"Various deaths ""being distracted"" = suicide/accidental death due to mental disturbance",deranged in mind; out of one's wits
-Dropsy,"swelling of tissue due to accumulation of excess water, sign of organ failure",a morbid condition characterized by the accumulation of watery fluid in the serous cavaties or the connective tissue of the body
-Drowned,drowning,
-Executed,executions,
-ffalling sickness,epileptic seizures ,forming names for the disease epilepsy
-ffeaver,fevers,
-ffistula,abnormal connection between two organs,"Originally: any abnormal tube-like passage between the skin and an organ or cavity within the body, typically exuding pus or other matter... In later use spec.: an abnormal passage between the skin and a hollow organ or structures, or between two hollow organs or structures"
-fflox,hemorrhagic smallpox,
-fflux,see 'bloody flux',"an abnormally copious flowing of blood, excrement, etc. from the bowels or other organs; a morbid of excessive discharge. spec. An early name for dysentery"
-ffrighted,frightened to death,
-French pox,syphilis,
-Gangrene,death of body tissue b/c lack of blood flow or bacterial infection,
+﻿Cause,Definition,
+Abortive,aborted pregnancy; see also miscarriage and still-born,
+Aged,death by natural causes of old age,
+Ague,chills and fever; often from malaria,
+Apoplexy,"rupture of an internal organ, especially the brain",
+Asthma,"chronic inflamation of the airways, making it difficult to breathe",
+Beaten,,
+Bed-ridden,confined to bed through sickness or infirmity,
+Blasted,,
+Bleeding,,
+Bloody-flux,"bloody diarrhea, esp. from dysentery",
+Burnt,,
+Calenture,probably heat stroke or sunstroke,
+Cancer,"per OED: Originally: any of various types of non-healing sore or ulcer (cf. canker); In later use (chiefly as mass noun): spec. malignant neoplastic disease, in which there is an uncontrolled proliferation of cells, typically with invasion and destruction of adjacent normal tissue, and often with metastatic spread to distant parts of the body via lymphatics or blood vessels; an instance of this, a malignant tumor.",
+Child-Bed,death during childbirth,
+Chrisoms,infant deaths under one month old,
+Cold,"assorted viral, respiratory illnesses believed to be caused by a humoreal imbalance (too much coldness)",
+Colick,severe stomach pain due to issue with bowels,
+Consumption,"wasting disease, esp. tuberculosis",
+Convulsion,,
+Cough,,
+Cramp,,
+Diabetes,,
+Distracted,coded language for suicide/accidental death due to mental illness,
+Dropsie,"swelling of tissue due to accumulation of excess water, sign of organ failure",
+Drowned,,
+Executed,,
+Falling-sickness,epileptic seizures ,
+Fever,,
+Fistula,abnormal connection between two organs,
+Flox,hemorrhagic smallpox,
+Flux,"diarrhea, esp. from dysentery",
+Frighted,frightened to death,
+French-Pox,syphilis,
+Gangreen,death of body tissue b/c lack of blood flow or bacterial infection,
 Gout,urate crystals accumulating in joints,
 Grief,died of grief,
-Gripeing in ye gutts,"sudden intense pain in the intestines, diarrhoea",
-Gripes,intestinal pain,"1601-; an intermittent spasmodic pain in the bowels. Usually plural, colic pains"
-Headach,headache,
-Impostume,bacterial abscess,a purulent swelling or cyst in any part of the body; an abscess
+Griping in the Guts,"sudden intense pain in the intestines, diarrhoea",
+Gripes,intestinal pain,
+Headache,,
+Headmouldshot,,
+Hiccough,,
+Hooping Cough,whooping cough,
+Horshoehead,,
+Impostume,bacterial abscess,
 Infants,death of a child over a month old but still in infancy,
-Jaundies,"liver disease, causes yellowing of skin and eyes","a morbid condition caused by obstruction of the bile, and characterized by yellowness of the conjuctiva, skin, fluids, and tissues, and by constipation, loss of appetite, and weakness. Three varieties (yellow, black, and green) are recognized and distinguished according to the colour of the skin in each case. Yellow vision, often referred to as characteristic of this state, though the source of much literary allusion, occurs only in rare instances."
-Kild,,
-Kings Evil,tubercular infection of throat lymph glands/tuberculosis lymphadenitis,scrofula (tuberculous infection of the lymph nodes of the neck)... the name may also have been used for other types of swelling of the lymph nodes or glands of the neck
-Lethargy,unnatural drowsiness,a disorder characterized by morbid drowsiness or prolonged and unnatural sleep
-Livergrown,swollen liver,"suffering from an enlarged liver, or a liver adherent to other parts"
-Lunatick,see 'Distracted',
-Measles,measles,"an infectious disease caused by a morbillivirus, characterized by a dark red maculopapular rash preceded and accompanied by catarrh and fever, usually with Koplik's spots in the early stages, tending to occur in epidemics hat chiefly affect children. In early use also: any of various other dieases causing a red rash (now only in German measles)."
+Inflammation,,
+Itch,,
+Jaundies,"liver disease, causes yellowing of skin and eyes",
+Jaw-fallen,,
+Killed,,
+Kings Evil,tubercular infection of throat lymph glands/tuberculosis lymphadenitis,
+Leprosie,leprosy,
+Lethargy,unnatural drowsiness,
+Liver-grown,swollen liver,
+Lunatick,death of someone with mental illness; see also 'distracted',
+Looseness,,
+Lunatick and Frenzy,,
+Malignant Fever,,
+Meagrim,,
+Measles,,
+Miscarriage,aborted pregnancy; see also abortive and still-born,
+Mortification,,
+Mother,,
 Murthered,murdered,
-Overlayd,accidental smothering of an infant by rolling over them in sleep,"to lie over or on top of so as to suffocate (a child, etc.); to smother by lying on"
-Palsy,weakness or problems using muscles,"paralysis or paresis (weakness) of all or part of the body, sometimes with tremor; an instance of this"
-Plague,disease caused by y. pestis,"an infectious disease characterized by high fever, initial involvement usually of lymph nodes or the lungs, haemorrhage, and shock, caused by the bacterium Yersina pestis"
-Plurasy,inflammation of tissue lining the lungs,"an abscess of the ribs or inner surface of the chest; pain in the chest or the side, esp. when stabbing in nature and exacerbated by inspiration or coughing; an instance of this; any disease resulting in such pain. In later use: spec. inflammation of the pleura; pleuritis; an instance of this"
-Purples,any disease causing a dark red or purple rash,"any of various diseases characterized by a dark red or purplish rash (in later use esp. by a petechial rash - a small, flat, red or purple spot caused by bleeding into the skin or other organ... a disease characterized by such lesions; a petechial fever)"
-Quinsy,"complication of tonsillitis, infection spreads beyond tonsils","Originally: inflammation or swelling of the throat or part of the throat, esp. tonsillitis; an instance of this. Formerly also occasionally in plural. In later use: spec. peritonsillar abscess; an instance of this"
-Ricketts,weakening of bones b/c of prolonged vitamin D deficiency,"A diseases of children caused by vitamin D deficiency, which results in abnormal calcium and phosphorus metabolism and deficient mineralization of bone (osteomalacia) with skeletal deformity. In later use also (chiefly with distinguishing word): any of various other diseases resmebling this, affecting children, adults, or animals, and typically of metabolic, nutritional, or renal origin)"
-Riseing of ye lights,difficulty breathing or a choking sensation,"a medical condition characterized by difficulty in breathing or a choking sensation (probably arising from various causes, such as croup, asthma, pneumonia, or pulmonary embolism); (later also) indigestion with belching; heartburn"
-Rupture,hernia,"hernia, esp. in the inguinal region (groin); an instance of this"
+Noli me tangere,,
+Overlaid,accidental smothering of an infant by rolling over them in sleep,
+Palsie,"paralysis, weakness, or other problems using muscles, including tremors",
+Plague,disease caused by y. pestis,
+Planet,,
+Plurisie,inflammation of tissue lining the lungs,
+Purples,any disease causing a dark red or purple rash,
+Quinsie,"complication of tonsillitis, infection spreads beyond tonsils",
+Rash,,
+Rheumatism,,
+Rickets,weakening of bones b/c of prolonged vitamin D deficiency,
+Rising of the Lights,difficulty breathing or a choking sensation,
+Running of the Reins,,
+Rupture,hernia,
+Scald Head,,
 Scalded,burnt by hot water,
-Scowring,purging bowels?,(purging the bowels?)
-Scurvy,disease caused by vitamin C deficiency ,"a disease characterized by general debility fo the body, extreme tenderness of the gums, foul breath, subcutaneous eruptions and pains in the limbs, induced by exposure and by a too liberal diet of salted foods; ... Now recognized as due to insufficient ascorbic acid (vitamin C) in the diet"
-Small pox,"infectious disease; flu-like symptoms, rash which spreads from face to trunk",
-Sore legg,,
-Spleen,,(possibly excessive dejection or depression of the spirits... melancholia???)
-Spotted ffeaver,,"1623-; any of various febrile dsieases characterized by the appearance of (esp. petechial or purpuric) spots on the skin, as meningococcal meningitis and typhus; (now) spec. any of a group of tick-borne diseases caused by bacteria of the genus Rickettsia"
-Stilborne,child born lifeless or with a heartbeat but failing to breathe,of a child or young animal: born lifeless; dead before or at birth. Also: born without immediate signs of life; born with a heartbeat but failing to begin to breathe; dying within a few days after birth
-Stone,"concretion in the body, esp. kidneys, bladder or gallbladder","a hard morbid concretion in the body, esp. in the kidney or urinary bladder, or in the gallbladder; also an intestinal concretion in some animals... also the disease caused or characterized by the formation of such a concretion; lithiasis"
-Stoping of ye Stomack,,
-Stranguary,slow and painful urination,a disease of the urinary organs characterized by slow and painful emission of urine; also the condition of slow and painful urination
+Scarlet Fever,,
+Sciatica,,
+Scowring,purging bowels?,
+Scurvy,disease caused by vitamin C deficiency ,
+Shingles,,
+Smallpox,"infectious disease; flu-like symptoms, rash which spreads from face to trunk",
+Sores,,
+Spleen,,
+Spotted-Fever,"per OED: 1623-; any of various febrile dsieases characterized by the appearance of (esp. petechial or purpuric) spots on the skin, as meningococcal meningitis and typhus; (now) spec. any of a group of tick-borne diseases caused by bacteria of the genus Rickettsia",
+St. Anthony's Fire,,
+Starved,,
+Still-born,child born lifeless or with a heartbeat but failing to breathe,
+Stone,"concretion in the body, esp. kidneys, bladder or gallbladder",
+Stopping of the Stomach,,
+Strangury,slow and painful urination,
+Strongullion,,
 Suddenly,sudden death with no other attributable cause,
-Surfett,,"illness attributed to excessive eating or drinking (or, occasionally, to extremes of temperature or some other environmental factor)"
+Suicide,,
+Surfeit,excess of food or drink,
+Swelling in the Throat,,
+Swine-Pox,,
 Teeth,,
-Thrush,,"a disease, chiefly of infants, characterized by white vesicular specks on the inside of the mouth and throat, and on the lips and tongue, caused by a parasitic fungus"
-Timpany,,"sometimes used vaguely for a morbid swelling or tumour of any kind; cross-linked to entry on tympanites which is distention of the abdomen by gas or air in the intestine, the peritoneal cavity, or the uterus"
-Tissick,,"coughing or wheezing; any of various diseases characterized by this, esp. asthma or bronchitis. Also: a tickling cough; a fit of coughing or wheezing; cross-referenced to phthisis which is a wasting disease, esp. one involving the lungs; spec. tuberculosis"
-Ulcer,,"an erososive solution of continuity in any external or internal surface of the body, forming an open sore attended with a secretion of pus or other morbid matter"
+Thrush,"white specks inside the mouth and throat, also lips and tongue",
+Tympany,"per OED: sometimes used vaguely for a morbid swelling or tumour of any kind; cross-linked to entry on tympanites which is distention of the abdomen by gas or air in the intestine, the peritoneal cavity, or the uterus",
+Tissick,"per OED: coughing or wheezing; any of various diseases characterized by this, esp. asthma or bronchitis. Also: a tickling cough; a fit of coughing or wheezing; cross-referenced to phthisis which is a wasting disease, esp. one involving the lungs; spec. tuberculosis",
+Twisting of the Guts,,
+Ulcer,,
+Vapours,,
 Vomiting,,
-Wind,,air or gas in the stomach or intestines (?)
-Wormes,,"any endoparasitic helminth breeding in the living body of humans and other animals... also, the disease or disordered constituted by the presence of these parasites"
+Water in the Head,,
+Wen,,
+Wind,,
+Wolf,,
+Worms,,
 Wounded,,
-Bedridden,,confined to bed through sickness or infirmity
+,,
