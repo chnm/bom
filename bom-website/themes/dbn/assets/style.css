@@ -3336,12 +3336,12 @@ a:hover {
   padding-right: 1rem;
 }
 
-.pt-8 {
-  padding-top: 2rem;
-}
-
 .pb-6 {
   padding-bottom: 1.5rem;
+}
+
+.pt-8 {
+  padding-top: 2rem;
 }
 
 .pb-20 {
@@ -3641,6 +3641,11 @@ a:hover {
 .hover\:bg-gray-200:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(229 231 235 / var(--tw-bg-opacity));
+}
+
+.hover\:bg-slate-500:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(100 116 139 / var(--tw-bg-opacity));
 }
 
 .hover\:text-black:hover {
