@@ -12,21 +12,56 @@ export default class DeathsChart extends Visualization {
 
   // Draw the plot
   render() {
+    const aggregatedData = Array.from(
+      d3.rollup(
+        this.data.causes,
+        v => d3.sum(v, d => d.count), // Sum the count for each (year, death) combination
+        d => d.year,
+        d => d.death
+      ),
+      ([year, deaths]) => Array.from(deaths, ([death, count]) => ({ year, death, count }))
+    ).flat();
+
+    const colorThreshold = d3.scaleThreshold()
+      .domain([1600])
+      .range(["black", "white"]);
+
     const plot = Plot.plot({
+      padding: 0,
       width: 800,
-      height: 2000,
+      height: 4000,
       marginLeft: 150,
+      grid: true,
       x: {
-        tickFormat: d3.format("d")
+        axis: "top",
+        label: "Year",
+        tickFormat: d3.format("d"), // remove commas
+        ticks: 10,
+        tickSize: 6,
+        tickPadding: 3,
+        tickValues: d3.range(d3.min(aggregatedData, d => d.year), d3.max(aggregatedData, d => d.year) + 1)
       },
-      y: {
-        label: 'Cause',
-      },
-      color: {
-        scheme: 'reds',
-        reverse: false,
-      },
-      marks: [Plot.cell(this.data.causes, { x: "year", y: "death", fill: "count" })],
+      y: {label: "Cause"},
+      color: {type: "linear", scheme: "Reds"},
+      marks: [
+        Plot.cell(aggregatedData, {x: "year", y: "death", fill: "count", inset: 0.5}),
+        Plot.text(aggregatedData, {
+          x: "year", 
+          y: "death", 
+          text: d => d.count,
+          fill: d => colorThreshold(d.count),
+          inset: 0.5
+        }),
+        Plot.axisX({ // Add an additional x-axis at the bottom
+          label: "Year",
+          tickFormat: d3.format("d"), // remove commas
+          ticks: 10,
+          tickSize: 6,
+          tickPadding: 3,
+          tickValues: d3.range(d3.min(aggregatedData, d => d.year), d3.max(aggregatedData, d => d.year) + 1),
+          anchor: "bottom"
+        })
+      ]
     });
 
 

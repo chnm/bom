@@ -47,12 +47,11 @@
         </tbody>
       </table>
 
-      {{ partial "tables/instructions.html" }}
 
       <modal x-show="modalOpen" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog"
         aria-modal="true">
         <div class="flex items-end justify-center min-h-screen px-4 text-center md:items-center sm:block sm:p-0">
-          <div x-cloak @click="modalOpen = false" x-show="modalOpen"
+          <div x-cloak x-show="modalOpen" @click.stop
             x-transition:enter="transition ease-out duration-300 transform" x-transition:enter-start="opacity-0"
             x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200 transform"
             x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"

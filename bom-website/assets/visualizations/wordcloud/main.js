@@ -1,23 +1,72 @@
 import * as d3 from "d3";
-import WordCloudChart from "visualizations/wordcloud/wordcloud";
+import WordCloudChart from "./wordcloud";
 
-// Load data
-const urls = [
-  "https://data.chnm.org/bom/causes?start-year=1648&end-year=1754&limit=9000",
-];
-const promises = [];
-urls.forEach((url) => promises.push(d3.json(url)));
+// Function to fetch data and render the word cloud
+function fetchDataAndRender(startYear, endYear) {
+  const url = `https://data.chnm.org/bom/causes?start-year=${startYear}&end-year=${endYear}`;
+  
+  d3.json(url)
+    .then((data) => {
+      // Extract unique years from the data
+      const years = Array.from(new Set(data.map(d => d.year))).sort((a, b) => a - b);
+      populateYearDropdowns(years);
 
-// Once the data is loaded, initialize the visualization.
-Promise.all(urls.map((url) => d3.json(url)))
-  .then((data) => {
-    const wordcloud = new WordCloudChart(
-      "#chart",
-      { causes: data[0] },
-      { width: 800, height: 400 }
-    );
-    wordcloud.render();
-  })
-  .catch((error) => {
-    console.error("There was an error fetching the data.", error);
+      // Clear the existing word cloud
+      d3.select("#chart").selectAll("*").remove();
+
+      const wordcloud = new WordCloudChart(
+        "#chart",
+        { causes: data },
+        { width: 960, height: 500 }
+      );
+      wordcloud.render();
+    })
+    .catch((error) => {
+      console.error("There was an error fetching the data.", error);
+    });
+}
+
+// Populate year dropdowns
+function populateYearDropdowns(years) {
+  const startYearSelect = document.getElementById("start-year");
+  const endYearSelect = document.getElementById("end-year");
+
+  // Clear existing options
+  startYearSelect.innerHTML = "";
+  endYearSelect.innerHTML = "";
+
+  years.forEach((year) => {
+    const optionStart = document.createElement("option");
+    optionStart.value = year;
+    optionStart.text = year;
+    startYearSelect.appendChild(optionStart);
+
+    const optionEnd = document.createElement("option");
+    optionEnd.value = year;
+    optionEnd.text = year;
+    endYearSelect.appendChild(optionEnd);
   });
+
+  // Set default values
+  startYearSelect.value = years[0];
+  endYearSelect.value = years[years.length - 1];
+}
+
+// Initial fetch and render
+fetchDataAndRender(1648, 1754);
+
+// Add event listener to the update button
+document.getElementById("update-button").addEventListener("click", () => {
+  const startYear = document.getElementById("start-year").value;
+  const endYear = document.getElementById("end-year").value;
+  fetchDataAndRender(startYear, endYear);
+});
+
+// Add event listener to the reset button
+document.getElementById("reset-button").addEventListener("click", () => {
+  // Reset the dropdowns to the original values
+  document.getElementById("start-year").value = 1648;
+  document.getElementById("end-year").value = 1754;
+  // Fetch and render the original data
+  fetchDataAndRender(1648, 1754);
+});

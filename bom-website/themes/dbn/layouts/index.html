@@ -12,12 +12,14 @@
         </div>
       </div>
       <div class="flex flex-col justify-center sm:w-1/2 md:w-1/2 sm:pr-16 bg-slate-100 p-3 m-3 rounded-lg">
-        <h3 class="font-medium pb-4 prose-2xl">Latest Posts</h3>
+        <h3 class="font-medium pb-4 prose-2xl">Latest Writings</h3>
         {{ range first 3 .Site.RegularPages }}
           <div id="title" class="flex flex-wrap p-5 prose">
             <p class="font-medium pb-4"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time> &middot; <a href="{{ .Permalink }}">{{ .Title }}</a></p>
             </div>
             {{ end }}
+        <p class="text-center">Explore our post categories:</p>
+        <p class="text-center"><a class="hover:underline" href="/analysis/">Analysis</a> | <a class="hover:underline" href="/context/">Context</a> | <a class="hover:underline" href="/methodologies/">Methodologies</a></p>
       </div>
 
   </div>
@@ -50,7 +52,7 @@
             </div>
             <div class="flex flex-col justify-center mt-5 mb-8 md:mt-0 sm:w-1/2 md:w-7/12 sm:pr-16">
                 <p class="mb-2 text-sm font-semibold leading-none text-left text-dbn-red uppercase">read about our research</p>
-                <h3 class="mt-2 text-2xl sm:text-left md:text-4xl"><a class="text-dbn-green underline" href="/blog/">Blog Posts & Essays</a></h3>
+                <h3 class="mt-2 text-2xl sm:text-left md:text-4xl"><a class="text-dbn-green underline" href="/analysis/">Analyzing the Plague</a></h3>
                 <p class="mt-5 text-lg text-gray-700 text md:text-left">Read our ongoing research into the London plague bills.</p>
             </div>
         </div>

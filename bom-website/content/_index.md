@@ -6,4 +6,4 @@ Between 1603 and 1752, almost 8,000 different weekly bills were published. Death
 
 **[Explore the data](/database/)**: This is an ongoing project: the datasets are not complete.
 
-**[Read all about it](/blog/)**: Check out our blog for historical context, project updates, and an inside look at our processes. 
+**[Read all about it](/blog/)**: Check out our combined post page or go to the individual overviews for [historical context](/context/), [project analyses](/analysis/), and an inside look at our [workflows](/methodologies/).

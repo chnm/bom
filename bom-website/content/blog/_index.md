@@ -1,3 +1,4 @@
 ---
-title: Blog
+title: All Posts and Essays
 ---
+

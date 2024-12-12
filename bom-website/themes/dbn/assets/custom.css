@@ -27,8 +27,16 @@ h6 {
 
 @layer base {
   a {
-    @apply text-dbn-purple;
+    @apply text-dbn-red;
   }
+  a:hover {
+    @apply no-underline;
+  }
+}
+
+/* Prevent nav dropdowns from appearing until Alpine is initialized */
+[x-cloak] {
+  display: none;
 }
 
 .prose figure {
@@ -36,9 +44,59 @@ h6 {
   display: flex;
   flex-direction: column;
   align-items: center;
-} 
+}
 
 .prose figure figcaption {
   /* smaller width */
   max-width: 80%;
+}
+
+/* Custom#TableOfContents styling */
+
+/* Styling the top-level items */
+#TableOfContents ul {
+  @apply list-none pl-0;
+  /* Remove bullets and padding */
+}
+
+/* Style for top-level list items */
+#TableOfContents ul>li {
+  @apply pl-2;
+  /* Slight padding for top-level items */
+}
+
+/* Style for second-level list items (e.g., subheadings under h2) */
+#TableOfContents ul ul {
+  @apply pl-4;
+  /* Indentation for second-level items */
+}
+
+/* Style for third-level list items (e.g., subheadings under h3) */
+#TableOfContents ul ul ul {
+  @apply pl-6;
+  /* Further indentation for deeper nesting */
+}
+
+
+/* General styles for the select element */
+select {
+  -webkit-appearance: none; /* Remove default styling in Safari */
+  -moz-appearance: none; /* Remove default styling in Firefox */
+  appearance: none; /* Remove default styling in other browsers */
+  background-color: #fff; 
+  border: 1px solid #ccc; 
+  padding: 0.5rem; 
+  font-size: 1rem; 
+  border-radius: 0.25rem; 
+  background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gray"><path d="M4 6l4 4 4-4z"/></svg>'); /* Custom dropdown arrow */
+  background-repeat: no-repeat; 
+  background-position: right 0.5rem center; 
+  background-size: 1rem; 
+}
+
+/* Ensure the select element takes full width */
+select:focus {
+  outline: none; 
+  border-color: #3182ce; 
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5); 
 }

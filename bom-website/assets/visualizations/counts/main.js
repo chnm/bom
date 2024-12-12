@@ -71,8 +71,6 @@ Promise.all(urls.map((url) => d3.json(url)))
         groupedDataByYear[bill.year] = [bill];
       }
     });
-    console.log(groupedDataByYear);
-
 
     // We need to create a data structure that looks like: 
     // { year: 1638, weeksCompleted: 1, rowsCount: 153 }
@@ -89,16 +87,6 @@ Promise.all(urls.map((url) => d3.json(url)))
       sums.push({ year: year, weeksCompleted: weeksCompleted, rowsCount: rowsCount , totalCount: 53 });
     }
     console.log('sums', sums);
-
-
-
-    // Now we can initialize the visualization.
-    // const chart = new PlagueBillsBarChart(
-    //   "#barchart",
-    //   { plague: dataArray },
-    //   { width: 960, height: 500 }
-    // );
-    // chart.render();
 
     const multiplechart = new PlagueBillsBarChartWeekly(
       "#barchart-multiple",

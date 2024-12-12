@@ -1,8 +1,8 @@
 {{ define "main" }}
 <main>
-<div class="flex min-h-screen pt-5 justify-start bg-white mx-auto w-full lg:max-w-screen-lg sm:max-w-screen-sm md:max-w-screen-md">
+<div class="flex min-h-screen pt-7 justify-start bg-white mx-auto w-full lg:max-w-screen-lg sm:max-w-screen-sm md:max-w-screen-md">
     <div class="mx-auto w-full prose prose-lg">
-      <h2 class="text-4xl font-medium">Visualizations</h2>
+      <h2 class="text-4xl font-medium">{{ .Title }}</h2>
       {{.Content}}
       <div id="content" class="posts">
           <div class="grid grid-cols-12 sm:px-5 gap-x-8 gap-y-16">

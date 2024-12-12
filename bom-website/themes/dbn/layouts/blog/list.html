@@ -1,4 +1,5 @@
 {{ define "main" }}
+
 <main>
   <div class="flex min-h-screen bg-white pt-7 items-start mx-auto w-full lg:max-w-screen-lg sm:max-w-screen-sm md:max-w-screen-md">
     <div class="container mx-auto px-4">
@@ -8,7 +9,9 @@
       <div class="flex flex-col mb-8 animated fadeIn sm:flex-row">
         <div class="flex mb-8 sm:w-1/2 md:w-7/12">
           <div class="flex flex-wrap w-3/4 prose prose-lg">
-            {{ range (.Paginator 4).Pages }}
+            {{ $filteredPages := where .Site.RegularPages "Section" "in" (slice "blog" "analysis" "context" "methodologies") }}
+            {{ $paginatedPages := .Paginate $filteredPages }}
+            {{ range $paginatedPages.Pages }}
             <section class="flex prose">
                 <div class="flex-1 max-w-3xl mx-auto text-left">
                     <div class="section-content">
