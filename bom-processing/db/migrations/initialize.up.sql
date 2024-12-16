@@ -11,6 +11,7 @@
 CREATE TABLE IF NOT EXISTS bom.year (
     id integer GENERATED ALWAYS AS IDENTITY,
     year integer PRIMARY KEY
+    CONSTRAINT year_range CHECK (year > 1400 AND year < 1800)
 );
 
 -- Table Definition: Weeks ----------------------------------------------
@@ -18,21 +19,27 @@ CREATE TABLE IF NOT EXISTS bom.year (
 CREATE TABLE IF NOT EXISTS bom.week (
     id integer GENERATED ALWAYS AS IDENTITY,
     joinid text PRIMARY KEY,
-    start_day integer,
+    start_day integer CHECK (start_day BETWEEN 1 AND 31),
     start_month text,
-    end_day integer,
+    end_day integer CHECK (end_day BETWEEN 1 AND 31),
     end_month text,
     year integer REFERENCES bom.year(year),
-    week_no integer,
-    split_year text
+    week_no integer CHECK (week_no BETWEEN 1 AND 90),
+    split_year text,
+    created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP
 );
+COMMENT ON CONSTRAINT week_week_no_check ON bom.week 
+IS 'Week numbers 1-53 for regular weeks, 90 used to denote annual records';
 
 -- Table Definition: Parishes ----------------------------------------------
 
 CREATE TABLE IF NOT EXISTS bom.parishes (
     id integer PRIMARY KEY,
     parish_name text NOT NULL UNIQUE,
-    canonical_name text NOT NULL
+    canonical_name text NOT NULL,
+    created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Table Definition: Parish Collectives ----------------------------------------------
@@ -57,7 +64,11 @@ CREATE TABLE IF NOT EXISTS bom.christenings (
     start_day integer,
     end_day integer,
     missing text,
-    illegible text
+    illegible text,
+    created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP
+    CONSTRAINT christenings_unique_record 
+        UNIQUE (christening, week_number, start_day, start_month, end_day, end_month, year)
 );
 
 -- Table Definition: Christenings locations ----------------------------------------------
@@ -75,7 +86,11 @@ CREATE TABLE IF NOT EXISTS bom.causes_of_death (
     count integer,
     year integer REFERENCES bom.year(year),
     week_id text NOT NULL REFERENCES bom.week(joinid),
-    descriptive_text text
+    descriptive_text text,
+    CONSTRAINT causes_of_death_unique_record 
+        UNIQUE (death, year, week_id)
+    created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Table Definition: Bills of Mortality --------------------------
@@ -83,17 +98,27 @@ CREATE TABLE IF NOT EXISTS bom.causes_of_death (
 CREATE TABLE IF NOT EXISTS bom.bill_of_mortality (
     id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     parish_id integer NOT NULL REFERENCES bom.parishes(id),
-    collective_id integer REFERENCES bom.parish_collective(id),
+    --collective_id integer REFERENCES bom.parish_collective(id),
     count_type text NOT NULL,
     count integer,
     year_id integer NOT NULL REFERENCES bom.year(year),
     week_id text NOT NULL REFERENCES bom.week(joinid),
     bill_type text,
     missing text,
-    illegible text
+    illegible text,
+    UNIQUE (parish_id, count_type, year_id, week_id),
+    created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Derive the christenings_location data from the christenings table
 INSERT INTO bom.christening_locations(name)
 SELECT DISTINCT bom.christenings.christening
 FROM bom.christenings;
+
+-- Create indexes for faster queries
+CREATE INDEX idx_bom_week_year ON bom.week(year);
+CREATE INDEX idx_bom_christenings_year ON bom.christenings(year);
+CREATE INDEX idx_bom_mortality_parish ON bom.bill_of_mortality(parish_id);
+CREATE INDEX idx_bom_mortality_year ON bom.bill_of_mortality(year_id);
+CREATE INDEX idx_bom_mortality_week ON bom.bill_of_mortality(week_id);
