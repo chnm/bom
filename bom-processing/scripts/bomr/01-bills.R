@@ -5,9 +5,37 @@
 #
 # Jason A. Heppler | jason@jasonheppler.org
 # Roy Rosenzweig Center for History and New Media
-# Updated: 2023-08-14
+# Updated: 2024-12-13
 
 library(tidyverse)
+
+# Logging function
+log_data_check <- function(data, stage_name) {
+  total_rows <- nrow(data)
+  distinct_rows <- nrow(distinct(data))
+  duplicates <- total_rows - distinct_rows
+  
+  # Get sample of duplicates if they exist
+  if(duplicates > 0) {
+    dupes <- data[duplicated(data) | duplicated(data, fromLast = TRUE), ]
+    sample_dupes <- head(dupes, 10)  # Show first 10 duplicates
+  } else {
+    sample_dupes <- NULL
+  }
+  
+  message(sprintf("\n=== Data Check: %s ===", stage_name))
+  message(sprintf("Total rows: %d", total_rows))
+  message(sprintf("Distinct rows: %d", distinct_rows))
+  message(sprintf("Duplicate rows: %d", duplicates))
+  
+  if(!is.null(sample_dupes)) {
+    message("\nSample of duplicated rows:")
+    print(sample_dupes)
+  }
+  
+  # Return TRUE if duplicates found
+  return(duplicates > 0)
+}
 
 # ----------------------------------------------------------------------
 # Data sources
@@ -22,6 +50,7 @@ library(tidyverse)
   files <- list.files("../../../bom-data/data-csvs", pattern = "*.csv", full.names = TRUE)
   # Loop through the files and assign them to a variable based on the csv filename
   for (file in files) {
+    tryCatch({
     # Get the filename without the path
     filename <- basename(file)
     # Remove the .csv extension
@@ -33,6 +62,9 @@ library(tidyverse)
     filename <- gsub("-", "_", filename)
     # Read the CSV file and assign it to a variable
     assign(filename, read_csv(file))
+    }, error = function(e) {
+      warning(sprintf("Failed to load %s: %s", file, e$message))
+    })
   }
 
 
@@ -529,6 +561,18 @@ rm(filtered_entries)
 weekly_bills <- weekly_bills |>
   mutate_at("parish_name", str_replace, "Allhallows", "Alhallows")
 
+# Check for duplicates
+if(log_data_check(weekly_bills, "After combining weekly bills")) {
+  # If duplicates found, check which source they came from
+  weekly_bills <- weekly_bills %>%
+    group_by(unique_identifier, parish_name, year) %>%
+    filter(n() > 1) %>%
+    arrange(unique_identifier, parish_name, year)
+  
+  message("\nDetailed duplicate analysis in weekly bills:")
+  print(weekly_bills)
+}
+
 # Find all unique values for parish name, week, and year. These will be
 # referenced as foreign keys in PostgreSQL.
 parishes_unique <- weekly_bills |>
@@ -569,6 +613,18 @@ general_bills <- general_bills |>
 # Replace the alternate spelling of "Alhallows"
 general_bills <- general_bills |>
   mutate_at("parish_name", str_replace, "Allhallows", "Alhallows")
+
+# Check for duplicates
+if(log_data_check(general_bills, "After combining general bills")) {
+  # If duplicates found, check which source they came from
+  general_bills <- general_bills %>%
+    group_by(unique_identifier, parish_name, year) %>%
+    filter(n() > 1) %>%
+    arrange(unique_identifier, parish_name, year)
+  
+  message("\nDetailed duplicate analysis in weekly bills:")
+  print(general_bills)
+}
 
 # ----------------------------------------------------------------------
 # Unique values with IDs
