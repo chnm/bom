@@ -55,49 +55,6 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Create necessary indexes
-DO $$
-DECLARE
-    start_time timestamp;
-    end_time timestamp;
-BEGIN
-    start_time := clock_timestamp();
-    
-    -- Create indexes if they don't exist
-    IF NOT EXISTS (SELECT 1 FROM pg_indexes WHERE indexname = 'idx_bill_mortality_parish') THEN
-        CREATE INDEX CONCURRENTLY idx_bill_mortality_parish 
-        ON bom.bill_of_mortality(parish_id);
-    END IF;
-
-    IF NOT EXISTS (SELECT 1 FROM pg_indexes WHERE indexname = 'idx_bill_mortality_year') THEN
-        CREATE INDEX CONCURRENTLY idx_bill_mortality_year 
-        ON bom.bill_of_mortality(year_id);
-    END IF;
-
-    IF NOT EXISTS (SELECT 1 FROM pg_indexes WHERE indexname = 'idx_bill_mortality_week') THEN
-        CREATE INDEX CONCURRENTLY idx_bill_mortality_week 
-        ON bom.bill_of_mortality(week_id);
-    END IF;
-
-    IF NOT EXISTS (SELECT 1 FROM pg_indexes WHERE indexname = 'idx_bill_mortality_composite') THEN
-        CREATE INDEX CONCURRENTLY idx_bill_mortality_composite 
-        ON bom.bill_of_mortality(parish_id, year_id, week_id);
-    END IF;
-
-    end_time := clock_timestamp();
-    
-    PERFORM bom.log_operation(
-        'CREATE_INDEXES',
-        'bom.bill_of_mortality',
-        NULL,
-        NULL,
-        NULL,
-        true,
-        NULL,
-        end_time - start_time
-    );
-END $$;
-
 -- Ensure we're working with clean temporary tables
 DROP TABLE IF EXISTS temp_year CASCADE;
 DROP TABLE IF EXISTS temp_week CASCADE;
@@ -140,7 +97,6 @@ CREATE TEMPORARY TABLE IF NOT EXISTS temp_parish (
 );
 COPY temp_parish FROM '/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/bom-processing/scripts/bomr/data/parishes_unique.csv' DELIMITER ',' CSV HEADER;
 
-
 CREATE TEMPORARY TABLE IF NOT EXISTS temp_christening (
     year integer,
     week integer,
@@ -151,8 +107,10 @@ CREATE TEMPORARY TABLE IF NOT EXISTS temp_christening (
     end_month text,
     parish_name text,
     count int,
+    missing boolean,
+    illegible boolean,
     bill_type text,
-    joinid text
+    joinid text,
     CONSTRAINT temp_christening_check CHECK (year > 1400 AND year < 1800)
 );
 COPY temp_christening FROM '/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/bom-processing/scripts/bomr/data/christenings_by_parish.csv' DELIMITER ',' CSV HEADER;
@@ -165,6 +123,8 @@ CREATE TEMPORARY TABLE IF NOT EXISTS temp_causes_of_death (
     joinid text,
     year integer,
     week_id text,
+--    missing boolean,
+--    illegible boolean,
     year_range text,
     split_year text
 );
@@ -175,6 +135,8 @@ CREATE TEMPORARY TABLE IF NOT EXISTS temp_bills (
     unique_identifier text,
     count_type text,
     count int,
+    missing boolean,
+    illegible boolean,
     bill_type text,
     parish_id int,
     year integer,
@@ -241,7 +203,7 @@ BEGIN
         end_day = EXCLUDED.end_day,
         end_month = EXCLUDED.end_month,
         year = EXCLUDED.year,
-        week_no = EXCLUDED.week_number,
+        week_no = EXCLUDED.week_no,
         split_year = EXCLUDED.split_year
     WHERE 
         bom.week.start_day != EXCLUDED.start_day OR
@@ -249,7 +211,7 @@ BEGIN
         bom.week.end_day != EXCLUDED.end_day OR
         bom.week.end_month != EXCLUDED.end_month OR
         bom.week.year != EXCLUDED.year OR
-        bom.week.week_no != EXCLUDED.week_number OR
+        bom.week.week_no != EXCLUDED.week_no OR
         bom.week.split_year != EXCLUDED.split_year;
     
     GET DIAGNOSTICS rows_processed = ROW_COUNT;
@@ -266,7 +228,6 @@ BEGIN
         end_time - start_time
     );
 
-    -- Continue with similar patterns for other tables...
     -- Parishes
     start_time := clock_timestamp();
     SELECT COUNT(*) INTO rows_before FROM bom.parishes;
@@ -298,16 +259,25 @@ BEGIN
     SELECT COUNT(*) INTO rows_before FROM bom.christenings;
     
     INSERT INTO bom.christenings (
-        christening,
-        count,
-        week_number,
+    christening,
+    count,
+    week_number,
+    start_day,
+    start_month,
+    end_day,
+    end_month,
+    year
+)
+WITH deduplicated_christenings AS (
+    SELECT DISTINCT ON (
+        parish_name,
+        week,
         start_day,
         start_month,
         end_day,
         end_month,
         year
     )
-    SELECT DISTINCT 
         parish_name,
         count,
         week,
@@ -315,12 +285,23 @@ BEGIN
         start_month,
         end_day,
         end_month,
-        year 
+        year
     FROM temp_christening
-    ON CONFLICT (christening, week_number, start_day, start_month, end_day, end_month, year) 
-    DO UPDATE
-    SET count = EXCLUDED.count
-    WHERE bom.christenings.count IS DISTINCT FROM EXCLUDED.count;
+    ORDER BY 
+        parish_name,
+        week,
+        start_day,
+        start_month,
+        end_day,
+        end_month,
+        year,
+        count DESC  -- Takes the highest count in case of duplicates
+)
+SELECT * FROM deduplicated_christenings
+ON CONFLICT (christening, week_number, start_day, start_month, end_day, end_month, year) 
+DO UPDATE
+SET count = EXCLUDED.count
+WHERE bom.christenings.count IS DISTINCT FROM EXCLUDED.count;
     
     GET DIAGNOSTICS rows_processed = ROW_COUNT;
     end_time := clock_timestamp();
@@ -381,28 +362,32 @@ BEGIN
     SELECT COUNT(*) INTO rows_before FROM bom.bill_of_mortality;
     
     INSERT INTO bom.bill_of_mortality (
-        parish_id,
-        count_type,
-        count,
-        year_id,
-        week_id,
-        bill_type
-    )
-    SELECT DISTINCT 
-        parish_id,
-        count_type,
-        count,
-        year,
-        joinid,
-        bill_type 
-    FROM temp_bills
-    ON CONFLICT (parish_id, count_type, year_id, week_id) 
-    DO UPDATE
-    SET 
-        count = EXCLUDED.count,
-        bill_type = EXCLUDED.bill_type
-    WHERE bom.bill_of_mortality.count IS DISTINCT FROM EXCLUDED.count
-       OR bom.bill_of_mortality.bill_type IS DISTINCT FROM EXCLUDED.bill_type;
+	    parish_id,
+	    count_type,
+	    count,
+	    year_id,
+	    week_id,
+	    bill_type
+	)
+	WITH deduplicated_bills AS (
+	    SELECT DISTINCT ON (parish_id, count_type, year, joinid)
+	        parish_id,
+	        count_type,
+	        count,
+	        year,
+	        joinid,
+	        bill_type 
+	    FROM temp_bills
+	    ORDER BY parish_id, count_type, year, joinid, count DESC -- Take the highest count in case of duplicates
+	)
+	SELECT * FROM deduplicated_bills
+	ON CONFLICT (parish_id, count_type, year_id, week_id) 
+	DO UPDATE
+	SET 
+	    count = EXCLUDED.count,
+	    bill_type = EXCLUDED.bill_type
+	WHERE bom.bill_of_mortality.count IS DISTINCT FROM EXCLUDED.count
+	   OR bom.bill_of_mortality.bill_type IS DISTINCT FROM EXCLUDED.bill_type;
     
     GET DIAGNOSTICS rows_processed = ROW_COUNT;
     end_time := clock_timestamp();
@@ -465,122 +450,4 @@ BEGIN
     );
 END $$;
 
---
---
---
---
--- BEGIN;
---
--- -- bom.years
--- -- This table contains the unique years in the dataset.
--- CREATE TEMPORARY TABLE IF NOT EXISTS temp_year (
---     year integer,
---     year_id integer,
---     id integer
--- );
--- COPY temp_year FROM '/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/bom-processing/scripts/bomr/data/year_unique.csv' DELIMITER ',' CSV HEADER;
--- INSERT INTO bom.year (year)
--- SELECT DISTINCT year FROM temp_year
--- WHERE year IS NOT NULL
--- ON CONFLICT (year) DO NOTHING;
---
--- -- bom.weeks
--- -- This table contains the unique weeks in the dataset.
--- CREATE TEMPORARY TABLE IF NOT EXISTS temp_week (
---     year integer,
---     week_number integer,
---     start_day integer,
---     end_day integer,
---     start_month text,
---     end_month text,
---     unique_identifier text,
---     week_id text,
---     year_range text,
---     split_year text,
---     joinid text
---
--- );
--- COPY temp_week FROM '/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/bom-processing/scripts/bomr/data/week_unique.csv' DELIMITER ',' CSV HEADER;
--- INSERT INTO bom.week (joinid, start_day, start_month, end_day, end_month, year, week_no, split_year)
--- SELECT DISTINCT joinid, start_day, start_month, end_day, end_month, year, week_number, split_year FROM temp_week
--- ON CONFLICT (joinid) DO NOTHING;
---
--- -- -- bom.parishes
--- -- -- This table contains the unique parishes in the dataset.
--- CREATE TEMPORARY TABLE IF NOT EXISTS temp_parish (
---     parish_name text NOT NULL,
---     canonical_name text NOT NULL,
---     parish_id integer
--- );
--- COPY temp_parish FROM '/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/bom-processing/scripts/bomr/data/parishes_unique.csv' DELIMITER ',' CSV HEADER;
--- INSERT INTO bom.parishes (id, parish_name, canonical_name)
--- SELECT DISTINCT parish_id, parish_name, canonical_name FROM temp_parish
--- ON CONFLICT (parish_name) DO UPDATE
--- SET canonical_name = EXCLUDED.canonical_name;
---
--- -- -- bom.christenings
--- -- -- This table contains the unique christenings in the dataset.
--- CREATE TEMPORARY TABLE IF NOT EXISTS temp_christening (
---     year integer,
---     week integer,
---     unique_identifier text,
---     start_day int,
---     start_month text,
---     end_day int,
---     end_month text,
---     parish_name text,
---     count int,
---     bill_type text,
---     joinid text
--- );
--- COPY temp_christening FROM '/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/bom-processing/scripts/bomr/data/christenings_by_parish.csv' DELIMITER ',' CSV HEADER;
--- INSERT INTO bom.christenings (christening, count, week_number, start_day, start_month, end_day, end_month, year)
--- SELECT DISTINCT parish_name, count, week, start_day, start_month, end_day, end_month, year FROM temp_christening
--- ON CONFLICT DO NOTHING;
---
--- -- -- bom.cause_of_death
--- -- -- This table contains the unique causes of death in the dataset.
--- CREATE TEMPORARY TABLE IF NOT EXISTS temp_causes_of_death (
---     death text,
---     count int,
---     descriptive_text text,
---     joinid text,
---     year integer,
---     week_id text,
---     year_range text,
---     split_year text
--- );
--- COPY temp_causes_of_death FROM '/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/bom-processing/scripts/bomr/data/causes_of_death.csv' DELIMITER ',' CSV HEADER;
--- INSERT INTO bom.causes_of_death (death, count, year, week_id, descriptive_text)
--- SELECT DISTINCT death, count, year, joinid, descriptive_text FROM temp_causes_of_death
--- ON CONFLICT DO NOTHING;
---
--- -- -- bom.bills
--- -- -- This table contains all the bills in the dataset.
--- CREATE TEMPORARY TABLE IF NOT EXISTS temp_bills (
---     unique_identifier text,
---     count_type text,
---     count int,
---     bill_type text,
---     parish_id int,
---     year integer,
---     week_id text,
---     year_range text,
---     split_year text,
---     joinid text,
---     id int
--- );
--- COPY temp_bills FROM '/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/bom-processing/scripts/bomr/data/all_bills.csv' DELIMITER ',' CSV HEADER;
--- INSERT INTO bom.bill_of_mortality (parish_id, count_type, count, year_id, week_id, bill_type)
--- SELECT DISTINCT parish_id, count_type, count, year, joinid, bill_type FROM temp_bills
--- ON CONFLICT DO NOTHING;
---
--- -- Cleanup 
--- DROP TABLE IF EXISTS temp_year;
--- DROP TABLE IF EXISTS temp_week;
--- DROP TABLE IF EXISTS temp_parish;
--- DROP TABLE IF EXISTS temp_christening;
--- DROP TABLE IF EXISTS temp_causes_of_death;
--- DROP TABLE IF EXISTS temp_bills;
---
--- COMMIT;
+COMMIT;
