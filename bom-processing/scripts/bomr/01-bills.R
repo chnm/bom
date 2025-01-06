@@ -167,7 +167,7 @@ lookup_laxton_1700 <- Laxton_1700_weeklybills_causes |>
 # We create a lookup table that includes the unique identifier,
 # the descriptive text, Start Day, Start Month, End Day, End Month, 
 # and death type.
-lookup_laxton <- Laxton_weeklybills_causes |>
+lookup_laxton <- Laxton_old_weeklybills_causes |>
   select(!1:4) |>
   select(
     contains("(Descriptive Text)"), 
@@ -253,7 +253,7 @@ names(causes_laxton_1700) <- tolower(names(causes_laxton_1700))
 names(causes_laxton_1700) <- gsub(" ", "_", names(causes_laxton_1700))
 
 ### Laxton causes for pre-1700 -----------------------------------------------
-causes_laxton <- Laxton_weeklybills_causes |>
+causes_laxton <- Laxton_old_weeklybills_causes |>
   select(!1:4) |>
   select(!contains("(Descriptive")) |>
   mutate(across( 8:125, as.character )) |>
@@ -309,11 +309,11 @@ deaths_unique <- deaths_unique |>
 # The first table removes any is_missing and is_illegible columns. The second
 # includes both of those values. We then rejoin them and create a single table
 # that includes all of the data.
-laxton_weekly_illegible <- Laxton_weeklybills_parishes |>
+laxton_weekly_illegible <- Laxton_old_weeklybills_parishes |>
   select(!1:4) |>
   select(-c(2, 3, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18, 20, 21)) |> 
   select(`Year`, `Week`, `Unique ID`, `Start Day`, `Start Month`, `End Day`, `End month`, contains("is_illegible"))
-laxton_weekly_missing <- Laxton_weeklybills_parishes |>
+laxton_weekly_missing <- Laxton_old_weeklybills_parishes |>
   select(!1:4) |>
   select(-c(2, 3, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18, 20, 21)) |> 
   select(`Year`, `Week`, `Unique ID`, `Start Day`, `Start Month`, `End Day`, `End month`, contains("is_missing"))
@@ -332,7 +332,7 @@ laxton_weekly_missing_transform <- laxton_weekly_missing |>
   mutate(missing = ifelse(is.na(missing), FALSE, TRUE))
 
 # Then, we set up the table without the illegible or missing values
-laxton_weekly_illegible_cleaned <- Laxton_weeklybills_parishes |>
+laxton_weekly_illegible_cleaned <- Laxton_old_weeklybills_parishes |>
   select(-c(starts_with("is_illegible")))
 laxton_weekly_cleaned <- laxton_weekly_illegible_cleaned |>
   select(-c(starts_with("is_missing")))
@@ -348,6 +348,62 @@ rm(laxton_weekly_illegible)
 rm(laxton_weekly_illegible_transform)
 rm(laxton_weekly_missing)
 rm(laxton_weekly_missing_transform)
+
+## TODO: Bind all the Bodleian data and run only one transform
+bodleian_files <- list.files(
+  "../../../bom-data/data-csvs", 
+  pattern = "(BLV|Bodleian).*parishes\\.csv$", 
+  full.names = TRUE
+)
+
+# Function to load and standardize a dataframe
+load_bodleian_df <- function(filepath) {
+  message("Loading: ", basename(filepath))
+  
+  df <- read_csv(filepath) %>%
+    select(!1:4) %>%
+    mutate(across(c(Week, `Start Day`, `End Day`), as.numeric))
+  
+  message(sprintf("Dimensions: %d rows, %d columns", nrow(df), ncol(df)))
+  return(df)
+}
+
+# Load and combine all Bodleian data
+bodleian_weekly_combined <- bodleian_files %>%
+  map(load_bodleian_df) %>%
+  bind_rows(.id = "source_file") %>%
+  mutate(source_file = basename(bodleian_files[as.numeric(source_file)]))
+
+# Check the result
+message("\nCombined Bodleian data:")
+message(sprintf("Total rows: %d", nrow(bodleian_weekly_combined)))
+message(sprintf("Total columns: %d", ncol(bodleian_weekly_combined)))
+
+# Check for any duplicates
+duplicates <- bodleian_weekly_combined %>%
+  group_by(`Unique ID`, Year, Week) %>%
+  filter(n() > 1) %>%
+  arrange(`Unique ID`, Year, Week)
+
+if(nrow(duplicates) > 0) {
+  message("\nFound duplicates:")
+  message(sprintf("Total duplicate groups: %d", n_distinct(duplicates$`Unique ID`)))
+  
+  # Show summary of duplicates by source
+  message("\nDuplicates by source files:")
+  duplicates %>%
+    group_by(source_file) %>%
+    summarise(count = n()) %>%
+    print()
+  
+  # Show detailed sample of duplicates
+  message("\nSample of duplicates (first 5 groups):")
+  duplicates %>%
+    select(source_file, `Unique ID`) %>%
+    print(n = 20)  # Show more rows to see full duplicate groups
+}
+
+
 
 ## Bodleian V1 data prep ----------------------------------------
 bodleian_weekly_illegible <- BodleianV1_weeklybills_parishes |>
@@ -414,12 +470,49 @@ bodleian_v2_weekly_illegible_cleaned <- BodleianV2_weeklybills_parishes |>
 bodleian_v2_weekly_cleaned <- bodleian_v2_weekly_illegible_cleaned |>
   select(-c(starts_with("is_missing")))
 
-bodleian_v2_weekly_transformed <- bodleian_weekly_cleaned |> 
+bodleian_v2_weekly_transformed <- bodleian_v2_weekly_cleaned |> 
   select(!1:4) |>
   pivot_longer(8:266, names_to = "parish_name", values_to = "count" )
 
 # Now we join bodleian_weekly_transformed with bodleian_weekly_missing_illegible
-bodleian_weekly_v2 <- bind_rows(bodleian_weekly_transformed, bodleian_weekly_missing_transform, bodleian_weekly_illegible_transform)
+bodleian_weekly_v2 <- bind_rows(bodleian_v2_weekly_transformed, bodleian_v2_weekly_missing_transform, bodleian_v2_weekly_illegible_transform)
+
+## Bodleian V3 data prep ----------------------------------------
+bodleian_v3_weekly_illegible <- BodleianV3_weeklybills_parishes |>
+  select(!1:4) |>
+  select(-c(2, 3, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18, 20, 21)) |> 
+  select(`Year`, `Week`, `UniqueID`, `Start Day`, `Start Month`, `End Day`, `End month`, contains("is_illegible"))
+bodleian_v3_weekly_missing <- BodleianV3_weeklybills_parishes |>
+  select(!1:4) |>
+  select(-c(2, 3, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18, 20, 21)) |> 
+  select(`Year`, `Week`, `UniqueID`, `Start Day`, `Start Month`, `End Day`, `End month`, contains("is_missing"))
+
+# Now, we pivot the data from wide to long format.
+bodleian_v3_weekly_illegible_transform <- bodleian_v3_weekly_illegible |>
+  pivot_longer(8:287, names_to = "illegible_missing", values_to = "illegible") |> 
+  select(!`illegible_missing`) |>
+  # change NA to false and 1 to true
+  mutate(illegible = ifelse(is.na(illegible), FALSE, TRUE))
+
+bodleian_v3_weekly_missing_transform <- bodleian_v3_weekly_missing |>
+  pivot_longer(8:287, names_to = "illegible_missing", values_to = "missing") |> 
+  select(!`illegible_missing`) |> 
+  # change NA to false and 1 to true
+  mutate(missing = ifelse(is.na(missing), FALSE, TRUE))
+
+# Then, we set up the table without the illegible or missing values
+bodleian_v3_weekly_illegible_cleaned <- BodleianV3_weeklybills_parishes |>
+  select(-c(starts_with("is_illegible")))
+bodleian_v3_weekly_cleaned <- bodleian_v3_weekly_illegible_cleaned |>
+  select(-c(starts_with("is_missing")))
+
+bodleian_v3_weekly_transformed <- bodleian_v3_weekly_cleaned |> 
+  select(!1:4) |>
+  pivot_longer(8:287, names_to = "parish_name", values_to = "count" )
+
+# Now we join bodleian_weekly_transformed with bodleian_weekly_missing_illegible
+bodleian_weekly_v3 <- bind_rows(bodleian_v3_weekly_transformed, bodleian_v3_weekly_missing_transform, bodleian_v3_weekly_illegible_transform)
+
 
 ## Wellcome data prep ----------------------------------------
 wellcome_weekly_illegible <- `1669_1670_Wellcome_weeklybills_parishes` |>
@@ -440,15 +533,20 @@ names(bodleian_weekly_v1) <- tolower(names(bodleian_weekly_v1))
 names(bodleian_weekly_v1) <- gsub(" ", "_", names(bodleian_weekly_v1))
 names(bodleian_weekly_v2) <- tolower(names(bodleian_weekly_v2))
 names(bodleian_weekly_v2) <- gsub(" ", "_", names(bodleian_weekly_v2))
+names(bodleian_weekly_v3) <- tolower(names(bodleian_weekly_v3))
+names(bodleian_weekly_v3) <- gsub(" ", "_", names(bodleian_weekly_v3))
 
 # The unique ID column is mis-named in the Laxton data so we fix it here
 names(laxton_weekly)[3] <- "unique_identifier"
 names(wellcome_weekly)[3] <- "unique_identifier"
 names(bodleian_weekly_v1)[3] <- "unique_identifier"
 names(bodleian_weekly_v2)[3] <- "unique_identifier"
+names(bodleian_weekly_v3)[3] <- "unique_identifier"
+
+bodleian_weekly <- rbind(bodleian_weekly_v1, bodleian_weekly_v2, bodleian_weekly_v3)
 
 # Combine all weekly data into a single frame
-weekly_bills <- rbind(wellcome_weekly, laxton_weekly, bodleian_weekly_v1, bodleian_weekly_v2) |>
+weekly_bills <- rbind(wellcome_weekly, laxton_weekly, bodleian_weekly) |>
   mutate(bill_type = "Weekly")
 
 weekly_bills <- weekly_bills |>
@@ -784,11 +882,11 @@ week_unique_general <- general_bills |>
 week_unique_general <- rename(week_unique_general, "week_number" = "week")
 week_unique_weekly <- rename(week_unique_weekly, "week_number" = "week")
 
-week_unique <- rbind(
-  week_unique_weekly,
-  week_unique_general,
-  week_unique_wellcome,
-  week_unique_laxton
+week_unique <- bind_rows(
+  week_unique_weekly %>% mutate(week_number = as.numeric(week_number)),
+  week_unique_general %>% mutate(week_number = as.numeric(week_number)),
+  week_unique_wellcome %>% mutate(week_number = as.numeric(week_number)),
+  week_unique_laxton %>% mutate(week_number = as.numeric(week_number))
 )
 
 # We determine here whether a year should be a split year by looking at the
@@ -908,11 +1006,30 @@ general_bills <- general_bills |>
 general_bills <- general_bills |>
   select(-start_year, -end_year)
 
-general_bills <- general_bills |> 
-  mutate(missing = FALSE) |> 
-  mutate(illegible = FALSE)
+#general_bills <- general_bills |> 
+#  mutate(missing = FALSE) |> 
+#  mutate(illegible = FALSE)
 
-all_bills <- rbind(weekly_bills, general_bills)
+# ------------------------------------------------------------------------------
+message("Weekly bills columns:")
+print(names(weekly_bills))
+message("\nGeneral bills columns:")
+print(names(general_bills))
+
+# Find differences in column names
+message("\nColumns in weekly_bills but not in general_bills:")
+print(setdiff(names(weekly_bills), names(general_bills)))
+message("\nColumns in general_bills but not in weekly_bills:")
+print(setdiff(names(general_bills), names(weekly_bills)))
+
+# Check structures
+message("\nStructure of weekly_bills:")
+str(weekly_bills)
+message("\nStructure of general_bills:")
+str(general_bills)
+# ------------------------------------------------------------------------------
+
+all_bills <- bind_rows(weekly_bills, general_bills)
 all_bills <- all_bills |> mutate(id = row_number())
 
 # --------------------------------------------------
@@ -924,7 +1041,7 @@ rm(
   BodleianV1_weeklybills_parishes,
   BodleianV2_weeklybills_parishes_v2,
   Laxton_1700_weeklybills_causes,
-  Laxton_weeklybills_causes,
+  Laxton_old_weeklybills_causes,
   Laxton_weeklybills_parishes,
   millar_generalbills_postplague_parishes,
   Wellcome_weeklybills_causes,
