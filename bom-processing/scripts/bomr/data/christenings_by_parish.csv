@@ -3026,3 +3026,897 @@ year,week,unique_identifier,start_day,start_month,end_day,end_month,parish_name,
 1721,21,Laxton-1721-21-recto,,,9,May,Christened in the 97 parishes within the walls,29,,,Weekly,NANA9May1721
 1721,21,Laxton-1721-21-recto,,,9,May,Christened in the parishes without the walls,113,,,Weekly,NANA9May1721
 1721,21,Laxton-1721-21-recto,,,9,May,Christened in the Parishes and Liberties of Westminster,66,,,Weekly,NANA9May1721
+1659,1,Bodleian-1659-01-recto,13,December,20,December,Christened in the 97 Parishes within the Walls,,,,Weekly,13December20December1659
+1659,1,Bodleian-1659-01-recto,13,December,20,December,Christened in the parishes without the Walls,,,,Weekly,13December20December1659
+1659,1,Bodleian-1659-01-recto,13,December,20,December,Christened in the Parishes and Liberties of Westminster,,,,Weekly,13December20December1659
+1659,1,Bodleian-1659-01-recto,13,December,20,December,Christened in the 97 Parishes within the Walls,,,,Weekly,13December20December1659
+1659,1,Bodleian-1659-01-recto,13,December,20,December,Christened in the parishes without the Walls,,,,Weekly,13December20December1659
+1659,1,Bodleian-1659-01-recto,13,December,20,December,Christened in the Parishes and Liberties of Westminster,,,,Weekly,13December20December1659
+1659,2,Bodleian-1659-02-recto,20,December,27,December,Christened in the 97 Parishes within the Walls,,,,Weekly,20December27December1659
+1659,2,Bodleian-1659-02-recto,20,December,27,December,Christened in the parishes without the Walls,,,,Weekly,20December27December1659
+1659,2,Bodleian-1659-02-recto,20,December,27,December,Christened in the Parishes and Liberties of Westminster,,,,Weekly,20December27December1659
+1659,3,Bodleian-1659-03-recto,27,December,3,January,Christened in the 97 Parishes within the Walls,,,,Weekly,27December3January1659
+1659,3,Bodleian-1659-03-recto,27,December,3,January,Christened in the parishes without the Walls,,,,Weekly,27December3January1659
+1659,3,Bodleian-1659-03-recto,27,December,3,January,Christened in the Parishes and Liberties of Westminster,,,,Weekly,27December3January1659
+1659,4,Bodleian-1659-04-recto,3,January,10,January,Christened in the 97 Parishes within the Walls,,,,Weekly,3January10January1659
+1659,4,Bodleian-1659-04-recto,3,January,10,January,Christened in the parishes without the Walls,,,,Weekly,3January10January1659
+1659,4,Bodleian-1659-04-recto,3,January,10,January,Christened in the Parishes and Liberties of Westminster,,,,Weekly,3January10January1659
+1659,5,Bodleian-1659-05-recto,10,January,17,January,Christened in the 97 Parishes within the Walls,,,,Weekly,10January17January1659
+1659,5,Bodleian-1659-05-recto,10,January,17,January,Christened in the parishes without the Walls,,,,Weekly,10January17January1659
+1659,5,Bodleian-1659-05-recto,10,January,17,January,Christened in the Parishes and Liberties of Westminster,,,,Weekly,10January17January1659
+1659,6,Bodleian-1659-06-recto,17,January,24,January,Christened in the 97 Parishes within the Walls,,,,Weekly,17January24January1659
+1659,6,Bodleian-1659-06-recto,17,January,24,January,Christened in the parishes without the Walls,,,,Weekly,17January24January1659
+1659,6,Bodleian-1659-06-recto,17,January,24,January,Christened in the Parishes and Liberties of Westminster,,,,Weekly,17January24January1659
+1659,7,Bodleian-1659-07-recto,24,January,31,January,Christened in the 97 Parishes within the Walls,,,,Weekly,24January31January1659
+1659,7,Bodleian-1659-07-recto,24,January,31,January,Christened in the parishes without the Walls,,,,Weekly,24January31January1659
+1659,7,Bodleian-1659-07-recto,24,January,31,January,Christened in the Parishes and Liberties of Westminster,,,,Weekly,24January31January1659
+1659,8,Bodleian-1659-08-recto,31,January,7,February,Christened in the 97 Parishes within the Walls,,,,Weekly,31January7February1659
+1659,8,Bodleian-1659-08-recto,31,January,7,February,Christened in the parishes without the Walls,,,,Weekly,31January7February1659
+1659,8,Bodleian-1659-08-recto,31,January,7,February,Christened in the Parishes and Liberties of Westminster,,,,Weekly,31January7February1659
+1659,9,Bodleian-1659-09-recto,7,February,14,February,Christened in the 97 Parishes within the Walls,,,,Weekly,7February14February1659
+1659,9,Bodleian-1659-09-recto,7,February,14,February,Christened in the parishes without the Walls,,,,Weekly,7February14February1659
+1659,9,Bodleian-1659-09-recto,7,February,14,February,Christened in the Parishes and Liberties of Westminster,,,,Weekly,7February14February1659
+1659,10,Bodleian-1659-10-recto,14,February,21,February,Christened in the 97 Parishes within the Walls,,,,Weekly,14February21February1659
+1659,10,Bodleian-1659-10-recto,14,February,21,February,Christened in the parishes without the Walls,,,,Weekly,14February21February1659
+1659,10,Bodleian-1659-10-recto,14,February,21,February,Christened in the Parishes and Liberties of Westminster,,,,Weekly,14February21February1659
+1659,11,Bodleian-1659-11-recto,21,February,28,February,Christened in the 97 Parishes within the Walls,,,,Weekly,21February28February1659
+1659,11,Bodleian-1659-11-recto,21,February,28,February,Christened in the parishes without the Walls,,,,Weekly,21February28February1659
+1659,11,Bodleian-1659-11-recto,21,February,28,February,Christened in the Parishes and Liberties of Westminster,,,,Weekly,21February28February1659
+1659,13,Bodleian-1659-13-recto,6,March,13,March,Christened in the 97 Parishes within the Walls,,,,Weekly,6March13March1659
+1659,13,Bodleian-1659-13-recto,6,March,13,March,Christened in the parishes without the Walls,,,,Weekly,6March13March1659
+1659,13,Bodleian-1659-13-recto,6,March,13,March,Christened in the Parishes and Liberties of Westminster,,,,Weekly,6March13March1659
+1659,14,Bodleian-1659-14-recto,13,March,20,March,Christened in the 97 Parishes within the Walls,,,,Weekly,13March20March1659
+1659,14,Bodleian-1659-14-recto,13,March,20,March,Christened in the parishes without the Walls,,,,Weekly,13March20March1659
+1659,14,Bodleian-1659-14-recto,13,March,20,March,Christened in the Parishes and Liberties of Westminster,,,,Weekly,13March20March1659
+1660,23,Bodleian-1660-23-recto,15,May,22,May,Christened in the 97 Parishes within the Walls,,,,Weekly,15May22May1660
+1660,23,Bodleian-1660-23-recto,15,May,22,May,Christened in the parishes without the Walls,,,,Weekly,15May22May1660
+1660,23,Bodleian-1660-23-recto,15,May,22,May,Christened in the Parishes and Liberties of Westminster,,,,Weekly,15May22May1660
+1660,15,Bodleian-1660-15-recto,20,March,27,March,Christened in the 97 Parishes within the Walls,,,,Weekly,20March27March1660
+1660,15,Bodleian-1660-15-recto,20,March,27,March,Christened in the parishes without the Walls,,,,Weekly,20March27March1660
+1660,15,Bodleian-1660-15-recto,20,March,27,March,Christened in the Parishes and Liberties of Westminster,,,,Weekly,20March27March1660
+1660,16,Bodleian-1660-16-recto,27,March,3,April,Christened in the 97 Parishes within the Walls,,,,Weekly,27March3April1660
+1660,16,Bodleian-1660-16-recto,27,March,3,April,Christened in the parishes without the Walls,,,,Weekly,27March3April1660
+1660,16,Bodleian-1660-16-recto,27,March,3,April,Christened in the Parishes and Liberties of Westminster,,,,Weekly,27March3April1660
+1660,17,Bodleian-1660-17-recto,3,April,10,April,Christened in the 97 Parishes within the Walls,,,,Weekly,3April10April1660
+1660,17,Bodleian-1660-17-recto,3,April,10,April,Christened in the parishes without the Walls,,,,Weekly,3April10April1660
+1660,17,Bodleian-1660-17-recto,3,April,10,April,Christened in the Parishes and Liberties of Westminster,,,,Weekly,3April10April1660
+1660,18,Bodleian-1660-18-recto,10,April,17,April,Christened in the 97 Parishes within the Walls,,,,Weekly,10April17April1660
+1660,18,Bodleian-1660-18-recto,10,April,17,April,Christened in the parishes without the Walls,,,,Weekly,10April17April1660
+1660,18,Bodleian-1660-18-recto,10,April,17,April,Christened in the Parishes and Liberties of Westminster,,,,Weekly,10April17April1660
+1660,19,Bodleian-1660-19-recto,17,April,24,April,Christened in the 97 Parishes within the Walls,,,,Weekly,17April24April1660
+1660,19,Bodleian-1660-19-recto,17,April,24,April,Christened in the parishes without the Walls,,,,Weekly,17April24April1660
+1660,19,Bodleian-1660-19-recto,17,April,24,April,Christened in the Parishes and Liberties of Westminster,,,,Weekly,17April24April1660
+1660,20,Bodleian-1660-20-recto,24,April,1,May,Christened in the 97 Parishes within the Walls,,,,Weekly,24April1May1660
+1660,20,Bodleian-1660-20-recto,24,April,1,May,Christened in the parishes without the Walls,,,,Weekly,24April1May1660
+1660,20,Bodleian-1660-20-recto,24,April,1,May,Christened in the Parishes and Liberties of Westminster,,,,Weekly,24April1May1660
+1660,21,Bodleian-1660-21-recto,1,May,8,May,Christened in the 97 Parishes within the Walls,,,,Weekly,1May8May1660
+1660,21,Bodleian-1660-21-recto,1,May,8,May,Christened in the parishes without the Walls,,,,Weekly,1May8May1660
+1660,21,Bodleian-1660-21-recto,1,May,8,May,Christened in the Parishes and Liberties of Westminster,,,,Weekly,1May8May1660
+1660,22,Bodleian-1660-22-recto,8,May,15,May,Christened in the 97 Parishes within the Walls,,,,Weekly,8May15May1660
+1660,22,Bodleian-1660-22-recto,8,May,15,May,Christened in the parishes without the Walls,,,,Weekly,8May15May1660
+1660,22,Bodleian-1660-22-recto,8,May,15,May,Christened in the Parishes and Liberties of Westminster,,,,Weekly,8May15May1660
+1660,24,Bodleian-1660-24-recto,22,May,29,May,Christened in the 97 Parishes within the Walls,,,,Weekly,22May29May1660
+1660,24,Bodleian-1660-24-recto,22,May,29,May,Christened in the parishes without the Walls,,,,Weekly,22May29May1660
+1660,24,Bodleian-1660-24-recto,22,May,29,May,Christened in the Parishes and Liberties of Westminster,,,,Weekly,22May29May1660
+1660,25,Bodleian-1660-25-recto,29,May,5,June,Christened in the 97 Parishes within the Walls,,,,Weekly,29May5June1660
+1660,25,Bodleian-1660-25-recto,29,May,5,June,Christened in the parishes without the Walls,,,,Weekly,29May5June1660
+1660,25,Bodleian-1660-25-recto,29,May,5,June,Christened in the Parishes and Liberties of Westminster,,,,Weekly,29May5June1660
+1660,26,Bodleian-1660-26-recto,5,June,12,June,Christened in the 97 Parishes within the Walls,,,,Weekly,5June12June1660
+1660,26,Bodleian-1660-26-recto,5,June,12,June,Christened in the parishes without the Walls,,,,Weekly,5June12June1660
+1660,26,Bodleian-1660-26-recto,5,June,12,June,Christened in the Parishes and Liberties of Westminster,,,,Weekly,5June12June1660
+1660,27,Bodleian-1660-27-recto,12,June,19,June,Christened in the 97 Parishes within the Walls,,,,Weekly,12June19June1660
+1660,27,Bodleian-1660-27-recto,12,June,19,June,Christened in the parishes without the Walls,,,,Weekly,12June19June1660
+1660,27,Bodleian-1660-27-recto,12,June,19,June,Christened in the Parishes and Liberties of Westminster,,,,Weekly,12June19June1660
+1660,28,Bodleian-1660-28-recto,19,June,26,June,Christened in the 97 Parishes within the Walls,,,,Weekly,19June26June1660
+1660,28,Bodleian-1660-28-recto,19,June,26,June,Christened in the parishes without the Walls,,,,Weekly,19June26June1660
+1660,28,Bodleian-1660-28-recto,19,June,26,June,Christened in the Parishes and Liberties of Westminster,,,,Weekly,19June26June1660
+1660,29,Bodleian-1660-29-recto,26,June,3,July,Christened in the 97 Parishes within the Walls,,,,Weekly,26June3July1660
+1660,29,Bodleian-1660-29-recto,26,June,3,July,Christened in the parishes without the Walls,,,,Weekly,26June3July1660
+1660,29,Bodleian-1660-29-recto,26,June,3,July,Christened in the Parishes and Liberties of Westminster,,,,Weekly,26June3July1660
+1660,30,Bodleian-1660-30-recto,3,July,10,July,Christened in the 97 Parishes within the Walls,,,,Weekly,3July10July1660
+1660,30,Bodleian-1660-30-recto,3,July,10,July,Christened in the parishes without the Walls,,,,Weekly,3July10July1660
+1660,30,Bodleian-1660-30-recto,3,July,10,July,Christened in the Parishes and Liberties of Westminster,,,,Weekly,3July10July1660
+1660,31,Bodleian-1660-31-recto,10,July,17,July,Christened in the 97 Parishes within the Walls,,,,Weekly,10July17July1660
+1660,31,Bodleian-1660-31-recto,10,July,17,July,Christened in the parishes without the Walls,,,,Weekly,10July17July1660
+1660,31,Bodleian-1660-31-recto,10,July,17,July,Christened in the Parishes and Liberties of Westminster,,,,Weekly,10July17July1660
+1660,32,Bodleian-1660-32-recto,17,July,24,July,Christened in the 97 Parishes within the Walls,,,,Weekly,17July24July1660
+1660,32,Bodleian-1660-32-recto,17,July,24,July,Christened in the parishes without the Walls,,,,Weekly,17July24July1660
+1660,32,Bodleian-1660-32-recto,17,July,24,July,Christened in the Parishes and Liberties of Westminster,,,,Weekly,17July24July1660
+1660,33,Bodleian-1660-33-recto,24,July,31,July,Christened in the 97 Parishes within the Walls,,,,Weekly,24July31July1660
+1660,33,Bodleian-1660-33-recto,24,July,31,July,Christened in the parishes without the Walls,,,,Weekly,24July31July1660
+1660,33,Bodleian-1660-33-recto,24,July,31,July,Christened in the Parishes and Liberties of Westminster,,,,Weekly,24July31July1660
+1660,34,Bodleian-1660-34-recto,31,July,7,August,Christened in the 97 Parishes within the Walls,,,,Weekly,31July7August1660
+1660,34,Bodleian-1660-34-recto,31,July,7,August,Christened in the parishes without the Walls,,,,Weekly,31July7August1660
+1660,34,Bodleian-1660-34-recto,31,July,7,August,Christened in the Parishes and Liberties of Westminster,,,,Weekly,31July7August1660
+1660,35,Bodleian-1660-35-recto,7,August,14,August,Christened in the 97 Parishes within the Walls,,,,Weekly,7August14August1660
+1660,35,Bodleian-1660-35-recto,7,August,14,August,Christened in the parishes without the Walls,,,,Weekly,7August14August1660
+1660,35,Bodleian-1660-35-recto,7,August,14,August,Christened in the Parishes and Liberties of Westminster,,,,Weekly,7August14August1660
+1660,36,Bodleian-1660-36-recto,14,August,21,August,Christened in the 97 Parishes within the Walls,,,,Weekly,14August21August1660
+1660,36,Bodleian-1660-36-recto,14,August,21,August,Christened in the parishes without the Walls,,,,Weekly,14August21August1660
+1660,36,Bodleian-1660-36-recto,14,August,21,August,Christened in the Parishes and Liberties of Westminster,,,,Weekly,14August21August1660
+1660,37,Bodleian-1660-37-recto,21,August,28,August,Christened in the 97 Parishes within the Walls,,,,Weekly,21August28August1660
+1660,37,Bodleian-1660-37-recto,21,August,28,August,Christened in the parishes without the Walls,,,,Weekly,21August28August1660
+1660,37,Bodleian-1660-37-recto,21,August,28,August,Christened in the Parishes and Liberties of Westminster,,,,Weekly,21August28August1660
+1660,38,Bodleian-1660-38-recto,28,August,4,September,Christened in the 97 Parishes within the Walls,,,,Weekly,28August4September1660
+1660,38,Bodleian-1660-38-recto,28,August,4,September,Christened in the parishes without the Walls,,,,Weekly,28August4September1660
+1660,38,Bodleian-1660-38-recto,28,August,4,September,Christened in the Parishes and Liberties of Westminster,,,,Weekly,28August4September1660
+1660,39,Bodleian-1660-39-recto,4,September,11,September,Christened in the 97 Parishes within the Walls,,,,Weekly,4September11September1660
+1660,39,Bodleian-1660-39-recto,4,September,11,September,Christened in the parishes without the Walls,,,,Weekly,4September11September1660
+1660,39,Bodleian-1660-39-recto,4,September,11,September,Christened in the Parishes and Liberties of Westminster,,,,Weekly,4September11September1660
+1660,40,Bodleian-1660-40-recto,11,September,18,September,Christened in the 97 Parishes within the Walls,,,,Weekly,11September18September1660
+1660,40,Bodleian-1660-40-recto,11,September,18,September,Christened in the parishes without the Walls,,,,Weekly,11September18September1660
+1660,40,Bodleian-1660-40-recto,11,September,18,September,Christened in the Parishes and Liberties of Westminster,,,,Weekly,11September18September1660
+1660,41,Bodleian-1661-41-recto,18,September,25,September,Christened in the 97 Parishes within the Walls,,,,Weekly,18September25September1660
+1660,41,Bodleian-1661-41-recto,18,September,25,September,Christened in the parishes without the Walls,,,,Weekly,18September25September1660
+1660,41,Bodleian-1661-41-recto,18,September,25,September,Christened in the Parishes and Liberties of Westminster,,,,Weekly,18September25September1660
+1660,42,Bodleian-1660-42-recto,25,September,2,October,Christened in the 97 Parishes within the Walls,,,,Weekly,25September2October1660
+1660,42,Bodleian-1660-42-recto,25,September,2,October,Christened in the parishes without the Walls,,,,Weekly,25September2October1660
+1660,42,Bodleian-1660-42-recto,25,September,2,October,Christened in the Parishes and Liberties of Westminster,,,,Weekly,25September2October1660
+1660,43,Bodleian-1660-43-recto,2,October,9,October,Christened in the 97 Parishes within the Walls,,,,Weekly,2October9October1660
+1660,43,Bodleian-1660-43-recto,2,October,9,October,Christened in the parishes without the Walls,,,,Weekly,2October9October1660
+1660,43,Bodleian-1660-43-recto,2,October,9,October,Christened in the Parishes and Liberties of Westminster,,,,Weekly,2October9October1660
+1660,44,Bodleian-1660-44-recto,9,October,16,October,Christened in the 97 Parishes within the Walls,,,,Weekly,9October16October1660
+1660,44,Bodleian-1660-44-recto,9,October,16,October,Christened in the parishes without the Walls,,,,Weekly,9October16October1660
+1660,44,Bodleian-1660-44-recto,9,October,16,October,Christened in the Parishes and Liberties of Westminster,,,,Weekly,9October16October1660
+1660,45,Bodleian-1660-45-recto,16,October,23,October,Christened in the 97 Parishes within the Walls,,,,Weekly,16October23October1660
+1660,45,Bodleian-1660-45-recto,16,October,23,October,Christened in the parishes without the Walls,,,,Weekly,16October23October1660
+1660,45,Bodleian-1660-45-recto,16,October,23,October,Christened in the Parishes and Liberties of Westminster,,,,Weekly,16October23October1660
+1660,46,Bodleian-1660-46-recto,23,October,30,October,Christened in the 97 Parishes within the Walls,,,,Weekly,23October30October1660
+1660,46,Bodleian-1660-46-recto,23,October,30,October,Christened in the parishes without the Walls,,,,Weekly,23October30October1660
+1660,46,Bodleian-1660-46-recto,23,October,30,October,Christened in the Parishes and Liberties of Westminster,,,,Weekly,23October30October1660
+1660,47,Bodleian-1660-47-recto,30,October,6,November,Christened in the 97 Parishes within the Walls,,,,Weekly,30October6November1660
+1660,47,Bodleian-1660-47-recto,30,October,6,November,Christened in the parishes without the Walls,,,,Weekly,30October6November1660
+1660,47,Bodleian-1660-47-recto,30,October,6,November,Christened in the Parishes and Liberties of Westminster,,,,Weekly,30October6November1660
+1660,48,Bodleian-1660-45-recto,6,November,13,November,Christened in the 97 Parishes within the Walls,,,,Weekly,6November13November1660
+1660,48,Bodleian-1660-45-recto,6,November,13,November,Christened in the parishes without the Walls,,,,Weekly,6November13November1660
+1660,48,Bodleian-1660-45-recto,6,November,13,November,Christened in the Parishes and Liberties of Westminster,,,,Weekly,6November13November1660
+1660,49,Bodleian-1660-49-recto,13,November,20,November,Christened in the 97 Parishes within the Walls,,,,Weekly,13November20November1660
+1660,49,Bodleian-1660-49-recto,13,November,20,November,Christened in the parishes without the Walls,,,,Weekly,13November20November1660
+1660,49,Bodleian-1660-49-recto,13,November,20,November,Christened in the Parishes and Liberties of Westminster,,,,Weekly,13November20November1660
+1660,51,Bodleian-1660-51-recto,27,November,4,December,Christened in the 97 Parishes within the Walls,,,,Weekly,27November4December1660
+1660,51,Bodleian-1660-51-recto,27,November,4,December,Christened in the parishes without the Walls,,,,Weekly,27November4December1660
+1660,51,Bodleian-1660-51-recto,27,November,4,December,Christened in the Parishes and Liberties of Westminster,,,,Weekly,27November4December1660
+1660,1,Bodleian-1660-01-recto,11,December,18,December,Christened in the 97 Parishes within the Walls,,,,Weekly,11December18December1660
+1660,1,Bodleian-1660-01-recto,11,December,18,December,Christened in the parishes without the Walls,,,,Weekly,11December18December1660
+1660,1,Bodleian-1660-01-recto,11,December,18,December,Christened in the Parishes and Liberties of Westminster,,,,Weekly,11December18December1660
+1660,2,Bodleian-1660-02-recto,18,December,25,December,Christened in the 97 Parishes within the Walls,,,,Weekly,18December25December1660
+1660,2,Bodleian-1660-02-recto,18,December,25,December,Christened in the parishes without the Walls,,,,Weekly,18December25December1660
+1660,2,Bodleian-1660-02-recto,18,December,25,December,Christened in the Parishes and Liberties of Westminster,,,,Weekly,18December25December1660
+1660,4,Bodleian-1660-04-recto,1,January,8,January,Christened in the 97 Parishes within the Walls,,,,Weekly,1January8January1660
+1660,4,Bodleian-1660-04-recto,1,January,8,January,Christened in the parishes without the Walls,,,,Weekly,1January8January1660
+1660,4,Bodleian-1660-04-recto,1,January,8,January,Christened in the Parishes and Liberties of Westminster,,,,Weekly,1January8January1660
+1660,5,Bodleian-1660-05-recto,8,January,15,January,Christened in the 97 Parishes within the Walls,,,,Weekly,8January15January1660
+1660,5,Bodleian-1660-05-recto,8,January,15,January,Christened in the parishes without the Walls,,,,Weekly,8January15January1660
+1660,5,Bodleian-1660-05-recto,8,January,15,January,Christened in the Parishes and Liberties of Westminster,,,,Weekly,8January15January1660
+1660,6,Bodleian-1660-06-recto,15,January,22,January,Christened in the 97 Parishes within the Walls,,,,Weekly,15January22January1660
+1660,6,Bodleian-1660-06-recto,15,January,22,January,Christened in the parishes without the Walls,,,,Weekly,15January22January1660
+1660,6,Bodleian-1660-06-recto,15,January,22,January,Christened in the Parishes and Liberties of Westminster,,,,Weekly,15January22January1660
+1660,7,Bodleian-1660-07-recto,22,January,29,January,Christened in the 97 Parishes within the Walls,,,,Weekly,22January29January1660
+1660,7,Bodleian-1660-07-recto,22,January,29,January,Christened in the parishes without the Walls,,,,Weekly,22January29January1660
+1660,7,Bodleian-1660-07-recto,22,January,29,January,Christened in the Parishes and Liberties of Westminster,,,,Weekly,22January29January1660
+1660,8,Bodleian-1660-08-recto,29,January,5,February,Christened in the 97 Parishes within the Walls,,,,Weekly,29January5February1660
+1660,8,Bodleian-1660-08-recto,29,January,5,February,Christened in the parishes without the Walls,,,,Weekly,29January5February1660
+1660,8,Bodleian-1660-08-recto,29,January,5,February,Christened in the Parishes and Liberties of Westminster,,,,Weekly,29January5February1660
+1660,9,Bodleian-1660-09-recto,5,February,12,February,Christened in the 97 Parishes within the Walls,,,,Weekly,5February12February1660
+1660,9,Bodleian-1660-09-recto,5,February,12,February,Christened in the parishes without the Walls,,,,Weekly,5February12February1660
+1660,9,Bodleian-1660-09-recto,5,February,12,February,Christened in the Parishes and Liberties of Westminster,,,,Weekly,5February12February1660
+1660,10,Bodleian-1660-10-recto,12,February,19,February,Christened in the 97 Parishes within the Walls,,,,Weekly,12February19February1660
+1660,10,Bodleian-1660-10-recto,12,February,19,February,Christened in the parishes without the Walls,,,,Weekly,12February19February1660
+1660,10,Bodleian-1660-10-recto,12,February,19,February,Christened in the Parishes and Liberties of Westminster,,,,Weekly,12February19February1660
+1660,11,Bodleian-1660-11-recto,19,February,26,February,Christened in the 97 Parishes within the Walls,,,,Weekly,19February26February1660
+1660,11,Bodleian-1660-11-recto,19,February,26,February,Christened in the parishes without the Walls,,,,Weekly,19February26February1660
+1660,11,Bodleian-1660-11-recto,19,February,26,February,Christened in the Parishes and Liberties of Westminster,,,,Weekly,19February26February1660
+1662,16,Bodleian-1662-16-recto,1,April,8,April,Christened in the 97 Parishes within the Walls,,,,Weekly,1April8April1662
+1662,16,Bodleian-1662-16-recto,1,April,8,April,Christened in the parishes without the Walls,,,,Weekly,1April8April1662
+1662,16,Bodleian-1662-16-recto,1,April,8,April,Christened in the Parishes and Liberties of Westminster,,,,Weekly,1April8April1662
+1662,17,Bodleian-1662-17-recto,8,April,15,April,Christened in the 97 Parishes within the Walls,,,,Weekly,8April15April1662
+1662,17,Bodleian-1662-17-recto,8,April,15,April,Christened in the parishes without the Walls,,,,Weekly,8April15April1662
+1662,17,Bodleian-1662-17-recto,8,April,15,April,Christened in the Parishes and Liberties of Westminster,,,,Weekly,8April15April1662
+1662,18,Bodleian-1662-18-recto,15,April,22,April,Christened in the 97 Parishes within the Walls,,,,Weekly,15April22April1662
+1662,18,Bodleian-1662-18-recto,15,April,22,April,Christened in the parishes without the Walls,,,,Weekly,15April22April1662
+1662,18,Bodleian-1662-18-recto,15,April,22,April,Christened in the Parishes and Liberties of Westminster,,,,Weekly,15April22April1662
+1662,19,Bodleian-1662-19-recto,22,April,29,April,Christened in the 97 Parishes within the Walls,,,,Weekly,22April29April1662
+1662,19,Bodleian-1662-19-recto,22,April,29,April,Christened in the parishes without the Walls,,,,Weekly,22April29April1662
+1662,19,Bodleian-1662-19-recto,22,April,29,April,Christened in the Parishes and Liberties of Westminster,,,,Weekly,22April29April1662
+1662,20,Bodleian-1662-20-recto,26,April,6,May,Christened in the 97 Parishes within the Walls,,,,Weekly,26April6May1662
+1662,20,Bodleian-1662-20-recto,26,April,6,May,Christened in the parishes without the Walls,,,,Weekly,26April6May1662
+1662,20,Bodleian-1662-20-recto,26,April,6,May,Christened in the Parishes and Liberties of Westminster,,,,Weekly,26April6May1662
+1662,21,Bodleian-1662-21-recto,6,May,13,May,Christened in the 97 Parishes within the Walls,,,,Weekly,6May13May1662
+1662,21,Bodleian-1662-21-recto,6,May,13,May,Christened in the parishes without the Walls,,,,Weekly,6May13May1662
+1662,21,Bodleian-1662-21-recto,6,May,13,May,Christened in the Parishes and Liberties of Westminster,,,,Weekly,6May13May1662
+1662,22,Bodleian-1662-22-recto,13,May,20,May,Christened in the 97 Parishes within the Walls,,,,Weekly,13May20May1662
+1662,22,Bodleian-1662-22-recto,13,May,20,May,Christened in the parishes without the Walls,,,,Weekly,13May20May1662
+1662,22,Bodleian-1662-22-recto,13,May,20,May,Christened in the Parishes and Liberties of Westminster,,,,Weekly,13May20May1662
+1662,23,Bodleian-1662-23-recto,20,May,27,May,Christened in the 97 Parishes within the Walls,,,,Weekly,20May27May1662
+1662,23,Bodleian-1662-23-recto,20,May,27,May,Christened in the parishes without the Walls,,,,Weekly,20May27May1662
+1662,23,Bodleian-1662-23-recto,20,May,27,May,Christened in the Parishes and Liberties of Westminster,,,,Weekly,20May27May1662
+1662,24,Bodleian-1662-24-recto,27,May,3,June,Christened in the 97 Parishes within the Walls,,,,Weekly,27May3June1662
+1662,24,Bodleian-1662-24-recto,27,May,3,June,Christened in the parishes without the Walls,,,,Weekly,27May3June1662
+1662,24,Bodleian-1662-24-recto,27,May,3,June,Christened in the Parishes and Liberties of Westminster,,,,Weekly,27May3June1662
+1662,25,Bodleian-1662-25-recto,3,June,10,June,Christened in the 97 Parishes within the Walls,,,,Weekly,3June10June1662
+1662,25,Bodleian-1662-25-recto,3,June,10,June,Christened in the parishes without the Walls,,,,Weekly,3June10June1662
+1662,25,Bodleian-1662-25-recto,3,June,10,June,Christened in the Parishes and Liberties of Westminster,,,,Weekly,3June10June1662
+1662,28,Bodleian-1662-28-recto,24,June,1,July,Christened in the 97 Parishes within the Walls,,,,Weekly,24June1July1662
+1662,28,Bodleian-1662-28-recto,24,June,1,July,Christened in the parishes without the Walls,,,,Weekly,24June1July1662
+1662,28,Bodleian-1662-28-recto,24,June,1,July,Christened in the Parishes and Liberties of Westminster,,,,Weekly,24June1July1662
+1662,33,Bodleian-1662-33-recto,29,July,5,August,Christened in the 97 Parishes within the Walls,,,,Weekly,29July5August1662
+1662,33,Bodleian-1662-33-recto,29,July,5,August,Christened in the parishes without the Walls,,,,Weekly,29July5August1662
+1662,33,Bodleian-1662-33-recto,29,July,5,August,Christened in the Parishes and Liberties of Westminster,,,,Weekly,29July5August1662
+1662,43,Bodleian-1662-43-recto,7,October,14,October,Christened in the 97 Parishes within the Walls,,,,Weekly,7October14October1662
+1662,43,Bodleian-1662-43-recto,7,October,14,October,Christened in the parishes without the Walls,,,,Weekly,7October14October1662
+1662,43,Bodleian-1662-43-recto,7,October,14,October,Christened in the Parishes and Liberties of Westminster,,,,Weekly,7October14October1662
+1662,44,Bodleian-1662-44-recto,14,October,21,October,Christened in the 97 Parishes within the Walls,,,,Weekly,14October21October1662
+1662,44,Bodleian-1662-44-recto,14,October,21,October,Christened in the parishes without the Walls,,,,Weekly,14October21October1662
+1662,44,Bodleian-1662-44-recto,14,October,21,October,Christened in the Parishes and Liberties of Westminster,,,,Weekly,14October21October1662
+1662,45,Bodleian-1662-45-recto,21,October,28,October,Christened in the 97 Parishes within the Walls,,,,Weekly,21October28October1662
+1662,45,Bodleian-1662-45-recto,21,October,28,October,Christened in the parishes without the Walls,,,,Weekly,21October28October1662
+1662,45,Bodleian-1662-45-recto,21,October,28,October,Christened in the Parishes and Liberties of Westminster,,,,Weekly,21October28October1662
+1662,46,Bodleian-1662-46-recto,28,October,4,November,Christened in the 97 Parishes within the Walls,,,,Weekly,28October4November1662
+1662,46,Bodleian-1662-46-recto,28,October,4,November,Christened in the parishes without the Walls,,,,Weekly,28October4November1662
+1662,46,Bodleian-1662-46-recto,28,October,4,November,Christened in the Parishes and Liberties of Westminster,,,,Weekly,28October4November1662
+1662,47,Bodleian-1662-47-recto,4,November,11,November,Christened in the 97 Parishes within the Walls,,,,Weekly,4November11November1662
+1662,47,Bodleian-1662-47-recto,4,November,11,November,Christened in the parishes without the Walls,,,,Weekly,4November11November1662
+1662,47,Bodleian-1662-47-recto,4,November,11,November,Christened in the Parishes and Liberties of Westminster,,,,Weekly,4November11November1662
+1662,48,Bodleian-1662-48-recto,11,November,18,November,Christened in the 97 Parishes within the Walls,,,,Weekly,11November18November1662
+1662,48,Bodleian-1662-48-recto,11,November,18,November,Christened in the parishes without the Walls,,,,Weekly,11November18November1662
+1662,48,Bodleian-1662-48-recto,11,November,18,November,Christened in the Parishes and Liberties of Westminster,,,,Weekly,11November18November1662
+1663,15,Bodleian-1663-15-recto,24,March,31,March,Christened in the 97 Parishes within the Walls,,,,Weekly,24March31March1663
+1663,15,Bodleian-1663-15-recto,24,March,31,March,Christened in the parishes without the Walls,,,,Weekly,24March31March1663
+1663,15,Bodleian-1663-15-recto,24,March,31,March,Christened in the Parishes and Liberties of Westminster,,,,Weekly,24March31March1663
+1663,16,Bodleian-1663-16-recto,31,March,7,April,Christened in the 97 Parishes within the Walls,,,,Weekly,31March7April1663
+1663,16,Bodleian-1663-16-recto,31,March,7,April,Christened in the parishes without the Walls,,,,Weekly,31March7April1663
+1663,16,Bodleian-1663-16-recto,31,March,7,April,Christened in the Parishes and Liberties of Westminster,,,,Weekly,31March7April1663
+1663,17,Bodleian-1663-17-recto,7,April,14,April,Christened in the 97 Parishes within the Walls,,,,Weekly,7April14April1663
+1663,17,Bodleian-1663-17-recto,7,April,14,April,Christened in the parishes without the Walls,,,,Weekly,7April14April1663
+1663,17,Bodleian-1663-17-recto,7,April,14,April,Christened in the Parishes and Liberties of Westminster,,,,Weekly,7April14April1663
+1663,18,Bodleian-1663-18-recto,14,April,21,April,Christened in the 97 Parishes within the Walls,,,,Weekly,14April21April1663
+1663,18,Bodleian-1663-18-recto,14,April,21,April,Christened in the parishes without the Walls,,,,Weekly,14April21April1663
+1663,18,Bodleian-1663-18-recto,14,April,21,April,Christened in the Parishes and Liberties of Westminster,,,,Weekly,14April21April1663
+1663,20,Boldeian-1663-20-recto,28,April,5,May,Christened in the 97 Parishes within the Walls,,,,Weekly,28April5May1663
+1663,20,Boldeian-1663-20-recto,28,April,5,May,Christened in the parishes without the Walls,,,,Weekly,28April5May1663
+1663,20,Boldeian-1663-20-recto,28,April,5,May,Christened in the Parishes and Liberties of Westminster,,,,Weekly,28April5May1663
+1663,21,Bodleian-1663-21-recto,5,May,12,May,Christened in the 97 Parishes within the Walls,,,,Weekly,5May12May1663
+1663,21,Bodleian-1663-21-recto,5,May,12,May,Christened in the parishes without the Walls,,,,Weekly,5May12May1663
+1663,21,Bodleian-1663-21-recto,5,May,12,May,Christened in the Parishes and Liberties of Westminster,,,,Weekly,5May12May1663
+1663,22,Bodleian-1663-22-recto,12,May,19,May,Christened in the 97 Parishes within the Walls,,,,Weekly,12May19May1663
+1663,22,Bodleian-1663-22-recto,12,May,19,May,Christened in the parishes without the Walls,,,,Weekly,12May19May1663
+1663,22,Bodleian-1663-22-recto,12,May,19,May,Christened in the Parishes and Liberties of Westminster,,,,Weekly,12May19May1663
+1663,23,Bodleian-1663-23-recto,19,May,26,May,Christened in the 97 Parishes within the Walls,,,,Weekly,19May26May1663
+1663,23,Bodleian-1663-23-recto,19,May,26,May,Christened in the parishes without the Walls,,,,Weekly,19May26May1663
+1663,23,Bodleian-1663-23-recto,19,May,26,May,Christened in the Parishes and Liberties of Westminster,,,,Weekly,19May26May1663
+1663,24,Bodleian-1664-24-recto,26,May,2,June,Christened in the 97 Parishes within the Walls,,,,Weekly,26May2June1663
+1663,24,Bodleian-1664-24-recto,26,May,2,June,Christened in the parishes without the Walls,,,,Weekly,26May2June1663
+1663,24,Bodleian-1664-24-recto,26,May,2,June,Christened in the Parishes and Liberties of Westminster,,,,Weekly,26May2June1663
+1663,25,Bodleian-1663-25-recto,2,June,9,June,Christened in the 97 Parishes within the Walls,,,,Weekly,2June9June1663
+1663,25,Bodleian-1663-25-recto,2,June,9,June,Christened in the parishes without the Walls,,,,Weekly,2June9June1663
+1663,25,Bodleian-1663-25-recto,2,June,9,June,Christened in the Parishes and Liberties of Westminster,,,,Weekly,2June9June1663
+1663,26,Bodleian-1663-26-recto,9,June,16,June,Christened in the 97 Parishes within the Walls,,,,Weekly,9June16June1663
+1663,26,Bodleian-1663-26-recto,9,June,16,June,Christened in the parishes without the Walls,,,,Weekly,9June16June1663
+1663,26,Bodleian-1663-26-recto,9,June,16,June,Christened in the Parishes and Liberties of Westminster,,,,Weekly,9June16June1663
+1663,27,Bodleian-1663-27-recto,16,June,23,June,Christened in the 97 Parishes within the Walls,,,,Weekly,16June23June1663
+1663,27,Bodleian-1663-27-recto,16,June,23,June,Christened in the parishes without the Walls,,,,Weekly,16June23June1663
+1663,27,Bodleian-1663-27-recto,16,June,23,June,Christened in the Parishes and Liberties of Westminster,,,,Weekly,16June23June1663
+1663,28,Bodleian-1663-28-recto,23,June,30,June,Christened in the 97 Parishes within the Walls,,,,Weekly,23June30June1663
+1663,28,Bodleian-1663-28-recto,23,June,30,June,Christened in the parishes without the Walls,,,,Weekly,23June30June1663
+1663,28,Bodleian-1663-28-recto,23,June,30,June,Christened in the Parishes and Liberties of Westminster,,,,Weekly,23June30June1663
+1663,29,Bodleian-1663-29-recto,30,June,7,July,Christened in the 97 Parishes within the Walls,,,,Weekly,30June7July1663
+1663,29,Bodleian-1663-29-recto,30,June,7,July,Christened in the parishes without the Walls,,,,Weekly,30June7July1663
+1663,29,Bodleian-1663-29-recto,30,June,7,July,Christened in the Parishes and Liberties of Westminster,,,,Weekly,30June7July1663
+1663,30,Bodleian-1663-30-recto,7,July,14,July,Christened in the 97 Parishes within the Walls,,,,Weekly,7July14July1663
+1663,30,Bodleian-1663-30-recto,7,July,14,July,Christened in the parishes without the Walls,,,,Weekly,7July14July1663
+1663,30,Bodleian-1663-30-recto,7,July,14,July,Christened in the Parishes and Liberties of Westminster,,,,Weekly,7July14July1663
+1663,31,Bodleian-1663-31-recto,14,July,21,July,Christened in the 97 Parishes within the Walls,,,,Weekly,14July21July1663
+1663,31,Bodleian-1663-31-recto,14,July,21,July,Christened in the parishes without the Walls,,,,Weekly,14July21July1663
+1663,31,Bodleian-1663-31-recto,14,July,21,July,Christened in the Parishes and Liberties of Westminster,,,,Weekly,14July21July1663
+1663,32,Bodleian-1663-32-recto,21,July,28,July,Christened in the 97 Parishes within the Walls,,,,Weekly,21July28July1663
+1663,32,Bodleian-1663-32-recto,21,July,28,July,Christened in the parishes without the Walls,,,,Weekly,21July28July1663
+1663,32,Bodleian-1663-32-recto,21,July,28,July,Christened in the Parishes and Liberties of Westminster,,,,Weekly,21July28July1663
+1663,33,Bodleian-1663-33-recto,28,July,4,August,Christened in the 97 Parishes within the Walls,,,,Weekly,28July4August1663
+1663,33,Bodleian-1663-33-recto,28,July,4,August,Christened in the parishes without the Walls,,,,Weekly,28July4August1663
+1663,33,Bodleian-1663-33-recto,28,July,4,August,Christened in the Parishes and Liberties of Westminster,,,,Weekly,28July4August1663
+1663,34,Bodleian-1663-34-recto,4,August,11,August,Christened in the 97 Parishes within the Walls,,,,Weekly,4August11August1663
+1663,34,Bodleian-1663-34-recto,4,August,11,August,Christened in the parishes without the Walls,,,,Weekly,4August11August1663
+1663,34,Bodleian-1663-34-recto,4,August,11,August,Christened in the Parishes and Liberties of Westminster,,,,Weekly,4August11August1663
+1663,35,Bodleian-1663-35-recto,11,August,18,August,Christened in the 97 Parishes within the Walls,,,,Weekly,11August18August1663
+1663,35,Bodleian-1663-35-recto,11,August,18,August,Christened in the parishes without the Walls,,,,Weekly,11August18August1663
+1663,35,Bodleian-1663-35-recto,11,August,18,August,Christened in the Parishes and Liberties of Westminster,,,,Weekly,11August18August1663
+1663,36,Bodleian-1663-36-recto,18,August,25,August,Christened in the 97 Parishes within the Walls,,,,Weekly,18August25August1663
+1663,36,Bodleian-1663-36-recto,18,August,25,August,Christened in the parishes without the Walls,,,,Weekly,18August25August1663
+1663,36,Bodleian-1663-36-recto,18,August,25,August,Christened in the Parishes and Liberties of Westminster,,,,Weekly,18August25August1663
+1663,37,Bodleian-1663-37-recto,25,August,1,September,Christened in the 97 Parishes within the Walls,,,,Weekly,25August1September1663
+1663,37,Bodleian-1663-37-recto,25,August,1,September,Christened in the parishes without the Walls,,,,Weekly,25August1September1663
+1663,37,Bodleian-1663-37-recto,25,August,1,September,Christened in the Parishes and Liberties of Westminster,,,,Weekly,25August1September1663
+1663,38,Bodleian-1663-38-recto,1,September,8,September,Christened in the 97 Parishes within the Walls,,,,Weekly,1September8September1663
+1663,38,Bodleian-1663-38-recto,1,September,8,September,Christened in the parishes without the Walls,,,,Weekly,1September8September1663
+1663,38,Bodleian-1663-38-recto,1,September,8,September,Christened in the Parishes and Liberties of Westminster,,,,Weekly,1September8September1663
+1663,39,Bodleian-1663-39-recto,8,September,15,September,Christened in the 97 Parishes within the Walls,,,,Weekly,8September15September1663
+1663,39,Bodleian-1663-39-recto,8,September,15,September,Christened in the parishes without the Walls,,,,Weekly,8September15September1663
+1663,39,Bodleian-1663-39-recto,8,September,15,September,Christened in the Parishes and Liberties of Westminster,,,,Weekly,8September15September1663
+1663,40,Bodleian-1663-40-recto,15,September,22,September,Christened in the 97 Parishes within the Walls,,,,Weekly,15September22September1663
+1663,40,Bodleian-1663-40-recto,15,September,22,September,Christened in the parishes without the Walls,,,,Weekly,15September22September1663
+1663,40,Bodleian-1663-40-recto,15,September,22,September,Christened in the Parishes and Liberties of Westminster,,,,Weekly,15September22September1663
+1663,41,Bodleian-1663-41-recto,22,September,29,September,Christened in the 97 Parishes within the Walls,,,,Weekly,22September29September1663
+1663,41,Bodleian-1663-41-recto,22,September,29,September,Christened in the parishes without the Walls,,,,Weekly,22September29September1663
+1663,41,Bodleian-1663-41-recto,22,September,29,September,Christened in the Parishes and Liberties of Westminster,,,,Weekly,22September29September1663
+1663,43,Bodleian-1663-43-recto,6,October,13,October,Christened in the 97 Parishes within the Walls,,,,Weekly,6October13October1663
+1663,43,Bodleian-1663-43-recto,6,October,13,October,Christened in the parishes without the Walls,,,,Weekly,6October13October1663
+1663,43,Bodleian-1663-43-recto,6,October,13,October,Christened in the Parishes and Liberties of Westminster,,,,Weekly,6October13October1663
+1663,44,Bodleian-1663-44-recto,13,October,20,October,Christened in the 97 Parishes within the Walls,,,,Weekly,13October20October1663
+1663,44,Bodleian-1663-44-recto,13,October,20,October,Christened in the parishes without the Walls,,,,Weekly,13October20October1663
+1663,44,Bodleian-1663-44-recto,13,October,20,October,Christened in the Parishes and Liberties of Westminster,,,,Weekly,13October20October1663
+1663,45,Bodleian-1663-45-recto,20,October,27,October,Christened in the 97 Parishes within the Walls,,,,Weekly,20October27October1663
+1663,45,Bodleian-1663-45-recto,20,October,27,October,Christened in the parishes without the Walls,,,,Weekly,20October27October1663
+1663,45,Bodleian-1663-45-recto,20,October,27,October,Christened in the Parishes and Liberties of Westminster,,,,Weekly,20October27October1663
+1663,46,Bodleian-1663-46-recto,27,October,3,November,Christened in the 97 Parishes within the Walls,,,,Weekly,27October3November1663
+1663,46,Bodleian-1663-46-recto,27,October,3,November,Christened in the parishes without the Walls,,,,Weekly,27October3November1663
+1663,46,Bodleian-1663-46-recto,27,October,3,November,Christened in the Parishes and Liberties of Westminster,,,,Weekly,27October3November1663
+1663,47,Bodleian-1663-47-recto,3,November,10,November,Christened in the 97 Parishes within the Walls,,,,Weekly,3November10November1663
+1663,47,Bodleian-1663-47-recto,3,November,10,November,Christened in the parishes without the Walls,,,,Weekly,3November10November1663
+1663,47,Bodleian-1663-47-recto,3,November,10,November,Christened in the Parishes and Liberties of Westminster,,,,Weekly,3November10November1663
+1663,48,Bodleian-1663-48-recto,10,November,17,November,Christened in the 97 Parishes within the Walls,,,,Weekly,10November17November1663
+1663,48,Bodleian-1663-48-recto,10,November,17,November,Christened in the parishes without the Walls,,,,Weekly,10November17November1663
+1663,48,Bodleian-1663-48-recto,10,November,17,November,Christened in the Parishes and Liberties of Westminster,,,,Weekly,10November17November1663
+1663,49,Bodleian-1663-49-recto,17,November,24,November,Christened in the 97 Parishes within the Walls,,,,Weekly,17November24November1663
+1663,49,Bodleian-1663-49-recto,17,November,24,November,Christened in the parishes without the Walls,,,,Weekly,17November24November1663
+1663,49,Bodleian-1663-49-recto,17,November,24,November,Christened in the Parishes and Liberties of Westminster,,,,Weekly,17November24November1663
+1663,50,Bodleian-1663-50-recto,24,November,1,December,Christened in the 97 Parishes within the Walls,,,,Weekly,24November1December1663
+1663,50,Bodleian-1663-50-recto,24,November,1,December,Christened in the parishes without the Walls,,,,Weekly,24November1December1663
+1663,50,Bodleian-1663-50-recto,24,November,1,December,Christened in the Parishes and Liberties of Westminster,,,,Weekly,24November1December1663
+1663,52,Bodleian-1663-52-recto,8,December,15,December,Christened in the 97 Parishes within the Walls,,,,Weekly,8December15December1663
+1663,52,Bodleian-1663-52-recto,8,December,15,December,Christened in the parishes without the Walls,,,,Weekly,8December15December1663
+1663,52,Bodleian-1663-52-recto,8,December,15,December,Christened in the Parishes and Liberties of Westminster,,,,Weekly,8December15December1663
+1663,3,Bodleian-1663-03-recto,29,December,5,January,Christened in the 97 Parishes within the Walls,,,,Weekly,29December5January1663
+1663,3,Bodleian-1663-03-recto,29,December,5,January,Christened in the parishes without the Walls,,,,Weekly,29December5January1663
+1663,3,Bodleian-1663-03-recto,29,December,5,January,Christened in the Parishes and Liberties of Westminster,,,,Weekly,29December5January1663
+1663,4,Bodleian-1663-04-recto,5,January,12,January,Christened in the 97 Parishes within the Walls,,,,Weekly,5January12January1663
+1663,4,Bodleian-1663-04-recto,5,January,12,January,Christened in the parishes without the Walls,,,,Weekly,5January12January1663
+1663,4,Bodleian-1663-04-recto,5,January,12,January,Christened in the Parishes and Liberties of Westminster,,,,Weekly,5January12January1663
+1663,5,Bodleian-1663-05-recto,12,January,19,January,Christened in the 97 Parishes within the Walls,,,,Weekly,12January19January1663
+1663,5,Bodleian-1663-05-recto,12,January,19,January,Christened in the parishes without the Walls,,,,Weekly,12January19January1663
+1663,5,Bodleian-1663-05-recto,12,January,19,January,Christened in the Parishes and Liberties of Westminster,,,,Weekly,12January19January1663
+1663,6,Bodleian-1663-06-recto,19,January,26,January,Christened in the 97 Parishes within the Walls,,,,Weekly,19January26January1663
+1663,6,Bodleian-1663-06-recto,19,January,26,January,Christened in the parishes without the Walls,,,,Weekly,19January26January1663
+1663,6,Bodleian-1663-06-recto,19,January,26,January,Christened in the Parishes and Liberties of Westminster,,,,Weekly,19January26January1663
+1663,7,Bodleian-1663-07-recto,26,January,2,February,Christened in the 97 Parishes within the Walls,,,,Weekly,26January2February1663
+1663,7,Bodleian-1663-07-recto,26,January,2,February,Christened in the parishes without the Walls,,,,Weekly,26January2February1663
+1663,7,Bodleian-1663-07-recto,26,January,2,February,Christened in the Parishes and Liberties of Westminster,,,,Weekly,26January2February1663
+1663,8,Bodleian-1663-08-recto,2,February,9,February,Christened in the 97 Parishes within the Walls,,,,Weekly,2February9February1663
+1663,8,Bodleian-1663-08-recto,2,February,9,February,Christened in the parishes without the Walls,,,,Weekly,2February9February1663
+1663,8,Bodleian-1663-08-recto,2,February,9,February,Christened in the Parishes and Liberties of Westminster,,,,Weekly,2February9February1663
+1663,9,Bodleian-1663-09-recto,9,February,16,February,Christened in the 97 Parishes within the Walls,,,,Weekly,9February16February1663
+1663,9,Bodleian-1663-09-recto,9,February,16,February,Christened in the parishes without the Walls,,,,Weekly,9February16February1663
+1663,9,Bodleian-1663-09-recto,9,February,16,February,Christened in the Parishes and Liberties of Westminster,,,,Weekly,9February16February1663
+1663,10,Bodleian-1663-10-recto,16,February,23,February,Christened in the 97 Parishes within the Walls,,,,Weekly,16February23February1663
+1663,10,Bodleian-1663-10-recto,16,February,23,February,Christened in the parishes without the Walls,,,,Weekly,16February23February1663
+1663,10,Bodleian-1663-10-recto,16,February,23,February,Christened in the Parishes and Liberties of Westminster,,,,Weekly,16February23February1663
+1663,11,Bodleian-1663-11-recto,23,February,1,March,Christened in the 97 Parishes within the Walls,,,,Weekly,23February1March1663
+1663,11,Bodleian-1663-11-recto,23,February,1,March,Christened in the parishes without the Walls,,,,Weekly,23February1March1663
+1663,11,Bodleian-1663-11-recto,23,February,1,March,Christened in the Parishes and Liberties of Westminster,,,,Weekly,23February1March1663
+1663,12,Bodleian-1663-12-recto,1,March,8,March,Christened in the 97 Parishes within the Walls,,,,Weekly,1March8March1663
+1663,12,Bodleian-1663-12-recto,1,March,8,March,Christened in the parishes without the Walls,,,,Weekly,1March8March1663
+1663,12,Bodleian-1663-12-recto,1,March,8,March,Christened in the Parishes and Liberties of Westminster,,,,Weekly,1March8March1663
+1663,13,Bodleian-1663-13-recto,8,March,15,March,Christened in the 97 Parishes within the Walls,,,,Weekly,8March15March1663
+1663,13,Bodleian-1663-13-recto,8,March,15,March,Christened in the parishes without the Walls,,,,Weekly,8March15March1663
+1663,13,Bodleian-1663-13-recto,8,March,15,March,Christened in the Parishes and Liberties of Westminster,,,,Weekly,8March15March1663
+1663,14,Bodleian-1663-14-recto,15,March,22,March,Christened in the 97 Parishes within the Walls,,,,Weekly,15March22March1663
+1663,14,Bodleian-1663-14-recto,15,March,22,March,Christened in the parishes without the Walls,,,,Weekly,15March22March1663
+1663,14,Bodleian-1663-14-recto,15,March,22,March,Christened in the Parishes and Liberties of Westminster,,,,Weekly,15March22March1663
+1664,15,Bodleian-1664-15-recto,22,March,29,March,Christened in the 97 Parishes within the Walls,,,,Weekly,22March29March1664
+1664,15,Bodleian-1664-15-recto,22,March,29,March,Christened in the parishes without the Walls,,,,Weekly,22March29March1664
+1664,15,Bodleian-1664-15-recto,22,March,29,March,Christened in the Parishes and Liberties of Westminster,,,,Weekly,22March29March1664
+1664,16,Bodleian-1664-16-recto,29,March,5,April,Christened in the 97 Parishes within the Walls,,,,Weekly,29March5April1664
+1664,16,Bodleian-1664-16-recto,29,March,5,April,Christened in the parishes without the Walls,,,,Weekly,29March5April1664
+1664,16,Bodleian-1664-16-recto,29,March,5,April,Christened in the Parishes and Liberties of Westminster,,,,Weekly,29March5April1664
+1664,20,Bodleian-1664-20-recto,26,April,3,May,Christened in the 97 Parishes within the Walls,,,,Weekly,26April3May1664
+1664,20,Bodleian-1664-20-recto,26,April,3,May,Christened in the parishes without the Walls,,,,Weekly,26April3May1664
+1664,20,Bodleian-1664-20-recto,26,April,3,May,Christened in the Parishes and Liberties of Westminster,,,,Weekly,26April3May1664
+1664,21,Bodleian-1664-21-recto,3,May,10,May,Christened in the 97 Parishes within the Walls,,,,Weekly,3May10May1664
+1664,21,Bodleian-1664-21-recto,3,May,10,May,Christened in the parishes without the Walls,,,,Weekly,3May10May1664
+1664,21,Bodleian-1664-21-recto,3,May,10,May,Christened in the Parishes and Liberties of Westminster,,,,Weekly,3May10May1664
+1664,22,Bodleian-1664-22-recto,10,May,17,May,Christened in the 97 Parishes within the Walls,,,,Weekly,10May17May1664
+1664,22,Bodleian-1664-22-recto,10,May,17,May,Christened in the parishes without the Walls,,,,Weekly,10May17May1664
+1664,22,Bodleian-1664-22-recto,10,May,17,May,Christened in the Parishes and Liberties of Westminster,,,,Weekly,10May17May1664
+1664,24,Bodleian-1664-24-recto,24,May,31,May,Christened in the 97 Parishes within the Walls,,,,Weekly,24May31May1664
+1664,24,Bodleian-1664-24-recto,24,May,31,May,Christened in the parishes without the Walls,,,,Weekly,24May31May1664
+1664,24,Bodleian-1664-24-recto,24,May,31,May,Christened in the Parishes and Liberties of Westminster,,,,Weekly,24May31May1664
+1664,26,Bodleian-1664-26-recto,7,June,14,June,Christened in the 97 Parishes within the Walls,,,,Weekly,7June14June1664
+1664,26,Bodleian-1664-26-recto,7,June,14,June,Christened in the parishes without the Walls,,,,Weekly,7June14June1664
+1664,26,Bodleian-1664-26-recto,7,June,14,June,Christened in the Parishes and Liberties of Westminster,,,,Weekly,7June14June1664
+1664,27,Bodleian-1664-27-recto,14,June,21,June,Christened in the 97 Parishes within the Walls,,,,Weekly,14June21June1664
+1664,27,Bodleian-1664-27-recto,14,June,21,June,Christened in the parishes without the Walls,,,,Weekly,14June21June1664
+1664,27,Bodleian-1664-27-recto,14,June,21,June,Christened in the Parishes and Liberties of Westminster,,,,Weekly,14June21June1664
+1664,31,Bodleian-1663-31-recto,12,July,19,July,Christened in the 97 Parishes within the Walls,,,,Weekly,12July19July1664
+1664,31,Bodleian-1663-31-recto,12,July,19,July,Christened in the parishes without the Walls,,,,Weekly,12July19July1664
+1664,31,Bodleian-1663-31-recto,12,July,19,July,Christened in the Parishes and Liberties of Westminster,,,,Weekly,12July19July1664
+1664,48,Bodleian-1663-48-recto,8,November,15,November,Christened in the 97 Parishes within the Walls,,,,Weekly,8November15November1664
+1664,48,Bodleian-1663-48-recto,8,November,15,November,Christened in the parishes without the Walls,,,,Weekly,8November15November1664
+1664,48,Bodleian-1663-48-recto,8,November,15,November,Christened in the Parishes and Liberties of Westminster,,,,Weekly,8November15November1664
+1664,1,Bodleian-1664-01-recto,20,December,27,December,Christened in the 97 Parishes within the Walls,,,,Weekly,20December27December1664
+1664,1,Bodleian-1664-01-recto,20,December,27,December,Christened in the parishes without the Walls,,,,Weekly,20December27December1664
+1664,1,Bodleian-1664-01-recto,20,December,27,December,Christened in the Parishes and Liberties of Westminster,,,,Weekly,20December27December1664
+1664,2,Bodleian-1663-02-recto,27,December,3,January,Christened in the 97 Parishes within the Walls,,,,Weekly,27December3January1664
+1664,2,Bodleian-1663-02-recto,27,December,3,January,Christened in the parishes without the Walls,,,,Weekly,27December3January1664
+1664,2,Bodleian-1663-02-recto,27,December,3,January,Christened in the Parishes and Liberties of Westminster,,,,Weekly,27December3January1664
+1664,3,Bodleian-1663-03-recto,3,January,10,January,Christened in the 97 Parishes within the Walls,,,,Weekly,3January10January1664
+1664,3,Bodleian-1663-03-recto,3,January,10,January,Christened in the parishes without the Walls,,,,Weekly,3January10January1664
+1664,3,Bodleian-1663-03-recto,3,January,10,January,Christened in the Parishes and Liberties of Westminster,,,,Weekly,3January10January1664
+1664,4,Bodleian-1664-04-recto,10,January,17,January,Christened in the 97 Parishes within the Walls,,,,Weekly,10January17January1664
+1664,4,Bodleian-1664-04-recto,10,January,17,January,Christened in the parishes without the Walls,,,,Weekly,10January17January1664
+1664,4,Bodleian-1664-04-recto,10,January,17,January,Christened in the Parishes and Liberties of Westminster,,,,Weekly,10January17January1664
+1664,5,Bodleian-1664-05-recto,17,January,24,January,Christened in the 97 Parishes within the Walls,,,,Weekly,17January24January1664
+1664,5,Bodleian-1664-05-recto,17,January,24,January,Christened in the parishes without the Walls,,,,Weekly,17January24January1664
+1664,5,Bodleian-1664-05-recto,17,January,24,January,Christened in the Parishes and Liberties of Westminster,,,,Weekly,17January24January1664
+1664,6,Bodleian-1664-06-recto,24,January,31,January,Christened in the 97 Parishes within the Walls,,,,Weekly,24January31January1664
+1664,6,Bodleian-1664-06-recto,24,January,31,January,Christened in the parishes without the Walls,,,,Weekly,24January31January1664
+1664,6,Bodleian-1664-06-recto,24,January,31,January,Christened in the Parishes and Liberties of Westminster,,,,Weekly,24January31January1664
+1664,7,Bodleian-1664-07-recto,31,January,7,February,Christened in the 97 Parishes within the Walls,,,,Weekly,31January7February1664
+1664,7,Bodleian-1664-07-recto,31,January,7,February,Christened in the parishes without the Walls,,,,Weekly,31January7February1664
+1664,7,Bodleian-1664-07-recto,31,January,7,February,Christened in the Parishes and Liberties of Westminster,,,,Weekly,31January7February1664
+1664,8,Bodleian-1664-08-recto,7,February,14,February,Christened in the 97 Parishes within the Walls,,,,Weekly,7February14February1664
+1664,8,Bodleian-1664-08-recto,7,February,14,February,Christened in the parishes without the Walls,,,,Weekly,7February14February1664
+1664,8,Bodleian-1664-08-recto,7,February,14,February,Christened in the Parishes and Liberties of Westminster,,,,Weekly,7February14February1664
+1664,9,Bodleian-1664-09-recto,14,February,21,February,Christened in the 97 Parishes within the Walls,,,,Weekly,14February21February1664
+1664,9,Bodleian-1664-09-recto,14,February,21,February,Christened in the parishes without the Walls,,,,Weekly,14February21February1664
+1664,9,Bodleian-1664-09-recto,14,February,21,February,Christened in the Parishes and Liberties of Westminster,,,,Weekly,14February21February1664
+1664,10,Bodleian-1664-10-recto,21,February,28,February,Christened in the 97 Parishes within the Walls,,,,Weekly,21February28February1664
+1664,10,Bodleian-1664-10-recto,21,February,28,February,Christened in the parishes without the Walls,,,,Weekly,21February28February1664
+1664,10,Bodleian-1664-10-recto,21,February,28,February,Christened in the Parishes and Liberties of Westminster,,,,Weekly,21February28February1664
+1664,11,Bodleian-1664-11-recto,28,February,7,March,Christened in the 97 Parishes within the Walls,,,,Weekly,28February7March1664
+1664,11,Bodleian-1664-11-recto,28,February,7,March,Christened in the parishes without the Walls,,,,Weekly,28February7March1664
+1664,11,Bodleian-1664-11-recto,28,February,7,March,Christened in the Parishes and Liberties of Westminster,,,,Weekly,28February7March1664
+1664,12,Bodleian-1664-12-recto,7,March,14,March,Christened in the 97 Parishes within the Walls,,,,Weekly,7March14March1664
+1664,12,Bodleian-1664-12-recto,7,March,14,March,Christened in the parishes without the Walls,,,,Weekly,7March14March1664
+1664,12,Bodleian-1664-12-recto,7,March,14,March,Christened in the Parishes and Liberties of Westminster,,,,Weekly,7March14March1664
+1664,13,Bodleian-1664-13-recto,14,March,21,March,Christened in the 97 Parishes within the Walls,,,,Weekly,14March21March1664
+1664,13,Bodleian-1664-13-recto,14,March,21,March,Christened in the parishes without the Walls,,,,Weekly,14March21March1664
+1664,13,Bodleian-1664-13-recto,14,March,21,March,Christened in the Parishes and Liberties of Westminster,,,,Weekly,14March21March1664
+1665,15,Bodleian-1665-15-recto,28,March,4,April,Christened in the 97 Parishes within the Walls,,,,Weekly,28March4April1665
+1665,15,Bodleian-1665-15-recto,28,March,4,April,Christened in the parishes without the Walls,,,,Weekly,28March4April1665
+1665,15,Bodleian-1665-15-recto,28,March,4,April,Christened in the Parishes and Liberties of Westminster,,,,Weekly,28March4April1665
+1665,16,Bodleian-1665-16-recto,4,April,11,April,Christened in the 97 Parishes within the Walls,,,,Weekly,4April11April1665
+1665,16,Bodleian-1665-16-recto,4,April,11,April,Christened in the parishes without the Walls,,,,Weekly,4April11April1665
+1665,16,Bodleian-1665-16-recto,4,April,11,April,Christened in the Parishes and Liberties of Westminster,,,,Weekly,4April11April1665
+1665,17,Bodleian-1665-17-recto,11,April,18,April,Christened in the 97 Parishes within the Walls,,,,Weekly,11April18April1665
+1665,17,Bodleian-1665-17-recto,11,April,18,April,Christened in the parishes without the Walls,,,,Weekly,11April18April1665
+1665,17,Bodleian-1665-17-recto,11,April,18,April,Christened in the Parishes and Liberties of Westminster,,,,Weekly,11April18April1665
+1665,18,Bodleian-1665-18-recto,18,April,25,April,Christened in the 97 Parishes within the Walls,,,,Weekly,18April25April1665
+1665,18,Bodleian-1665-18-recto,18,April,25,April,Christened in the parishes without the Walls,,,,Weekly,18April25April1665
+1665,18,Bodleian-1665-18-recto,18,April,25,April,Christened in the Parishes and Liberties of Westminster,,,,Weekly,18April25April1665
+1665,19,Bodleian-1665-19-recto,25,April,2,May,Christened in the 97 Parishes within the Walls,,,,Weekly,25April2May1665
+1665,19,Bodleian-1665-19-recto,25,April,2,May,Christened in the parishes without the Walls,,,,Weekly,25April2May1665
+1665,19,Bodleian-1665-19-recto,25,April,2,May,Christened in the Parishes and Liberties of Westminster,,,,Weekly,25April2May1665
+1665,20,Bodleian-1665-20-recto,2,May,9,May,Christened in the 97 Parishes within the Walls,,,,Weekly,2May9May1665
+1665,20,Bodleian-1665-20-recto,2,May,9,May,Christened in the parishes without the Walls,,,,Weekly,2May9May1665
+1665,20,Bodleian-1665-20-recto,2,May,9,May,Christened in the Parishes and Liberties of Westminster,,,,Weekly,2May9May1665
+1665,22,Bodleian-1665-22-recto,16,May,23,May,Christened in the 97 Parishes within the Walls,,,,Weekly,16May23May1665
+1665,22,Bodleian-1665-22-recto,16,May,23,May,Christened in the parishes without the Walls,,,,Weekly,16May23May1665
+1665,22,Bodleian-1665-22-recto,16,May,23,May,Christened in the Parishes and Liberties of Westminster,,,,Weekly,16May23May1665
+1665,23,Bodleian-1665-23-recto,23,May,30,May,Christened in the 97 Parishes within the Walls,,,,Weekly,23May30May1665
+1665,23,Bodleian-1665-23-recto,23,May,30,May,Christened in the parishes without the Walls,,,,Weekly,23May30May1665
+1665,23,Bodleian-1665-23-recto,23,May,30,May,Christened in the Parishes and Liberties of Westminster,,,,Weekly,23May30May1665
+1665,25,Bodleian-1665-25-recto,6,June,13,June,Christened in the 97 Parishes within the Walls,,,,Weekly,6June13June1665
+1665,25,Bodleian-1665-25-recto,6,June,13,June,Christened in the parishes without the Walls,,,,Weekly,6June13June1665
+1665,25,Bodleian-1665-25-recto,6,June,13,June,Christened in the Parishes and Liberties of Westminster,,,,Weekly,6June13June1665
+1665,26,Bodleian-1665-26-recto,13,June,20,June,Christened in the 97 Parishes within the Walls,,,,Weekly,13June20June1665
+1665,26,Bodleian-1665-26-recto,13,June,20,June,Christened in the parishes without the Walls,,,,Weekly,13June20June1665
+1665,26,Bodleian-1665-26-recto,13,June,20,June,Christened in the Parishes and Liberties of Westminster,,,,Weekly,13June20June1665
+1665,27,Bodleian-1665-27-recto,20,June,27,June,Christened in the 97 Parishes within the Walls,,,,Weekly,20June27June1665
+1665,27,Bodleian-1665-27-recto,20,June,27,June,Christened in the parishes without the Walls,,,,Weekly,20June27June1665
+1665,27,Bodleian-1665-27-recto,20,June,27,June,Christened in the Parishes and Liberties of Westminster,,,,Weekly,20June27June1665
+1665,28,Bodleian-1665-28-recto,27,June,4,July,Christened in the 97 Parishes within the Walls,,,,Weekly,27June4July1665
+1665,28,Bodleian-1665-28-recto,27,June,4,July,Christened in the parishes without the Walls,,,,Weekly,27June4July1665
+1665,28,Bodleian-1665-28-recto,27,June,4,July,Christened in the Parishes and Liberties of Westminster,,,,Weekly,27June4July1665
+1665,29,Bodleian-1665-29-recto,4,July,11,July,Christened in the 97 Parishes within the Walls,,,,Weekly,4July11July1665
+1665,29,Bodleian-1665-29-recto,4,July,11,July,Christened in the parishes without the Walls,,,,Weekly,4July11July1665
+1665,29,Bodleian-1665-29-recto,4,July,11,July,Christened in the Parishes and Liberties of Westminster,,,,Weekly,4July11July1665
+1665,30,Bodleian-1665-30-recto,11,July,18,July,Christened in the 97 Parishes within the Walls,,,,Weekly,11July18July1665
+1665,30,Bodleian-1665-30-recto,11,July,18,July,Christened in the parishes without the Walls,,,,Weekly,11July18July1665
+1665,30,Bodleian-1665-30-recto,11,July,18,July,Christened in the Parishes and Liberties of Westminster,,,,Weekly,11July18July1665
+1665,32,Bodleian-1665-32-recto,25,July,1,August,Christened in the 97 Parishes within the Walls,39,,,Weekly,25July1August1665
+1665,32,Bodleian-1665-32-recto,25,July,1,August,Christened in the parishes without the Walls,76,,,Weekly,25July1August1665
+1665,32,Bodleian-1665-32-recto,25,July,1,August,Christened in the Parishes and Liberties of Westminster,,,,Weekly,25July1August1665
+1665,33,Bodleian-1665-33-recto,1,August,8,August,Christened in the 97 Parishes within the Walls,36,,,Weekly,1August8August1665
+1665,33,Bodleian-1665-33-recto,1,August,8,August,Christened in the parishes without the Walls,67,,,Weekly,1August8August1665
+1665,33,Bodleian-1665-33-recto,1,August,8,August,Christened in the Parishes and Liberties of Westminster,22,,,Weekly,1August8August1665
+1665,34,Bodleian-1665-34-recto,8,August,15,August,Christened in the 97 Parishes within the Walls,38,,,Weekly,8August15August1665
+1665,34,Bodleian-1665-34-recto,8,August,15,August,Christened in the parishes without the Walls,62,,,Weekly,8August15August1665
+1665,34,Bodleian-1665-34-recto,8,August,15,August,Christened in the Parishes and Liberties of Westminster,21,,,Weekly,8August15August1665
+1665,35,Bodleian-1665-35-recto,15,August,22,August,Christened in the 97 Parishes within the Walls,34,,,Weekly,15August22August1665
+1665,35,Bodleian-1665-35-recto,15,August,22,August,Christened in the parishes without the Walls,61,,,Weekly,15August22August1665
+1665,35,Bodleian-1665-35-recto,15,August,22,August,Christened in the Parishes and Liberties of Westminster,27,,,Weekly,15August22August1665
+1665,36,Bodleian-1665-36-recto,22,August,29,August,Christened in the 97 Parishes within the Walls,29,,,Weekly,22August29August1665
+1665,36,Bodleian-1665-36-recto,22,August,29,August,Christened in the parishes without the Walls,61,,,Weekly,22August29August1665
+1665,36,Bodleian-1665-36-recto,22,August,29,August,Christened in the Parishes and Liberties of Westminster,21,,,Weekly,22August29August1665
+1665,37,Bodleian-1665-37-recto,29,August,5,September,Christened in the 97 Parishes within the Walls,34,,,Weekly,29August5September1665
+1665,37,Bodleian-1665-37-recto,29,August,5,September,Christened in the parishes without the Walls,64,,,Weekly,29August5September1665
+1665,37,Bodleian-1665-37-recto,29,August,5,September,Christened in the Parishes and Liberties of Westminster,20,,,Weekly,29August5September1665
+1665,38,Bodleian-1665-38-recto,5,September,12,September,Christened in the 97 Parishes within the Walls,42,,,Weekly,5September12September1665
+1665,38,Bodleian-1665-38-recto,5,September,12,September,Christened in the parishes without the Walls,58,,,Weekly,5September12September1665
+1665,38,Bodleian-1665-38-recto,5,September,12,September,Christened in the Parishes and Liberties of Westminster,25,,,Weekly,5September12September1665
+1665,39,Bodleian-1665-39-recto,12,September,19,September,Christened in the 97 Parishes within the Walls,40,,,Weekly,12September19September1665
+1665,39,Bodleian-1665-39-recto,12,September,19,September,Christened in the parishes without the Walls,65,,,Weekly,12September19September1665
+1665,39,Bodleian-1665-39-recto,12,September,19,September,Christened in the Parishes and Liberties of Westminster,29,,,Weekly,12September19September1665
+1665,44,Bodleian-1665-44-recto,17,October,24,October,Christened in the 97 Parishes within the Walls,21,,,Weekly,17October24October1665
+1665,44,Bodleian-1665-44-recto,17,October,24,October,Christened in the parishes without the Walls,34,,,Weekly,17October24October1665
+1665,44,Bodleian-1665-44-recto,17,October,24,October,Christened in the Parishes and Liberties of Westminster,14,,,Weekly,17October24October1665
+1665,46,Bodleian-1665-46-recto,31,October,7,November,Christened in the 97 Parishes within the Walls,23,,,Weekly,31October7November1665
+1665,46,Bodleian-1665-46-recto,31,October,7,November,Christened in the parishes without the Walls,32,,,Weekly,31October7November1665
+1665,46,Bodleian-1665-46-recto,31,October,7,November,Christened in the Parishes and Liberties of Westminster,12,,,Weekly,31October7November1665
+1665,47,Bodleian-1665-47-recto,7,November,14,November,Christened in the 97 Parishes within the Walls,29,,,Weekly,7November14November1665
+1665,47,Bodleian-1665-47-recto,7,November,14,November,Christened in the parishes without the Walls,30,,,Weekly,7November14November1665
+1665,47,Bodleian-1665-47-recto,7,November,14,November,Christened in the Parishes and Liberties of Westminster,20,,,Weekly,7November14November1665
+1665,48,Bodleian-1665-48-recto,14,November,21,November,Christened in the 97 Parishes within the Walls,27,,,Weekly,14November21November1665
+1665,48,Bodleian-1665-48-recto,14,November,21,November,Christened in the parishes without the Walls,31,,,Weekly,14November21November1665
+1665,48,Bodleian-1665-48-recto,14,November,21,November,Christened in the Parishes and Liberties of Westminster,21,,,Weekly,14November21November1665
+1665,49,Bodleian-1665-49-recto,21,November,28,November,Christened in the 97 Parishes within the Walls,31,,,Weekly,21November28November1665
+1665,49,Bodleian-1665-49-recto,21,November,28,November,Christened in the parishes without the Walls,35,,,Weekly,21November28November1665
+1665,49,Bodleian-1665-49-recto,21,November,28,November,Christened in the Parishes and Liberties of Westminster,19,,,Weekly,21November28November1665
+1665,50,Bodleian-1655-50-recto,28,November,5,December,Christened in the 97 Parishes within the Walls,37,,,Weekly,28November5December1665
+1665,50,Bodleian-1655-50-recto,28,November,5,December,Christened in the parishes without the Walls,32,,,Weekly,28November5December1665
+1665,50,Bodleian-1655-50-recto,28,November,5,December,Christened in the Parishes and Liberties of Westminster,21,,,Weekly,28November5December1665
+1665,51,Bodleian-1665-51-recto,5,December,12,December,Christened in the 97 Parishes within the Walls,31,,,Weekly,5December12December1665
+1665,51,Bodleian-1665-51-recto,5,December,12,December,Christened in the parishes without the Walls,51,,,Weekly,5December12December1665
+1665,51,Bodleian-1665-51-recto,5,December,12,December,Christened in the Parishes and Liberties of Westminster,13,,,Weekly,5December12December1665
+1665,52,Bodleian-1665-52-recto,12,December,19,December,Christened in the 97 Parishes within the Walls,39,,,Weekly,12December19December1665
+1665,52,Bodleian-1665-52-recto,12,December,19,December,Christened in the parishes without the Walls,48,,,Weekly,12December19December1665
+1665,52,Bodleian-1665-52-recto,12,December,19,December,Christened in the Parishes and Liberties of Westminster,21,,,Weekly,12December19December1665
+1665,1,Bodleian-1665-01-recto,19,December,26,December,Christened in the 97 Parishes within the Walls,17,,,Weekly,19December26December1665
+1665,1,Bodleian-1665-01-recto,19,December,26,December,Christened in the parishes without the Walls,35,,,Weekly,19December26December1665
+1665,1,Bodleian-1665-01-recto,19,December,26,December,Christened in the Parishes and Liberties of Westminster,16,,,Weekly,19December26December1665
+1665,2,Bodleian-1665-02-recto,26,December,2,January,Christened in the 97 Parishes within the Walls,27,,,Weekly,26December2January1665
+1665,2,Bodleian-1665-02-recto,26,December,2,January,Christened in the parishes without the Walls,44,,,Weekly,26December2January1665
+1665,2,Bodleian-1665-02-recto,26,December,2,January,Christened in the Parishes and Liberties of Westminster,24,,,Weekly,26December2January1665
+1665,3,Bodleian-1665-03-recto,2,January,9,January,Christened in the 97 Parishes within the Walls,39,,,Weekly,2January9January1665
+1665,3,Bodleian-1665-03-recto,2,January,9,January,Christened in the parishes without the Walls,47,,,Weekly,2January9January1665
+1665,3,Bodleian-1665-03-recto,2,January,9,January,Christened in the Parishes and Liberties of Westminster,20,,,Weekly,2January9January1665
+1665,4,Bodleian-1665-04-recto,9,January,16,January,Christened in the 97 Parishes within the Walls,35,,,Weekly,9January16January1665
+1665,4,Bodleian-1665-04-recto,9,January,16,January,Christened in the parishes without the Walls,41,,,Weekly,9January16January1665
+1665,4,Bodleian-1665-04-recto,9,January,16,January,Christened in the Parishes and Liberties of Westminster,22,,,Weekly,9January16January1665
+1665,5,Bodleian-1665-05-recto,16,January,23,January,Christened in the 97 Parishes within the Walls,31,,,Weekly,16January23January1665
+1665,5,Bodleian-1665-05-recto,16,January,23,January,Christened in the parishes without the Walls,59,,,Weekly,16January23January1665
+1665,5,Bodleian-1665-05-recto,16,January,23,January,Christened in the Parishes and Liberties of Westminster,25,,,Weekly,16January23January1665
+1665,6,Bodleian-1665-06-recto,23,January,30,January,Christened in the 97 Parishes within the Walls,25,,,Weekly,23January30January1665
+1665,6,Bodleian-1665-06-recto,23,January,30,January,Christened in the parishes without the Walls,61,,,Weekly,23January30January1665
+1665,6,Bodleian-1665-06-recto,23,January,30,January,Christened in the Parishes and Liberties of Westminster,26,,,Weekly,23January30January1665
+1665,7,Bodleian-1665-07-recto,30,January,6,February,Christened in the 97 Parishes within the Walls,32,,,Weekly,30January6February1665
+1665,7,Bodleian-1665-07-recto,30,January,6,February,Christened in the parishes without the Walls,51,,,Weekly,30January6February1665
+1665,7,Bodleian-1665-07-recto,30,January,6,February,Christened in the Parishes and Liberties of Westminster,27,,,Weekly,30January6February1665
+1665,8,Bodleian-1665-08-recto,6,February,13,February,Christened in the 97 Parishes within the Walls,35,,,Weekly,6February13February1665
+1665,8,Bodleian-1665-08-recto,6,February,13,February,Christened in the parishes without the Walls,57,,,Weekly,6February13February1665
+1665,8,Bodleian-1665-08-recto,6,February,13,February,Christened in the Parishes and Liberties of Westminster,35,,,Weekly,6February13February1665
+1665,9,Bodleian-1665-09-recto,13,February,20,February,Christened in the 97 Parishes within the Walls,37,,,Weekly,13February20February1665
+1665,9,Bodleian-1665-09-recto,13,February,20,February,Christened in the parishes without the Walls,62,,,Weekly,13February20February1665
+1665,9,Bodleian-1665-09-recto,13,February,20,February,Christened in the Parishes and Liberties of Westminster,24,,,Weekly,13February20February1665
+1665,10,Bodleian-1665-10-recto,20,February,27,February,Christened in the 97 Parishes within the Walls,30,,,Weekly,20February27February1665
+1665,10,Bodleian-1665-10-recto,20,February,27,February,Christened in the parishes without the Walls,56,,,Weekly,20February27February1665
+1665,10,Bodleian-1665-10-recto,20,February,27,February,Christened in the Parishes and Liberties of Westminster,24,,,Weekly,20February27February1665
+1665,11,Bodleian-1665-11-recto,27,February,6,March,Christened in the 97 Parishes within the Walls,37,,,Weekly,27February6March1665
+1665,11,Bodleian-1665-11-recto,27,February,6,March,Christened in the parishes without the Walls,52,,,Weekly,27February6March1665
+1665,11,Bodleian-1665-11-recto,27,February,6,March,Christened in the Parishes and Liberties of Westminster,22,,,Weekly,27February6March1665
+1665,12,Bodleian-1665-12-recto,6,March,13,March,Christened in the 97 Parishes within the Walls,41,,,Weekly,6March13March1665
+1665,12,Bodleian-1665-12-recto,6,March,13,March,Christened in the parishes without the Walls,57,,,Weekly,6March13March1665
+1665,12,Bodleian-1665-12-recto,6,March,13,March,Christened in the Parishes and Liberties of Westminster,29,,,Weekly,6March13March1665
+1665,13,Bodleian-1665-13-recto,13,March,20,March,Christened in the 97 Parishes within the Walls,45,,,Weekly,13March20March1665
+1665,13,Bodleian-1665-13-recto,13,March,20,March,Christened in the parishes without the Walls,60,,,Weekly,13March20March1665
+1665,13,Bodleian-1665-13-recto,13,March,20,March,Christened in the Parishes and Liberties of Westminster,42,,,Weekly,13March20March1665
+1666,25,Bodleian-1666-25-recto,5,June,12,June,Christened in the 97 Parishes within the Walls,32,,,Weekly,5June12June1666
+1666,25,Bodleian-1666-25-recto,5,June,12,June,Christened in the parishes without the Walls,44,,,Weekly,5June12June1666
+1666,25,Bodleian-1666-25-recto,5,June,12,June,Christened in the Parishes and Liberties of Westminster,18,,,Weekly,5June12June1666
+1669,22,Bodleian-1669-22-recto,18,May,25,May,Christened in the 97 Parishes within the Walls,11,,,Weekly,18May25May1669
+1669,22,Bodleian-1669-22-recto,18,May,25,May,Christened in the parishes without the Walls,90,,,Weekly,18May25May1669
+1669,22,Bodleian-1669-22-recto,18,May,25,May,Christened in the Parishes and Liberties of Westminster,43,,,Weekly,18May25May1669
+1669,23,Bodleian-1669-23-recto,25,May,1,June,Christened in the 97 Parishes within the Walls,9,,,Weekly,25May1June1669
+1669,23,Bodleian-1669-23-recto,25,May,1,June,Christened in the parishes without the Walls,84,,,Weekly,25May1June1669
+1669,23,Bodleian-1669-23-recto,25,May,1,June,Christened in the Parishes and Liberties of Westminster,31,,,Weekly,25May1June1669
+1669,25,Bodleian-1669-25-recto,8,June,15,June,Christened in the 97 Parishes within the Walls,9,,,Weekly,8June15June1669
+1669,25,Bodleian-1669-25-recto,8,June,15,June,Christened in the parishes without the Walls,94,,,Weekly,8June15June1669
+1669,25,Bodleian-1669-25-recto,8,June,15,June,Christened in the Parishes and Liberties of Westminster,58,,,Weekly,8June15June1669
+1669,26,Bodleian-1669-26-recto,15,June,22,June,Christened in the 97 Parishes within the Walls,13,,,Weekly,15June22June1669
+1669,26,Bodleian-1669-26-recto,15,June,22,June,Christened in the parishes without the Walls,90,,,Weekly,15June22June1669
+1669,26,Bodleian-1669-26-recto,15,June,22,June,Christened in the Parishes and Liberties of Westminster,41,,,Weekly,15June22June1669
+1669,27,Bodleian-1669-27-recto,22,June,29,June,Christened in the 97 Parishes within the Walls,19,,,Weekly,22June29June1669
+1669,27,Bodleian-1669-27-recto,22,June,29,June,Christened in the parishes without the Walls,70,,,Weekly,22June29June1669
+1669,27,Bodleian-1669-27-recto,22,June,29,June,Christened in the Parishes and Liberties of Westminster,38,,,Weekly,22June29June1669
+1669,28,Bodleian-1669-28-recto,29,June,6,July,Christened in the 97 Parishes within the Walls,13,,,Weekly,29June6July1669
+1669,28,Bodleian-1669-28-recto,29,June,6,July,Christened in the parishes without the Walls,86,,,Weekly,29June6July1669
+1669,28,Bodleian-1669-28-recto,29,June,6,July,Christened in the Parishes and Liberties of Westminster,37,,,Weekly,29June6July1669
+1669,29,Bodleian-1669-29-recto,6,July,13,July,Christened in the 97 Parishes within the Walls,14,,,Weekly,6July13July1669
+1669,29,Bodleian-1669-29-recto,6,July,13,July,Christened in the parishes without the Walls,82,,,Weekly,6July13July1669
+1669,29,Bodleian-1669-29-recto,6,July,13,July,Christened in the Parishes and Liberties of Westminster,47,,,Weekly,6July13July1669
+1669,30,Bodleian-1669-30-recto,13,July,20,July,Christened in the 97 Parishes within the Walls,7,,,Weekly,13July20July1669
+1669,30,Bodleian-1669-30-recto,13,July,20,July,Christened in the parishes without the Walls,80,,,Weekly,13July20July1669
+1669,30,Bodleian-1669-30-recto,13,July,20,July,Christened in the Parishes and Liberties of Westminster,53,,,Weekly,13July20July1669
+1669,31,Bodleian-1669-31-recto,20,July,27,July,Christened in the 97 Parishes within the Walls,10,,,Weekly,20July27July1669
+1669,31,Bodleian-1669-31-recto,20,July,27,July,Christened in the parishes without the Walls,75,,,Weekly,20July27July1669
+1669,31,Bodleian-1669-31-recto,20,July,27,July,Christened in the Parishes and Liberties of Westminster,41,,,Weekly,20July27July1669
+1669,34,Bodleian-1669-34-recto,10,August,17,August,Christened in the 97 Parishes within the Walls,11,,,Weekly,10August17August1669
+1669,34,Bodleian-1669-34-recto,10,August,17,August,Christened in the parishes without the Walls,85,,,Weekly,10August17August1669
+1669,34,Bodleian-1669-34-recto,10,August,17,August,Christened in the Parishes and Liberties of Westminster,48,,,Weekly,10August17August1669
+1669,36,Bodleian-1669-36-recto,24,August,31,August,Christened in the 97 Parishes within the Walls,12,,,Weekly,24August31August1669
+1669,36,Bodleian-1669-36-recto,24,August,31,August,Christened in the parishes without the Walls,101,,,Weekly,24August31August1669
+1669,36,Bodleian-1669-36-recto,24,August,31,August,Christened in the Parishes and Liberties of Westminster,58,,,Weekly,24August31August1669
+1669,37,Bodleian-1669-37-recto,31,August,7,September,Christened in the 97 Parishes within the Walls,12,,,Weekly,31August7September1669
+1669,37,Bodleian-1669-37-recto,31,August,7,September,Christened in the parishes without the Walls,79,,,Weekly,31August7September1669
+1669,37,Bodleian-1669-37-recto,31,August,7,September,Christened in the Parishes and Liberties of Westminster,47,,,Weekly,31August7September1669
+1669,38,Bodleian-1669-38-recto,7,September,14,September,Christened in the 97 Parishes within the Walls,21,,,Weekly,7September14September1669
+1669,38,Bodleian-1669-38-recto,7,September,14,September,Christened in the parishes without the Walls,87,,,Weekly,7September14September1669
+1669,38,Bodleian-1669-38-recto,7,September,14,September,Christened in the Parishes and Liberties of Westminster,51,,,Weekly,7September14September1669
+1669,39,Bodleian-1669-39-recto,14,September,21,September,Christened in the 97 Parishes within the Walls,17,,,Weekly,14September21September1669
+1669,39,Bodleian-1669-39-recto,14,September,21,September,Christened in the parishes without the Walls,88,,,Weekly,14September21September1669
+1669,39,Bodleian-1669-39-recto,14,September,21,September,Christened in the Parishes and Liberties of Westminster,59,,,Weekly,14September21September1669
+1669,41,Bodleian-1669-41-recto,28,September,5,October,Christened in the 97 Parishes within the Walls,13,,,Weekly,28September5October1669
+1669,41,Bodleian-1669-41-recto,28,September,5,October,Christened in the parishes without the Walls,98,,,Weekly,28September5October1669
+1669,41,Bodleian-1669-41-recto,28,September,5,October,Christened in the Parishes and Liberties of Westminster,62,,,Weekly,28September5October1669
+1669,42,Bodleian-1669-42-recto,5,October,12,October,Christened in the 97 Parishes within the Walls,11,,,Weekly,5October12October1669
+1669,42,Bodleian-1669-42-recto,5,October,12,October,Christened in the parishes without the Walls,108,,,Weekly,5October12October1669
+1669,42,Bodleian-1669-42-recto,5,October,12,October,Christened in the Parishes and Liberties of Westminster,46,,,Weekly,5October12October1669
+1669,43,Bodleian-1669-43-recto,12,October,19,October,Christened in the 97 Parishes within the Walls,15,,,Weekly,12October19October1669
+1669,43,Bodleian-1669-43-recto,12,October,19,October,Christened in the parishes without the Walls,90,,,Weekly,12October19October1669
+1669,43,Bodleian-1669-43-recto,12,October,19,October,Christened in the Parishes and Liberties of Westminster,59,,,Weekly,12October19October1669
+1669,44,Bodleian-1669-44-recto,19,October,26,October,Christened in the 97 Parishes within the Walls,14,,,Weekly,19October26October1669
+1669,44,Bodleian-1669-44-recto,19,October,26,October,Christened in the parishes without the Walls,76,,,Weekly,19October26October1669
+1669,44,Bodleian-1669-44-recto,19,October,26,October,Christened in the Parishes and Liberties of Westminster,46,,,Weekly,19October26October1669
+1669,45,Bodleian-1669-45-recto,26,October,2,November,Christened in the 97 Parishes within the Walls,8,,,Weekly,26October2November1669
+1669,45,Bodleian-1669-45-recto,26,October,2,November,Christened in the parishes without the Walls,85,,,Weekly,26October2November1669
+1669,45,Bodleian-1669-45-recto,26,October,2,November,Christened in the Parishes and Liberties of Westminster,45,,,Weekly,26October2November1669
+1669,46,Bodleian-1669-46-recto,2,November,9,November,Christened in the 97 Parishes within the Walls,14,,,Weekly,2November9November1669
+1669,46,Bodleian-1669-46-recto,2,November,9,November,Christened in the parishes without the Walls,94,,,Weekly,2November9November1669
+1669,46,Bodleian-1669-46-recto,2,November,9,November,Christened in the Parishes and Liberties of Westminster,41,,,Weekly,2November9November1669
+1669,47,Bodleian-1669-47-recto,9,November,16,November,Christened in the 97 Parishes within the Walls,12,,,Weekly,9November16November1669
+1669,47,Bodleian-1669-47-recto,9,November,16,November,Christened in the parishes without the Walls,88,,,Weekly,9November16November1669
+1669,47,Bodleian-1669-47-recto,9,November,16,November,Christened in the Parishes and Liberties of Westminster,49,,,Weekly,9November16November1669
+1669,48,Bodleian-1669-48-recto,16,November,23,November,Christened in the 97 Parishes within the Walls,18,,,Weekly,16November23November1669
+1669,48,Bodleian-1669-48-recto,16,November,23,November,Christened in the parishes without the Walls,98,,,Weekly,16November23November1669
+1669,48,Bodleian-1669-48-recto,16,November,23,November,Christened in the Parishes and Liberties of Westminster,39,,,Weekly,16November23November1669
+1669,49,Bodleian-1669-49-recto,23,November,30,November,Christened in the 97 Parishes within the Walls,12,,,Weekly,23November30November1669
+1669,49,Bodleian-1669-49-recto,23,November,30,November,Christened in the parishes without the Walls,89,,,Weekly,23November30November1669
+1669,49,Bodleian-1669-49-recto,23,November,30,November,Christened in the Parishes and Liberties of Westminster,45,,,Weekly,23November30November1669
+1669,50,Bodleian-1669-50-recto,30,November,7,December,Christened in the 97 Parishes within the Walls,40,,,Weekly,30November7December1669
+1669,50,Bodleian-1669-50-recto,30,November,7,December,Christened in the parishes without the Walls,91,,,Weekly,30November7December1669
+1669,50,Bodleian-1669-50-recto,30,November,7,December,Christened in the Parishes and Liberties of Westminster,43,,,Weekly,30November7December1669
+1669,51,Bodleian-1669-51-recto,7,December,14,December,Christened in the 97 Parishes within the Walls,14,,,Weekly,7December14December1669
+1669,51,Bodleian-1669-51-recto,7,December,14,December,Christened in the parishes without the Walls,100,,,Weekly,7December14December1669
+1669,51,Bodleian-1669-51-recto,7,December,14,December,Christened in the Parishes and Liberties of Westminster,51,,,Weekly,7December14December1669
+1669,52,Bodleian-1669-52-recto,14,December,21,December,Christened in the 97 Parishes within the Walls,12,,,Weekly,14December21December1669
+1669,52,Bodleian-1669-52-recto,14,December,21,December,Christened in the parishes without the Walls,95,,,Weekly,14December21December1669
+1669,52,Bodleian-1669-52-recto,14,December,21,December,Christened in the Parishes and Liberties of Westminster,33,,,Weekly,14December21December1669
+1669,1,Bodleian-1669-01-recto,21,December,28,December,Christened in the 97 Parishes within the Walls,11,,,Weekly,21December28December1669
+1669,1,Bodleian-1669-01-recto,21,December,28,December,Christened in the parishes without the Walls,81,,,Weekly,21December28December1669
+1669,1,Bodleian-1669-01-recto,21,December,28,December,Christened in the Parishes and Liberties of Westminster,45,,,Weekly,21December28December1669
+,,,,,,,Christened in the 97 Parishes within the Walls,,,,Weekly,NANANANANA
+,,,,,,,Christened in the parishes without the Walls,,,,Weekly,NANANANANA
+,,,,,,,Christened in the Parishes and Liberties of Westminster,,,,Weekly,NANANANANA
+,,,,,,,Christened in the 97 Parishes within the Walls,,,,Weekly,NANANANANA
+,,,,,,,Christened in the parishes without the Walls,,,,Weekly,NANANANANA
+,,,,,,,Christened in the Parishes and Liberties of Westminster,,,,Weekly,NANANANANA
+1669,4,Bodleian-1669-04-recto,11,,18,,Christened in the 97 Parishes within the Walls,15,,,Weekly,11NA18NA1669
+1669,4,Bodleian-1669-04-recto,11,,18,,Christened in the parishes without the Walls,77,,,Weekly,11NA18NA1669
+1669,4,Bodleian-1669-04-recto,11,,18,,Christened in the Parishes and Liberties of Westminster,57,,,Weekly,11NA18NA1669
+1669,5,Bodleian-1669-05-recto,18,January,25,January,Christened in the 97 Parishes within the Walls,8,,,Weekly,18January25January1669
+1669,5,Bodleian-1669-05-recto,18,January,25,January,Christened in the parishes without the Walls,104,,,Weekly,18January25January1669
+1669,5,Bodleian-1669-05-recto,18,January,25,January,Christened in the Parishes and Liberties of Westminster,46,,,Weekly,18January25January1669
+1669,6,Bodleian-1669-06-recto,25,January,1,February,Christened in the 97 Parishes within the Walls,14,,,Weekly,25January1February1669
+1669,6,Bodleian-1669-06-recto,25,January,1,February,Christened in the parishes without the Walls,102,,,Weekly,25January1February1669
+1669,6,Bodleian-1669-06-recto,25,January,1,February,Christened in the Parishes and Liberties of Westminster,52,,,Weekly,25January1February1669
+1669,7,Bodleian-1669-07-recto,1,February,8,February,Christened in the 97 Parishes within the Walls,23,,,Weekly,1February8February1669
+1669,7,Bodleian-1669-07-recto,1,February,8,February,Christened in the parishes without the Walls,89,,,Weekly,1February8February1669
+1669,7,Bodleian-1669-07-recto,1,February,8,February,Christened in the Parishes and Liberties of Westminster,50,,,Weekly,1February8February1669
+1669,8,Bodleian-1669-08-recto,8,February,15,February,Christened in the 97 Parishes within the Walls,9,,,Weekly,8February15February1669
+1669,8,Bodleian-1669-08-recto,8,February,15,February,Christened in the parishes without the Walls,107,,,Weekly,8February15February1669
+1669,8,Bodleian-1669-08-recto,8,February,15,February,Christened in the Parishes and Liberties of Westminster,47,,,Weekly,8February15February1669
+1669,9,Bodleian-1669-09-recto,15,February,22,February,Christened in the 97 Parishes within the Walls,14,,,Weekly,15February22February1669
+1669,9,Bodleian-1669-09-recto,15,February,22,February,Christened in the parishes without the Walls,100,,,Weekly,15February22February1669
+1669,9,Bodleian-1669-09-recto,15,February,22,February,Christened in the Parishes and Liberties of Westminster,53,,,Weekly,15February22February1669
+1669,10,Bodleian-1669-10-recto,22,February,1,March,Christened in the 97 Parishes within the Walls,12,,,Weekly,22February1March1669
+1669,10,Bodleian-1669-10-recto,22,February,1,March,Christened in the parishes without the Walls,83,,,Weekly,22February1March1669
+1669,10,Bodleian-1669-10-recto,22,February,1,March,Christened in the Parishes and Liberties of Westminster,61,,,Weekly,22February1March1669
+1669,11,Bodleian-1669-11-recto,1,March,8,March,Christened in the 97 Parishes within the Walls,20,,,Weekly,1March8March1669
+1669,11,Bodleian-1669-11-recto,1,March,8,March,Christened in the parishes without the Walls,103,,,Weekly,1March8March1669
+1669,11,Bodleian-1669-11-recto,1,March,8,March,Christened in the Parishes and Liberties of Westminster,76,,,Weekly,1March8March1669
+1669,12,Bodleian-1669-12-recto,8,March,15,March,Christened in the 97 Parishes within the Walls,20,,,Weekly,8March15March1669
+1669,12,Bodleian-1669-12-recto,8,March,15,March,Christened in the parishes without the Walls,109,,,Weekly,8March15March1669
+1669,12,Bodleian-1669-12-recto,8,March,15,March,Christened in the Parishes and Liberties of Westminster,60,,,Weekly,8March15March1669
+1669,13,Bodleian-1669-13-recto,15,March,22,March,Christened in the 97 Parishes within the Walls,11,,,Weekly,15March22March1669
+1669,13,Bodleian-1669-13-recto,15,March,22,March,Christened in the parishes without the Walls,87,,,Weekly,15March22March1669
+1669,13,Bodleian-1669-13-recto,15,March,22,March,Christened in the Parishes and Liberties of Westminster,59,,,Weekly,15March22March1669
+1672,8,Bodleian-1672-08-recto,4,February,11,February,Christened in the 97 Parishes within the Walls,21,,,Weekly,4February11February1672
+1672,8,Bodleian-1672-08-recto,4,February,11,February,Christened in the parishes without the Walls,103,,,Weekly,4February11February1672
+1672,8,Bodleian-1672-08-recto,4,February,11,February,Christened in the Parishes and Liberties of Westminster,55,,,Weekly,4February11February1672
+1674,20,Bodleian-1674-20-recto,30,June,7,July,Christened in the 97 Parishes within the Walls,31,,,Weekly,30June7July1674
+1674,20,Bodleian-1674-20-recto,30,June,7,July,Christened in the parishes without the Walls,63,,,Weekly,30June7July1674
+1674,20,Bodleian-1674-20-recto,30,June,7,July,Christened in the Parishes and Liberties of Westminster,35,,,Weekly,30June7July1674
+1674,33,Bodleian-1674-33-recto,28,July,4,August,Christened in the 97 Parishes within the Walls,29,,,Weekly,28July4August1674
+1674,33,Bodleian-1674-33-recto,28,July,4,August,Christened in the parishes without the Walls,80,,,Weekly,28July4August1674
+1674,33,Bodleian-1674-33-recto,28,July,4,August,Christened in the Parishes and Liberties of Westminster,46,,,Weekly,28July4August1674
+1674,26,Bodleian-1674-26-recto,18,August,25,August,Christened in the 97 Parishes within the Walls,29,,,Weekly,18August25August1674
+1674,26,Bodleian-1674-26-recto,18,August,25,August,Christened in the parishes without the Walls,67,,,Weekly,18August25August1674
+1674,26,Bodleian-1674-26-recto,18,August,25,August,Christened in the Parishes and Liberties of Westminster,39,,,Weekly,18August25August1674
+1674,34,Bodleian-1674-34-recto,4,August,11,August,Christened in the 97 Parishes within the Walls,28,,,Weekly,4August11August1674
+1674,34,Bodleian-1674-34-recto,4,August,11,August,Christened in the parishes without the Walls,79,,,Weekly,4August11August1674
+1674,34,Bodleian-1674-34-recto,4,August,11,August,Christened in the Parishes and Liberties of Westminster,55,,,Weekly,4August11August1674
+1674,1,Bodleian-1674-01-recto,15,December,22,December,Christened in the 97 Parishes within the Walls,21,,,Weekly,15December22December1674
+1674,1,Bodleian-1674-01-recto,15,December,22,December,Christened in the parishes without the Walls,67,,,Weekly,15December22December1674
+1674,1,Bodleian-1674-01-recto,15,December,22,December,Christened in the Parishes and Liberties of Westminster,40,,,Weekly,15December22December1674
+1675,29,Bodleian-1675-29-recto,29,June,6,July,Christened in the 97 Parishes within the Walls,24,,,Weekly,29June6July1675
+1675,29,Bodleian-1675-29-recto,29,June,6,July,Christened in the parishes without the Walls,53,,,Weekly,29June6July1675
+1675,29,Bodleian-1675-29-recto,29,June,6,July,Christened in the Parishes and Liberties of Westminster,43,,,Weekly,29June6July1675
+1675,41,Bodleian-1675-41-recto,21,September,28,September,Christened in the 97 Parishes within the Walls,44,,,Weekly,21September28September1675
+1675,41,Bodleian-1675-41-recto,21,September,28,September,Christened in the parishes without the Walls,72,,,Weekly,21September28September1675
+1675,41,Bodleian-1675-41-recto,21,September,28,September,Christened in the Parishes and Liberties of Westminster,43,,,Weekly,21September28September1675
+1675,1,Bodleian-1675-01-recto,14,December,21,December,Christened in the 97 Parishes within the Walls,35,,,Weekly,14December21December1675
+1675,1,Bodleian-1675-01-recto,14,December,21,December,Christened in the parishes without the Walls,71,,,Weekly,14December21December1675
+1675,1,Bodleian-1675-01-recto,14,December,21,December,Christened in the Parishes and Liberties of Westminster,44,,,Weekly,14December21December1675
+1675,2,Bodleian-1675-02-recto,21,December,28,December,Christened in the 97 Parishes within the Walls,24,,,Weekly,21December28December1675
+1675,2,Bodleian-1675-02-recto,21,December,28,December,Christened in the parishes without the Walls,61,,,Weekly,21December28December1675
+1675,2,Bodleian-1675-02-recto,21,December,28,December,Christened in the Parishes and Liberties of Westminster,44,,,Weekly,21December28December1675
+1675,3,Bodleian-1675-03-recto,28,December,4,January,Christened in the 97 Parishes within the Walls,25,,,Weekly,28December4January1675
+1675,3,Bodleian-1675-03-recto,28,December,4,January,Christened in the parishes without the Walls,78,,,Weekly,28December4January1675
+1675,3,Bodleian-1675-03-recto,28,December,4,January,Christened in the Parishes and Liberties of Westminster,46,,,Weekly,28December4January1675
+1675,4,Bodleian-1675-04-recto,4,January,11,January,Christened in the 97 Parishes within the Walls,35,,,Weekly,4January11January1675
+1675,4,Bodleian-1675-04-recto,4,January,11,January,Christened in the parishes without the Walls,83,,,Weekly,4January11January1675
+1675,4,Bodleian-1675-04-recto,4,January,11,January,Christened in the Parishes and Liberties of Westminster,39,,,Weekly,4January11January1675
+1675,5,Bodleian-1675-05-recto,11,January,18,January,Christened in the 97 Parishes within the Walls,50,,,Weekly,11January18January1675
+1675,5,Bodleian-1675-05-recto,11,January,18,January,Christened in the parishes without the Walls,78,,,Weekly,11January18January1675
+1675,5,Bodleian-1675-05-recto,11,January,18,January,Christened in the Parishes and Liberties of Westminster,49,,,Weekly,11January18January1675
+1675,6,Bodleian-1675-06-recto,18,January,25,January,Christened in the 97 Parishes within the Walls,29,,,Weekly,18January25January1675
+1675,6,Bodleian-1675-06-recto,18,January,25,January,Christened in the parishes without the Walls,80,,,Weekly,18January25January1675
+1675,6,Bodleian-1675-06-recto,18,January,25,January,Christened in the Parishes and Liberties of Westminster,60,,,Weekly,18January25January1675
+1675,7,Bodleian-1675-07-recto,25,January,1,February,Christened in the 97 Parishes within the Walls,36,,,Weekly,25January1February1675
+1675,7,Bodleian-1675-07-recto,25,January,1,February,Christened in the parishes without the Walls,91,,,Weekly,25January1February1675
+1675,7,Bodleian-1675-07-recto,25,January,1,February,Christened in the Parishes and Liberties of Westminster,57,,,Weekly,25January1February1675
+1675,8,Bodleian-1675-08-recto,1,February,8,February,Christened in the 97 Parishes within the Walls,26,,,Weekly,1February8February1675
+1675,8,Bodleian-1675-08-recto,1,February,8,February,Christened in the parishes without the Walls,86,,,Weekly,1February8February1675
+1675,8,Bodleian-1675-08-recto,1,February,8,February,Christened in the Parishes and Liberties of Westminster,51,,,Weekly,1February8February1675
+1675,9,Bodleian-1675-09-recto,8,February,15,February,Christened in the 97 Parishes within the Walls,39,,,Weekly,8February15February1675
+1675,9,Bodleian-1675-09-recto,8,February,15,February,Christened in the parishes without the Walls,91,,,Weekly,8February15February1675
+1675,9,Bodleian-1675-09-recto,8,February,15,February,Christened in the Parishes and Liberties of Westminster,62,,,Weekly,8February15February1675
+1675,10,Bodleian-1675-10-recto,15,February,22,February,Christened in the 97 Parishes within the Walls,43,,,Weekly,15February22February1675
+1675,10,Bodleian-1675-10-recto,15,February,22,February,Christened in the parishes without the Walls,87,,,Weekly,15February22February1675
+1675,10,Bodleian-1675-10-recto,15,February,22,February,Christened in the Parishes and Liberties of Westminster,48,,,Weekly,15February22February1675
+1675,11,Bodleian-1675-11-recto,22,February,29,February,Christened in the 97 Parishes within the Walls,29,,,Weekly,22February29February1675
+1675,11,Bodleian-1675-11-recto,22,February,29,February,Christened in the parishes without the Walls,,,,Weekly,22February29February1675
+1675,11,Bodleian-1675-11-recto,22,February,29,February,Christened in the Parishes and Liberties of Westminster,37,,,Weekly,22February29February1675
+1675,12,Bodleian-1675-12-recto,29,February,7,March,Christened in the 97 Parishes within the Walls,35,,,Weekly,29February7March1675
+1675,12,Bodleian-1675-12-recto,29,February,7,March,Christened in the parishes without the Walls,77,,,Weekly,29February7March1675
+1675,12,Bodleian-1675-12-recto,29,February,7,March,Christened in the Parishes and Liberties of Westminster,60,,,Weekly,29February7March1675
+1675,13,Bodleian-1675-13-recto,7,March,14,March,Christened in the 97 Parishes within the Walls,39,,,Weekly,7March14March1675
+1675,13,Bodleian-1675-13-recto,7,March,14,March,Christened in the parishes without the Walls,104,,,Weekly,7March14March1675
+1675,13,Bodleian-1675-13-recto,7,March,14,March,Christened in the Parishes and Liberties of Westminster,56,,,Weekly,7March14March1675
+1676,15,Bodleian-1676-15-recto,21,March,28,March,Christened in the 97 Parishes within the Walls,25,,,Weekly,21March28March1676
+1676,15,Bodleian-1676-15-recto,21,March,28,March,Christened in the parishes without the Walls,82,,,Weekly,21March28March1676
+1676,15,Bodleian-1676-15-recto,21,March,28,March,Christened in the Parishes and Liberties of Westminster,36,,,Weekly,21March28March1676
+1676,16,Bodleian-1676-16-recto,28,March,4,April,Christened in the 97 Parishes within the Walls,50,,,Weekly,28March4April1676
+1676,16,Bodleian-1676-16-recto,28,March,4,April,Christened in the parishes without the Walls,97,,,Weekly,28March4April1676
+1676,16,Bodleian-1676-16-recto,28,March,4,April,Christened in the Parishes and Liberties of Westminster,49,,,Weekly,28March4April1676
+1676,17,Bodleian-1676-01-recto,4,April,11,April,Christened in the 97 Parishes within the Walls,40,,,Weekly,4April11April1676
+1676,17,Bodleian-1676-01-recto,4,April,11,April,Christened in the parishes without the Walls,102,,,Weekly,4April11April1676
+1676,17,Bodleian-1676-01-recto,4,April,11,April,Christened in the Parishes and Liberties of Westminster,58,,,Weekly,4April11April1676
+1676,18,Bodleian-1676-18-recto,13,April,20,April,Christened in the 97 Parishes within the Walls,37,,,Weekly,13April20April1676
+1676,18,Bodleian-1676-18-recto,13,April,20,April,Christened in the parishes without the Walls,77,,,Weekly,13April20April1676
+1676,18,Bodleian-1676-18-recto,13,April,20,April,Christened in the Parishes and Liberties of Westminster,56,,,Weekly,13April20April1676
+1676,19,Bodleian-1676-19-recto,18,April,25,April,Christened in the 97 Parishes within the Walls,27,,,Weekly,18April25April1676
+1676,19,Bodleian-1676-19-recto,18,April,25,April,Christened in the parishes without the Walls,77,,,Weekly,18April25April1676
+1676,19,Bodleian-1676-19-recto,18,April,25,April,Christened in the Parishes and Liberties of Westminster,49,,,Weekly,18April25April1676
+1676,20,Bodleian-1676-20-recto,25,April,2,May,Christened in the 97 Parishes within the Walls,31,,,Weekly,25April2May1676
+1676,20,Bodleian-1676-20-recto,25,April,2,May,Christened in the parishes without the Walls,77,,,Weekly,25April2May1676
+1676,20,Bodleian-1676-20-recto,25,April,2,May,Christened in the Parishes and Liberties of Westminster,44,,,Weekly,25April2May1676
+1676,21,Bodleian-1676-21-recto,2,May,9,May,Christened in the 97 Parishes within the Walls,32,,,Weekly,2May9May1676
+1676,21,Bodleian-1676-21-recto,2,May,9,May,Christened in the parishes without the Walls,76,,,Weekly,2May9May1676
+1676,21,Bodleian-1676-21-recto,2,May,9,May,Christened in the Parishes and Liberties of Westminster,36,,,Weekly,2May9May1676
+1676,22,Bodleian-1676-22-recto,9,May,16,May,Christened in the 97 Parishes within the Walls,32,,,Weekly,9May16May1676
+1676,22,Bodleian-1676-22-recto,9,May,16,May,Christened in the parishes without the Walls,71,,,Weekly,9May16May1676
+1676,22,Bodleian-1676-22-recto,9,May,16,May,Christened in the Parishes and Liberties of Westminster,56,,,Weekly,9May16May1676
+1676,23,Bodleian-1676-23-recto,16,May,23,May,Christened in the 97 Parishes within the Walls,37,,,Weekly,16May23May1676
+1676,23,Bodleian-1676-23-recto,16,May,23,May,Christened in the parishes without the Walls,91,,,Weekly,16May23May1676
+1676,23,Bodleian-1676-23-recto,16,May,23,May,Christened in the Parishes and Liberties of Westminster,44,,,Weekly,16May23May1676
+1676,25,Bodleian-1676-25-recto,30,May,6,June,Christened in the 97 Parishes within the Walls,41,,,Weekly,30May6June1676
+1676,25,Bodleian-1676-25-recto,30,May,6,June,Christened in the parishes without the Walls,78,,,Weekly,30May6June1676
+1676,25,Bodleian-1676-25-recto,30,May,6,June,Christened in the Parishes and Liberties of Westminster,37,,,Weekly,30May6June1676
+1676,26,Bodleian-1676-26-recto,6,June,13,June,Christened in the 97 Parishes within the Walls,22,,,Weekly,6June13June1676
+1676,26,Bodleian-1676-26-recto,6,June,13,June,Christened in the parishes without the Walls,85,,,Weekly,6June13June1676
+1676,26,Bodleian-1676-26-recto,6,June,13,June,Christened in the Parishes and Liberties of Westminster,37,,,Weekly,6June13June1676
+1676,28,Bodleian-1676-29-recto,20,June,27,June,Christened in the 97 Parishes within the Walls,41,,,Weekly,20June27June1676
+1676,28,Bodleian-1676-29-recto,20,June,27,June,Christened in the parishes without the Walls,80,,,Weekly,20June27June1676
+1676,28,Bodleian-1676-29-recto,20,June,27,June,Christened in the Parishes and Liberties of Westminster,38,,,Weekly,20June27June1676
+1676,31,Bodleian-1676-31-recto,11,July,18,July,Christened in the 97 Parishes within the Walls,34,,,Weekly,11July18July1676
+1676,31,Bodleian-1676-31-recto,11,July,18,July,Christened in the parishes without the Walls,59,,,Weekly,11July18July1676
+1676,31,Bodleian-1676-31-recto,11,July,18,July,Christened in the Parishes and Liberties of Westminster,52,,,Weekly,11July18July1676
+1676,32,Bodleian-1676-32-recto,18,July,25,July,Christened in the 97 Parishes within the Walls,32,,,Weekly,18July25July1676
+1676,32,Bodleian-1676-32-recto,18,July,25,July,Christened in the parishes without the Walls,84,,,Weekly,18July25July1676
+1676,32,Bodleian-1676-32-recto,18,July,25,July,Christened in the Parishes and Liberties of Westminster,29,,,Weekly,18July25July1676
+1676,33,Bodleian-1676-33-recto,25,July,1,August,Christened in the 97 Parishes within the Walls,32,,,Weekly,25July1August1676
+1676,33,Bodleian-1676-33-recto,25,July,1,August,Christened in the parishes without the Walls,64,,,Weekly,25July1August1676
+1676,33,Bodleian-1676-33-recto,25,July,1,August,Christened in the Parishes and Liberties of Westminster,40,,,Weekly,25July1August1676
+1676,35,Bodleian-1676-35-recto,8,August,15,August,Christened in the 97 Parishes within the Walls,37,,,Weekly,8August15August1676
+1676,35,Bodleian-1676-35-recto,8,August,15,August,Christened in the parishes without the Walls,78,,,Weekly,8August15August1676
+1676,35,Bodleian-1676-35-recto,8,August,15,August,Christened in the Parishes and Liberties of Westminster,54,,,Weekly,8August15August1676
+1676,36,Bodleian-1676-36-recto,15,August,22,August,Christened in the 97 Parishes within the Walls,34,,,Weekly,15August22August1676
+1676,36,Bodleian-1676-36-recto,15,August,22,August,Christened in the parishes without the Walls,67,,,Weekly,15August22August1676
+1676,36,Bodleian-1676-36-recto,15,August,22,August,Christened in the Parishes and Liberties of Westminster,50,,,Weekly,15August22August1676
+1676,38,Bodleian-1676-38-recto,29,August,5,September,Christened in the 97 Parishes within the Walls,28,,,Weekly,29August5September1676
+1676,38,Bodleian-1676-38-recto,29,August,5,September,Christened in the parishes without the Walls,80,,,Weekly,29August5September1676
+1676,38,Bodleian-1676-38-recto,29,August,5,September,Christened in the Parishes and Liberties of Westminster,45,,,Weekly,29August5September1676
+1676,41,Bodleian-1676-41-recto,19,September,26,September,Christened in the 97 Parishes within the Walls,25,,,Weekly,19September26September1676
+1676,41,Bodleian-1676-41-recto,19,September,26,September,Christened in the parishes without the Walls,81,,,Weekly,19September26September1676
+1676,41,Bodleian-1676-41-recto,19,September,26,September,Christened in the Parishes and Liberties of Westminster,50,,,Weekly,19September26September1676
+1676,42,Bodleian-1676-42-recto,26,September,3,October,Christened in the 97 Parishes within the Walls,28,,,Weekly,26September3October1676
+1676,42,Bodleian-1676-42-recto,26,September,3,October,Christened in the parishes without the Walls,94,,,Weekly,26September3October1676
+1676,42,Bodleian-1676-42-recto,26,September,3,October,Christened in the Parishes and Liberties of Westminster,45,,,Weekly,26September3October1676
+1676,43,Bodleian-1676-43-recto,3,October,10,October,Christened in the 97 Parishes within the Walls,22,,,Weekly,3October10October1676
+1676,43,Bodleian-1676-43-recto,3,October,10,October,Christened in the parishes without the Walls,74,,,Weekly,3October10October1676
+1676,43,Bodleian-1676-43-recto,3,October,10,October,Christened in the Parishes and Liberties of Westminster,56,,,Weekly,3October10October1676
+1676,44,Bodleian-1676-44-recto,10,October,17,October,Christened in the 97 Parishes within the Walls,29,,,Weekly,10October17October1676
+1676,44,Bodleian-1676-44-recto,10,October,17,October,Christened in the parishes without the Walls,85,,,Weekly,10October17October1676
+1676,44,Bodleian-1676-44-recto,10,October,17,October,Christened in the Parishes and Liberties of Westminster,47,,,Weekly,10October17October1676
+1676,45,Bodleian-1676-45-recto,17,October,24,October,Christened in the 97 Parishes within the Walls,33,,,Weekly,17October24October1676
+1676,45,Bodleian-1676-45-recto,17,October,24,October,Christened in the parishes without the Walls,89,,,Weekly,17October24October1676
+1676,45,Bodleian-1676-45-recto,17,October,24,October,Christened in the Parishes and Liberties of Westminster,68,,,Weekly,17October24October1676
+1676,46,Bodleian-1676-46-recto,24,October,31,October,Christened in the 97 Parishes within the Walls,36,,,Weekly,24October31October1676
+1676,46,Bodleian-1676-46-recto,24,October,31,October,Christened in the parishes without the Walls,86,,,Weekly,24October31October1676
+1676,46,Bodleian-1676-46-recto,24,October,31,October,Christened in the Parishes and Liberties of Westminster,51,,,Weekly,24October31October1676
+1676,49,Bodleian-1676-49-recto,14,November,21,November,Christened in the 97 Parishes within the Walls,32,,,Weekly,14November21November1676
+1676,49,Bodleian-1676-49-recto,14,November,21,November,Christened in the parishes without the Walls,89,,,Weekly,14November21November1676
+1676,49,Bodleian-1676-49-recto,14,November,21,November,Christened in the Parishes and Liberties of Westminster,51,,,Weekly,14November21November1676
+1676,51,Bodleian-1676-51-recto,28,November,5,December,Christened in the 97 Parishes within the Walls,38,,,Weekly,28November5December1676
+1676,51,Bodleian-1676-51-recto,28,November,5,December,Christened in the parishes without the Walls,97,,,Weekly,28November5December1676
+1676,51,Bodleian-1676-51-recto,28,November,5,December,Christened in the Parishes and Liberties of Westminster,41,,,Weekly,28November5December1676
+1676,2,Bodleian-1676-02-recto,26,December,2,January,Christened in the 97 Parishes within the Walls,,,,Weekly,26December2January1676
+1676,2,Bodleian-1676-02-recto,26,December,2,January,Christened in the parishes without the Walls,106,,,Weekly,26December2January1676
+1676,2,Bodleian-1676-02-recto,26,December,2,January,Christened in the Parishes and Liberties of Westminster,62,,,Weekly,26December2January1676
+1676,3,Bodleian-1676-03-recto,2,January,9,January,Christened in the 97 Parishes within the Walls,45,,,Weekly,2January9January1676
+1676,3,Bodleian-1676-03-recto,2,January,9,January,Christened in the parishes without the Walls,80,,,Weekly,2January9January1676
+1676,3,Bodleian-1676-03-recto,2,January,9,January,Christened in the Parishes and Liberties of Westminster,45,,,Weekly,2January9January1676
+1676,4,Bodleian-1676-04-recto,9,January,16,January,Christened in the 97 Parishes within the Walls,34,,,Weekly,9January16January1676
+1676,4,Bodleian-1676-04-recto,9,January,16,January,Christened in the parishes without the Walls,91,,,Weekly,9January16January1676
+1676,4,Bodleian-1676-04-recto,9,January,16,January,Christened in the Parishes and Liberties of Westminster,57,,,Weekly,9January16January1676
+1676,5,Bodleian-1676-05-recto,16,January,23,January,Christened in the 97 Parishes within the Walls,40,,,Weekly,16January23January1676
+1676,5,Bodleian-1676-05-recto,16,January,23,January,Christened in the parishes without the Walls,85,,,Weekly,16January23January1676
+1676,5,Bodleian-1676-05-recto,16,January,23,January,Christened in the Parishes and Liberties of Westminster,37,,,Weekly,16January23January1676
+1676,6,Bodleian-1676-06-recto,23,January,30,January,Christened in the 97 Parishes within the Walls,29,,,Weekly,23January30January1676
+1676,6,Bodleian-1676-06-recto,23,January,30,January,Christened in the parishes without the Walls,71,,,Weekly,23January30January1676
+1676,6,Bodleian-1676-06-recto,23,January,30,January,Christened in the Parishes and Liberties of Westminster,46,,,Weekly,23January30January1676
+1676,8,Bodleian-1676-08-recto,6,February,13,February,Christened in the 97 Parishes within the Walls,44,,,Weekly,6February13February1676
+1676,8,Bodleian-1676-08-recto,6,February,13,February,Christened in the parishes without the Walls,81,,,Weekly,6February13February1676
+1676,8,Bodleian-1676-08-recto,6,February,13,February,Christened in the Parishes and Liberties of Westminster,45,,,Weekly,6February13February1676
+1676,40,Bodleian-1676-40-recto,12,September,19,September,Christened in the 97 Parishes within the Walls,41,,,Weekly,12September19September1676
+1676,40,Bodleian-1676-40-recto,12,September,19,September,Christened in the parishes without the Walls,64,,,Weekly,12September19September1676
+1676,40,Bodleian-1676-40-recto,12,September,19,September,Christened in the Parishes and Liberties of Westminster,46,,,Weekly,12September19September1676
+1676,9,Bodleian-1676-09-recto,13,February,20,February,Christened in the 97 Parishes within the Walls,48,,,Weekly,13February20February1676
+1676,9,Bodleian-1676-09-recto,13,February,20,February,Christened in the parishes without the Walls,92,,,Weekly,13February20February1676
+1676,9,Bodleian-1676-09-recto,13,February,20,February,Christened in the Parishes and Liberties of Westminster,46,,,Weekly,13February20February1676
+1676,10,Bodleian-1676-10-recto,20,February,27,February,Christened in the 97 Parishes within the Walls,42,,,Weekly,20February27February1676
+1676,10,Bodleian-1676-10-recto,20,February,27,February,Christened in the parishes without the Walls,76,,,Weekly,20February27February1676
+1676,10,Bodleian-1676-10-recto,20,February,27,February,Christened in the Parishes and Liberties of Westminster,45,,,Weekly,20February27February1676
+1676,11,Bodleian-1676-11-recto,27,February,6,March,Christened in the 97 Parishes within the Walls,27,,,Weekly,27February6March1676
+1676,11,Bodleian-1676-11-recto,27,February,6,March,Christened in the parishes without the Walls,75,,,Weekly,27February6March1676
+1676,11,Bodleian-1676-11-recto,27,February,6,March,Christened in the Parishes and Liberties of Westminster,56,,,Weekly,27February6March1676
+1676,12,Bodleian-1676-12-recto,6,March,13,March,Christened in the 97 Parishes within the Walls,44,,,Weekly,6March13March1676
+1676,12,Bodleian-1676-12-recto,6,March,13,March,Christened in the parishes without the Walls,81,,,Weekly,6March13March1676
+1676,12,Bodleian-1676-12-recto,6,March,13,March,Christened in the Parishes and Liberties of Westminster,53,,,Weekly,6March13March1676
+1676,13,Bodleian-1676-13-recto,13,March,20,March,Christened in the 97 Parishes within the Walls,27,,,Weekly,13March20March1676
+1676,13,Bodleian-1676-13-recto,13,March,20,March,Christened in the parishes without the Walls,89,,,Weekly,13March20March1676
+1676,13,Bodleian-1676-13-recto,13,March,20,March,Christened in the Parishes and Liberties of Westminster,52,,,Weekly,13March20March1676
+1676,15,Bodleian-1676-15-recto,27,March,3,April,Christened in the 97 Parishes within the Walls,34,,,Weekly,27March3April1676
+1676,15,Bodleian-1676-15-recto,27,March,3,April,Christened in the parishes without the Walls,94,,,Weekly,27March3April1676
+1676,15,Bodleian-1676-15-recto,27,March,3,April,Christened in the Parishes and Liberties of Westminster,51,,,Weekly,27March3April1676
+1677,16,Bodleian-1677-16-recto,3,April,10,April,Christened in the 97 Parishes within the Walls,29,,,Weekly,3April10April1677
+1677,16,Bodleian-1677-16-recto,3,April,10,April,Christened in the parishes without the Walls,74,,,Weekly,3April10April1677
+1677,16,Bodleian-1677-16-recto,3,April,10,April,Christened in the Parishes and Liberties of Westminster,53,,,Weekly,3April10April1677
+1677,30,Bodleian-1677-07-recto,10,July,17,July,Christened in the 97 Parishes within the Walls,32,,,Weekly,10July17July1677
+1677,30,Bodleian-1677-07-recto,10,July,17,July,Christened in the parishes without the Walls,88,,,Weekly,10July17July1677
+1677,30,Bodleian-1677-07-recto,10,July,17,July,Christened in the Parishes and Liberties of Westminster,44,,,Weekly,10July17July1677
+1677,32,Bodleian-1677-32-recto,24,July,13,August,Christened in the 97 Parishes within the Walls,53,,,Weekly,24July13August1677
+1677,32,Bodleian-1677-32-recto,24,July,13,August,Christened in the parishes without the Walls,74,,,Weekly,24July13August1677
+1677,32,Bodleian-1677-32-recto,24,July,13,August,Christened in the Parishes and Liberties of Westminster,39,,,Weekly,24July13August1677
+1677,34,Bodleian-1677-34-recto,7,August,14,August,Christened in the 97 Parishes within the Walls,43,,,Weekly,7August14August1677
+1677,34,Bodleian-1677-34-recto,7,August,14,August,Christened in the parishes without the Walls,76,,,Weekly,7August14August1677
+1677,34,Bodleian-1677-34-recto,7,August,14,August,Christened in the Parishes and Liberties of Westminster,35,,,Weekly,7August14August1677
+1677,35,Bodleian-1677-35-recto,14,August,21,August,Christened in the 97 Parishes within the Walls,41,,,Weekly,14August21August1677
+1677,35,Bodleian-1677-35-recto,14,August,21,August,Christened in the parishes without the Walls,81,,,Weekly,14August21August1677
+1677,35,Bodleian-1677-35-recto,14,August,21,August,Christened in the Parishes and Liberties of Westminster,48,,,Weekly,14August21August1677
+1677,41,Bodleian-1677-41-recto,25,September,2,October,Christened in the 97 Parishes within the Walls,25,,,Weekly,25September2October1677
+1677,41,Bodleian-1677-41-recto,25,September,2,October,Christened in the parishes without the Walls,90,,,Weekly,25September2October1677
+1677,41,Bodleian-1677-41-recto,25,September,2,October,Christened in the Parishes and Liberties of Westminster,59,,,Weekly,25September2October1677
+1677,5,Bodleian-1677-05-recto,15,January,22,January,Christened in the 97 Parishes within the Walls,36,,,Weekly,15January22January1677
+1677,5,Bodleian-1677-05-recto,15,January,22,January,Christened in the parishes without the Walls,87,,,Weekly,15January22January1677
+1677,5,Bodleian-1677-05-recto,15,January,22,January,Christened in the Parishes and Liberties of Westminster,63,,,Weekly,15January22January1677
