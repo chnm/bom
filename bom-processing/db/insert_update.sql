@@ -70,7 +70,7 @@ CREATE TEMPORARY TABLE temp_year (
     id integer NOT NULL,
     CONSTRAINT temp_year_check CHECK (year > 1400 AND year < 1800)
 );
-COPY temp_year FROM '/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/bom-processing/scripts/bomr/data/year_unique.csv' DELIMITER ',' CSV HEADER;
+COPY temp_year FROM '/bom/bom-processing/scripts/bomr/data/year_unique.csv' DELIMITER ',' CSV HEADER;
 
 
 CREATE TEMPORARY TABLE IF NOT EXISTS temp_week (
@@ -87,7 +87,7 @@ CREATE TEMPORARY TABLE IF NOT EXISTS temp_week (
     joinid text
     CONSTRAINT temp_week_check CHECK (year > 1400 AND year < 1800)
 );
-COPY temp_week FROM '/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/bom-processing/scripts/bomr/data/week_unique.csv' DELIMITER ',' CSV HEADER;
+COPY temp_week FROM '/bom/bom-processing/scripts/bomr/data/week_unique.csv' DELIMITER ',' CSV HEADER;
 
 
 CREATE TEMPORARY TABLE IF NOT EXISTS temp_parish (
@@ -95,7 +95,7 @@ CREATE TEMPORARY TABLE IF NOT EXISTS temp_parish (
     canonical_name text NOT NULL,
     parish_id integer
 );
-COPY temp_parish FROM '/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/bom-processing/scripts/bomr/data/parishes_unique.csv' DELIMITER ',' CSV HEADER;
+COPY temp_parish FROM '/bom/bom-processing/scripts/bomr/data/parishes_unique.csv' DELIMITER ',' CSV HEADER;
 
 CREATE TEMPORARY TABLE IF NOT EXISTS temp_christening (
     year integer,
@@ -113,7 +113,7 @@ CREATE TEMPORARY TABLE IF NOT EXISTS temp_christening (
     joinid text,
     CONSTRAINT temp_christening_check CHECK (year > 1400 AND year < 1800)
 );
-COPY temp_christening FROM '/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/bom-processing/scripts/bomr/data/christenings_by_parish.csv' DELIMITER ',' CSV HEADER;
+COPY temp_christening FROM '/bom/bom-processing/scripts/bomr/data/christenings_by_parish.csv' DELIMITER ',' CSV HEADER;
 
 
 CREATE TEMPORARY TABLE IF NOT EXISTS temp_causes_of_death (
@@ -128,7 +128,7 @@ CREATE TEMPORARY TABLE IF NOT EXISTS temp_causes_of_death (
     year_range text,
     split_year text
 );
-COPY temp_causes_of_death FROM '/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/bom-processing/scripts/bomr/data/causes_of_death.csv' DELIMITER ',' CSV HEADER;
+COPY temp_causes_of_death FROM '/bom/bom-processing/scripts/bomr/data/causes_of_death.csv' DELIMITER ',' CSV HEADER;
 
 
 CREATE TEMPORARY TABLE IF NOT EXISTS temp_bills (
@@ -146,7 +146,7 @@ CREATE TEMPORARY TABLE IF NOT EXISTS temp_bills (
     joinid text,
     id int
 );
-COPY temp_bills FROM '/Users/jheppler/Dropbox/30-39 Projects/30.06 CHNM/Projects/Death by Numbers/bom/bom-processing/scripts/bomr/data/all_bills.csv' DELIMITER ',' CSV HEADER;
+COPY temp_bills FROM '/bom/bom-processing/scripts/bomr/data/all_bills.csv' DELIMITER ',' CSV HEADER;
 
 -- Load and process each data type within its own transaction
 DO $$
