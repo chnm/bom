@@ -5,10 +5,12 @@
 #
 # Jason A. Heppler | jason@jasonheppler.org
 # Roy Rosenzweig Center for History and New Media
-# Updated: 2024-12-13
+# Updated: 2025-01-07
 
 library(tidyverse)
-
+# ----------------------------------------------------------------------
+# Functions
+# 
 # Logging function
 log_data_check <- function(data, stage_name) {
   total_rows <- nrow(data)
@@ -37,6 +39,319 @@ log_data_check <- function(data, stage_name) {
   return(duplicates > 0)
 }
 
+# Process Bodleian exports
+process_bodleian_data <- function(data, source_name) {
+  # Standardize column names
+  data <- data |>
+    rename_with(
+      ~ case_when(
+        . == "Unique ID" ~ "UniqueID",
+        . == "Unique_ID" ~ "UniqueID",
+        . == "unique_id" ~ "UniqueID",
+        . == "End month" ~ "End Month",
+        TRUE ~ .
+      )
+    )
+  
+  # Standardize column data types
+  data <- data |>
+    mutate(
+      Year = as.integer(Year),
+      Week = as.integer(Week),
+      `Start Day` = as.integer(`Start Day`),
+      `End Day` = as.integer(`End Day`),
+      `Start Month` = as.character(`Start Month`),
+      `End Month` = as.character(`End Month`)
+    )
+  
+  # Process main data (parishes)
+  main_data <- data |>
+    select(-starts_with("is_")) |>
+    select(!1:4) |>
+    pivot_longer(
+      cols = -(1:7),  # Exclude the first 7 columns (metadata)
+      names_to = "parish_name",
+      values_to = "count"
+    )
+  
+  # Process illegible flags
+  illegible_data <- data |>
+    select(!1:4) |>
+    select(Year, Week, UniqueID, 
+           `Start Day`, `Start Month`, 
+           `End Day`, `End Month`,
+           starts_with("is_illegible")) |>
+    pivot_longer(
+      cols = starts_with("is_illegible"),
+      names_to = "parish_name",
+      values_to = "illegible"
+    ) |>
+    mutate(
+      parish_name = str_remove(parish_name, "is_illegible_"),
+      illegible = ifelse(is.na(illegible), FALSE, TRUE)
+    )
+  
+  # Process missing flags
+  missing_data <- data |>
+    select(!1:4) |>
+    select(Year, Week, UniqueID, 
+           `Start Day`, `Start Month`, 
+           `End Day`, `End Month`,
+           starts_with("is_missing")) |>
+    pivot_longer(
+      cols = starts_with("is_missing"),
+      names_to = "parish_name",
+      values_to = "missing"
+    ) |>
+    mutate(
+      parish_name = str_remove(parish_name, "is_missing_"),
+      missing = ifelse(is.na(missing), FALSE, TRUE)
+    )
+  
+  # Join the data
+  combined_data <- main_data |>
+    left_join(illegible_data, 
+              by = c("Year", "Week", "UniqueID", "Start Day", 
+                     "Start Month", "End Day", "End Month", "parish_name")) |>
+    left_join(missing_data,
+              by = c("Year", "Week", "UniqueID", "Start Day", 
+                     "Start Month", "End Day", "End Month", "parish_name"))
+  
+  combined_data <- combined_data %>%
+    mutate(source = source_name)
+  
+  message(sprintf("Processed Bodleian V%d data: %d rows", 
+                  source_name, nrow(combined_data)))
+  
+  return(combined_data)
+}
+
+# Process Wellcome and Laxton exports
+process_weekly_bills <- function(data, source_name, has_flags = TRUE) {
+  message(sprintf("Processing %s data...", source_name))
+  
+  if(has_flags) {
+    # Process data with missing/illegible flags (Laxton)
+    result <- process_flagged_data(data, source_name)
+  } else {
+    # Process data without flags (Wellcome)
+    result <- process_unflagged_data(data, source_name)
+  }
+  
+  # Standardize column names
+  result <- result %>%
+    rename_with(tolower) %>%
+    rename_with(~str_replace_all(., " ", "_")) %>%
+    rename_with(
+      ~ case_when(
+        . == "Unique ID" ~ "UniqueID",
+        . == "Unique_ID" ~ "UniqueID",
+        . == "unique_id" ~ "UniqueID",
+        . == "End month" ~ "End Month",
+        TRUE ~ .
+      )
+    )
+  
+  # Add source identifier
+  result <- result %>%
+    mutate(source = source_name)
+  
+  return(result)
+}
+
+# Helper function for data with is_missing/is_illegible
+process_flagged_data <- function(data, source_name) {
+  # Extract illegible flags
+  illegible_data <- data %>%
+    select(!1:4) %>%
+    select(-c(2, 3, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18, 20, 21)) %>%
+    select(Year, Week, `Unique ID`, `Start Day`, `Start Month`, 
+           `End Day`, `End month`, contains("is_illegible")) %>%
+    pivot_longer(
+      cols = starts_with("is_illegible"),
+      names_to = "parish_name",
+      values_to = "illegible"
+    ) %>%
+    mutate(illegible = ifelse(is.na(illegible), FALSE, TRUE))
+  
+  # Extract missing flags
+  missing_data <- data %>%
+    select(!1:4) %>%
+    select(-c(2, 3, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18, 20, 21)) %>%
+    select(Year, Week, `Unique ID`, `Start Day`, `Start Month`, 
+           `End Day`, `End month`, contains("is_missing")) %>%
+    pivot_longer(
+      cols = starts_with("is_missing"),
+      names_to = "parish_name",
+      values_to = "missing"
+    ) %>%
+    mutate(missing = ifelse(is.na(missing), FALSE, TRUE))
+  
+  # Process main data
+  main_data <- data %>%
+    select(-starts_with("is_")) %>%
+    select(!1:4) %>%
+    pivot_longer(
+      cols = -c(1:7),
+      names_to = "parish_name",
+      values_to = "count"
+    )
+  
+  # Combine using left_join instead of bind_rows
+  combined_data <- main_data %>%
+    left_join(missing_data, 
+              by = c("Year", "Week", "Unique ID", "Start Day", 
+                     "Start Month", "End Day", "End month", "parish_name")) %>%
+    left_join(illegible_data,
+              by = c("Year", "Week", "Unique ID", "Start Day", 
+                     "Start Month", "End Day", "End month", "parish_name"))
+  
+  return(combined_data)
+}
+
+# Helper function for data without is_missing/is_illegible
+process_unflagged_data <- function(data, source_name) {
+  result <- data %>%
+    select(!1:4) %>%
+    pivot_longer(
+      cols = -c(1:7),
+      names_to = "parish_name",
+      values_to = "count"
+    ) %>%
+    mutate(
+      missing = FALSE,
+      illegible = FALSE
+    )
+  
+  return(result)
+}
+
+# Create lookup tables
+create_lookup_table <- function(data, source_name, n_descriptive_cols) {
+  message(sprintf("Processing %s lookup table...", source_name))
+  
+  # Determine initial columns to skip based on source
+  skip_cols <- if(source_name == "wellcome") 5 else 4
+  
+  result <- data %>%
+    select(!all_of(1:skip_cols)) %>%
+    select(
+      contains("(Descriptive Text)"),
+      `Unique Identifier`,
+      `Start Day`,
+      `Start Month`,
+      `End Day`,
+      `End Month`,
+      Year
+    ) %>%
+    pivot_longer(
+      all_of(1:n_descriptive_cols), 
+      names_to = "death_type", 
+      values_to = "descriptive_text"
+    ) %>%
+    mutate(
+      # Clean up identifiers and death types
+      `Unique Identifier` = str_trim(`Unique Identifier`),
+      death_type = str_remove(death_type, regex("\\(Descriptive Text\\)")),
+      death_type = str_trim(death_type),
+      # Create join ID
+      join_id = paste0(
+        `Start Day`,
+        `Start Month`,
+        `End Day`,
+        `End Month`,
+        Year, "-",
+        death_type, "-",
+        `Unique Identifier`
+      )
+    ) %>%
+    # Drop the columns we don't need anymore
+    select(
+      -`Start Day`,
+      -`Start Month`,
+      -`End Day`,
+      -`End Month`,
+      -Year,
+      -`Unique Identifier`,
+      death_type
+    )
+  
+  return(result)
+}
+
+process_causes_of_death <- function(data, source_name, lookup_table, skip_cols, pivot_range) {
+  message(sprintf("Processing %s causes of death...", source_name))
+  
+  # Special handling for Laxton pre-1700 data
+  if(source_name == "laxton_pre1700") {
+    data <- data %>% 
+      mutate(across(all_of(pivot_range[1]:pivot_range[2]), as.character))
+  }
+  
+  # Process main data
+  result <- data %>%
+    select(!all_of(1:skip_cols)) %>%
+    select(!contains("(Descriptive")) %>%
+    pivot_longer(
+      all_of(pivot_range[1]:pivot_range[2]), 
+      names_to = "death", 
+      values_to = "count"
+    ) %>%
+    mutate(
+      death = str_trim(death),
+      `Unique Identifier` = str_trim(`Unique Identifier`),
+      join_id = paste0(
+        `Start Day`, 
+        `Start Month`, 
+        `End Day`, 
+        `End Month`, 
+        Year, "-", 
+        death, "-", 
+        `Unique Identifier`
+      )
+    ) %>%
+    left_join(lookup_table, by = "join_id") %>%
+    select(-join_id, -death_type) %>%
+    rename_with(tolower) %>%
+    rename_with(~gsub(" ", "_", .))
+  
+  return(result)
+}
+
+# Function to process unique deaths
+process_unique_deaths <- function(data, source_name) {
+  message(sprintf("Processing %s unique deaths...", source_name))
+  
+  # Define exclusion patterns based on source
+  exclusion_patterns <- list(
+    wellcome = c(
+      "\\bBuried ", "\\bChristened ", "\\bPlague Deaths",
+      "\\bOunces in", "\\bIncrease/Decrease",
+      "\\bParishes Clear", "\\bParishes Infected"
+    ),
+    laxton_1700 = c(
+      "\\bBuried ", "\\bChristened ", "\\bIncrease/Decrease"
+    ),
+    laxton = c(
+      "\\bChristened ", "\\bIncrease/Decrease"
+    )
+  )
+  
+  result <- data %>%
+    select(death) %>%
+    distinct()
+  
+  # Apply appropriate exclusion patterns
+  patterns <- exclusion_patterns[[source_name]]
+  for(pattern in patterns) {
+    result <- result %>%
+      filter(!str_detect(death, regex(pattern, ignore_case = FALSE)))
+  }
+  
+  return(result)
+}
+# ----------------------------------------------------------------------
+
 # ----------------------------------------------------------------------
 # Data sources
 # Each of these are separate DataScribe exports that we are preparing for
@@ -46,11 +361,11 @@ log_data_check <- function(data, stage_name) {
 ## for each one based on its filename. Then, use tidyverse::read_csv to read the
 ## CSV file and assign it to a variable.
 
-  # Get all the CSV files in the directory
-  files <- list.files("../../../bom-data/data-csvs", pattern = "*.csv", full.names = TRUE)
-  # Loop through the files and assign them to a variable based on the csv filename
-  for (file in files) {
-    tryCatch({
+# Get all the CSV files in the data directory
+files <- list.files("../../../bom-data/data-csvs", pattern = "*.csv", full.names = TRUE)
+# Loop through the files and assign them to a variable based on the csv filename
+for (file in files) {
+  tryCatch({
     # Get the filename without the path
     filename <- basename(file)
     # Remove the .csv extension
@@ -62,11 +377,10 @@ log_data_check <- function(data, stage_name) {
     filename <- gsub("-", "_", filename)
     # Read the CSV file and assign it to a variable
     assign(filename, read_csv(file))
-    }, error = function(e) {
-      warning(sprintf("Failed to load %s: %s", file, e$message))
-    })
-  }
-
+  }, error = function(e) {
+    warning(sprintf("Failed to load %s: %s", file, e$message))
+  })
+}
 
 # ----------------------------------------------------------------------
 # Lookup tables
@@ -75,484 +389,100 @@ log_data_check <- function(data, stage_name) {
 # prepare these lookup tables here.
 # ----------------------------------------------------------------------
 
-# Wellcome Lookup
-# ======================================================================
-# We create a lookup table that includes the unique identifier,
-# the descriptive text, Start Day, Start Month, End Day, End Month, and death type.
-lookup_wellcome <- Wellcome_weeklybills_causes |>
-  select(!1:5) |>
-  select(
-    contains("(Descriptive Text)"), 
-    `Unique Identifier`, 
-    `Start Day`, 
-    `Start Month`, 
-    `End Day`, 
-    `End Month`, 
-    Year
-  ) |>
-  pivot_longer(1:4, names_to = "death_type", values_to = "descriptive_text" ) |>
-  mutate(`Unique Identifier` = str_trim(`Unique Identifier`)) |>
-  # remove (Descriptive Text)
-  mutate(death_type = str_remove( 
-    death_type, 
-    regex("\\(Descriptive Text\\)"))
-  ) |>
-  mutate(death_type = str_trim(death_type)) |>
-  mutate(join_id = paste0(
-    `Start Day`, 
-    `Start Month`, 
-    `End Day`, 
-    `End Month`, 
-    Year, "-", 
-    death_type, "-", 
-    `Unique Identifier`)) |>
-  # We can drop the start day, start month, etc. since that will be added with 
-  # the long table
-  select(
-    -`Start Day`, 
-    -`Start Month`, 
-    -`End Day`, 
-    -`End Month`, 
-    -Year, 
-    -`Unique Identifier`, 
-    death_type
-  )
+lookup_wellcome <- create_lookup_table(
+  Wellcome_weeklybills_causes, 
+  "wellcome", 
+  n_descriptive_cols = 4
+)
 
-# Laxton Lookup (1700)
-# ======================================================================
-# We create a lookup table that includes the unique identifier,
-# the descriptive text, Start Day, Start Month, End Day, End Month,
-# and death type.
-lookup_laxton_1700 <- Laxton_1700_weeklybills_causes |>
-  select(!1:4) |>
-  select(
-    contains("(Descriptive Text)"), 
-    `Unique Identifier`, 
-    `Start Day`, 
-    `Start Month`, 
-    `End Day`, 
-    `End Month`, 
-    Year) |>
-  pivot_longer(1:8, names_to = "death_type", values_to = "descriptive_text" ) |>
-  mutate(`Unique Identifier` = str_trim(`Unique Identifier`)) |>
-  # Remove (Descriptive Text) so we just have the cause of death
-  mutate(death_type = str_remove( 
-    death_type, 
-    regex("\\(Descriptive Text\\)")) 
-  ) |>
-  mutate(death_type = str_trim(death_type)) |>
-  mutate(join_id = paste0(
-    `Start Day`, 
-    `Start Month`, 
-    `End Day`, 
-    `End Month`, 
-    Year, "-", 
-    death_type, "-", 
-    `Unique Identifier`)
-  ) |>
-  # Now we can drop the start day, start month, etc. since that will be added 
-  # with the long table
-  select(
-    -`Start Day`, 
-    -`Start Month`, 
-    -`End Day`, 
-    -`End Month`, 
-    -Year, 
-    -`Unique Identifier`, 
-    death_type
-  )
+lookup_laxton_1700 <- create_lookup_table(
+  Laxton_1700_weeklybills_causes, 
+  "laxton_1700", 
+  n_descriptive_cols = 8
+)
 
-# Laxton Lookup
-# ======================================================================
-# We create a lookup table that includes the unique identifier,
-# the descriptive text, Start Day, Start Month, End Day, End Month, 
-# and death type.
-lookup_laxton <- Laxton_old_weeklybills_causes |>
-  select(!1:4) |>
-  select(
-    contains("(Descriptive Text)"), 
-    `Unique Identifier`, 
-    `Start Day`, 
-    `Start Month`, 
-    `End Day`, 
-    `End Month`, 
-    Year
-  ) |>
-  pivot_longer(1:8, 
-    names_to = "death_type", 
-    values_to = "descriptive_text" 
-  ) |>
-  mutate(`Unique Identifier` = str_trim(`Unique Identifier`)) |>
-  # remove (Descriptive Text)
-  mutate(death_type = str_remove(death_type, regex("\\(Descriptive Text\\)"))) |>
-  mutate(death_type = str_trim(death_type)) |>
-  mutate(join_id = paste0(
-    `Start Day`,
-    `Start Month`,
-    `End Day`,
-    `End Month`,
-    Year, "-",
-    death_type, "-",
-    `Unique Identifier`)
-  ) |>
-  # now we can drop the start day, start month, etc. since that will be added with the long table
-  select(
-    -`Start Day`,
-    -`Start Month`,
-    -`End Day`,
-    -`End Month`,
-    -Year,
-    -`Unique Identifier`,
-    death_type
-  )
+lookup_laxton <- create_lookup_table(
+  Laxton_old_weeklybills_causes, 
+  "laxton", 
+  n_descriptive_cols = 8
+)
 
 # ----------------------------------------------------------------------
-# Types of death table
+# Causes of Death
 # ----------------------------------------------------------------------
-causes_wellcome <- Wellcome_weeklybills_causes |>
-  select(!1:5) |>
-  select(!contains("(Descriptive")) |>
-  pivot_longer(8:109, names_to = "death", values_to = "count" ) |>
-  mutate(death = str_trim(death)) |>
-  mutate(`Unique Identifier` = str_trim(`Unique Identifier`)) |>
-  mutate(join_id = paste0(
-    `Start Day`, 
-    `Start Month`, 
-    `End Day`, 
-    `End Month`, 
-    Year, "-", 
-    death, "-", 
-    `Unique Identifier`)
-  )
+causes_wellcome <- process_causes_of_death(
+  Wellcome_weeklybills_causes,
+  "wellcome",
+  lookup_wellcome,
+  skip_cols = 5,
+  pivot_range = c(8, 109)
+)
 
-# Now, we left_join on the lookup table with the join_id
-causes_wellcome <- causes_wellcome |>
-  left_join(lookup_wellcome, by = "join_id") |>
-  select(-join_id, -death_type)
+causes_laxton_1700 <- process_causes_of_death(
+  Laxton_1700_weeklybills_causes,
+  "laxton_1700",
+  lookup_laxton_1700,
+  skip_cols = 4,
+  pivot_range = c(8, 125)
+)
 
-# Lowercase column names and replace spaces with underscores
-names(causes_wellcome) <- tolower(names(causes_wellcome))
-names(causes_wellcome) <- gsub(" ", "_", names(causes_wellcome))
+causes_laxton <- process_causes_of_death(
+  Laxton_old_weeklybills_causes,
+  "laxton_pre1700",
+  lookup_laxton,
+  skip_cols = 4,
+  pivot_range = c(8, 125)
+)
 
-### Laxton causes for 1700 -----------------------------------------------
-causes_laxton_1700 <- Laxton_1700_weeklybills_causes |>
-  select(!1:4) |>
-  select(!contains("(Descriptive")) |>
-  pivot_longer(8:125, names_to = "death", values_to = "count" ) |>
-  mutate(death = str_trim(death)) |>
-  mutate(`Unique Identifier` = str_trim(`Unique Identifier`)) |>
-  mutate(join_id = paste0( `Start Day`, `Start Month`, `End Day`, `End Month`, Year, "-", death, "-", `Unique Identifier`))
+# Process unique deaths
+deaths_unique_wellcome <- process_unique_deaths(causes_wellcome, "wellcome")
+deaths_unique_laxton_1700 <- process_unique_deaths(causes_laxton_1700, "laxton_1700")
+deaths_unique_laxton <- process_unique_deaths(causes_laxton, "laxton")
 
-# Now, we left_join the lookup table on the join_id
-causes_laxton_1700 <- causes_laxton_1700 |>
-  left_join(lookup_laxton_1700, by = "join_id") |>
-  select(-join_id, -death_type)
-
-# Lowercase column names and replace spaces with underscores
-names(causes_laxton_1700) <- tolower(names(causes_laxton_1700))
-names(causes_laxton_1700) <- gsub(" ", "_", names(causes_laxton_1700))
-
-### Laxton causes for pre-1700 -----------------------------------------------
-causes_laxton <- Laxton_old_weeklybills_causes |>
-  select(!1:4) |>
-  select(!contains("(Descriptive")) |>
-  mutate(across( 8:125, as.character )) |>
-  pivot_longer(8:125, names_to = "death", values_to = "count" ) |>
-  mutate(death = str_trim(death)) |>
-  mutate(`Unique Identifier` = str_trim(`Unique Identifier`)) |>
-  mutate(join_id = paste0( `Start Day`, `Start Month`, `End Day`, `End Month`, Year, "-", death, "-", `Unique Identifier`))
-
-# Now, we left_join on the join_id
-causes_laxton <- causes_laxton |>
-  left_join(lookup_laxton, by = "join_id") |>
-  select(-join_id, -death_type)
-
-# Lowercase column names and replace spaces with underscores
-names(causes_laxton) <- tolower(names(causes_laxton))
-names(causes_laxton) <- gsub(" ", "_", names(causes_laxton))
-
-# Types of death with unique ID
-deaths_unique_wellcome <- causes_wellcome |>
-  select(death) |>
-  distinct() |>
-  filter(!str_detect(death, regex("\\bBuried ", ignore_case = FALSE))) |>
-  filter(!str_detect(death, regex("\\bChristened ", ignore_case = FALSE))) |>
-  filter(!str_detect(death, regex("\\bPlague Deaths", ignore_case = FALSE))) |>
-  filter(!str_detect(death, regex("\\bOunces in", ignore_case = FALSE))) |>
-  filter(!str_detect(death, regex("\\bIncrease/Decrease", ignore_case = FALSE))) |>
-  filter(!str_detect(death, regex("\\bParishes Clear", ignore_case = FALSE))) |>
-  filter(!str_detect(death, regex("\\bParishes Infected", ignore_case = FALSE)))
-
-deaths_unique_laxton_1700 <- causes_laxton_1700 |>
-  select(death) |>
-  distinct() |>
-  filter(!str_detect(death, regex("\\bBuried ", ignore_case = FALSE))) |>
-  filter(!str_detect(death, regex("\\bChristened ", ignore_case = FALSE))) |>
-  filter(!str_detect(death, regex("\\bIncrease/Decrease", ignore_case = FALSE)))
-
-deaths_unique_laxton <- causes_laxton |>
-  select(death) |>
-  distinct() |>
-  filter(!str_detect(death, regex("\\bChristened ", ignore_case = FALSE))) |>
-  filter(!str_detect(death, regex("\\bIncrease/Decrease", ignore_case = FALSE)))
-
-deaths_unique <- left_join(deaths_unique_wellcome, deaths_unique_laxton)
-deaths_unique <- left_join(deaths_unique, deaths_unique_laxton_1700)
-deaths_unique <- deaths_unique |>
-  arrange(death) |>
+# Combine unique deaths
+deaths_unique <- deaths_unique_wellcome %>%
+  left_join(deaths_unique_laxton) %>%
+  left_join(deaths_unique_laxton_1700) %>%
+  arrange(death) %>%
   mutate(death_id = row_number())
 
 # ----------------------------------------------------------------------
 # Weekly Bills
 # ----------------------------------------------------------------------
-# To handle this data, we need to create two separate tables and then rejoin them.
-# The first table removes any is_missing and is_illegible columns. The second
-# includes both of those values. We then rejoin them and create a single table
-# that includes all of the data.
-laxton_weekly_illegible <- Laxton_old_weeklybills_parishes |>
-  select(!1:4) |>
-  select(-c(2, 3, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18, 20, 21)) |> 
-  select(`Year`, `Week`, `Unique ID`, `Start Day`, `Start Month`, `End Day`, `End month`, contains("is_illegible"))
-laxton_weekly_missing <- Laxton_old_weeklybills_parishes |>
-  select(!1:4) |>
-  select(-c(2, 3, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18, 20, 21)) |> 
-  select(`Year`, `Week`, `Unique ID`, `Start Day`, `Start Month`, `End Day`, `End month`, contains("is_missing"))
+wellcome_weekly <- process_weekly_bills(`1669_1670_Wellcome_weeklybills_parishes`, 
+                                      "Wellcome", 
+                                      has_flags = FALSE)
 
-# Now, we pivot the data from wide to long format.
-laxton_weekly_illegible_transform <- laxton_weekly_illegible |>
-  pivot_longer(8:167, names_to = "illegible_missing", values_to = "illegible") |> 
-  select(!`illegible_missing`) |>
-  # change NA to false and 1 to true
-  mutate(illegible = ifelse(is.na(illegible), FALSE, TRUE))
+laxton_weekly <- process_weekly_bills(Laxton_old_weeklybills_parishes, 
+                                    "Laxton", 
+                                    has_flags = TRUE)
 
-laxton_weekly_missing_transform <- laxton_weekly_missing |>
-  pivot_longer(8:167, names_to = "illegible_missing", values_to = "missing") |> 
-  select(!`illegible_missing`) |> 
-  # change NA to false and 1 to true
-  mutate(missing = ifelse(is.na(missing), FALSE, TRUE))
-
-# Then, we set up the table without the illegible or missing values
-laxton_weekly_illegible_cleaned <- Laxton_old_weeklybills_parishes |>
-  select(-c(starts_with("is_illegible")))
-laxton_weekly_cleaned <- laxton_weekly_illegible_cleaned |>
-  select(-c(starts_with("is_missing")))
-
-laxton_weekly_transformed <- laxton_weekly_cleaned |> 
-  select(!1:4) |>
-  pivot_longer(8:167, names_to = "parish_name", values_to = "count" )
-
-# Now we join laxton_weekly_transformed with laxton_weekly_missing_illegible
-laxton_weekly <- bind_rows(laxton_weekly_transformed, laxton_weekly_missing_transform, laxton_weekly_illegible_transform)
-
-rm(laxton_weekly_illegible)
-rm(laxton_weekly_illegible_transform)
-rm(laxton_weekly_missing)
-rm(laxton_weekly_missing_transform)
-
-## TODO: Bind all the Bodleian data and run only one transform
-bodleian_files <- list.files(
-  "../../../bom-data/data-csvs", 
-  pattern = "(BLV|Bodleian).*parishes\\.csv$", 
-  full.names = TRUE
+# Bring together all Bodleian versions
+bodleian_versions <- list(
+  list(data = BodleianV1_weeklybills_parishes, "Bodleian V1"),
+  list(data = BodleianV2_weeklybills_parishes, "Bodleian V2"),
+  list(data = BodleianV3_weeklybills_parishes, "Bodleian V3")
 )
 
-# Function to load and standardize a dataframe
-load_bodleian_df <- function(filepath) {
-  message("Loading: ", basename(filepath))
-  
-  df <- read_csv(filepath) %>%
-    select(!1:4) %>%
-    mutate(across(c(Week, `Start Day`, `End Day`), as.numeric))
-  
-  message(sprintf("Dimensions: %d rows, %d columns", nrow(df), ncol(df)))
-  return(df)
-}
+# Process all versions and store in a single dataframe
+bodleian_all_versions <- map_df(bodleian_versions, function(v) {
+  process_bodleian_data(v$data, v$version) |>
+    mutate(version = v$version)
+})
 
-# Load and combine all Bodleian data
-bodleian_weekly_combined <- bodleian_files %>%
-  map(load_bodleian_df) %>%
-  bind_rows(.id = "source_file") %>%
-  mutate(source_file = basename(bodleian_files[as.numeric(source_file)]))
-
-# Check the result
-message("\nCombined Bodleian data:")
-message(sprintf("Total rows: %d", nrow(bodleian_weekly_combined)))
-message(sprintf("Total columns: %d", ncol(bodleian_weekly_combined)))
-
-# Check for any duplicates
-duplicates <- bodleian_weekly_combined %>%
-  group_by(`Unique ID`, Year, Week) %>%
-  filter(n() > 1) %>%
-  arrange(`Unique ID`, Year, Week)
-
-if(nrow(duplicates) > 0) {
-  message("\nFound duplicates:")
-  message(sprintf("Total duplicate groups: %d", n_distinct(duplicates$`Unique ID`)))
-  
-  # Show summary of duplicates by source
-  message("\nDuplicates by source files:")
-  duplicates %>%
-    group_by(source_file) %>%
-    summarise(count = n()) %>%
-    print()
-  
-  # Show detailed sample of duplicates
-  message("\nSample of duplicates (first 5 groups):")
-  duplicates %>%
-    select(source_file, `Unique ID`) %>%
-    print(n = 20)  # Show more rows to see full duplicate groups
-}
-
-
-
-## Bodleian V1 data prep ----------------------------------------
-bodleian_weekly_illegible <- BodleianV1_weeklybills_parishes |>
-  select(!1:4) |>
-  select(-c(2, 3, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18, 20, 21)) |> 
-  select(`Year`, `Week`, `Unique ID`, `Start Day`, `Start Month`, `End Day`, `End month`, contains("is_illegible"))
-bodleian_weekly_missing <- BodleianV1_weeklybills_parishes |>
-  select(!1:4) |>
-  select(-c(2, 3, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18, 20, 21)) |> 
-  select(`Year`, `Week`, `Unique ID`, `Start Day`, `Start Month`, `End Day`, `End month`, contains("is_missing"))
-
-# Now, we pivot the data from wide to long format.
-bodleian_weekly_illegible_transform <- bodleian_weekly_illegible |>
-  pivot_longer(8:266, names_to = "illegible_missing", values_to = "illegible") |> 
-  select(!`illegible_missing`) |>
-  # change NA to false and 1 to true
-  mutate(illegible = ifelse(is.na(illegible), FALSE, TRUE))
-
-bodleian_weekly_missing_transform <- bodleian_weekly_missing |>
-  pivot_longer(8:266, names_to = "illegible_missing", values_to = "missing") |> 
-  select(!`illegible_missing`) |> 
-  # change NA to false and 1 to true
-  mutate(missing = ifelse(is.na(missing), FALSE, TRUE))
-
-# Then, we set up the table without the illegible or missing values
-bodleian_weekly_illegible_cleaned <- BodleianV1_weeklybills_parishes |>
-  select(-c(starts_with("is_illegible")))
-bodleian_weekly_cleaned <- bodleian_weekly_illegible_cleaned |>
-  select(-c(starts_with("is_missing")))
-
-bodleian_weekly_transformed <- bodleian_weekly_cleaned |> 
-  select(!1:4) |>
-  pivot_longer(8:266, names_to = "parish_name", values_to = "count" )
-
-# Now we join bodleian_weekly_transformed with bodleian_weekly_missing_illegible
-bodleian_weekly_v1 <- bind_rows(bodleian_weekly_transformed, bodleian_weekly_missing_transform, bodleian_weekly_illegible_transform)
-
-## Bodleian V2 data prep ----------------------------------------
-bodleian_v2_weekly_illegible <- BodleianV2_weeklybills_parishes |>
-  select(!1:4) |>
-  select(-c(2, 3, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18, 20, 21)) |> 
-  select(`Year`, `Week`, `Unique ID`, `Start Day`, `Start Month`, `End Day`, `End month`, contains("is_illegible"))
-bodleian_v2_weekly_missing <- BodleianV2_weeklybills_parishes |>
-  select(!1:4) |>
-  select(-c(2, 3, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18, 20, 21)) |> 
-  select(`Year`, `Week`, `Unique ID`, `Start Day`, `Start Month`, `End Day`, `End month`, contains("is_missing"))
-
-# Now, we pivot the data from wide to long format.
-bodleian_v2_weekly_illegible_transform <- bodleian_v2_weekly_illegible |>
-  pivot_longer(8:266, names_to = "illegible_missing", values_to = "illegible") |> 
-  select(!`illegible_missing`) |>
-  # change NA to false and 1 to true
-  mutate(illegible = ifelse(is.na(illegible), FALSE, TRUE))
-
-bodleian_v2_weekly_missing_transform <- bodleian_v2_weekly_missing |>
-  pivot_longer(8:266, names_to = "illegible_missing", values_to = "missing") |> 
-  select(!`illegible_missing`) |> 
-  # change NA to false and 1 to true
-  mutate(missing = ifelse(is.na(missing), FALSE, TRUE))
-
-# Then, we set up the table without the illegible or missing values
-bodleian_v2_weekly_illegible_cleaned <- BodleianV2_weeklybills_parishes |>
-  select(-c(starts_with("is_illegible")))
-bodleian_v2_weekly_cleaned <- bodleian_v2_weekly_illegible_cleaned |>
-  select(-c(starts_with("is_missing")))
-
-bodleian_v2_weekly_transformed <- bodleian_v2_weekly_cleaned |> 
-  select(!1:4) |>
-  pivot_longer(8:266, names_to = "parish_name", values_to = "count" )
-
-# Now we join bodleian_weekly_transformed with bodleian_weekly_missing_illegible
-bodleian_weekly_v2 <- bind_rows(bodleian_v2_weekly_transformed, bodleian_v2_weekly_missing_transform, bodleian_v2_weekly_illegible_transform)
-
-## Bodleian V3 data prep ----------------------------------------
-bodleian_v3_weekly_illegible <- BodleianV3_weeklybills_parishes |>
-  select(!1:4) |>
-  select(-c(2, 3, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18, 20, 21)) |> 
-  select(`Year`, `Week`, `UniqueID`, `Start Day`, `Start Month`, `End Day`, `End month`, contains("is_illegible"))
-bodleian_v3_weekly_missing <- BodleianV3_weeklybills_parishes |>
-  select(!1:4) |>
-  select(-c(2, 3, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18, 20, 21)) |> 
-  select(`Year`, `Week`, `UniqueID`, `Start Day`, `Start Month`, `End Day`, `End month`, contains("is_missing"))
-
-# Now, we pivot the data from wide to long format.
-bodleian_v3_weekly_illegible_transform <- bodleian_v3_weekly_illegible |>
-  pivot_longer(8:287, names_to = "illegible_missing", values_to = "illegible") |> 
-  select(!`illegible_missing`) |>
-  # change NA to false and 1 to true
-  mutate(illegible = ifelse(is.na(illegible), FALSE, TRUE))
-
-bodleian_v3_weekly_missing_transform <- bodleian_v3_weekly_missing |>
-  pivot_longer(8:287, names_to = "illegible_missing", values_to = "missing") |> 
-  select(!`illegible_missing`) |> 
-  # change NA to false and 1 to true
-  mutate(missing = ifelse(is.na(missing), FALSE, TRUE))
-
-# Then, we set up the table without the illegible or missing values
-bodleian_v3_weekly_illegible_cleaned <- BodleianV3_weeklybills_parishes |>
-  select(-c(starts_with("is_illegible")))
-bodleian_v3_weekly_cleaned <- bodleian_v3_weekly_illegible_cleaned |>
-  select(-c(starts_with("is_missing")))
-
-bodleian_v3_weekly_transformed <- bodleian_v3_weekly_cleaned |> 
-  select(!1:4) |>
-  pivot_longer(8:287, names_to = "parish_name", values_to = "count" )
-
-# Now we join bodleian_weekly_transformed with bodleian_weekly_missing_illegible
-bodleian_weekly_v3 <- bind_rows(bodleian_v3_weekly_transformed, bodleian_v3_weekly_missing_transform, bodleian_v3_weekly_illegible_transform)
-
-
-## Wellcome data prep ----------------------------------------
-wellcome_weekly_illegible <- `1669_1670_Wellcome_weeklybills_parishes` |>
-  select(!1:4) |> 
-  pivot_longer(8:285, names_to = "parish_name", values_to = "count" )
-
-wellcome_weekly_illegible <- wellcome_weekly_illegible |> 
-  mutate(missing = FALSE) |> 
-  mutate(illegible = FALSE)
-wellcome_weekly <- wellcome_weekly_illegible
-
-# Lowercase column names and replace spaces with underscores.
-names(laxton_weekly) <- tolower(names(laxton_weekly))
-names(laxton_weekly) <- gsub(" ", "_", names(laxton_weekly))
-names(wellcome_weekly) <- tolower(names(wellcome_weekly))
-names(wellcome_weekly) <- gsub(" ", "_", names(wellcome_weekly))
-names(bodleian_weekly_v1) <- tolower(names(bodleian_weekly_v1))
-names(bodleian_weekly_v1) <- gsub(" ", "_", names(bodleian_weekly_v1))
-names(bodleian_weekly_v2) <- tolower(names(bodleian_weekly_v2))
-names(bodleian_weekly_v2) <- gsub(" ", "_", names(bodleian_weekly_v2))
-names(bodleian_weekly_v3) <- tolower(names(bodleian_weekly_v3))
-names(bodleian_weekly_v3) <- gsub(" ", "_", names(bodleian_weekly_v3))
-
-# The unique ID column is mis-named in the Laxton data so we fix it here
-names(laxton_weekly)[3] <- "unique_identifier"
-names(wellcome_weekly)[3] <- "unique_identifier"
-names(bodleian_weekly_v1)[3] <- "unique_identifier"
-names(bodleian_weekly_v2)[3] <- "unique_identifier"
-names(bodleian_weekly_v3)[3] <- "unique_identifier"
-
-bodleian_weekly <- rbind(bodleian_weekly_v1, bodleian_weekly_v2, bodleian_weekly_v3)
+# Fix column names
+bodleian_weekly <- bodleian_all_versions |>
+  rename_with(tolower) |>
+  rename_with(~str_replace_all(., " ", "_")) |>
+  rename(unique_identifier = uniqueid)
+rm(bodleian_all_versions)
 
 # Combine all weekly data into a single frame
-weekly_bills <- rbind(wellcome_weekly, laxton_weekly, bodleian_weekly) |>
-  mutate(bill_type = "Weekly")
-
-weekly_bills <- weekly_bills |>
-  mutate(start_day = as.integer(start_day)) |>
-  mutate(end_day = as.integer(end_day)) |>
-  mutate(week = as.integer(week))
+weekly_bills <- bind_rows(
+  wellcome_weekly |> mutate(week = as.numeric(week), start_day = as.numeric(start_day), end_day = as.numeric(end_day)), 
+  laxton_weekly |> mutate(week = as.numeric(week), start_day = as.numeric(start_day), end_day = as.numeric(end_day)), 
+  bodleian_weekly |> mutate(week = as.numeric(week), start_day = as.numeric(start_day), end_day = as.numeric(end_day))
+  ) |> mutate(bill_type = "Weekly")
 
 # This sets up cleaning text that looks something like:
 # "{Christened, Buried, Plague} in the 97 Parishes within the Walls"
@@ -662,9 +592,9 @@ weekly_bills <- weekly_bills |>
 # Check for duplicates
 if(log_data_check(weekly_bills, "After combining weekly bills")) {
   # If duplicates found, check which source they came from
-  weekly_bills <- weekly_bills %>%
-    group_by(unique_identifier, parish_name, year) %>%
-    filter(n() > 1) %>%
+  weekly_bills <- weekly_bills |>
+    group_by(unique_identifier, parish_name, year) |>
+    filter(n() > 1) |>
     arrange(unique_identifier, parish_name, year)
   
   message("\nDetailed duplicate analysis in weekly bills:")
@@ -674,6 +604,7 @@ if(log_data_check(weekly_bills, "After combining weekly bills")) {
 # Find all unique values for parish name, week, and year. These will be
 # referenced as foreign keys in PostgreSQL.
 parishes_unique <- weekly_bills |>
+  ungroup() |>
   select(parish_name) |>
   distinct() |>
   arrange(parish_name) |>
@@ -715,9 +646,9 @@ general_bills <- general_bills |>
 # Check for duplicates
 if(log_data_check(general_bills, "After combining general bills")) {
   # If duplicates found, check which source they came from
-  general_bills <- general_bills %>%
-    group_by(unique_identifier, parish_name, year) %>%
-    filter(n() > 1) %>%
+  general_bills <- general_bills |>
+    group_by(unique_identifier, parish_name, year) |>
+    filter(n() > 1) |>
     arrange(unique_identifier, parish_name, year)
   
   message("\nDetailed duplicate analysis in weekly bills:")
@@ -761,6 +692,7 @@ rm(parishes_tmp)
 # Unique week values
 # ------------------
 week_unique_weekly <- weekly_bills |>
+  ungroup() |>
   select(
     year,
     week,
@@ -790,6 +722,7 @@ week_unique_weekly <- weekly_bills |>
   select(-week_tmp, -week_comparator)
 
 week_unique_wellcome <- causes_wellcome |>
+  ungroup() |>
   select(
     year,
     week_number,
@@ -817,7 +750,10 @@ week_unique_wellcome <- causes_wellcome |>
   mutate(year_range = str_sub(week_id, 1, 9)) |>
   select(-week_tmp, -week_comparator)
 
-all_laxton_weekly_causes <- rbind(causes_laxton_1700, causes_laxton)
+all_laxton_weekly_causes <- bind_rows(
+  causes_laxton_1700 |> mutate(week_number = as.numeric(week_number), count = as.numeric(count)),
+  causes_laxton |> mutate(week_number = as.numeric(week_number), count = as.numeric(count)),
+)
 
 week_unique_laxton <- all_laxton_weekly_causes |>
   select(
@@ -883,10 +819,10 @@ week_unique_general <- rename(week_unique_general, "week_number" = "week")
 week_unique_weekly <- rename(week_unique_weekly, "week_number" = "week")
 
 week_unique <- bind_rows(
-  week_unique_weekly %>% mutate(week_number = as.numeric(week_number)),
-  week_unique_general %>% mutate(week_number = as.numeric(week_number)),
-  week_unique_wellcome %>% mutate(week_number = as.numeric(week_number)),
-  week_unique_laxton %>% mutate(week_number = as.numeric(week_number))
+  week_unique_weekly |> mutate(week_number = as.numeric(week_number)),
+  week_unique_general |> mutate(week_number = as.numeric(week_number)),
+  week_unique_wellcome |> mutate(week_number = as.numeric(week_number)),
+  week_unique_laxton |> mutate(week_number = as.numeric(week_number))
 )
 
 # We determine here whether a year should be a split year by looking at the
@@ -898,10 +834,6 @@ week_unique <- week_unique |>
     paste0(year - 1, "/", year),
     paste0(year)
   ))
-  # TODO: this next line (distinct()) might be causing the bug with data not returning
-  # may be better to think of this table as a week lookup rather than
-  # distinct set of weeks...
-  # distinct(week_id, .keep_all = TRUE) |>
 
 # week_unique <- week_unique |> distinct(week_id, .keep_all = TRUE)
 
@@ -916,7 +848,10 @@ wellcome_deaths_cleaned <- causes_wellcome |>
   filter(!str_detect(death, regex("\\bParishes Clear", ignore_case = FALSE))) |>
   filter(!str_detect(death, regex("\\bParishes Infected", ignore_case = FALSE)))
 
-all_laxton_causes <- rbind(causes_laxton, causes_laxton_1700)
+all_laxton_causes <- bind_rows(
+  causes_laxton |> mutate(week_number = as.numeric(week_number), count = as.numeric(count)), 
+  causes_laxton_1700 |> mutate(week_number = as.numeric(week_number), count = as.numeric(count))
+)
 
 laxton_deaths_cleaned <- all_laxton_causes |>
   filter(!str_detect(death, regex("\\bBuried ", ignore_case = FALSE))) |>
@@ -927,7 +862,7 @@ laxton_deaths_cleaned <- all_laxton_causes |>
   filter(!str_detect(death, regex("\\bParishes Clear", ignore_case = FALSE))) |>
   filter(!str_detect(death, regex("\\bParishes Infected", ignore_case = FALSE)))
 
-total_causes <- rbind(laxton_deaths_cleaned, wellcome_deaths_cleaned)
+total_causes <- bind_rows(laxton_deaths_cleaned, wellcome_deaths_cleaned)
 total_causes <- total_causes |>
   mutate(joinid = paste0(start_day, start_month, end_day, end_month, year))
 
@@ -946,12 +881,14 @@ deaths_long <- total_causes |>
 # Unique year values
 # ------------------
 year_unique <- week_unique |>
+  ungroup() |>
   select(year, week_number) |>
   arrange() |>
   mutate(year = as.integer(year)) |>
   mutate(year_id = as.integer(year)) |>
   mutate(week_number = as.integer(week_number)) |>
   select(-week_number) |>
+  filter(!is.na(year)) |>
   distinct() |>
   arrange(year) |>
   mutate(id = row_number())
@@ -1006,9 +943,9 @@ general_bills <- general_bills |>
 general_bills <- general_bills |>
   select(-start_year, -end_year)
 
-#general_bills <- general_bills |> 
-#  mutate(missing = FALSE) |> 
-#  mutate(illegible = FALSE)
+general_bills <- general_bills |> 
+  mutate(missing = FALSE) |> 
+  mutate(illegible = FALSE)
 
 # ------------------------------------------------------------------------------
 message("Weekly bills columns:")
@@ -1031,49 +968,14 @@ str(general_bills)
 
 all_bills <- bind_rows(weekly_bills, general_bills)
 all_bills <- all_bills |> mutate(id = row_number())
+all_bills <- all_bills |> mutate(
+  missing = coalesce(missing, FALSE),
+  illegible = coalesce(illegible, FALSE)
+)
 
 # --------------------------------------------------
 # Write data
 # --------------------------------------------------
-
-# Clean up the R environment
-rm(
-  BodleianV1_weeklybills_parishes,
-  BodleianV2_weeklybills_parishes_v2,
-  Laxton_1700_weeklybills_causes,
-  Laxton_old_weeklybills_causes,
-  Laxton_weeklybills_parishes,
-  millar_generalbills_postplague_parishes,
-  Wellcome_weeklybills_causes,
-  `1669_1670_Wellcome_weeklybills_parishes`
-)
-
-rm(
-  lookup_laxton,
-  lookup_laxton_1700,
-  lookup_wellcome
-)
-
-rm(
-  wellcome_weekly,
-  wellcome_deaths_cleaned,
-  week_unique_wellcome,
-  week_unique_weekly,
-  week_unique_laxton,
-  week_unique_general,
-  millar_long,
-  parish_canonical,
-  laxton_weekly,
-  laxton_deaths_cleaned,
-  deaths_unique_wellcome,
-  deaths_unique_laxton_1700,
-  deaths_unique_laxton,
-  bodleian_weekly_v1,
-  bodleian_weekly_v2,
-  all_laxton_causes,
-  all_laxton_weekly_causes
-)
-
 # Write data to csv: causes of death
 write_csv(causes_wellcome, "data/wellcome_causes.csv", na = "")
 write_csv(causes_laxton, "data/laxton_causes.csv", na = "")
