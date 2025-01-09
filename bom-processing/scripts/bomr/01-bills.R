@@ -137,9 +137,7 @@ process_bodleian_data <- function(data, source_name) {
                      "Start Month", "End Day", "End Month", "parish_name")) |>
     left_join(missing_data,
               by = c("Year", "Week", "UniqueID", "Start Day", 
-                     "Start Month", "End Day", "End Month", "parish_name"))
-  
-  combined_data <- combined_data |>
+                     "Start Month", "End Day", "End Month", "parish_name")) |>
     mutate(source = source_name)
   
   message(sprintf("Processed Bodleian V%d data: %d rows", 
@@ -1079,6 +1077,17 @@ all_christenings <- bind_rows(
   aggregate_entries_weekly$christenings |> mutate(bill_type = "Weekly", year = as.numeric(year)),
   aggregate_entries_general$christenings |> mutate(bill_type = "General", year = as.numeric(year))
 )
+all_christenings <- all_christenings %>% 
+  mutate(start_month_num = month_to_number(start_month),
+         end_month_num = month_to_number(end_month),
+         start_day_pad = sprintf("%02d", start_day),
+         end_day_pad = sprintf("%02d", end_day),
+         # Create numeric joinid in format yyyymmddyyyymmdd
+         joinid = paste0(
+           year, start_month_num, start_day_pad,
+           year, end_month_num, end_day_pad
+         )) %>% 
+  select(-start_month_num, -end_month_num, -start_day_pad, -end_day_pad)
 
 all_plague <- bind_rows(
   aggregate_entries_weekly$plague |> mutate(bill_type = "Weekly", year = as.numeric(year)),
