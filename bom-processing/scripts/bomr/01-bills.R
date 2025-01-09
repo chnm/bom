@@ -5,7 +5,7 @@
 #
 # Jason A. Heppler | jason@jasonheppler.org
 # Roy Rosenzweig Center for History and New Media
-# Updated: 2025-01-07
+# Updated: 2025-01-09
 
 library(tidyverse)
 # ----------------------------------------------------------------------
@@ -256,6 +256,7 @@ process_general_bills <- function(data, source_name) {
   
   return(general_bills)
 }
+
 # Helper function for data quality checks
 check_data_quality <- function(df) {
   # Check for NA values
@@ -353,6 +354,7 @@ process_unflagged_data <- function(data, source_name) {
   return(result)
 }
 
+# Extract data on buried/plague/totals/status/counts.
 extract_aggregate_entries <- function(data, dataset_name) {
   message("Processing aggregate data (totals, parish status, and special counts)...")
   
@@ -640,6 +642,56 @@ process_unique_years <- function(week_data) {
   return(year_unique)
 }
 
+# Associate all_bills data with unique IDs so we can use foreign keys in Postgres
+# to look up the week.
+associate_week_ids <- function(bills_data, weeks_data) {
+  message("Associating bills with week IDs...")
+  
+  # First, let's examine the join keys
+  message("\nChecking join IDs:")
+  message("Unique join IDs in bills: ", 
+          n_distinct(bills_data$joinid))
+  message("Unique join IDs in weeks: ", 
+          n_distinct(weeks_data$joinid))
+  
+  # Check for duplicates in weeks_data
+  duplicate_weeks <- weeks_data %>%
+    group_by(joinid) %>%
+    filter(n() > 1)
+  
+  if(nrow(duplicate_weeks) > 0) {
+    message("\nFound duplicate weeks:")
+    print(duplicate_weeks)
+  }
+  
+  # Modified join process
+  bills_with_weeks <- bills_data %>%
+    select(-any_of(c("week", "start_day", "end_day", 
+                     "start_month", "end_month", "year", "split_ye"))) %>%
+    left_join(
+      weeks_data %>% 
+        distinct(joinid, .keep_all = TRUE) %>%  # Take first instance of each joinid
+        select(joinid, year, split_year),
+      by = "joinid"
+    )
+  
+  message(sprintf("\nInitial rows: %d", nrow(bills_data)))
+  message(sprintf("Final rows: %d", nrow(bills_with_weeks)))
+  
+  # Check for any missing joins
+  missing_weeks <- bills_with_weeks %>%
+    filter(is.na(year)) %>%
+    select(joinid) %>%
+    distinct()
+  
+  if(nrow(missing_weeks) > 0) {
+    message("\nFound bills with missing week data:")
+    print(missing_weeks)
+  }
+  
+  return(bills_with_weeks)
+}
+
 # Create lookup tables
 create_lookup_table <- function(data, source_name, n_descriptive_cols) {
   message(sprintf("Processing %s lookup table...", source_name))
@@ -733,6 +785,51 @@ process_causes_of_death <- function(data, source_name, lookup_table, skip_cols, 
     mutate(count = as.numeric(count))
   
   return(result)
+}
+
+derive_causes <- function(data_sources) {
+  # Validate input structure
+  if (!is.list(data_sources) || !all(sapply(data_sources, function(x) "data" %in% names(x)))) {
+    stop("data_sources must be a list of lists, each containing 'data' element")
+  }
+  
+  # Define patterns to exclude
+  exclude_patterns <- c(
+    "^Christened \\(",
+    "^Buried \\(",
+    "Plague Deaths$",
+    "^Increase/Decrease",
+    "Parishes (Clear|Infected)",
+    "Ounces in"
+  )
+  exclude_regex <- paste(exclude_patterns, collapse = "|")
+  
+  # Process all sources
+  processed_causes <- map_df(data_sources, function(source) {
+    source$data %>%
+      mutate(
+        week_number = as.numeric(week_number),
+        source_name = source$name %||% "Unknown"  # Use "Unknown" if name not provided
+      )
+  }) %>%
+    # Filter out unwanted entries
+    filter(!str_detect(death, regex(exclude_regex, ignore_case = TRUE))) %>%
+    # Create standardized date components
+    mutate(
+      start_month_num = month_to_number(start_month),
+      end_month_num = month_to_number(end_month),
+      start_day_pad = sprintf("%02d", start_day),
+      end_day_pad = sprintf("%02d", end_day),
+      # Create numeric joinid in format yyyymmddyyyymmdd
+      joinid = paste0(
+        year, start_month_num, start_day_pad,
+        year, end_month_num, end_day_pad
+      )
+    ) %>%
+    # Select final columns
+    select(death, count, year, joinid, descriptive_text, source_name)
+  
+  return(processed_causes)
 }
 
 # Function to process unique deaths
@@ -878,6 +975,23 @@ causes_laxton <- process_causes_of_death(
   pivot_range = c(8, 125)
 )
 
+# Process all causes 
+deaths_data_sources <- list(
+  list(
+    data = causes_wellcome,
+    name = "Wellcome"
+  ),
+  list(
+    data = causes_laxton,
+    name = "Laxton"
+  ),
+  list(
+    data = causes_laxton_1700,
+    name = "Laxton 1700"
+  )
+)
+deaths_long <- derive_causes(deaths_data_sources)
+
 # Process unique deaths
 deaths_unique_wellcome <- process_unique_deaths(causes_wellcome, "wellcome")
 deaths_unique_laxton_1700 <- process_unique_deaths(causes_laxton_1700, "laxton_1700")
@@ -927,8 +1041,7 @@ weekly_bills <- bind_rows(
   wellcome_weekly |> mutate(week = as.numeric(week), start_day = as.numeric(start_day), end_day = as.numeric(end_day)), 
   laxton_weekly |> mutate(week = as.numeric(week), start_day = as.numeric(start_day), end_day = as.numeric(end_day)), 
   bodleian_weekly |> mutate(week = as.numeric(week), start_day = as.numeric(start_day), end_day = as.numeric(end_day))
-  ) |> mutate(bill_type = "Weekly") |>
-  select (-UniqueID)
+  ) |> mutate(bill_type = "Weekly")
 
 # ----------------------------------------------------------------------
 # General Bills
@@ -1004,6 +1117,19 @@ all_bills <- bind_rows(
   general_bills |> 
     mutate(year = as.integer(year))
 )
+# Create a unique joinid for all_bills to use with combining into the weeks data
+all_bills <- all_bills %>% 
+  mutate(start_month_num = month_to_number(start_month),
+         end_month_num = month_to_number(end_month),
+         start_day_pad = sprintf("%02d", start_day),
+         end_day_pad = sprintf("%02d", end_day),
+         # Create numeric joinid in format yyyymmddyyyymmdd
+         joinid = paste0(
+           year, start_month_num, start_day_pad,
+           year, end_month_num, end_day_pad
+  )) %>% 
+  select(-start_month_num, -end_month_num, -start_day_pad, -end_day_pad)
+
 parishes_unique <- process_unique_parishes(all_bills)
 write_csv(parishes_unique, "data/parishes_unique.csv", na = "")
 
@@ -1037,21 +1163,11 @@ all_bills <- all_bills |>
   dplyr::left_join(parishes_unique |> select(parish_name, parish_id), 
             by = "parish_name")
 
-# TODO: Week IDs
+# Week IDs
 ## Match unique week IDs to the long parish tables, and drop the existing
 ## start and end months and days from long_parish so they're only referenced
 ## through the unique week ID.
-all_bills <- all_bills |>
-  select(-week, -start_day, -end_day, -start_month, -end_month, -year) |>
-  dplyr::left_join(week_unique, by = "unique_identifier") |>
-  select(
-    -week_number,
-    -start_day,
-    -end_day,
-    -start_month,
-    -end_month,
-    -canonical_name
-  )
+all_bills <- associate_week_ids(all_bills, week_unique)
 
 # --------------------------------------------------
 # Write data
@@ -1061,7 +1177,6 @@ write_csv(causes_wellcome, "data/wellcome_causes.csv", na = "")
 write_csv(causes_laxton, "data/laxton_causes.csv", na = "")
 write_csv(causes_laxton_1700, "data/laxton_causes_1700.csv", na = "")
 write_csv(deaths_unique, "data/deaths_unique.csv", na = "")
-# TODO:
 write_csv(deaths_long, na = "", "data/causes_of_death.csv")
 
 # Write data to csv: parishes and bills
