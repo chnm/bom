@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parish Boundaries Map (Debug)</title>
+    
+    <!-- Leaflet CSS and JS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+    
+    <style>
+        #map {
+            height: 80vh;
+            width: 100%;
+        }
+        .controls {
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .debug {
+            padding: 20px;
+            background: #ffe;
+            font-family: monospace;
+            white-space: pre;
+            overflow: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="controls">
+        <input type="number" id="year" placeholder="Filter by year">
+        <input type="text" id="subunit" placeholder="Filter by subunit">
+        <input type="text" id="cityCounty" placeholder="Filter by city/county">
+        <button onclick="applyFilters()">Apply Filters</button>
+    </div>
+    <div id="map"></div>
+    <div id="debug" class="debug">Debug info will appear here</div>
+
+    <script>
+        const debugDiv = document.getElementById('debug');
+        function log(msg, data) {
+            if (data) {
+                debugDiv.textContent += `\n${msg}: ${JSON.stringify(data, null, 2)}`;
+            } else {
+                debugDiv.textContent += `\n${msg}`;
+            }
+            console.log(msg, data);
+        }
+
+        // Initialize the map
+        log('Initializing map...');
+        const map = L.map('map').setView([51.5074, -0.1278], 10);
+
+        // Add the OpenStreetMap tiles
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        let currentLayer = null;
+
+        async function fetchData(filters = {}) {
+            let url = 'http://localhost:8090/bom/geometries';
+            const params = new URLSearchParams();
+            
+            if (filters.year) params.append('year', filters.year);
+            if (filters.subunit) params.append('subunit', filters.subunit);
+            if (filters.cityCounty) params.append('city_cnty', filters.cityCounty);
+            
+            if (params.toString()) {
+                url += `?${params.toString()}`;
+            }
+
+            log(`Fetching data from ${url}`);
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                log('Received data with features:', {
+                    type: data.type,
+                    featureCount: data.features?.length,
+                    firstFeature: data.features?.[0]
+                });
+
+                // Remove existing layer if it exists
+                if (currentLayer) {
+                    log('Removing existing layer');
+                    map.removeLayer(currentLayer);
+                }
+
+                // Add new layer
+                log('Creating new GeoJSON layer');
+                currentLayer = L.geoJSON(data, {
+                    style: {
+                        color: '#2563eb',
+                        weight: 2,
+                        opacity: 0.6,
+                        fillOpacity: 0.1
+                    },
+                    onEachFeature: (feature, layer) => {
+                        const props = feature.properties;
+                        layer.bindPopup(`
+                            <strong>${props.par || 'Unknown Parish'}</strong><br/>
+                            Year: ${props.start_yr || 'N/A'}<br/>
+                            Subunit: ${props.subunit || 'N/A'}<br/>
+                            City/County: ${props.city_cnty || 'N/A'}
+                        `);
+                    }
+                }).addTo(map);
+
+                // Log bounds
+                if (currentLayer.getBounds().isValid()) {
+                    const bounds = currentLayer.getBounds();
+                    log('Layer bounds:', {
+                        north: bounds.getNorth(),
+                        south: bounds.getSouth(),
+                        east: bounds.getEast(),
+                        west: bounds.getWest()
+                    });
+                    map.fitBounds(bounds);
+                } else {
+                    log('WARNING: Layer bounds not valid');
+                }
+            } catch (error) {
+                log('ERROR:', error.message);
+                console.error('Full error:', error);
+            }
+        }
+
+        function applyFilters() {
+            const year = document.getElementById('year').value;
+            const subunit = document.getElementById('subunit').value;
+            const cityCounty = document.getElementById('cityCounty').value;
+
+            log('Applying filters:', { year, subunit, cityCounty });
+
+            fetchData({
+                year: year,
+                subunit: subunit,
+                cityCounty: cityCounty
+            });
+        }
+
+        // Initial load
+        log('Starting initial data load...');
+        fetchData();
+    </script>
+</body>
+</html>
+
