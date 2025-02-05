@@ -61,7 +61,7 @@
         let currentLayer = null;
 
         async function fetchData(filters = {}) {
-            let url = 'http://localhost:8090/bom/geometries';
+            let url = 'https://data.chnm.org/bom/geometries';
             const params = new URLSearchParams();
             
             if (filters.year) params.append('year', filters.year);
