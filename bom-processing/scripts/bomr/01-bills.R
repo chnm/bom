@@ -5,7 +5,7 @@
 #
 # Jason A. Heppler | jason@jasonheppler.org
 # Roy Rosenzweig Center for History and New Media
-# Updated: 2025-01-09
+# Updated: 2025-02-27
 
 library(tidyverse)
 # ----------------------------------------------------------------------
@@ -61,8 +61,9 @@ check_whitespace <- function(df) {
 }
 
 # Process Bodleian exports
+# Update the process_bodleian_data function to ensure consistent data types for all flags
 process_bodleian_data <- function(data, source_name) {
-  # Standardize column names
+  # Standardize column names (your existing code)
   data <- data |>
     rename_with(
       ~ case_when(
@@ -85,6 +86,11 @@ process_bodleian_data <- function(data, source_name) {
       `Start Month` = as.character(`Start Month`),
       `End Month` = as.character(`End Month`)
     )
+  
+  # Convert all illegible and missing flags to logical (TRUE/FALSE) before processing
+  data <- data |>
+    mutate(across(starts_with("is_illegible") | starts_with("is_missing"), 
+                  ~ifelse(is.na(.), FALSE, as.logical(.))))
   
   # Process main data (parishes)
   main_data <- data |>
@@ -110,7 +116,7 @@ process_bodleian_data <- function(data, source_name) {
     ) |>
     mutate(
       parish_name = str_remove(parish_name, "is_illegible_"),
-      illegible = ifelse(is.na(illegible), FALSE, TRUE)
+      illegible = ifelse(is.na(illegible), FALSE, as.logical(illegible))  # Force logical type
     )
   
   # Process missing flags
@@ -127,7 +133,7 @@ process_bodleian_data <- function(data, source_name) {
     ) |>
     mutate(
       parish_name = str_remove(parish_name, "is_missing_"),
-      missing = ifelse(is.na(missing), FALSE, TRUE)
+      missing = ifelse(is.na(missing), FALSE, as.logical(missing))  # Force logical type
     )
   
   # Join the data
@@ -140,7 +146,7 @@ process_bodleian_data <- function(data, source_name) {
                      "Start Month", "End Day", "End Month", "parish_name")) |>
     mutate(source = source_name)
   
-  message(sprintf("Processed Bodleian V%d data: %d rows", 
+  message(sprintf("Processed Bodleian %s data: %d rows", 
                   source_name, nrow(combined_data)))
   
   return(combined_data)
@@ -1016,14 +1022,19 @@ laxton_weekly <- process_weekly_bills(Laxton_old_weeklybills_parishes,
 
 # Bring together all Bodleian versions
 bodleian_versions <- list(
-  list(data = BodleianV1_weeklybills_parishes, "Bodleian V1"),
-  list(data = BodleianV2_weeklybills_parishes, "Bodleian V2"),
-  list(data = BodleianV3_weeklybills_parishes, "Bodleian V3")
+  list(data = BodleianV1_weeklybills_parishes, version = "Bodleian V1"),
+  list(data = BodleianV2_weeklybills_parishes, version = "Bodleian V2"),
+  list(data = BodleianV3_weeklybills_parishes, version = "Bodleian V3")
 )
 
 # Process all versions and store in a single dataframe
 bodleian_all_versions <- map_df(bodleian_versions, function(v) {
-  process_bodleian_data(v$data, v$version) |>
+  # First convert all potential count columns to character
+  data_with_char_counts <- v$data %>%
+    mutate(across(where(is.numeric), as.character))
+  
+  # Then process
+  process_bodleian_data(data_with_char_counts, v$version) %>%
     mutate(version = v$version)
 })
 
@@ -1035,11 +1046,34 @@ bodleian_weekly <- bodleian_all_versions |>
 rm(bodleian_all_versions)
 
 # Combine all weekly data into a single frame
+# Combine all weekly data into a single frame with consistent data types
 weekly_bills <- bind_rows(
-  wellcome_weekly |> mutate(week = as.numeric(week), start_day = as.numeric(start_day), end_day = as.numeric(end_day)), 
-  laxton_weekly |> mutate(week = as.numeric(week), start_day = as.numeric(start_day), end_day = as.numeric(end_day)), 
-  bodleian_weekly |> mutate(week = as.numeric(week), start_day = as.numeric(start_day), end_day = as.numeric(end_day))
-  ) |> mutate(bill_type = "Weekly")
+  wellcome_weekly |> 
+    mutate(
+      week = as.numeric(week), 
+      start_day = as.numeric(start_day), 
+      end_day = as.numeric(end_day),
+      count = as.character(count)  # Convert to character for binding
+    ), 
+  laxton_weekly |> 
+    mutate(
+      week = as.numeric(week), 
+      start_day = as.numeric(start_day), 
+      end_day = as.numeric(end_day),
+      count = as.character(count)  # Convert to character for binding
+    ), 
+  bodleian_weekly |> 
+    mutate(
+      week = as.numeric(week), 
+      start_day = as.numeric(start_day), 
+      end_day = as.numeric(end_day),
+      count = as.character(count)  # Convert to character for binding
+    )
+) |> 
+  mutate(
+    bill_type = "Weekly",
+    count = as.numeric(count)  # Convert back to numeric after binding
+  )
 
 # ----------------------------------------------------------------------
 # General Bills
