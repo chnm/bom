@@ -25,6 +25,9 @@
             <th scope="col"
               class="py-3 px-6 text-xs font-medium tracking-wider text-center text-gray-700 uppercase dark:text-gray-400"
               width="20%">Split Year</th>
+            <th scope="col"
+              class="py-3 px-6 text-xs font-medium tracking-wider text-center text-gray-700 uppercase dark:text-gray-400"
+              width="20%">Historical Trend</th>
           </tr>
         </thead>
         <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
@@ -42,6 +45,137 @@
                 x-text="bill.year"></td>
               <td class="py-4 px-6 text-sm font-medium text-center text-gray-900 whitespace-nowrap dark:text-white font-mono"
                 x-text="bill.split_year"></td>
+          <td class="py-2 px-2">
+                <!-- Using Alpine.js to handle the chart cell directly rather than a Hugo partial -->
+                <div 
+                  x-data="{ 
+                    parishName: bill.name,
+                    chartId: `chart-${bill.id}`,
+                    loading: true,
+                    error: null,
+                    
+                    init() {
+                      this.fetchData();
+                    },
+                    
+                    fetchData() {
+                      // Check if data is already cached
+                      if ($data.parishYearlyData && $data.parishYearlyData[this.parishName]) {
+                        this.renderChart($data.parishYearlyData[this.parishName]);
+                        this.loading = false;
+                        return;
+                      }
+                      
+                      // Otherwise fetch it
+                      fetch(`https://data.chnm.org/bom/parish-yearly?parish=${encodeURIComponent(this.parishName)}`)
+                        .then(response => {
+                          if (!response.ok) {
+                            throw new Error('Failed to load data');
+                          }
+                          return response.json();
+                        })
+                        .then(data => {
+                          // Cache the data
+                          if ($data.parishYearlyData) {
+                            $data.parishYearlyData[this.parishName] = data;
+                          }
+                          
+                          if (data && data.length > 0) {
+                            this.renderChart(data);
+                          } else {
+                            this.error = 'No data';
+                          }
+                          this.loading = false;
+                        })
+                        .catch(err => {
+                          console.error(err);
+                          this.error = err.message;
+                          this.loading = false;
+                        });
+                    },
+                    
+                    renderChart(data) {
+                      const el = this.$refs.chart;
+                      if (!el) return;
+                      
+                      // Clear previous content
+                      el.innerHTML = '';
+                      
+                      // Create SVG element
+                      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                      svg.setAttribute('width', '100%');
+                      svg.setAttribute('height', '60');
+                      svg.setAttribute('viewBox', '0 0 160 60');
+                      
+                      // Simple bar chart implementation
+                      // Get the max value for scaling
+                      const maxValue = Math.max(...data.map(d => d.total_buried || 0));
+                      
+                      // Get year range
+                      const years = data.map(d => d.year);
+                      const minYear = Math.min(...years);
+                      const maxYear = Math.max(...years);
+                      const yearRange = maxYear - minYear;
+                      
+                      // Add bars for each year
+                      data.forEach(item => {
+                        if (item.total_buried) {
+                          const x = 10 + ((item.year - minYear) / yearRange) * 140;
+                          const barWidth = Math.max(1, 140 / yearRange - 1);
+                          const barHeight = (item.total_buried / maxValue) * 45;
+                          const y = 55 - barHeight;
+                          
+                          // Create bar for buried
+                          const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                          rect.setAttribute('x', x);
+                          rect.setAttribute('y', y);
+                          rect.setAttribute('width', barWidth);
+                          rect.setAttribute('height', barHeight);
+                          rect.setAttribute('fill', '#4682B4');
+                          svg.appendChild(rect);
+                          
+                          // Add plague portion if exists
+                          if (item.total_plague) {
+                            const plagueHeight = (item.total_plague / maxValue) * 45;
+                            const plagueY = 55 - plagueHeight;
+                            
+                            const plagueRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                            plagueRect.setAttribute('x', x);
+                            plagueRect.setAttribute('y', plagueY);
+                            plagueRect.setAttribute('width', barWidth);
+                            plagueRect.setAttribute('height', plagueHeight);
+                            plagueRect.setAttribute('fill', '#DC143C');
+                            svg.appendChild(plagueRect);
+                          }
+                        }
+                      });
+                      
+                      // Add axis line
+                      const axisLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                      axisLine.setAttribute('x1', 10);
+                      axisLine.setAttribute('y1', 55);
+                      axisLine.setAttribute('x2', 150);
+                      axisLine.setAttribute('y2', 55);
+                      axisLine.setAttribute('stroke', '#333');
+                      axisLine.setAttribute('stroke-width', '1');
+                      svg.appendChild(axisLine);
+                      
+                      // Add to DOM
+                      el.appendChild(svg);
+                    }
+                  }"
+                >
+                  <div x-show="loading" class="h-12 flex items-center justify-center">
+                    <div class="animate-spin h-4 w-4 border-2 border-gray-500 rounded-full border-t-transparent"></div>
+                  </div>
+                  
+                  <div x-show="error" class="text-red-500 text-xs p-1">
+                    <span x-text="error"></span>
+                  </div>
+                  
+                  <div x-show="!loading && !error" x-ref="chart" class="w-full h-16"></div>
+                </div>
+              </td>
             </tr>
           </template>
         </tbody>
