@@ -6,3 +6,4 @@ bom-db/node_modules/
 
 dbupdate
 bom-processing/scripts/bomr/.Rapp.history
+bom-processing/db/updater/bin
