@@ -404,8 +404,6 @@ func updateTables(ctx context.Context, tx pgx.Tx) error {
 
 	start := time.Now()
 
-	// Run the SQL from your insert_update.sql that handles the insertions/updates
-	// but without the COPY statements since we've already loaded data into temp tables
 	_, err := tx.Exec(ctx, `
 	DO $$
 	DECLARE
