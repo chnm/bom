@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS bom.week (
     end_day integer CHECK (end_day BETWEEN 1 AND 31),
     end_month text,
     year integer REFERENCES bom.year(year),
-    week_no integer CHECK (week_no BETWEEN 1 AND 90),
+    week_number integer CHECK (week_number BETWEEN 1 AND 90),
     split_year text,
     unique_identifier text,
     week_id text,
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS bom.week (
     updated_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP
 );
 
-COMMENT ON CONSTRAINT week_week_no_check ON bom.week 
+COMMENT ON CONSTRAINT week_week_number_check ON bom.week 
 IS 'Week numbers 1-53 for regular weeks, 90 used to denote annual records';
 
 -- Table Definition: Parishes ----------------------------------------------
