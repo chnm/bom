@@ -608,8 +608,25 @@ process_unique_weeks <- function(data_sources) {
           paste0(year)
         )
       ) |>
-      select(-week_tmp, -start_month_num, -end_month_num)
+      select(-week_tmp, -start_month_num, -end_month_num, -start_day_pad, -end_day_pad) |>
+      drop_na(year)
     
+    # Check for two-digit years
+    two_digit_years <- week_data |> 
+      filter(nchar(as.character(year)) == 2) |>
+      select(year, unique_identifier) |>
+      distinct()
+    
+    if(nrow(two_digit_years) > 0) {
+      message(sprintf("Found %d records with two-digit years in source %s. These rows have been removed:", 
+                      nrow(two_digit_years), source_name))
+      print(two_digit_years)
+      
+      # Remove records with two-digit years
+      week_data <- week_data |> 
+        filter(nchar(as.character(year)) > 2)
+    } 
+     
     # Special handling for Laxton data
     if(str_detect(source_name, "laxton")) {
       week_data <- week_data |>
@@ -1095,26 +1112,29 @@ derive_causes <- function(data_sources) {
   )
   exclude_regex <- paste(exclude_patterns, collapse = "|")
   
-  # Process and return the filtered data
-  processed_data <- combined_data |>
-    # Filter out unwanted entries if 'death' column exists
-    filter(if ("death" %in% names(.)) 
-      !str_detect(death, regex(exclude_regex, ignore_case = TRUE))
-      else TRUE) |>
-    # Create standardized date components if needed
+  processed_data <- combined_data
+  
+  # Only apply the string detection filter if 'death' column exists
+  if ("death" %in% names(combined_data)) {
+    processed_data <- processed_data |>
+      filter(!str_detect(death, regex(exclude_regex, ignore_case = TRUE)))
+  }
+  
+  # Create standardized date components if needed
+  processed_data <- processed_data |>
     mutate(
       # Only try to create joinid if it doesn't exist and we have the necessary columns
-      joinid = if ("joinid" %in% names(.)) 
+      joinid = if ("joinid" %in% names(processed_data)) 
         joinid 
-      else if (all(c("year", "start_month", "end_month", "start_day", "end_day") %in% names(.)))
+      else if (all(c("year", "start_month", "end_month", "start_day", "end_day") %in% names(processed_data)))
         paste0(
-          year, month_to_number(start_month), sprintf("%02d", start_day),
-          year, month_to_number(end_month), sprintf("%02d", end_day)
+          year, month_to_number(start_month), sprintf("%02d", as.numeric(start_day)),
+          year, month_to_number(end_month), sprintf("%02d", as.numeric(end_day))
         )
       else
         NA_character_
     )
-  
+ 
   # Select only columns that exist
   columns_to_select <- c("death", "count", "year", "joinid", "descriptive_text", "source_name")
   existing_columns <- intersect(columns_to_select, names(processed_data))

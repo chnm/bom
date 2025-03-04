@@ -5,7 +5,7 @@
 #
 # Jason A. Heppler | jason@jasonheppler.org
 # Roy Rosenzweig Center for History and New Media
-# Updated: 2025-03-03
+# Updated: 2025-03-04
 
 library(tidyverse)
 source("helpers.R")
@@ -149,8 +149,9 @@ for (dataset_name in causes_datasets) {
 deaths_data_sources <- list()
 for (dataset_name in names(processed_causes)) {
   source_name <- if (grepl("wellcome", dataset_name)) "wellcome"
-  else if (grepl("laxton_1700", dataset_name)) "laxton_1700"
-  else if (grepl("laxton", dataset_name)) "laxton_pre1700"
+  else if (grepl("laxton_1700", dataset_name)) "laxton"
+  else if (grepl("laxton", dataset_name)) "laxton"
+  else if (grepl("bodleian", dataset_name)) "bodleian"
   else "unknown"
   
   deaths_data_sources[[length(deaths_data_sources) + 1]] <- list(
@@ -227,13 +228,23 @@ weekly_bills <- bind_rows(
   wellcome_weekly |> 
     mutate(
       week = as.numeric(week), 
+      year = as.numeric(year),
       start_day = as.numeric(start_day), 
       end_day = as.numeric(end_day),
       count = as.character(count)
     ), 
-  laxton_weekly |> 
+  laxton_new_weekly |> 
     mutate(
       week = as.numeric(week), 
+      year = as.numeric(year),
+      start_day = as.numeric(start_day), 
+      end_day = as.numeric(end_day),
+      count = as.character(count)
+    ), 
+  laxton_old_weekly |> 
+    mutate(
+      week = as.numeric(week), 
+      year = as.numeric(year),
       start_day = as.numeric(start_day), 
       end_day = as.numeric(end_day),
       count = as.character(count)
@@ -241,6 +252,7 @@ weekly_bills <- bind_rows(
   bodleian_weekly |> 
     mutate(
       week = as.numeric(week), 
+      year = as.numeric(year),
       start_day = as.numeric(start_day), 
       end_day = as.numeric(end_day),
       count = as.character(count)
@@ -297,7 +309,7 @@ all_christenings <- all_christenings |>
            year, start_month_num, start_day_pad,
            year, end_month_num, end_day_pad
          )) |>
-  select(-start_month_num, -end_month_num, -start_day_pad, -end_day_pad)
+  select(-start_month_num, -end_month_num, -start_day_pad, -end_day_pad, -version)
 
 all_plague <- bind_rows(
   aggregate_entries_weekly$plague |> mutate(bill_type = "Weekly", year = as.numeric(year)),
@@ -361,7 +373,6 @@ weekly_data_sources <- list(
   list(data = processed_cause, name = "causes")
 )
 week_unique <- process_unique_weeks(weekly_data_sources)
-week_unique <- week_unique |> drop_na(year)
 rm(weekly_data_sources)
 
 # Unique year values
@@ -386,6 +397,7 @@ all_bills <- all_bills |>
 ## start and end months and days from long_parish so they're only referenced
 ## through the unique week ID.
 all_bills <- associate_week_ids(all_bills, week_unique)
+all_bills <- all_bills |> select(-version)
 
 # --------------------------------------------------
 # Write data
