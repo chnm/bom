@@ -1,160 +1,312 @@
 parish_name,canonical_name,parish_id
-Alhallows Barking,All Hallows Barking,1
-Alhallows Breadstreet,All Hallows Bread Street,2
-Alhallows Great,All Hallows the Great,3
-Alhallows Honylane,All Hallows Honey Lane,4
-Alhallows Lesse,All Hallows the Less,5
-Alhallows Lumbardstreet,All Hallows Lombard Street,6
-Alhallows Stayning,All Hallows Staining,7
-Alhallows the Wall,All Hallows London Wall,8
-Bridewel Precinct,Bridewell Precinct,9
-Christ Church,Christ Church,10
-Christ Church in Middlesex,Christ Church Middlesex,11
-Christ Church in Surrey,Christ Church in Surrey,12
-Christ Church in Surry,Christ Church Surrey,13
-Hackney Parish,St John at Hackney,14
-Lambeth Parish,St Mary Lambeth,15
-Pesthouse in Westminster,Westminster Pesthouse,16
-Pesthouse Without the Walls,Pesthouse Without the Walls,17
-Rothorith Parish,St Mary Rotherhithe,18
-S Sepulchres Parish,St Sepulchre,19
-Saviours Southwark,St Saviour Southwark,20
-St Alban Woodstreet,St Alban Wood Street,21
-St Alphage,St Alphage,22
-St Andrew Holborn,St Andrew Holborn,23
-St Andrew Hubbard,St Andrew Hubbard,24
-St Andrew Undershaft,St Andrew Undershaft,25
-St Andrew Wardrobe,St Andrew Wardrobe,26
-St Ann Aldersgate,St Anne Aldersgate,27
-St Ann Blackfryers,St Ann Blackfriars,28
-St Ann in Middlesex,St Anne Limehouse,29
-St Ann in Westminster,St Anne Westminster,30
-St Antholins Parish,St Antholin,31
-St Austins Parish,St Austin,32
-St Bartholomew Exchange,St Bartholomew Exchange,33
-St Bartholomew Great,St Bartholomew Great,34
-St Bartholomew Less,St Bartholomew Less,35
-St Bennet Fynck,St Benet Fink,36
-St Bennet Gracechurch,St Benet Gracechurch,37
-St Bennet Paulswharf,St Benet Paul's Wharf,38
-St Bennet Sherehog,St Benet Sherehog,39
-St Botolph Aldersgate,St Botolph Aldersgate,40
-St Botolph Aldgate,St Botolph Aldgate,41
-St Botolph Billingsgate,St Botolph Billingsgate,42
-St Botolph Bishopsgate,St Botolph Bishopsgate,43
-St Bridget,St Bride,44
-St Christophers,St Christopher,45
-St Clement Danes,St Clement Danes,46
-St Clement Eastcheap,St Clement Eastcheap,47
-St Dionis Backchurch,St Dionis Backchurch,48
-St Dunstan East,St Dunstan East,49
-St Dunstan West,St Dunstan West,50
-St Edmund Lumbardstr.,St Edmund the King,51
-St Ethelborough,St Ethelburga,52
-St Faith,St Faith under St Paul's,53
-St Foster,St Vedast alias Foster,54
-St Gabriel Fenchurch,St Gabriel Fenchurch,55
-St George Botolphlane,St George Botolph Lane,56
-St George by Hanover Square,St George Hanover Square,57
-St George by Queen's Square,St George Queen's Square,58
-St George Hanover-square,St George Hanover-square,59
-St George in Bloomsburg,St George in Bloomsburg,60
-St George in Bloomsbury,St George Bloomsbury,61
-St George in Middlesex,St George Middlesex,62
-St George Southwark,St George Southwark,63
-St Giles Cripplegate,St Giles Cripplegate,64
-St Giles in the Field,St Giles in the Field,65
-St Gregory by St Pauls,St Gregory by St Paul's,66
-St Hellen,St Helen,67
-St James Clerkenwel,St James Clerkenwell,68
-St James Dukes place,St James Duke's Place,69
-St James Garlickhithe,St James Garlickhithe,70
-St James in Westminster,St James Westminster,71
-St John at Wapping,St John Wapping,72
-St John Baptist,St John Baptist,73
-St John Evangelist,St John Evangelist,74
-St John Southwark,St John Southwark,75
-St John the Evangelist,St John Westminster,76
-St John Zachary,St John Zachary,77
-St Katharine Coleman,St Katherine Coleman,78
-St Katharine Creechurch,St Katherine Creechurch,79
-St Katharine Tower,St Katharine Tower,80
-St Lawrence Jewry,St Lawrence Jewry,81
-St Lawrence Pountney,St Lawrence Pountney,82
-St Leonard Eastcheap,St Leonard Eastcheap,83
-St Leonard Fosterlane,St Leonard Foster Lane,84
-St Leonard Shoreditch,St Leonard Shoreditch,85
-St Luke in Middlesex,St Luke Middlesex,86
-St Magdalen Bermondsey,St Mary Magdalen Bermondsey,87
-St Magnus Parish,St Magnus,88
-St Margaret Lothbury,St Margaret Lothbury,89
-St Margaret Moses,St Margaret Moses,90
-St Margaret Newfishstreet,St Margaret New Fish Street,91
-St Margaret Pattons,St Margaret Pattens,92
-St Margaret Westminster,St Margaret Westminster,93
-St Martin in the fields,St Martin in the Fields,94
-St Martin Iremongerlane,St Martin Ironmonger Lane,95
-St Martin Ludgate,St Martin Ludgate,96
-St Martin Orgars,St Martin Orgar,97
-St Martin Outwich,St Martin Outwich,98
-St Martin Vintrey,St Martin Vintry,99
-St Mary Abchurch,St Mary Abchurch,100
-St Mary Aldermanbury,St Mary Aldermanbury,101
-St Mary Aldermary,St Mary Aldermay,102
-St Mary Bothaw,St Mary Bothaw,103
-St Mary Colechurch,St Mary Colechurch,104
-St Mary Hill,St Mary Hill,105
-St Mary Islington,St Mary Islington,106
-St Mary le Bow,St Mary le Bow,107
-St Mary le Strand,St Mary le Strand,108
-St Mary Mounthaw,St Mary Mounthaw,109
-St Mary Newington,St Mary Newington,110
-St Mary Savoy,St Mary Savoy,111
-St Mary Sommerset,St Mary Somerset,112
-St Mary Stayning,St Mary Staining,113
-St Mary Whitechappel,St Mary Whitechapel,114
-St Mary Woolchurch,St Mary Woolchurch,115
-St Mary Woolnoth,St Mary Woolnoth,116
-St Matthew at Bethnal Green,St Matthew Bethnal Green,117
-St Matthew Fridaystreet,St Matthew Friday Street,118
-St Maudlin Milkstreet,St Mary Magdalen Milk Street,119
-St Maudlin Oldfishstreet,St Mary Magdalen Old Fish Street,120
-St Michael Bassishaw,St Michael Bassishaw,121
-St Michael Cornhil,St Michael Cornhill,122
-St Michael Crookedlane,St Michael Crooked Lane,123
-St Michael Queenhithe,St Michael Queenhithe,124
-St Michael Quern,St Michael Quern,125
-St Michael Royal,St Michael Royal,126
-St Michael Woodstreet,St Michael Wood Street,127
-St Mildred Breadstreet,St Mildred Bread Street,128
-St Mildred Poultrey,St Mildred Poultrey,129
-St Nicholas Acons,St Nicholas Acons,130
-St Nicholas Coleabby,St Nicholas Cole Abbey,131
-St Nicholas Olaves,St Nicholas Olave,132
-St Olave Hartstreet,St Olave Hart Street,133
-St Olave Jewry,St Olave Jewry,134
-St Olave Silverstreet,St Olave Silver Street,135
-St Olave Southwark,St Olave Southwark,136
-St Pancras,St Pancras,137
-St Pancras Pancras street,St Pancras Soper Lane,138
-St Pancras Soperlane,St Pancras Soperlane,139
-St Paul Covent Garden,St Paul Covent Garden,140
-St Pauls Shadwel,St Paul Shadwell,141
-St Peter Ad Vincula,St Peter Ad Vincula,142
-St Peter Cheap,St Peter Cheap,143
-St Peter Cornhil,St Peter Cornhill,144
-St Peter Paulswharf,St Peter Paul's Wharf,145
-St Peter Poor,St Peter Poor,146
-St Steven Colemanstreet,St Stephen Coleman Street,147
-St Steven Walbrook,St Stephen Walbrook,148
-St Swithin,St Swithin,149
-St Thomas Apostles,St Thomas Apostle,150
-St Thomas Southwark,St Thomas Southwark,151
-St. Ann in Middlesex,St. Ann in Middlesex,152
-St. George by Queen's Square,St. George by Queen's Square,153
-St. George in Middlesex,St. George in Middlesex,154
-St. John the Evangelist,St. John the Evangelist,155
-St. Luke in Middlesex,St. Luke in Middlesex,156
-Stepney Parish,St Dunstan Stepney,157
-Trinity Minories,Holy Trinity Minories,158
-Trinity Parish,Trinity,159
+alhallows barking,alhallows barking,1
+Alhallows Barking,All Hallows Barking,2
+Alhallows Breadstreet,All Hallows Bread Street,3
+Alhallows Great,All Hallows the Great,4
+alhallows honylane,alhallows honylane,5
+Alhallows Honylane,All Hallows Honey Lane,6
+alhallows lesse,alhallows lesse,7
+Alhallows Lesse,All Hallows the Less,8
+alhallows lumbardstreet,alhallows lumbardstreet,9
+Alhallows Lumbardstreet,All Hallows Lombard Street,10
+alhallows stayning,alhallows stayning,11
+Alhallows Stayning,All Hallows Staining,12
+alhallows the wall,alhallows the wall,13
+Alhallows the Wall,All Hallows London Wall,14
+allhallows breadstreet,allhallows breadstreet,15
+allhallows great,allhallows great,16
+bridewel precinct,bridewel precinct,17
+Bridewel Precinct,Bridewell Precinct,18
+buried in the 97 parishes within the walls,buried in the 97 parishes within the walls,19
+buried in the out,buried in the out,20
+buried in the parishes and liberties of westminster,buried in the parishes and liberties of westminster,21
+buried in the parishes without the walls,buried in the parishes without the walls,22
+christ church,christ church,23
+Christ Church,Christ Church,24
+christ church in middlesex,christ church in middlesex,25
+Christ Church in Middlesex,Christ Church Middlesex,26
+Christ Church in Surrey,Christ Church in Surrey,27
+christ church in surry,christ church in surry,28
+Christ Church in Surry,Christ Church Surrey,29
+christened in the 97 parishes within the walls,christened in the 97 parishes within the walls,30
+christened in the out,christened in the out,31
+christened in the parishes and liberties of westminster,christened in the parishes and liberties of westminster,32
+christened in the parishes without the walls,christened in the parishes without the walls,33
+hackney parish,hackney parish,34
+Hackney Parish,St John at Hackney,35
+lambeth parish,lambeth parish,36
+Lambeth Parish,St Mary Lambeth,37
+pesthouse in westminster,pesthouse in westminster,38
+Pesthouse in Westminster,Westminster Pesthouse,39
+pesthouse without the walls,pesthouse without the walls,40
+Pesthouse Without the Walls,Pesthouse Without the Walls,41
+plague in the 97 parishes within the walls,plague in the 97 parishes within the walls,42
+plague in the out,plague in the out,43
+plague in the parishes and liberties of westminster,plague in the parishes and liberties of westminster,44
+plague in the parishes without the walls,plague in the parishes without the walls,45
+rothorith parish,rothorith parish,46
+Rothorith Parish,St Mary Rotherhithe,47
+s sepulchres parish,s sepulchres parish,48
+S Sepulchres Parish,St Sepulchre,49
+saviours southwark,saviours southwark,50
+Saviours Southwark,St Saviour Southwark,51
+st alban woodstreet,st alban woodstreet,52
+St Alban Woodstreet,St Alban Wood Street,53
+st alphage,st alphage,54
+St Alphage,St Alphage,55
+st andrew holborn,st andrew holborn,56
+St Andrew Holborn,St Andrew Holborn,57
+st andrew hubbard,st andrew hubbard,58
+St Andrew Hubbard,St Andrew Hubbard,59
+st andrew undershaft,st andrew undershaft,60
+St Andrew Undershaft,St Andrew Undershaft,61
+st andrew wardrobe,st andrew wardrobe,62
+St Andrew Wardrobe,St Andrew Wardrobe,63
+st ann aldersgate,st ann aldersgate,64
+St Ann Aldersgate,St Anne Aldersgate,65
+st ann blackfryers,st ann blackfryers,66
+St Ann Blackfryers,St Ann Blackfriars,67
+St Ann in Middlesex,St Anne Limehouse,68
+st ann in westminster,st ann in westminster,69
+St Ann in Westminster,St Anne Westminster,70
+st antholins parish,st antholins parish,71
+St Antholins Parish,St Antholin,72
+st austins parish,st austins parish,73
+St Austins Parish,St Austin,74
+st bartholomew exchange,st bartholomew exchange,75
+St Bartholomew Exchange,St Bartholomew Exchange,76
+st bartholomew great,st bartholomew great,77
+St Bartholomew Great,St Bartholomew Great,78
+st bartholomew less,st bartholomew less,79
+St Bartholomew Less,St Bartholomew Less,80
+st bennet fynck,st bennet fynck,81
+St Bennet Fynck,St Benet Fink,82
+st bennet gracechurch,st bennet gracechurch,83
+St Bennet Gracechurch,St Benet Gracechurch,84
+st bennet paulswharf,st bennet paulswharf,85
+St Bennet Paulswharf,St Benet Paul's Wharf,86
+st bennet sherehog,st bennet sherehog,87
+St Bennet Sherehog,St Benet Sherehog,88
+st botolph aldersgate,st botolph aldersgate,89
+St Botolph Aldersgate,St Botolph Aldersgate,90
+st botolph aldgate,st botolph aldgate,91
+St Botolph Aldgate,St Botolph Aldgate,92
+st botolph billingsgate,st botolph billingsgate,93
+St Botolph Billingsgate,St Botolph Billingsgate,94
+st botolph bishopsgate,st botolph bishopsgate,95
+St Botolph Bishopsgate,St Botolph Bishopsgate,96
+st bridget,st bridget,97
+St Bridget,St Bride,98
+st christophers,st christophers,99
+St Christophers,St Christopher,100
+st clement danes,st clement danes,101
+St Clement Danes,St Clement Danes,102
+st clement eastcheap,st clement eastcheap,103
+St Clement Eastcheap,St Clement Eastcheap,104
+st dionis backchurch,st dionis backchurch,105
+St Dionis Backchurch,St Dionis Backchurch,106
+st dunstan east,st dunstan east,107
+St Dunstan East,St Dunstan East,108
+st dunstan west,st dunstan west,109
+St Dunstan West,St Dunstan West,110
+st edmund lumbardstr.,st edmund lumbardstr.,111
+St Edmund Lumbardstr.,St Edmund the King,112
+st ethelborough,st ethelborough,113
+St Ethelborough,St Ethelburga,114
+st faith,st faith,115
+St Faith,St Faith under St Paul's,116
+st foster,st foster,117
+St Foster,St Vedast alias Foster,118
+st gabriel fenchurch,st gabriel fenchurch,119
+St Gabriel Fenchurch,St Gabriel Fenchurch,120
+st george botolphlane,st george botolphlane,121
+St George Botolphlane,St George Botolph Lane,122
+st george by hanover square,st george by hanover square,123
+St George by Queen's Square,St George Queen's Square,124
+St George Hanover-square,St George Hanover-square,125
+St George in Bloomsburg,St George in Bloomsburg,126
+st george in bloomsbury,st george in bloomsbury,127
+St George in Middlesex,St George Middlesex,128
+st george southwark,st george southwark,129
+St George Southwark,St George Southwark,130
+st giles cripplegate,st giles cripplegate,131
+St Giles Cripplegate,St Giles Cripplegate,132
+st giles in the field,st giles in the field,133
+St Giles in the Field,St Giles in the Field,134
+st gregory by st pauls,st gregory by st pauls,135
+St Gregory by St Pauls,St Gregory by St Paul's,136
+st hellen,st hellen,137
+St Hellen,St Helen,138
+st james clerkenwel,st james clerkenwel,139
+St James Clerkenwel,St James Clerkenwell,140
+st james dukes place,st james dukes place,141
+St James Dukes place,St James Duke's Place,142
+st james garlickhithe,st james garlickhithe,143
+St James Garlickhithe,St James Garlickhithe,144
+st james in westminster,st james in westminster,145
+St James in Westminster,St James Westminster,146
+st john at wapping,st john at wapping,147
+St John at Wapping,St John Wapping,148
+st john baptist,st john baptist,149
+St John Baptist,St John Baptist,150
+st john evangelist,st john evangelist,151
+St John Evangelist,St John Evangelist,152
+st john southwark,st john southwark,153
+St John Southwark,St John Southwark,154
+St John the Evangelist,St John Westminster,155
+st john zachary,st john zachary,156
+St John Zachary,St John Zachary,157
+st katharine coleman,st katharine coleman,158
+St Katharine Coleman,St Katherine Coleman,159
+st katharine creechurch,st katharine creechurch,160
+St Katharine Creechurch,St Katherine Creechurch,161
+st katharine tower,st katharine tower,162
+St Katharine Tower,St Katharine Tower,163
+st lawrence jewry,st lawrence jewry,164
+St Lawrence Jewry,St Lawrence Jewry,165
+st lawrence pountney,st lawrence pountney,166
+St Lawrence Pountney,St Lawrence Pountney,167
+st leonard eastcheap,st leonard eastcheap,168
+St Leonard Eastcheap,St Leonard Eastcheap,169
+st leonard fosterlane,st leonard fosterlane,170
+St Leonard Fosterlane,St Leonard Foster Lane,171
+st leonard shoreditch,st leonard shoreditch,172
+St Leonard Shoreditch,St Leonard Shoreditch,173
+St Luke in Middlesex,St Luke Middlesex,174
+st magdalen bermondsey,st magdalen bermondsey,175
+St Magdalen Bermondsey,St Mary Magdalen Bermondsey,176
+st magnus parish,st magnus parish,177
+St Magnus Parish,St Magnus,178
+st margaret lothbury,st margaret lothbury,179
+St Margaret Lothbury,St Margaret Lothbury,180
+st margaret moses,st margaret moses,181
+St Margaret Moses,St Margaret Moses,182
+st margaret newfishstreet,st margaret newfishstreet,183
+St Margaret Newfishstreet,St Margaret New Fish Street,184
+st margaret pattons,st margaret pattons,185
+St Margaret Pattons,St Margaret Pattens,186
+st margaret westminster,st margaret westminster,187
+St Margaret Westminster,St Margaret Westminster,188
+st martin in the fields,st martin in the fields,189
+St Martin in the fields,St Martin in the Fields,190
+st martin iremongerlane,st martin iremongerlane,191
+St Martin Iremongerlane,St Martin Ironmonger Lane,192
+st martin ludgate,st martin ludgate,193
+St Martin Ludgate,St Martin Ludgate,194
+st martin orgars,st martin orgars,195
+St Martin Orgars,St Martin Orgar,196
+st martin outwich,st martin outwich,197
+St Martin Outwich,St Martin Outwich,198
+st martin vintrey,st martin vintrey,199
+St Martin Vintrey,St Martin Vintry,200
+st mary abchurch,st mary abchurch,201
+St Mary Abchurch,St Mary Abchurch,202
+st mary aldermanbury,st mary aldermanbury,203
+St Mary Aldermanbury,St Mary Aldermanbury,204
+st mary aldermary,st mary aldermary,205
+St Mary Aldermary,St Mary Aldermay,206
+st mary bothaw,st mary bothaw,207
+St Mary Bothaw,St Mary Bothaw,208
+st mary colechurch,st mary colechurch,209
+St Mary Colechurch,St Mary Colechurch,210
+st mary hill,st mary hill,211
+St Mary Hill,St Mary Hill,212
+st mary islington,st mary islington,213
+St Mary Islington,St Mary Islington,214
+st mary le bow,st mary le bow,215
+St Mary le Bow,St Mary le Bow,216
+st mary le strand,st mary le strand,217
+St Mary le Strand,St Mary le Strand,218
+st mary mounthaw,st mary mounthaw,219
+St Mary Mounthaw,St Mary Mounthaw,220
+st mary newington,st mary newington,221
+St Mary Newington,St Mary Newington,222
+st mary savoy,st mary savoy,223
+St Mary Savoy,St Mary Savoy,224
+st mary sommerset,st mary sommerset,225
+St Mary Sommerset,St Mary Somerset,226
+st mary stayning,st mary stayning,227
+St Mary Stayning,St Mary Staining,228
+st mary whitechappel,st mary whitechappel,229
+St Mary Whitechappel,St Mary Whitechapel,230
+st mary woolchurch,st mary woolchurch,231
+St Mary Woolchurch,St Mary Woolchurch,232
+st mary woolnoth,st mary woolnoth,233
+St Mary Woolnoth,St Mary Woolnoth,234
+st matthew at bethnal green,st matthew at bethnal green,235
+St Matthew at Bethnal Green,St Matthew Bethnal Green,236
+st matthew fridaystreet,st matthew fridaystreet,237
+St Matthew Fridaystreet,St Matthew Friday Street,238
+st maudlin milkstreet,st maudlin milkstreet,239
+St Maudlin Milkstreet,St Mary Magdalen Milk Street,240
+st maudlin oldfishstreet,st maudlin oldfishstreet,241
+St Maudlin Oldfishstreet,St Mary Magdalen Old Fish Street,242
+st michael bassishaw,st michael bassishaw,243
+St Michael Bassishaw,St Michael Bassishaw,244
+st michael cornhil,st michael cornhil,245
+St Michael Cornhil,St Michael Cornhill,246
+st michael crookedlane,st michael crookedlane,247
+St Michael Crookedlane,St Michael Crooked Lane,248
+st michael queenhithe,st michael queenhithe,249
+St Michael Queenhithe,St Michael Queenhithe,250
+st michael quern,st michael quern,251
+St Michael Quern,St Michael Quern,252
+st michael royal,st michael royal,253
+St Michael Royal,St Michael Royal,254
+st michael woodstreet,st michael woodstreet,255
+St Michael Woodstreet,St Michael Wood Street,256
+st mildred breadstreet,st mildred breadstreet,257
+St Mildred Breadstreet,St Mildred Bread Street,258
+st mildred poultrey,st mildred poultrey,259
+St Mildred Poultrey,St Mildred Poultrey,260
+st nicholas acons,st nicholas acons,261
+St Nicholas Acons,St Nicholas Acons,262
+st nicholas coleabby,st nicholas coleabby,263
+St Nicholas Coleabby,St Nicholas Cole Abbey,264
+st nicholas olaves,st nicholas olaves,265
+St Nicholas Olaves,St Nicholas Olave,266
+st olave hartstreet,st olave hartstreet,267
+St Olave Hartstreet,St Olave Hart Street,268
+st olave jewry,st olave jewry,269
+St Olave Jewry,St Olave Jewry,270
+st olave silverstreet,st olave silverstreet,271
+St Olave Silverstreet,St Olave Silver Street,272
+st olave southwark,st olave southwark,273
+St Olave Southwark,St Olave Southwark,274
+St Pancras,St Pancras,275
+st pancras pancras street,st pancras pancras street,276
+St Pancras Soperlane,St Pancras Soperlane,277
+st paul covent garden,st paul covent garden,278
+St Paul Covent Garden,St Paul Covent Garden,279
+st pauls shadwel,st pauls shadwel,280
+St Pauls Shadwel,St Paul Shadwell,281
+St Peter Ad Vincula,St Peter Ad Vincula,282
+st peter cheap,st peter cheap,283
+St Peter Cheap,St Peter Cheap,284
+st peter cornhil,st peter cornhil,285
+St Peter Cornhil,St Peter Cornhill,286
+st peter paulswharf,st peter paulswharf,287
+St Peter Paulswharf,St Peter Paul's Wharf,288
+st peter poor,st peter poor,289
+St Peter Poor,St Peter Poor,290
+st steven colemanstreet,st steven colemanstreet,291
+St Steven Colemanstreet,St Stephen Coleman Street,292
+st steven walbrook,st steven walbrook,293
+St Steven Walbrook,St Stephen Walbrook,294
+st swithin,st swithin,295
+St Swithin,St Swithin,296
+st thomas apostles,st thomas apostles,297
+St Thomas Apostles,St Thomas Apostle,298
+st thomas southwark,st thomas southwark,299
+St Thomas Southwark,St Thomas Southwark,300
+st. ann in middlesex,st. ann in middlesex,301
+st. george by queen's square,st. george by queen's square,302
+st. george in middlesex,st. george in middlesex,303
+st. john the evangelist,st. john the evangelist,304
+st. luke in middlesex,st. luke in middlesex,305
+stepney parish,stepney parish,306
+Stepney Parish,St Dunstan Stepney,307
+trinity minories,trinity minories,308
+Trinity Minories,Holy Trinity Minories,309
+trinity parish,trinity parish,310
+Trinity Parish,Trinity,311
