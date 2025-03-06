@@ -1,0 +1,1 @@
+-- Note: We want to retain these tables, so no operations are needed.

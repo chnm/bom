@@ -115,11 +115,6 @@ CREATE TABLE IF NOT EXISTS bom.bill_of_mortality (
     UNIQUE (parish_id, count_type, year, week_id)
 );
 
--- Derive the christenings_location data from the christenings table
-INSERT INTO bom.christening_locations(name)
-SELECT DISTINCT bom.christenings.christening
-FROM bom.christenings;
-
 -- Create indexes for faster queries
 CREATE INDEX idx_bom_week_year ON bom.week(year);
 CREATE INDEX idx_bom_christenings_year ON bom.christenings(year);
