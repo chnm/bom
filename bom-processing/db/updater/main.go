@@ -26,6 +26,7 @@ type ImportConfig struct {
 
 func main() {
 	// Parse command line arguments
+	// My Pythonista attitude is showing
 	dbConnString := flag.String("db", "", "Database connection string (postgresql://username:password@host:port/dbname)")
 	dataDir := flag.String("data", ".", "Directory containing CSV files")
 	dryRun := flag.Bool("dry-run", false, "Dry run (don't actually import data)")
@@ -50,6 +51,8 @@ func main() {
 	}
 	defer db.Close()
 
+	log.Println("Connected to database. Verifying schema and required tables...")
+
 	// Run import
 	err = importData(ctx, db, config)
 	if err != nil {
@@ -60,11 +63,6 @@ func main() {
 }
 
 func importData(ctx context.Context, db *pgxpool.Pool, config ImportConfig) error {
-	err := ensureLogFunctionExists(ctx, db)
-	if err != nil {
-		return fmt.Errorf("failed to ensure log function exists: %w", err)
-	}
-
 	// Start transaction
 	tx, err := db.Begin(ctx)
 	if err != nil {
@@ -115,76 +113,6 @@ func importData(ctx context.Context, db *pgxpool.Pool, config ImportConfig) erro
 	}
 
 	return nil
-}
-
-func ensureLogFunctionExists(ctx context.Context, db *pgxpool.Pool) error {
-	// Check if the bom schema exists
-	var schemaExists bool
-	err := db.QueryRow(ctx, "SELECT EXISTS(SELECT 1 FROM information_schema.schemata WHERE schema_name = 'bom')").Scan(&schemaExists)
-	if err != nil {
-		return err
-	}
-
-	if !schemaExists {
-		_, err = db.Exec(ctx, "CREATE SCHEMA IF NOT EXISTS bom")
-		if err != nil {
-			return err
-		}
-	}
-
-	// Check if the data_load_log table exists
-	var tableExists bool
-	err = db.QueryRow(ctx, "SELECT EXISTS(SELECT 1 FROM information_schema.tables WHERE table_schema = 'bom' AND table_name = 'data_load_log')").Scan(&tableExists)
-	if err != nil {
-		return err
-	}
-
-	if !tableExists {
-		_, err = db.Exec(ctx, `
-            CREATE TABLE IF NOT EXISTS bom.data_load_log (
-                load_id serial PRIMARY KEY,
-                load_date timestamp DEFAULT CURRENT_TIMESTAMP,
-                operation text NOT NULL,
-                table_name text NOT NULL,
-                rows_before integer,
-                rows_processed integer,
-                rows_after integer,
-                success boolean DEFAULT false,
-                error_message text,
-                duration interval
-            )
-        `)
-		if err != nil {
-			return err
-		}
-	}
-
-	// Create or replace the log_operation function
-	_, err = db.Exec(ctx, `
-        CREATE OR REPLACE FUNCTION bom.log_operation(
-            p_operation text,
-            p_table_name text,
-            p_rows_before integer,
-            p_rows_processed integer,
-            p_rows_after integer,
-            p_success boolean,
-            p_error_message text DEFAULT NULL,
-            p_duration interval DEFAULT NULL
-        )
-        RETURNS void AS $$
-        BEGIN
-            INSERT INTO bom.data_load_log (
-                operation, table_name, rows_before, rows_processed, rows_after,
-                success, error_message, duration
-            ) VALUES (
-                p_operation, p_table_name, p_rows_before, p_rows_processed, p_rows_after,
-                p_success, p_error_message, p_duration
-            );
-        END;
-        $$ LANGUAGE plpgsql;
-    `)
-
-	return err
 }
 
 func getFilename(table string) string {
@@ -276,7 +204,9 @@ func createTempTables(ctx context.Context, tx pgx.Tx) error {
 			year integer,
 			joinid text,
 			descriptive_text text,
-			source_name text
+			source_name text,
+      definition text,
+      definition_source text
 		);
 
 		CREATE TEMPORARY TABLE temp_bills (
@@ -470,15 +400,27 @@ func updateTables(ctx context.Context, tx pgx.Tx) error {
 		-- Parishes
 		start_time := clock_timestamp();
 		SELECT COUNT(*) INTO rows_before FROM bom.parishes;
-		
+
+    UPDATE bom.parishes p
+		SET 
+			parish_name = tp.parish_name,
+			canonical_name = tp.canonical_name
+		FROM temp_parish tp
+		WHERE p.id = tp.parish_id
+		AND (p.canonical_name IS DISTINCT FROM tp.canonical_name
+			OR p.parish_name IS DISTINCT FROM tp.parish_name);
+			
+		-- Then insert new parishes that don't exist yet
 		INSERT INTO bom.parishes (id, parish_name, canonical_name)
 		SELECT DISTINCT parish_id, parish_name, canonical_name 
-		FROM temp_parish
-		ON CONFLICT (parish_name) 
-		DO UPDATE
-		SET canonical_name = EXCLUDED.canonical_name
-		WHERE bom.parishes.canonical_name IS DISTINCT FROM EXCLUDED.canonical_name;
-		
+		FROM temp_parish tp
+		WHERE parish_id IS NOT NULL
+		AND NOT EXISTS (
+			SELECT 1 FROM bom.parishes p 
+			WHERE p.id = tp.parish_id
+			OR p.parish_name = tp.parish_name
+		);
+
 		GET DIAGNOSTICS rows_processed = ROW_COUNT;
 		end_time := clock_timestamp();
 		
@@ -534,22 +476,24 @@ func updateTables(ctx context.Context, tx pgx.Tx) error {
 		-- Causes of Death
 		start_time := clock_timestamp();
 		SELECT COUNT(*) INTO rows_before FROM bom.causes_of_death;
-		
-		INSERT INTO bom.causes_of_death (
-		death, count, year, week_id, descriptive_text, source_name
-	)
-	SELECT DISTINCT 
-		death, count, year, joinid, descriptive_text, source_name
-	FROM temp_causes_of_death c
-	WHERE death IS NOT NULL
-	AND EXISTS (SELECT 1 FROM bom.week w WHERE w.joinid = c.joinid)
-	ON CONFLICT (death, year, week_id) 
-	DO UPDATE
-	SET 
-		count = EXCLUDED.count,
-		descriptive_text = EXCLUDED.descriptive_text,
-		source_name = EXCLUDED.source_name;
-		
+
+    INSERT INTO bom.causes_of_death (
+  death, count, year, week_id, descriptive_text, source_name, definition, definition_source
+  )
+  SELECT DISTINCT 
+    death, count, year, joinid, descriptive_text, source_name, definition, definition_source
+  FROM temp_causes_of_death c
+  WHERE death IS NOT NULL
+  AND EXISTS (SELECT 1 FROM bom.week w WHERE w.joinid = c.joinid)
+  ON CONFLICT (death, year, week_id) 
+  DO UPDATE
+  SET 
+    count = EXCLUDED.count,
+    descriptive_text = EXCLUDED.descriptive_text,
+    source_name = EXCLUDED.source_name,
+    definition = EXCLUDED.definition,
+    definition_source = EXCLUDED.definition_source;
+			
 		GET DIAGNOSTICS rows_processed = ROW_COUNT;
 		end_time := clock_timestamp();
 		
