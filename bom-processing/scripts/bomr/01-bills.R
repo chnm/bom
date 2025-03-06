@@ -5,7 +5,7 @@
 #
 # Jason A. Heppler | jason@jasonheppler.org
 # Roy Rosenzweig Center for History and New Media
-# Updated: 2025-03-04
+# Updated: 2025-03-05
 
 library(tidyverse)
 source("helpers.R")
@@ -160,6 +160,7 @@ for (dataset_name in names(processed_causes)) {
   )
 }
 deaths_long <- derive_causes(deaths_data_sources)
+deaths_long <- add_death_definitions(deaths_long, "dictionary.csv")
 
 # Process unique deaths from all sources
 deaths_unique_list <- lapply(names(processed_causes), function(name) {
@@ -198,11 +199,18 @@ laxton_new_weekly <- process_weekly_bills(Laxton_new_weekly_parishes,
                                       "Laxton",
                                       has_flags = TRUE)
 
+heh_1635 <- process_weekly_bills(HEH1635_weeklybills_parishes,
+                                      "HEH",
+                                      has_flags = TRUE)
+
 # Bring together all Bodleian versions
 bodleian_versions <- list(
   list(data = BodleianV1_weeklybills_parishes, version = "Bodleian V1"),
   list(data = BodleianV2_weeklybills_parishes, version = "Bodleian V2"),
-  list(data = BodleianV3_weeklybills_parishes, version = "Bodleian V3")
+  list(data = BodleianV3_weeklybills_parishes, version = "Bodleian V3"),
+  list(data = BLV1_weeklybills_parishes, version = "Bodleian V1"),
+  list(data = BLV2_weeklybills_parishes, version = "Bodleian V2"),
+  list(data = BLV3_weeklybills_parishes, version = "Bodleian V3")
 )
 
 # Process all versions and store in a single dataframe
@@ -249,6 +257,14 @@ weekly_bills <- bind_rows(
       end_day = as.numeric(end_day),
       count = as.character(count)
     ), 
+  heh_1635 |> 
+    mutate(
+      week = as.numeric(week), 
+      year = as.numeric(year),
+      start_day = as.numeric(start_day), 
+      end_day = as.numeric(end_day),
+      count = as.character(count)
+    ),
   bodleian_weekly |> 
     mutate(
       week = as.numeric(week), 
@@ -299,16 +315,38 @@ all_christenings <- bind_rows(
   aggregate_entries_weekly$christenings |> mutate(bill_type = "Weekly", year = as.numeric(year)),
   aggregate_entries_general$christenings |> mutate(bill_type = "General", year = as.numeric(year))
 )
+
+# Check for years outside the valid historical range
+out_of_range_years <- all_christenings |>
+  filter(!is.na(year) & (year < 1500 | year > 1800)) |>
+  select(year, unique_identifier) |>
+  distinct()
+
+if(nrow(out_of_range_years) > 0) {
+  message(sprintf("Found %d records with years outside the 1500-1800 range:", 
+                  nrow(out_of_range_years)))
+  print(out_of_range_years)
+}
+
 all_christenings <- all_christenings |>
-  mutate(start_month_num = month_to_number(start_month),
-         end_month_num = month_to_number(end_month),
-         start_day_pad = sprintf("%02d", start_day),
-         end_day_pad = sprintf("%02d", end_day),
-         # Create numeric joinid in format yyyymmddyyyymmdd
-         joinid = paste0(
-           year, start_month_num, start_day_pad,
-           year, end_month_num, end_day_pad
-         )) |>
+  filter(
+    !is.na(year),
+    nchar(as.character(year)) == 4,
+    year >= 1500,
+    year <= 1800
+  ) |>
+  mutate(
+    year = year,
+    start_month_num = month_to_number(start_month),
+    end_month_num = month_to_number(end_month),
+    start_day_pad = sprintf("%02d", start_day),
+    end_day_pad = sprintf("%02d", end_day),
+    # Create numeric joinid in format yyyymmddyyyymmdd
+    joinid = paste0(
+      year, start_month_num, start_day_pad,
+      year, end_month_num, end_day_pad
+    )
+  ) |>
   select(-start_month_num, -end_month_num, -start_day_pad, -end_day_pad, -version)
 
 all_plague <- bind_rows(
@@ -334,9 +372,6 @@ write_csv(all_parish_status, "data/aggregate_totals_by_parish", na = "")
 
 # Finally, tidy the weekly bills data.
 weekly_bills <- weekly_bills |> tidy_parish_data()
-
-# Some last minute tidying:
-# 1) Replace the alternate spelling of "Alhallows"
 weekly_bills <- weekly_bills |>
   mutate_at("parish_name", str_replace, "Allhallows", "Alhallows")
 general_bills <- general_bills |>
