@@ -141,24 +141,64 @@ process_bodleian_data <- function(data, source_name) {
 process_weekly_bills <- function(data, source_name, has_flags = TRUE) {
   message(sprintf("Processing %s data...", source_name))
   
+  # Store original column names to preserve parish name case
+  original_cols <- names(data)
+  
+  # Identify metadata columns (using case-insensitive matching)
+  metadata_pattern <- "year|week|unique|start|end"
+  metadata_cols <- grep(metadata_pattern, tolower(original_cols), value = TRUE)
+  
+  # Identify parish columns (everything that's not metadata or flags)
+  flag_pattern <- "^is_(illegible|missing)"
+  parish_cols <- original_cols[
+    !grepl(metadata_pattern, tolower(original_cols)) & 
+      !grepl(flag_pattern, tolower(original_cols))
+  ]
+  
+  # Create a mapping from lowercase to original case for parish columns
+  parish_mapping <- setNames(parish_cols, tolower(parish_cols))
+  
+  # Handle mixed data types for flag columns
   if(has_flags) {
-    # Process data with missing/illegible flags (Laxton)
+    # Check for character flags and convert them to logical
+    flag_cols <- grep(flag_pattern, names(data), value = TRUE)
+    for(col in flag_cols) {
+      if(is.character(data[[col]])) {
+        data[[col]] <- as.logical(data[[col]])
+      }
+    }
+  }
+  
+  # Standardize types for key columns
+  data <- data |>
+    mutate(across(c("Year", "Week"), as.character))
+  
+  if(has_flags) {
+    # Process data with missing/illegible flags
     result <- process_flagged_data(data, source_name)
   } else {
-    # Process data without flags (Wellcome)
+    # Process data without flags
     result <- process_unflagged_data(data, source_name)
   }
   
+  # Restore original parish name case after pivoting
+  result <- result |>
+    mutate(
+      parish_name = case_when(
+        tolower(parish_name) %in% names(parish_mapping) ~ parish_mapping[tolower(parish_name)],
+        TRUE ~ parish_name
+      )
+    )
+  
   # Standardize column names
   result <- result |>
-    rename_with(tolower) |>
+    rename_with(tolower, -parish_name) |>  # Don't lowercase parish_name
     rename_with(~str_replace_all(., " ", "_")) |>
     rename_with(
       ~ case_when(
-        . == "Unique ID" ~ "unique_identifier",
-        . == "Unique_ID" ~ "unique_identifier",
+        . == "unique id" ~ "unique_identifier",
         . == "unique_id" ~ "unique_identifier",
-        . == "End month" ~ "End Month",
+        . == "end month" ~ "end_month",
         TRUE ~ .
       )
     )
@@ -611,20 +651,20 @@ process_unique_weeks <- function(data_sources) {
       select(-week_tmp, -start_month_num, -end_month_num, -start_day_pad, -end_day_pad) |>
       drop_na(year)
     
-    # Check for two-digit years
-    two_digit_years <- week_data |> 
-      filter(nchar(as.character(year)) == 2) |>
+    # Check for years that are not four digits
+    non_standard_years <- week_data |> 
+      filter(nchar(as.character(year)) != 4) |>
       select(year, unique_identifier) |>
       distinct()
     
-    if(nrow(two_digit_years) > 0) {
-      message(sprintf("Found %d records with two-digit years in source %s. These rows have been removed:", 
-                      nrow(two_digit_years), source_name))
-      print(two_digit_years)
+    if(nrow(non_standard_years) > 0) {
+      message(sprintf("Found %d records with non-standard years in source %s. These rows have been removed:", 
+                      nrow(non_standard_years), source_name))
+      print(non_standard_years)
       
       # Remove records with two-digit years
       week_data <- week_data |> 
-        filter(nchar(as.character(year)) > 2)
+        filter(nchar(as.character(year)) == 4)
     } 
      
     # Special handling for Laxton data
@@ -748,59 +788,116 @@ associate_week_ids <- function(bills_data, weeks_data) {
 }
 
 # Create lookup tables
-# Modified create_lookup_table function with type conversion
 create_lookup_table <- function(data, source_name, n_descriptive_cols) {
   message(sprintf("Processing %s lookup table...", source_name))
   
   # Determine initial columns to skip based on source
   skip_cols <- if(source_name == "wellcome") 5 else 4
   
-  # First, identify the descriptive text columns
+  # First, identify the descriptive text columns that actually exist in the data
   descriptive_cols <- names(data)[grep("\\(Descriptive Text\\)", names(data))]
+  
+  # Safety check - make sure n_descriptive_cols is not greater than available columns
+  n_descriptive_cols <- min(n_descriptive_cols, length(descriptive_cols))
+  
+  if (n_descriptive_cols == 0) {
+    message("Warning: No descriptive text columns found for source ", source_name)
+    # Return empty lookup table if no descriptive columns found
+    return(data.frame(
+      join_id = character(),
+      death_type = character(),
+      descriptive_text = character()
+    ))
+  }
   
   # Convert all descriptive text columns to character type to ensure consistency
   data_converted <- data |>
     mutate(across(all_of(descriptive_cols), as.character))
   
-  result <- data_converted |>
-    select(!all_of(1:skip_cols)) |>
-    select(
-      all_of(descriptive_cols)[1:n_descriptive_cols],  # Only take the number of columns specified
-      `Unique Identifier`,
-      `Start Day`,
-      `Start Month`,
-      `End Day`,
-      `End Month`,
-      Year
-    ) |>
-    pivot_longer(
-      all_of(descriptive_cols)[1:n_descriptive_cols], 
-      names_to = "death_type", 
-      values_to = "descriptive_text"
-    ) |>
-    mutate(
-      # Clean up identifiers and death types
-      across(where(is.character), str_trim),
-      `Unique Identifier` = str_trim(`Unique Identifier`),
-      death_type = str_remove(death_type, regex("\\(Descriptive Text\\)")),
-      death_type = str_trim(death_type),
-      # Create join ID
-      join_id = paste0(
-        `Start Day`,
+  # Extract metadata columns safely
+  result <- tryCatch({
+    data_converted |>
+      select(!all_of(1:skip_cols)) |>
+      select(
+        all_of(descriptive_cols[1:n_descriptive_cols]),  # Only take existing columns
+        `Unique Identifier`,
+        `Start Day`, 
         `Start Month`,
         `End Day`,
         `End Month`,
-        Year, "-",
-        death_type, "-",
-        `Unique Identifier`
+        Year
+      ) |>
+      pivot_longer(
+        all_of(descriptive_cols[1:n_descriptive_cols]), 
+        names_to = "death_type", 
+        values_to = "descriptive_text"
+      ) |>
+      mutate(
+        # Clean up identifiers and death types
+        across(where(is.character), str_trim),
+        `Unique Identifier` = str_trim(`Unique Identifier`),
+        death_type = str_remove(death_type, regex("\\(Descriptive Text\\)")),
+        death_type = str_trim(death_type),
+        # Create join ID
+        join_id = paste0(
+          `Start Day`,
+          `Start Month`,
+          `End Day`,
+          `End Month`,
+          Year, "-",
+          death_type, "-",
+          `Unique Identifier`
+        )
+      ) |>
+      # Drop the columns we don't need anymore
+      select(
+        join_id,
+        death_type,
+        descriptive_text
       )
-    ) |>
-    # Drop the columns we don't need anymore
-    select(
-      join_id,
-      death_type,
-      descriptive_text
-    )
+  }, error = function(e) {
+    message("Error processing lookup table: ", e$message)
+    # Attempt to identify key columns
+    key_cols <- c("Unique Identifier", "Start Day", "Start Month", "End Day", "End Month", "Year")
+    available_cols <- intersect(key_cols, names(data_converted))
+    
+    if (length(available_cols) < 5) {
+      message("Critical metadata columns missing. Creating minimal lookup table.")
+      return(data.frame(
+        join_id = character(),
+        death_type = character(),
+        descriptive_text = character()
+      ))
+    }
+    
+    # More flexible approach - try with available columns
+    message("Attempting with available columns: ", paste(available_cols, collapse=", "))
+    data_converted |>
+      select(!all_of(1:skip_cols)) |>
+      select(
+        all_of(descriptive_cols[1:n_descriptive_cols]),
+        all_of(available_cols)
+      ) |>
+      pivot_longer(
+        all_of(descriptive_cols[1:n_descriptive_cols]), 
+        names_to = "death_type", 
+        values_to = "descriptive_text"
+      ) |>
+      mutate(
+        death_type = str_remove(death_type, regex("\\(Descriptive Text\\)")),
+        death_type = str_trim(death_type),
+        join_id = paste0(
+          if("Start Day" %in% available_cols) `Start Day` else "00",
+          if("Start Month" %in% available_cols) `Start Month` else "Jan",
+          if("End Day" %in% available_cols) `End Day` else "00",
+          if("End Month" %in% available_cols) `End Month` else "Jan",
+          if("Year" %in% available_cols) Year else "0000", "-",
+          death_type, "-",
+          if("Unique Identifier" %in% available_cols) `Unique Identifier` else "unknown"
+        )
+      ) |>
+      select(join_id, death_type, descriptive_text)
+  })
   
   return(result)
 }
@@ -1173,6 +1270,66 @@ process_unique_deaths <- function(data, source_name) {
   }
   
   return(result)
+}
+
+# Function to merge death definitions with causes data
+add_death_definitions <- function(deaths_data, dictionary_path = "dictionary.csv") {
+  message("Adding death definitions from dictionary...")
+  
+  # Read the dictionary file
+  dictionary <- read_csv(dictionary_path) %>%
+    select(Cause, Definition, `OED link`) %>%
+    rename(
+      death = Cause,
+      definition = Definition,
+      definition_source = `OED link`
+    ) %>%
+    # Ensure clean matching by standardizing
+    mutate(
+      death = str_trim(death),
+      death_lower = tolower(death)
+    )
+  
+  message(sprintf("Loaded %d definitions from dictionary", nrow(dictionary)))
+  
+  # Create lowercase death column for matching
+  deaths_with_lower <- deaths_data %>%
+    mutate(death_lower = tolower(death))
+  
+  # Join with dictionary on lowercase death name for case-insensitive matching
+  deaths_with_definitions <- deaths_with_lower %>%
+    left_join(
+      dictionary %>% select(death_lower, definition, definition_source),
+      by = "death_lower"
+    ) %>%
+    select(-death_lower) # Remove the temporary column
+  
+  # Report on match results
+  matched_count <- sum(!is.na(deaths_with_definitions$definition))
+  total_count <- nrow(deaths_with_definitions)
+  match_rate <- round(matched_count / total_count * 100, 2)
+  
+  message(sprintf("Matched definitions for %d of %d deaths (%.2f%%)", 
+                  matched_count, total_count, match_rate))
+  
+  # List unmatched deaths (if any)
+  if (matched_count < total_count) {
+    unmatched <- deaths_with_definitions %>%
+      filter(is.na(definition)) %>%
+      select(death) %>%
+      distinct() %>%
+      arrange(death)
+    
+    message(sprintf("\nFound %d unique unmatched death causes:", nrow(unmatched)))
+    if (nrow(unmatched) <= 20) {
+      print(unmatched)
+    } else {
+      print(head(unmatched, 20))
+      message("... and more")
+    }
+  }
+  
+  return(deaths_with_definitions)
 }
 
 # Separate the "-" values into tidy data for parish name and count and type and
