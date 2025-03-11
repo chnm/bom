@@ -18,7 +18,7 @@
               width="20%" @click="sort('count')">Count</th>
             <th scope="col"
               class="py-3 px-6 text-xs font-medium tracking-wider text-center text-gray-700 uppercase dark:text-gray-400"
-              width="10%" @click="sort('week_no')">Week Number</th>
+              width="10%" @click="sort('week_number')">Week Number</th>
             <th scope="col"
               class="py-3 px-6 text-xs font-medium tracking-wider text-center text-gray-700 uppercase dark:text-gray-400"
               width="10%" @click="sort('year')">Year</th>
@@ -37,7 +37,7 @@
               <td class="py-4 px-6 text-sm font-medium text-center text-gray-900 whitespace-nowrap dark:text-white font-mono"
                 x-text="bill.count ? bill.count : '-'"></td>
               <td class="py-4 px-6 text-sm font-medium text-center text-gray-900 whitespace-nowrap dark:text-white font-mono"
-                x-text="bill.week_no"></td>
+                x-text="bill.week_number"></td>
               <td class="py-4 px-6 text-sm font-medium text-center text-gray-900 whitespace-nowrap dark:text-white font-mono"
                 x-text="bill.year"></td>
               <td class="py-4 px-6 text-sm font-medium text-center text-gray-900 whitespace-nowrap dark:text-white font-mono"
@@ -82,7 +82,7 @@
 
             <p class="mt-2 text-sm text-gray-800"><strong>Count Type</strong>: <span x-text="modalBill.count_type"></p>
             <p class="mt-2 text-sm text-gray-800"><strong>Count</strong>: <span x-text="modalBill.count ? modalBill.count : 'No count available.'"></p>
-            <p class="mt-2 text-sm text-gray-800"><strong>Week Number</strong>: <span x-text="modalBill.week_no"></span>
+            <p class="mt-2 text-sm text-gray-800"><strong>Week Number</strong>: <span x-text="modalBill.week_number"></span>
             <div x-data="{ isMissing: false }">
               <!-- if missing is True, display "record has missing values" -->
               <p class="mt-2 text-sm text-gray-800" x-show="isMissing"><strong>Record has missing values</strong></p>

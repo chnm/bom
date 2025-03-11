@@ -34,7 +34,7 @@ function fetchDataAndRender(year) {
 }
 
 // Initial fetch and render
-fetchDataAndRender(1668);
+fetchDataAndRender(1636);
 
 // Add event listener to the update button
 document.getElementById("update-button").addEventListener("click", () => {

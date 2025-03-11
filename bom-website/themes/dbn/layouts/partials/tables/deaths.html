@@ -15,7 +15,7 @@
               width="20%" @click="sort('count')">Count</th>
             <th scope="col"
               class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
-              width="10%" @click="sort('week_no')">Week Number</th>
+              width="10%" @click="sort('week_number')">Week Number</th>
             <th scope="col"
               class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
               width="10%" @click="sort('year')">Year</th>
@@ -29,7 +29,7 @@
               <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
                 x-text="cause.count"></td>
               <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                x-text="cause.week_no"></td>
+                x-text="cause.week_number"></td>
               <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
                 x-text="cause.year"></td>
             </tr>
@@ -70,7 +70,7 @@
                 x-text="modalBill.split_year"></span>)</p>
             <p class="mt-2 text-sm text-gray-800"><strong>Description</strong>: <span x-text="modalBill.descriptive_text ? modalBill.descriptive_text : 'No description available.'"></p>
             <p class="mt-2 text-sm text-gray-800"><strong>Count</strong>: <span x-text="modalBill.count"></p>
-            <p class="mt-2 text-sm text-gray-800"><strong>Week Number</strong>: <span x-text="modalBill.week_no"></span>
+            <p class="mt-2 text-sm text-gray-800"><strong>Week Number</strong>: <span x-text="modalBill.week_number"></span>
             <div x-data="{ isMissing: false }">
               <!-- if missing is True, display "record has missing values" -->
               <p class="mt-2 text-sm text-gray-800" x-show="isMissing"><strong>Record has missing values</strong></p>
