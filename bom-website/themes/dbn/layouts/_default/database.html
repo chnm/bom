@@ -2,26 +2,25 @@
 <body>  
     <div class="container mx-auto w-full h-full" x-data="billsData">
       <h2 class="text-4xl font-medium pt-4">{{ .Title }}</h2>
-
-     <div 
-      class="text-xs font-bold uppercase px-1 py-3 m-0.5 leading-normal text-black hover:underline"
-      @click="instructionsOpen = true"
+      <div 
+        class="text-xs font-bold uppercase px-1 py-3 m-0.5 leading-normal text-black hover:underline"
+        @click="instructionsOpen = true"
       >
         How to use this table
-     </div>
-
+      </div>
 
       {{ partial "tables/instructions.html" }}
 
-      {{/* begin: tab switcher */}}
-      <div class="flex flex-wrap" x-data="{ openTab: 1 }">
+      {{/* begin: tab switcher - Move openTab to billsData component */}}
+      <div class="flex flex-wrap">
         <div class="w-full px-12 py-8">
           <ul class="flex mb-0 list-none flex-wrap pt-3 pb-4 flex-row">
             <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
               <a
                 class="text-xs font-bold uppercase px-5 py-3 rounded block leading-normal border-none bg-slate-200 text-black hover:bg-slate-300"
-            :class="{ 'bg-slate-400 text-white': openTab === 1, 'bg-slate-200 hover:bg-slate-300': openTab !==1 }"
-                x-on:click="openTab = 1; fetchData('Weekly')"
+                :class="{ 'bg-slate-400 text-white': getOpenTab() === 1, 'bg-slate-200 hover:bg-slate-300': getOpenTab() !== 1 }"
+                @click="switchTab(1)"
+                id="tab-weekly"
               >
                 Weekly Bills
               </a>
@@ -29,8 +28,9 @@
             <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
               <a
                 class="text-xs font-bold uppercase px-5 py-3 rounded block leading-normal border-none bg-slate-200 text-black hover:bg-slate-300"
-              :class="{ 'bg-slate-400 text-white': openTab === 2, 'bg-slate-200 hover:bg-slate-300': openTab !==2 }"
-                x-on:click="openTab = 2; fetchData('General')"
+                :class="{ 'bg-slate-400 text-white': getOpenTab() === 2, 'bg-slate-200 hover:bg-slate-300': getOpenTab() !== 2 }"
+                @click="switchTab(2)"
+                id="tab-general"
               >
                 General Bills
               </a>
@@ -38,8 +38,9 @@
             <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
               <a
                 class="text-xs font-bold uppercase px-5 py-3 rounded block leading-normal border-none text-black bg-slate-200 hover:text-black hover:bg-slate-300"
-            :class="{ 'bg-slate-400 text-white': openTab === 3, 'bg-slate-200 hover:bg-slate-300': openTab !==3 }"
-                x-on:click="openTab = 3; fetchDeaths()"
+                :class="{ 'bg-slate-400 text-white': getOpenTab() === 3, 'bg-slate-200 hover:bg-slate-300': getOpenTab() !== 3 }"
+                @click="switchTab(3)"
+                id="tab-deaths"
               >
                 Total Deaths
               </a>
@@ -47,40 +48,48 @@
             <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
               <a
                 class="text-xs font-bold uppercase px-5 py-3 rounded block leading-normal border-none text-black bg-slate-200 hover:text-black hover:bg-slate-300"
-              :class="{ 'bg-slate-400 text-white': openTab === 4, 'bg-slate-200 hover:bg-slate-300': openTab !==4 }"
-                x-on:click="openTab = 4; fetchChristenings()"
+                :class="{ 'bg-slate-400 text-white': getOpenTab() === 4, 'bg-slate-200 hover:bg-slate-300': getOpenTab() !== 4 }"
+                @click="switchTab(4)"
+                id="tab-christenings"
               >
                 Christenings
               </a>
             </li>
           </ul>
-          <div x-show="openTab === 1">
+          <div id="tab-weekly" :class="{'block': getOpenTab() === 1, 'hidden': getOpenTab() !== 1}" x-show="getOpenTab() === 1">
             {{ partial "tables/weekly.html" }}
           </div>
-          <div x-show="openTab === 2">
-            <div>
+          <div id="tab-general" :class="{'block': getOpenTab() === 2, 'hidden': getOpenTab() !== 2}" x-show="getOpenTab() === 2">
             {{ partial "tables/general.html" }}
-            </div>
           </div>
-          <div x-show="openTab === 3">
-            <div>
+          <div id="tab-deaths" :class="{'block': getOpenTab() === 3, 'hidden': getOpenTab() !== 3}" x-show="getOpenTab() === 3">
             {{ partial "tables/deaths.html" }}
-            </div>
           </div>
-          <div x-show="openTab === 4">
-            <div>
-              {{ partial "tables/christenings.html" }}
-            </div>
+          <div id="tab-christenings" :class="{'block': getOpenTab() === 4, 'hidden': getOpenTab() !== 4}" x-show="getOpenTab() === 4">
+            {{ partial "tables/christenings.html" }}
           </div>
         </div>
       </div>
       {{/* end: tab switcher */}}
 
-    {{ $js := resources.Get "js/database.js" | js.Build | resources.Minify }}
-    {{ $secureJS := $js | resources.Fingerprint "sha512" }}
-    <script type="module" src="{{ $secureJS.Permalink }}" integrity="{{ $secureJS.Data.Integrity }}" async></script>
-  
+      {{ $paths := slice "js/database.cacheservice.js" "js/database.urlservice.js" "js/database.dataservice.js" "js/database.chartservice.js" "js/database.alpine.js" "js/app-initializer.js" }}
+
+      {{ $jsFiles := slice }}
+      {{ range $paths }}
+        {{ $resource := resources.Get . }}
+        {{ if $resource }}
+          {{ $jsFiles = $jsFiles | append $resource }}
+        {{ end }}
+      {{ end }}
+
+      {{ if gt (len $jsFiles) 0 }}
+        {{ $bundleJS := $jsFiles | resources.Concat "js/bills-bundle.js" | js.Build (dict "targetPath" "js/bills-bundle.js" "minify" true) }}
+        {{ $secureJS := $bundleJS | resources.Fingerprint "sha512" }}
+        <script src="{{ $secureJS.RelPermalink }}" integrity="{{ $secureJS.Data.Integrity }}"></script>
+      {{ else }}
+        <!-- No JS files found -->
+        <script>console.error("No JS files found to bundle");</script>
+      {{ end }}
+    </div>
   </body>
-
 {{ end }}
-
