@@ -1278,11 +1278,11 @@ add_death_definitions <- function(deaths_data, dictionary_path = "dictionary.csv
   
   # Read the dictionary file
   dictionary <- read_csv(dictionary_path) %>%
-    select(Cause, Definition, `OED link`) %>%
+    select(Cause, Definition, Source) %>%
     rename(
       death = Cause,
       definition = Definition,
-      definition_source = `OED link`
+      definition_source = Source
     ) %>%
     # Ensure clean matching by standardizing
     mutate(

@@ -160,7 +160,7 @@ for (dataset_name in names(processed_causes)) {
   )
 }
 deaths_long <- derive_causes(deaths_data_sources)
-deaths_long <- add_death_definitions(deaths_long, "dictionary.csv")
+deaths_long <- add_death_definitions(deaths_long, "~/Downloads/merged_death_dictionary.csv")
 
 # Process unique deaths from all sources
 deaths_unique_list <- lapply(names(processed_causes), function(name) {
