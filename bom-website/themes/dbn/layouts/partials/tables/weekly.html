@@ -91,52 +91,63 @@
         </tbody>
       </table>
 
-      <modal x-show="modalOpen" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog"
-        aria-modal="true">
-        <div class="flex items-end justify-center min-h-screen px-4 text-center md:items-center sm:block sm:p-0">
-          <div x-cloak @click="modalOpen = false" x-show="modalOpen"
-            x-transition:enter="transition ease-out duration-300 transform" x-transition:enter-start="opacity-0"
-            x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200 transform"
-            x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
-            class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-40" aria-hidden="true"></div>
-          <div x-cloak x-show="modalOpen" x-transition:enter="transition ease-out duration-300 transform"
-            x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-            x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
-            x-transition:leave="transition ease-in duration-200 transform"
-            x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
-            x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-            class="inline-block w-full max-w-xl p-8 my-20 overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl 2xl:max-w-2xl">
-            <div class="flex items-center justify-between space-x-4">
-              <h3 class="text-lg font-medium leading-6 text-gray-900" id="modal-title" x-text="modalBill.name"></h3>
-              <button @click="modalOpen = false" class="text-gray-600 focus:outline-none hover:text-gray-700">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
-                  stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </button>
-            </div>
-            <p class="mt-2 text-sm text-gray-500">Data for the week of <span x-text="modalBill.start_month"></span> <span
-                x-text="modalBill.start_day"></span> to <span x-text="modalBill.end_month"></span> <span
-                x-text="modalBill.end_day"></span>, <span x-text="modalBill.year"></span> (<span
-                x-text="modalBill.split_year"></span>)</p>
-            <p class="mt-2 text-sm text-gray-800">There were <span x-text="modalBill.count ? modalBill.count : 'no' "></span> people <span x-text="modalBill.count_type === 'Buried' ? 'buried' : modalBill.count_type === 'Plague' ? 'with plague' : ''"></span> in <span x-text="modalBill.name"></span> during the week of <span x-text="modalBill.start_month"></span> <span x-text="modalBill.start_day"></span>&#8212;<span x-text="modalBill.end_month"></span> <span x-text="modalBill.end_day"></span>, <span x-text="modalBill.year"></span> (<span x-text="modalBill.split_year"></span>).</p>
-            
-            <hr class="mt-2 mb-2"/>
-
-            <p class="mt-2 text-sm text-gray-800"><strong>Count Type</strong>: <span x-text="modalBill.count_type"></p>
-            <p class="mt-2 text-sm text-gray-800"><strong>Count</strong>: <span x-text="modalBill.count ? modalBill.count : 'No count available.'"></p>
-            <p class="mt-2 text-sm text-gray-800"><strong>Week Number</strong>: <span x-text="modalBill.week_number"></span>
-            <div x-data="{ isMissing: false }">
-              <!-- if missing is True, display "record has missing values" -->
-              <p class="mt-2 text-sm text-gray-800" x-show="isMissing"><strong>Record has missing values</strong></p>
-            </div>
-            <div x-data="{ isIllegible: false }">
-              <!-- if missing is True, display "record has missing values" -->
-              <p class="mt-2 text-sm text-gray-800" x-show="isIllegible"><strong>Record has illegible values</strong></p>
-            </div>
-            </p>
-          </div>
+  <modal x-show="modalOpen" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" id="weekly-modal" role="dialog"
+  aria-modal="true">
+  <div class="flex items-end justify-center min-h-screen px-4 text-center md:items-center sm:block sm:p-0">
+    <!-- Backdrop overlay -->
+    <div x-cloak @click="modalOpen = false" x-show="modalOpen"
+      x-transition:enter="transition ease-out duration-300 transform" 
+      x-transition:enter-start="opacity-0"
+      x-transition:enter-end="opacity-100" 
+      x-transition:leave="transition ease-in duration-200 transform"
+      x-transition:leave-start="opacity-100" 
+      x-transition:leave-end="opacity-0"
+      class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-40" aria-hidden="true"></div>
+      
+    <!-- Modal content -->
+    <div x-cloak x-show="modalOpen" 
+      x-transition:enter="transition ease-out duration-300 transform"
+      x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+      x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+      x-transition:leave="transition ease-in duration-200 transform"
+      x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+      x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+      class="inline-block w-full max-w-xl p-8 my-20 overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl 2xl:max-w-2xl">
+      
+      <!-- Modal header -->
+      <div class="flex items-center justify-between space-x-4">
+        <h3 class="text-lg font-medium leading-6 text-gray-900" id="modal-title" x-text="modalBill.name"></h3>
+        <button @click="modalOpen = false" class="text-gray-600 focus:outline-none hover:text-gray-700">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </button>
+      </div>
+      
+      <!-- Modal content with bill information -->
+      <p class="mt-2 text-sm text-gray-500">Data for the week of <span x-text="modalBill.start_month"></span> <span
+          x-text="modalBill.start_day"></span> to <span x-text="modalBill.end_month"></span> <span
+          x-text="modalBill.end_day"></span>, <span x-text="modalBill.year"></span> (<span
+          x-text="modalBill.split_year"></span>)</p>
+          
+      <!-- Bill details -->
+      <p class="mt-2 text-sm text-gray-800"><strong>Count Type</strong>: <span x-text="modalBill.count_type"></span></p>
+      <p class="mt-2 text-sm text-gray-800"><strong>Count</strong>: <span x-text="modalBill.count ? modalBill.count : 'No count available.'"></span>
+        <span x-show="modalBill.missing === true" class="ml-2 px-2 py-0.5 bg-amber-100 text-amber-800 text-xs rounded-full">The data for this record is marked as missing</span>
+        <span x-show="modalBill.illegible === true" class="ml-2 px-2 py-0.5 bg-amber-100 text-amber-800 text-xs rounded-full">The data for this record is marked as illegible</span>
+      </p>
+      <p class="mt-2 text-sm text-gray-800"><strong>Week Number</strong>: <span x-text="modalBill.week_number"></span></p>
+      
+      <!-- Chart section -->
+      <div class="mt-4">
+        <h4 class="text-sm font-medium text-gray-700">Historical Trend</h4>
+            <p class="text-sm text-gray-500">Click a legend to toggle data on and off.</p>
+        <div class="mt-2 parish-chart-modal">
+          <div id="modal-chart-container" class="chart-container w-full"></div>
+          <div id="modal-loading-indicator" class="loading-indicator text-center text-xs text-gray-500 py-2">Loading chart data...</div>
+          <div id="modal-error-message" class="error-message hidden text-center text-xs text-red-500 py-2"></div>
         </div>
       </div>
     </div>
@@ -181,4 +192,3 @@
       </div>
     </div>
     {{/* end: weeklies table */}}
-
