@@ -3,4 +3,4 @@ title: Death Dictionary
 slug: /dictionary/
 ---
 
-Death dictionary.
+{{< csvtable file="deathdictionary.csv" >}}
