@@ -3,6 +3,9 @@
 data.db
 bom-db/.eslintcache
 bom-db/node_modules/
+.env
+.smb*
 
 dbupdate
 bom-processing/scripts/bomr/.Rapp.history
+bom-processing/db/updater/bin

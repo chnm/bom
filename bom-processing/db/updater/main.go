@@ -3,644 +3,578 @@ package main
 import (
 	"context"
 	"encoding/csv"
+	"flag"
+	"fmt"
 	"io"
+	"log"
 	"os"
+	"path/filepath"
 	"strconv"
+	"time"
 
+	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/pgxpool"
-
-	"github.com/rs/zerolog"
-	"github.com/rs/zerolog/log"
 )
 
-type Parish struct {
-	ParishName    string
-	CanonicalName string
-	ParishID      int
-}
-
-type CauseOfDeath struct {
-	Death          string
-	Count          int
-	DescriptiveTxt string
-	JoinID         string
-	Year           int
-	WeekID         string
-	YearRange      string
-	SplitYear      string
-}
-
-type MortalityBill struct {
-	UniqueID  string
-	CountType string
-	Count     int
-	BillType  string
-	ParishID  int
-	YearID    string
-	WeekID    string
-	YearRange string
-	SplitYear string
-	JoinID    string
-	ID        int
-}
-
-type Christening struct {
-	Year       int
-	WeekNumber int
-	UniqueID   string
-	StartDay   int
-	StartMonth string
-	EndDay     int
-	EndMonth   string
-	ParishName string
-	Count      int
-	BillType   string
-	JoinID     string
-}
-
-type ChristeningLocation struct {
-	ID   int
-	Name string
-}
-
-type Week struct {
-	Year       int
-	WeekNumber int
-	StartDay   int
-	EndDay     int
-	StartMonth string
-	EndMonth   string
-	UniqueID   string
-	WeekID     string
-	YearRange  string
-	SplitYear  string
-	JoinID     string
-}
-
-type Year struct {
-	YearID int
-	Year   int
-	ID     int
-}
-
-func readParishData(pool *pgxpool.Pool) error {
-	file, err := os.Open("../../scripts/bomr/data/parishes_unique.csv")
-	if err != nil {
-		log.Error().Stack().Err(err).Msg("Unable to open file.")
-	}
-	defer file.Close()
-
-	reader := csv.NewReader(file)
-	_, err = reader.Read()
-	if err != nil {
-		log.Error().Stack().Err(err).Msg("Unable to read file.")
-	}
-
-	for {
-		record, err := reader.Read()
-		if err == io.EOF {
-			break
-		}
-		if err != nil {
-			log.Error().Stack().Err(err).Msg("Unable to read file.")
-		}
-
-		parishIdAsInt, err := strconv.Atoi(record[2])
-		if err != nil {
-			log.Error().Stack().Err(err).Msg("Unable to convert parish id to int.")
-		}
-
-		parish := Parish{
-			ParishName:    record[0],
-			CanonicalName: record[1],
-			ParishID:      parishIdAsInt,
-		}
-
-		err = insertParishData(pool, &parish)
-		if err != nil {
-			log.Error().Stack().Err(err).Msg("Unable to insert parish data.")
-		}
-	}
-	return nil
-}
-
-func insertParishData(pool *pgxpool.Pool, parish *Parish) error {
-	query := `
-		INSERT INTO bom.parishes (parish_name, canonical_name, id)
-		VALUES ($1, $2, $3)
-		ON CONFLICT (parish_name) DO NOTHING
-	`
-
-	_, err := pool.Exec(context.Background(), query, parish.ParishName, parish.CanonicalName, parish.ParishID)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func readYearData(pool *pgxpool.Pool) error {
-	file, err := os.Open("../../scripts/bomr/data/year_unique.csv")
-	if err != nil {
-		log.Error().Stack().Err(err).Msg("Unable to open file.")
-	}
-	defer file.Close()
-
-	reader := csv.NewReader(file)
-	_, err = reader.Read()
-	if err != nil {
-		log.Error().Stack().Err(err).Msg("Unable to read file.")
-	}
-
-	for {
-		record, err := reader.Read()
-		if err == io.EOF {
-			break
-		}
-		if err != nil {
-			log.Error().Stack().Err(err).Msg("Unable to read file.")
-		}
-
-		yearAsInt, err := strconv.Atoi(record[0])
-		if err != nil {
-			log.Error().Stack().Err(err).Msg("Unable to convert year to int.")
-		}
-
-		yearIdAsInt, err := strconv.Atoi(record[1])
-		if err != nil {
-			log.Error().Stack().Err(err).Msg("Unable to convert year id to int.")
-		}
-
-		idAsInt, err := strconv.Atoi(record[2])
-		if err != nil {
-			log.Error().Stack().Err(err).Msg("Unable to convert id to int.")
-		}
-
-		year := Year{
-			Year:   yearAsInt,
-			YearID: yearIdAsInt,
-			ID:     idAsInt,
-		}
-
-		err = insertYearData(pool, &year)
-		if err != nil {
-			log.Error().Stack().Err(err).Msg("Unable to insert year data.")
-		}
-	}
-	return nil
-}
-
-func insertYearData(pool *pgxpool.Pool, year *Year) error {
-	query := `
-		INSERT INTO bom.year(year)
-		VALUES ($1)
-		ON CONFLICT (year) DO NOTHING
-	`
-
-	_, err := pool.Exec(context.Background(), query, year.Year)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func readWeekData(pool *pgxpool.Pool) error {
-	file, err := os.Open("../../scripts/bomr/data/week_unique.csv")
-	if err != nil {
-		log.Error().Stack().Err(err).Msg("Unable to open file.")
-	}
-	defer file.Close()
-
-	reader := csv.NewReader(file)
-	_, err = reader.Read()
-	if err != nil {
-		log.Error().Stack().Err(err).Msg("Unable to read file.")
-	}
-
-	for {
-		record, err := reader.Read()
-		if err == io.EOF {
-			break
-		}
-		if err != nil {
-			log.Error().Stack().Err(err).Msg("Unable to read file.")
-		}
-
-		var yearInt int
-		var weekNoInt int
-		var startDayInt int
-		var endDayInt int
-
-		// Check that values are not empty. If they are, set them to NULL.
-		// Check that year is not empty
-		if record[0] == "" {
-			record[0] = ""
-		} else {
-			yearAsInt, err := strconv.Atoi(record[0])
-			if err != nil {
-				log.Error().Stack().Err(err).Msg("Unable to convert year to int.")
-			}
-			yearInt = yearAsInt
-		}
-		// Check that week number is not empty
-		if record[1] == "" {
-			record[1] = ""
-		} else {
-			weekNoAsInt, err := strconv.Atoi(record[1])
-			if err != nil {
-				log.Error().Stack().Err(err).Msg("Unable to convert week no to int.")
-			}
-			weekNoInt = weekNoAsInt
-		}
-		// Check that start day is not empty
-		if record[2] == "" {
-			record[2] = ""
-		} else {
-			startDayAsInt, err := strconv.Atoi(record[2])
-			if err != nil {
-				log.Error().Stack().Err(err).Msg("Unable to convert start day to int.")
-			}
-			startDayInt = startDayAsInt
-		}
-		// Check that end day is not empty
-		if record[3] == "" {
-			record[3] = ""
-		} else {
-			endDayAsInt, err := strconv.Atoi(record[3])
-			if err != nil {
-				log.Error().Stack().Err(err).Msg("Unable to convert end day to int.")
-			}
-			endDayInt = endDayAsInt
-		}
-
-		// yearAsInt, err := strconv.Atoi(record[0])
-		// if err != nil {
-		// 	log.Error().Stack().Err(err).Msg("Unable to convert year to int.")
-		// }
-		// weekNoAsInt, err := strconv.Atoi(record[1])
-		// if err != nil {
-		// 	log.Error().Stack().Err(err).Msg("Unable to convert week no to int.")
-		// }
-		// startDayAsInt, err := strconv.Atoi(record[2])
-		// if err != nil {
-		// 	log.Error().Stack().Err(err).Msg("Unable to convert start day to int.")
-		// }
-		// endDayAsInt, err := strconv.Atoi(record[3])
-		// if err != nil {
-		// 	log.Error().Stack().Err(err).Msg("Unable to convert end day to int.")
-		// }
-
-		week := Week{
-			Year:       yearInt,
-			WeekNumber: weekNoInt,
-			StartDay:   startDayInt,
-			EndDay:     endDayInt,
-			StartMonth: record[4],
-			EndMonth:   record[5],
-			UniqueID:   record[6],
-			WeekID:     record[7],
-			YearRange:  record[8],
-			SplitYear:  record[9],
-			JoinID:     record[10],
-		}
-
-		err = insertWeekData(pool, &week)
-		if err != nil {
-			log.Error().Stack().Err(err).Msg("Unable to insert week data.")
-		}
-	}
-	return nil
-}
-
-func insertWeekData(pool *pgxpool.Pool, week *Week) error {
-	query := `
-		INSERT INTO bom.week(joinid, start_day, start_month, end_day, end_month, year, week_no, split_year)
-		VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-		ON CONFLICT (joinid) DO NOTHING
-	`
-
-	_, err := pool.Exec(context.Background(), query, week.JoinID, week.StartDay, week.StartMonth, week.EndDay, week.EndMonth, week.Year, week.WeekNumber, week.SplitYear)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func readCausesData(pool *pgxpool.Pool) error {
-	file, err := os.Open("../../scripts/bomr/data/causes_of_death.csv")
-	if err != nil {
-		log.Error().Stack().Err(err).Msg("Unable to open file.")
-	}
-	defer file.Close()
-
-	reader := csv.NewReader(file)
-	_, err = reader.Read()
-	if err != nil {
-		log.Error().Stack().Err(err).Msg("Unable to read file.")
-	}
-
-	for {
-		record, err := reader.Read()
-		if err == io.EOF {
-			break
-		}
-		if err != nil {
-			log.Error().Stack().Err(err).Msg("Unable to read file.")
-		}
-
-		var countInt int
-
-		if record[1] == "" {
-			record[1] = ""
-		} else {
-			countAsInt, err := strconv.Atoi(record[1])
-			if err != nil {
-				log.Error().Stack().Err(err).Msg("Unable to convert count to int.")
-			}
-			countInt = countAsInt
-		}
-
-		// countAsInt, err := strconv.Atoi(record[1])
-		// if err != nil {
-		// log.Error().Stack().Err(err).Msg("Unable to convert count to int.")
-		// }
-
-		yearAsInt, err := strconv.Atoi(record[4])
-		if err != nil {
-			log.Error().Stack().Err(err).Msg("Unable to convert year to int.")
-		}
-
-		causes := CauseOfDeath{
-			Death:          record[0],
-			Count:          countInt,
-			DescriptiveTxt: record[2],
-			JoinID:         record[3],
-			Year:           yearAsInt,
-			WeekID:         record[5],
-			YearRange:      record[6],
-			SplitYear:      record[7],
-		}
-
-		err = insertCausesData(pool, &causes)
-		if err != nil {
-			log.Error().Stack().Err(err).Msg("Unable to insert causes data.")
-		}
-	}
-	return nil
-}
-
-func insertCausesData(pool *pgxpool.Pool, causes *CauseOfDeath) error {
-	query := `
-		INSERT INTO bom.causes_of_death(death, count, year, week_id, descriptive_text)
-		VALUES ($1, $2, $3, $4, $5)
-		ON CONFLICT DO NOTHING
-	`
-
-	_, err := pool.Exec(context.Background(), query, causes.Death, causes.Count, causes.Year, causes.JoinID, causes.DescriptiveTxt)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func readChristeningsData(pool *pgxpool.Pool) error {
-	file, err := os.Open("../../scripts/bomr/data/christenings_by_parish.csv")
-	if err != nil {
-		log.Error().Stack().Err(err).Msg("Unable to open file.")
-	}
-	defer file.Close()
-
-	reader := csv.NewReader(file)
-	_, err = reader.Read()
-	if err != nil {
-		log.Error().Stack().Err(err).Msg("Unable to read file.")
-	}
-
-	for {
-		record, err := reader.Read()
-		if err == io.EOF {
-			break
-		}
-		if err != nil {
-			log.Error().Stack().Err(err).Msg("Unable to read file.")
-		}
-
-		var countInt int
-		if record[1] == "" {
-			record[1] = ""
-		} else {
-			countAsInt, err := strconv.Atoi(record[1])
-			if err != nil {
-				log.Error().Stack().Err(err).Msg("Unable to convert count to int.")
-			}
-			countInt = countAsInt
-		}
-
-		yearAsInt, err := strconv.Atoi(record[0])
-		if err != nil {
-			log.Error().Stack().Err(err).Msg("Unable to convert year to int.")
-		}
-
-		weekNumberAsInt, err := strconv.Atoi(record[1])
-		if err != nil {
-			log.Error().Stack().Err(err).Msg("Unable to convert week number to int.")
-		}
-
-		var startDayInt int
-		var endDayInt int
-
-		if record[3] == "" {
-			record[3] = ""
-		} else {
-			startDayAsInt, err := strconv.Atoi(record[3])
-			if err != nil {
-				log.Error().Stack().Err(err).Msg("Unable to convert start day to int.")
-			}
-			startDayInt = startDayAsInt
-		}
-
-		if record[5] == "" {
-			record[5] = ""
-		} else {
-			endDayAsInt, err := strconv.Atoi(record[5])
-			if err != nil {
-				log.Error().Stack().Err(err).Msg("Unable to convert end day to int.")
-			}
-			endDayInt = endDayAsInt
-		}
-
-		christenings := Christening{
-			Year:       yearAsInt,
-			WeekNumber: weekNumberAsInt,
-			UniqueID:   record[2],
-			StartDay:   startDayInt,
-			StartMonth: record[4],
-			EndDay:     endDayInt,
-			EndMonth:   record[6],
-			ParishName: record[7],
-			Count:      countInt,
-			BillType:   record[9],
-			JoinID:     record[10],
-		}
-
-		err = insertChristeningsData(pool, &christenings)
-		if err != nil {
-			log.Error().Stack().Err(err).Msg("Unable to insert christenings data.")
-		}
-	}
-	return nil
-}
-
-func insertChristeningsData(pool *pgxpool.Pool, christenings *Christening) error {
-	query := `
-		INSERT INTO bom.christenings(christening, count, week_number, start_month, end_month, year, start_day, end_day)
-		VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-		ON CONFLICT DO NOTHING
-	`
-
-	_, err := pool.Exec(context.Background(), query, christenings.ParishName, christenings.Count, christenings.WeekNumber, christenings.StartMonth, christenings.EndMonth, christenings.Year, christenings.StartDay, christenings.EndDay)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func readMortalityBill(pool *pgxpool.Pool) error {
-	file, err := os.Open("../../scripts/bomr/data/all_bills.csv")
-	if err != nil {
-		log.Error().Stack().Err(err).Msg("Unable to open file.")
-	}
-	defer file.Close()
-
-	reader := csv.NewReader(file)
-	_, err = reader.Read()
-	if err != nil {
-		log.Error().Stack().Err(err).Msg("Unable to read file.")
-	}
-
-	for {
-		record, err := reader.Read()
-		if err == io.EOF {
-			break
-		}
-		if err != nil {
-			log.Error().Stack().Err(err).Msg("Unable to read file.")
-		}
-
-		parishIdAsInt, err := strconv.Atoi(record[4])
-		if err != nil {
-			log.Error().Stack().Err(err).Msg("Unable to convert parish id to int.")
-		}
-		idAsInt, err := strconv.Atoi(record[10])
-		if err != nil {
-			log.Error().Stack().Err(err).Msg("Unable to convert id to int.")
-		}
-
-		var countInt int
-		if record[2] == "" {
-			record[2] = ""
-		} else {
-			countAsInt, err := strconv.Atoi(record[2])
-			if err != nil {
-				log.Error().Stack().Err(err).Msg("Unable to convert count to int.")
-			}
-			countInt = countAsInt
-		}
-
-		mortalitybills := MortalityBill{
-			//0 unique_identifier,
-			//1 count_type,
-			//2 count,
-			//3 bill_type,
-			//4 parish_id,
-			//5 year,
-			//6 week_id,
-			//7 year_range,
-			//8 split_year,
-			//9 joinid,
-			//10 id
-			UniqueID:  record[0],
-			CountType: record[1],
-			Count:     countInt,
-			BillType:  record[3],
-			ParishID:  parishIdAsInt,
-			YearID:    record[5],
-			WeekID:    record[6],
-			YearRange: record[7],
-			SplitYear: record[8],
-			JoinID:    record[9],
-			ID:        idAsInt,
-		}
-
-		err = insertMortalityBill(pool, &mortalitybills)
-		if err != nil {
-			log.Error().Stack().Err(err).Msg("Unable to insert mortality bill data.")
-		}
-
-	}
-	return nil
-}
-
-func insertMortalityBill(pool *pgxpool.Pool, mortalitybills *MortalityBill) error {
-	query := `
-		INSERT INTO bom.bill_of_mortality(parish_id, count_type, count, year_id, week_id, bill_type)
-		VALUES ($1, $2, $3, $4, $5, $6)
-		ON CONFLICT DO NOTHING
-	`
-
-	_, err := pool.Exec(context.Background(), query, mortalitybills.ParishID, mortalitybills.CountType, mortalitybills.Count, mortalitybills.YearID, mortalitybills.JoinID, mortalitybills.BillType)
-	if err != nil {
-		return err
-	}
-	return nil
+// Import configuration
+type ImportConfig struct {
+	DBConnString string
+	DataDir      string
+	Tables       []string
+	DryRun       bool
 }
 
 func main() {
-	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
+	// Parse command line arguments
+	// My Pythonista attitude is showing
+	dbConnString := flag.String("db", "", "Database connection string (postgresql://username:password@host:port/dbname)")
+	dataDir := flag.String("data", ".", "Directory containing CSV files")
+	dryRun := flag.Bool("dry-run", false, "Dry run (don't actually import data)")
+	flag.Parse()
 
-	// Create the connection pool.
-	connStr := os.Getenv("BOM_DB_STR_LOCAL")
-	log.Info().Msg("Connecting to database...")
-	pool, err := pgxpool.Connect(context.Background(), connStr)
-	if err != nil {
-		log.Error().Stack().Err(err).Msg("Unable to connect to database.")
-	}
-	defer pool.Close()
-
-	log.Info().Msg("Reading and inserting Parish data...")
-	err = readParishData(pool)
-	if err != nil {
-		log.Error().Stack().Err(err).Msg("Unable to read parish data.")
+	if *dbConnString == "" {
+		log.Fatal("Database connection string is required")
 	}
 
-	log.Info().Msg("Reading and inserting Year data...")
-	err = readYearData(pool)
-	if err != nil {
-		log.Error().Stack().Err(err).Msg("Unable to read year data.")
+	config := ImportConfig{
+		DBConnString: *dbConnString,
+		DataDir:      *dataDir,
+		Tables:       []string{"year", "week", "parishes", "christenings", "causes_of_death", "bills"},
+		DryRun:       *dryRun,
 	}
 
-	log.Info().Msg("Reading and inserting Week data...")
-	err = readWeekData(pool)
+	// Connect to database
+	ctx := context.Background()
+	db, err := pgxpool.Connect(ctx, config.DBConnString)
 	if err != nil {
-		log.Error().Stack().Err(err).Msg("Unable to read week data.")
+		log.Fatalf("Failed to connect to database: %v", err)
+	}
+	defer db.Close()
+
+	log.Println("Connected to database. Verifying schema and required tables...")
+
+	// Run import
+	err = importData(ctx, db, config)
+	if err != nil {
+		log.Fatalf("Import failed: %v", err)
 	}
 
-	log.Info().Msg("Reading and inserting Causes of Death data...")
-	err = readCausesData(pool)
+	log.Println("Import completed successfully")
+}
+
+func importData(ctx context.Context, db *pgxpool.Pool, config ImportConfig) error {
+	// Start transaction
+	tx, err := db.Begin(ctx)
 	if err != nil {
-		log.Error().Stack().Err(err).Msg("Unable to read causes data.")
+		return fmt.Errorf("failed to start transaction: %w", err)
+	}
+	defer tx.Rollback(ctx)
+
+	// Create temporary tables
+	err = createTempTables(ctx, tx)
+	if err != nil {
+		return fmt.Errorf("failed to create temporary tables: %w", err)
 	}
 
-	log.Info().Msg("Reading and inserting Christenings data...")
-	err = readChristeningsData(pool)
-	if err != nil {
-		log.Error().Stack().Err(err).Msg("Unable to read christenings data.")
+	// Import each table
+	for _, table := range config.Tables {
+		filename := filepath.Join(config.DataDir, getFilename(table))
+		log.Printf("Importing %s from %s", table, filename)
+
+		if config.DryRun {
+			log.Printf("[DRY RUN] Would import %s", filename)
+			continue
+		}
+
+		err = importTable(ctx, tx, table, filename)
+		if err != nil {
+			return fmt.Errorf("failed to import %s: %w", table, err)
+		}
 	}
 
-	log.Info().Msg("Reading and inserting Bills of Mortality data...")
-	err = readMortalityBill(pool)
-	if err != nil {
-		log.Error().Stack().Err(err).Msg("Unable to read mortality bill data.")
+	// Insert/update data from temp tables to actual tables
+	if !config.DryRun {
+		err = updateTables(ctx, tx)
+		if err != nil {
+			return fmt.Errorf("failed to update tables: %w", err)
+		}
+
+		// Commit the transaction
+		err = tx.Commit(ctx)
+		if err != nil {
+			return fmt.Errorf("failed to commit transaction: %w", err)
+		}
+
+		// Run ANALYZE (outside of transaction)
+		err = analyzeTables(ctx, db)
+		if err != nil {
+			return fmt.Errorf("failed to analyze tables: %w", err)
+		}
 	}
 
-	log.Info().Msg("Done!")
+	return nil
+}
+
+func getFilename(table string) string {
+	switch table {
+	case "year":
+		return "year_unique.csv"
+	case "week":
+		return "week_unique.csv"
+	case "parishes":
+		return "parishes_unique.csv"
+	case "christenings":
+		return "christenings_by_parish.csv"
+	case "causes_of_death":
+		return "causes_of_death.csv"
+	case "bills":
+		return "all_bills.csv"
+	}
+	return ""
+}
+
+func createTempTables(ctx context.Context, tx pgx.Tx) error {
+	// Drop existing temp tables if they exist
+	_, err := tx.Exec(ctx, `
+		DROP TABLE IF EXISTS temp_year CASCADE;
+		DROP TABLE IF EXISTS temp_week CASCADE;
+		DROP TABLE IF EXISTS temp_parish CASCADE;
+		DROP TABLE IF EXISTS temp_christening CASCADE;
+		DROP TABLE IF EXISTS temp_causes_of_death CASCADE;
+		DROP TABLE IF EXISTS temp_bills CASCADE;
+	`)
+	if err != nil {
+		return err
+	}
+
+	// Create temp tables
+	_, err = tx.Exec(ctx, `
+		CREATE TEMPORARY TABLE temp_year (
+			year integer NOT NULL,
+			year_id integer NOT NULL,
+			id integer NOT NULL,
+			CONSTRAINT temp_year_check CHECK (year > 1400 AND year < 1800)
+		);
+
+		CREATE TEMPORARY TABLE temp_week (
+			year integer,
+			week_number integer,
+			start_day integer,
+			end_day integer,
+			start_month text,
+			end_month text,
+			unique_identifier text,
+			week_id text,
+			year_range text,
+			joinid text,
+			split_year text,
+			CONSTRAINT temp_week_check CHECK (year > 1400 AND year < 1800)
+		);
+
+		CREATE TEMPORARY TABLE temp_parish (
+			parish_name text NOT NULL,
+			canonical_name text NOT NULL,
+			parish_id integer
+		);
+
+		CREATE TEMPORARY TABLE temp_christening (
+			year integer,
+			week integer,
+			unique_identifier text,
+			start_day int,
+			start_month text,
+			end_day int,
+			end_month text,
+			parish_name text,
+			count int,
+			missing boolean,
+			illegible boolean,
+			source text,
+			bill_type text,
+			joinid text,
+			start_year text,
+			end_year text,
+			count_type text,
+			CONSTRAINT temp_christening_check CHECK (year > 1400 AND year < 1800)
+		);
+
+		CREATE TEMPORARY TABLE temp_causes_of_death (
+			death text,
+			count int,
+			year integer,
+			joinid text,
+			descriptive_text text,
+			source_name text,
+      definition text,
+      definition_source text
+		);
+
+		CREATE TEMPORARY TABLE temp_bills (
+			unique_identifier text,
+			parish_name text,
+			count_type text,
+			count int,
+			missing boolean,
+			illegible boolean,
+			source text,
+			bill_type text,
+			start_year text,
+			end_year text,
+			joinid text,
+			parish_id integer,
+			year integer,
+			split_year text
+		);
+	`)
+	return err
+}
+
+func importTable(ctx context.Context, tx pgx.Tx, table, filename string) error {
+	// Open CSV file
+	file, err := os.Open(filename)
+	if err != nil {
+		return fmt.Errorf("failed to open file: %w", err)
+	}
+	defer file.Close()
+
+	// Create CSV reader
+	reader := csv.NewReader(file)
+	reader.FieldsPerRecord = -1 // Allow variable number of fields
+
+	// Read header
+	header, err := reader.Read()
+	if err != nil {
+		return fmt.Errorf("failed to read header: %w", err)
+	}
+
+	// Prepare temp table name and column list
+	tempTable := "temp_" + getTempTableName(table)
+
+	// Insert each row using COPY protocol
+	count := 0
+
+	// Read all rows into memory
+	rows := [][]interface{}{}
+
+	for {
+		record, err := reader.Read()
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			return fmt.Errorf("failed to read row: %w", err)
+		}
+
+		values := make([]interface{}, len(record))
+		for i, val := range record {
+			values[i] = convertValue(val, header[i], table)
+		}
+
+		rows = append(rows, values)
+		count++
+	}
+
+	// Use the correct CopyFrom signature with pgx.CopyFromRows
+	_, err = tx.CopyFrom(
+		ctx,
+		pgx.Identifier{tempTable},
+		getColumnNames(header, table),
+		pgx.CopyFromRows(rows),
+	)
+
+	if err != nil {
+		return fmt.Errorf("failed to copy data: %w", err)
+	}
+
+	log.Printf("Imported %d rows into %s", count, tempTable)
+	return nil
+}
+
+func getTempTableName(table string) string {
+	switch table {
+	case "parishes":
+		return "parish"
+	case "christenings":
+		return "christening"
+	case "bills":
+		return "bills"
+	}
+	return table
+}
+
+func getColumnNames(header []string, table string) []string {
+	// Return all column names from header
+	return header
+}
+
+func convertValue(val, column, table string) interface{} {
+	if val == "" {
+		return nil
+	}
+
+	// Convert values based on column and table
+	switch {
+	case column == "year" || column == "year_id" || column == "id" ||
+		column == "week_number" || column == "start_day" || column == "end_day" ||
+		column == "week" || column == "count" || column == "parish_id":
+		num, err := strconv.Atoi(val)
+		if err == nil {
+			return num
+		}
+		return nil
+	case column == "missing" || column == "illegible":
+		return val == "true" || val == "t" || val == "1"
+	default:
+		return val
+	}
+}
+
+func updateTables(ctx context.Context, tx pgx.Tx) error {
+	log.Println("Updating main tables from temporary tables...")
+
+	start := time.Now()
+
+	_, err := tx.Exec(ctx, `
+	DO $$
+	DECLARE
+		start_time timestamp;
+		end_time timestamp;
+		rows_before integer;
+		rows_processed integer;
+	BEGIN
+		-- Years
+		start_time := clock_timestamp();
+		SELECT COUNT(*) INTO rows_before FROM bom.year;
+		
+		INSERT INTO bom.year (year)
+		SELECT DISTINCT year 
+		FROM temp_year
+		WHERE year IS NOT NULL
+		ON CONFLICT (year) DO NOTHING;
+		
+		GET DIAGNOSTICS rows_processed = ROW_COUNT;
+		end_time := clock_timestamp();
+		
+		PERFORM bom.log_operation(
+			'INSERT', 'bom.year', rows_before, rows_processed,
+			rows_before + rows_processed, true, NULL, end_time - start_time
+		);
+
+		-- Weeks
+		start_time := clock_timestamp();
+		SELECT COUNT(*) INTO rows_before FROM bom.week;
+		
+		INSERT INTO bom.week (
+			year, week_number, start_day, end_day, start_month, end_month,
+			unique_identifier, week_id, year_range, joinid, split_year
+		)
+		WITH unique_weeks AS (
+			SELECT DISTINCT ON (joinid)
+				year, week_number, start_day, end_day, start_month, end_month,
+				unique_identifier, week_id, year_range, joinid, split_year
+			FROM temp_week
+			WHERE joinid IS NOT NULL 
+			ORDER BY joinid, year DESC
+		)
+		SELECT * FROM unique_weeks
+		ON CONFLICT (joinid) 
+		DO UPDATE
+		SET
+			start_day = EXCLUDED.start_day,
+			start_month = EXCLUDED.start_month,
+			end_day = EXCLUDED.end_day,
+			end_month = EXCLUDED.end_month,
+			year = EXCLUDED.year,
+			week_number = EXCLUDED.week_number,
+			split_year = EXCLUDED.split_year,
+			unique_identifier = EXCLUDED.unique_identifier;
+		
+		GET DIAGNOSTICS rows_processed = ROW_COUNT;
+		end_time := clock_timestamp();
+		
+		PERFORM bom.log_operation(
+			'UPSERT', 'bom.week', rows_before, rows_processed,
+			rows_before + rows_processed, true, NULL, end_time - start_time
+		);
+
+		-- Parishes
+		start_time := clock_timestamp();
+		SELECT COUNT(*) INTO rows_before FROM bom.parishes;
+
+    UPDATE bom.parishes p
+		SET 
+			parish_name = tp.parish_name,
+			canonical_name = tp.canonical_name
+		FROM temp_parish tp
+		WHERE p.id = tp.parish_id
+		AND (p.canonical_name IS DISTINCT FROM tp.canonical_name
+			OR p.parish_name IS DISTINCT FROM tp.parish_name);
+			
+		-- Then insert new parishes that don't exist yet
+		INSERT INTO bom.parishes (id, parish_name, canonical_name)
+		SELECT DISTINCT parish_id, parish_name, canonical_name 
+		FROM temp_parish tp
+		WHERE parish_id IS NOT NULL
+		AND NOT EXISTS (
+			SELECT 1 FROM bom.parishes p 
+			WHERE p.id = tp.parish_id
+			OR p.parish_name = tp.parish_name
+		);
+
+		GET DIAGNOSTICS rows_processed = ROW_COUNT;
+		end_time := clock_timestamp();
+		
+		PERFORM bom.log_operation(
+			'UPSERT', 'bom.parishes', rows_before, rows_processed,
+			rows_before + rows_processed, true, NULL, end_time - start_time
+		);
+
+		-- Christenings
+		start_time := clock_timestamp();
+		SELECT COUNT(*) INTO rows_before FROM bom.christenings;
+		
+		INSERT INTO bom.christenings (
+		christening, count, week_number, start_day, start_month,
+		end_day, end_month, year, missing, illegible, source,
+		bill_type, joinid, unique_identifier
+	)
+	WITH deduplicated_christenings AS (
+		SELECT DISTINCT ON (
+			parish_name, week, start_day, start_month,
+			end_day, end_month, year
+		)
+			parish_name, count, week, start_day, start_month,
+			end_day, end_month, year, missing, illegible, 
+			source, bill_type, joinid, unique_identifier
+		FROM temp_christening c
+		WHERE parish_name IS NOT NULL
+		AND EXISTS (SELECT 1 FROM bom.week w WHERE w.joinid = c.joinid)
+		ORDER BY 
+			parish_name, week, start_day, start_month,
+			end_day, end_month, year, count DESC
+	)
+	SELECT * FROM deduplicated_christenings
+		ON CONFLICT (christening, week_number, start_day, start_month, end_day, end_month, year) 
+		DO UPDATE
+		SET 
+			count = EXCLUDED.count,
+			missing = EXCLUDED.missing,
+			illegible = EXCLUDED.illegible,
+			source = EXCLUDED.source,
+			bill_type = EXCLUDED.bill_type,
+			joinid = EXCLUDED.joinid,
+			unique_identifier = EXCLUDED.unique_identifier;
+		
+		GET DIAGNOSTICS rows_processed = ROW_COUNT;
+		end_time := clock_timestamp();
+		
+		PERFORM bom.log_operation(
+			'UPSERT', 'bom.christenings', rows_before, rows_processed,
+			rows_before + rows_processed, true, NULL, end_time - start_time
+		);
+
+		-- Causes of Death
+		start_time := clock_timestamp();
+		SELECT COUNT(*) INTO rows_before FROM bom.causes_of_death;
+
+    INSERT INTO bom.causes_of_death (
+  death, count, year, week_id, descriptive_text, source_name, definition, definition_source
+  )
+  SELECT DISTINCT 
+    death, count, year, joinid, descriptive_text, source_name, definition, definition_source
+  FROM temp_causes_of_death c
+  WHERE death IS NOT NULL
+  AND EXISTS (SELECT 1 FROM bom.week w WHERE w.joinid = c.joinid)
+  ON CONFLICT (death, year, week_id) 
+  DO UPDATE
+  SET 
+    count = EXCLUDED.count,
+    descriptive_text = EXCLUDED.descriptive_text,
+    source_name = EXCLUDED.source_name,
+    definition = EXCLUDED.definition,
+    definition_source = EXCLUDED.definition_source;
+			
+		GET DIAGNOSTICS rows_processed = ROW_COUNT;
+		end_time := clock_timestamp();
+		
+		PERFORM bom.log_operation(
+			'UPSERT', 'bom.causes_of_death', rows_before, rows_processed,
+			rows_before + rows_processed, true, NULL, end_time - start_time
+		);
+
+		-- Bills of Mortality
+		start_time := clock_timestamp();
+		SELECT COUNT(*) INTO rows_before FROM bom.bill_of_mortality;
+		
+		INSERT INTO bom.bill_of_mortality (
+			parish_id, count_type, count, year, week_id, bill_type,
+			missing, illegible, source, unique_identifier
+		)
+		WITH deduplicated_bills AS (
+		SELECT DISTINCT ON (parish_id, count_type, year, joinid)
+			parish_id, count_type, count, year, joinid, bill_type,
+			missing, illegible, source, unique_identifier
+		FROM temp_bills b
+		WHERE parish_id IS NOT NULL 
+		AND joinid IS NOT NULL
+		AND year IS NOT NULL
+		AND EXISTS (SELECT 1 FROM bom.week w WHERE w.joinid = b.joinid)
+		ORDER BY parish_id, count_type, year, joinid, count DESC
+	)
+		SELECT * FROM deduplicated_bills
+		ON CONFLICT (parish_id, count_type, year, week_id) 
+		DO UPDATE
+		SET 
+			count = EXCLUDED.count,
+			bill_type = EXCLUDED.bill_type,
+			missing = EXCLUDED.missing,
+			illegible = EXCLUDED.illegible,
+			source = EXCLUDED.source,
+			unique_identifier = EXCLUDED.unique_identifier;
+		
+		GET DIAGNOSTICS rows_processed = ROW_COUNT;
+		end_time := clock_timestamp();
+		
+		PERFORM bom.log_operation(
+			'UPSERT', 'bom.bill_of_mortality', rows_before, rows_processed,
+			rows_before + rows_processed, true, NULL, end_time - start_time
+		);
+
+	EXCEPTION WHEN OTHERS THEN
+		PERFORM bom.log_operation(
+			'ERROR', 'multiple', NULL, NULL, NULL, false,
+			SQLERRM, clock_timestamp() - start_time
+		);
+		RAISE;
+	END $$;
+	`)
+
+	if err != nil {
+		return fmt.Errorf("failed to execute update procedure: %w", err)
+	}
+
+	log.Printf("Tables updated successfully in %s", time.Since(start))
+	return nil
+}
+
+func analyzeTables(ctx context.Context, db *pgxpool.Pool) error {
+	log.Println("Running ANALYZE on tables...")
+
+	_, err := db.Exec(ctx, `
+		ANALYZE bom.bill_of_mortality;
+		ANALYZE bom.year;
+		ANALYZE bom.week;
+		ANALYZE bom.parishes;
+		ANALYZE bom.christenings;
+		ANALYZE bom.causes_of_death;
+
+		DO $$
+		BEGIN
+			PERFORM bom.log_operation(
+				'ANALYZE', 'all_tables', NULL, NULL, NULL, true, NULL, NULL
+			);
+		END $$;
+	`)
+
+	return err
 }
