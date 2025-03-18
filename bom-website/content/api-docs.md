@@ -434,7 +434,7 @@ You can retrieve the list of unique christening descriptions using the `/list-ch
 ]
 ```
 
-#### Statistics Endpoint
+#### Statistics endpoint
 
 The `/statistics` endpoint provides aggregated data about the Bills of Mortality records for visualization and analytical purposes. This endpoint helps researchers understand data completion, coverage, and patterns across time periods.
 
@@ -538,7 +538,7 @@ For `parish-yearly` type:
 - `total_buried`: The total number of burials recorded for that parish in that year
 - `total_plague`: The total number of plague cases recorded for that parish in that year (null if none)
 
-#### Parish Geometries Endpoint
+#### Parish geometries endpoint
 
 The `/geometries` endpoint provides GeoJSON data for parish boundaries, which can be used for mapping and spatial analysis of the Bills of Mortality data.
 
@@ -588,7 +588,7 @@ Response JSON:
 }
 ```
 
-## Combined Parish Bills and Geometries Endpoint
+#### GeoJSON Geometries endpoint
 
 The `/geojson` endpoint provides an integrated view of parish geometries and Bills of Mortality data, allowing for spatial analysis of mortality patterns.
 
