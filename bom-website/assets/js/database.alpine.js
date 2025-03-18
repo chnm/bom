@@ -14,6 +14,7 @@ document.addEventListener("alpine:init", () => {
     
     // Tab state
     activeTab: 1,
+    dragging: null,
     
     // UI state
     modalOpen: false,
@@ -934,8 +935,77 @@ document.addEventListener("alpine:init", () => {
      */
     getParishChartData(parishName) {
       return this.parishYearlyData[parishName] || [];
-    }
-  }));
-});
+    },
 
-
+  /**
+  * Start dragging a slider handle
+  * @param {Event} event - Mouse or touch event
+  * @param {string} handle - Which handle is being dragged ('start' or 'end')
+  */
+  startDrag(event, handle) {
+    // Set the current handle being dragged
+    this.dragging = handle;
+    
+    // Prevent text selection during drag
+    event.preventDefault();
+    
+    // Get the slider track element
+    const track = event.target.parentElement;
+    
+    // Calculate initial position
+    const updatePosition = (e) => {
+      // Get event position (support both mouse and touch)
+      const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+      
+      // Calculate position relative to the track
+      const rect = track.getBoundingClientRect();
+      const position = (clientX - rect.left) / rect.width;
+      
+      // Convert position to year value
+      const minYear = 1636;
+      const maxYear = 1754;
+      const range = maxYear - minYear;
+      
+      // Calculate the new year based on position
+      let newYear = Math.round(minYear + (position * range));
+      
+      // Clamp the year to valid range
+      newYear = Math.max(minYear, Math.min(maxYear, newYear));
+      
+      // Update the appropriate year based on which handle is being dragged
+      if (this.dragging === 'start') {
+        // Ensure start year doesn't exceed end year
+        this.filters.selectedStartYear = Math.min(newYear, this.filters.selectedEndYear);
+      } else if (this.dragging === 'end') {
+        // Ensure end year doesn't go below start year
+        this.filters.selectedEndYear = Math.max(newYear, this.filters.selectedStartYear);
+      }
+    };
+    
+    // Handle the initial position
+    updatePosition(event);
+    
+    // Set up event listeners for dragging
+    const moveHandler = (e) => updatePosition(e);
+    const endHandler = () => {
+      // Clear dragging state
+      this.dragging = null;
+      
+      // Remove event listeners
+      window.removeEventListener('mousemove', moveHandler);
+      window.removeEventListener('touchmove', moveHandler);
+      window.removeEventListener('mouseup', endHandler);
+      window.removeEventListener('touchend', endHandler);
+      
+      // Validate the selected years
+      this.validateYearInput();
+    };
+    
+    // Add event listeners
+    window.addEventListener('mousemove', moveHandler);
+    window.addEventListener('touchmove', moveHandler);
+    window.addEventListener('mouseup', endHandler);
+    window.addEventListener('touchend', endHandler);
+  }  
+}));
+})
