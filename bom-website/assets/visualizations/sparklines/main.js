@@ -172,7 +172,7 @@ function makeGraphs(format, count, tidy) {
 
 // Create the plot configuration
 function createPlotConfig(format, count, tidy, allParishes) {
-  const n = 3; // Changed to 3 columns 
+  const n = 5;
   const keys = allParishes;
   const index = new Map(keys.map((key, i) => [key, i]));
   const fx = (key) => index.get(key) % n;

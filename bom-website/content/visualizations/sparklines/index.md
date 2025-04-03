@@ -1,5 +1,5 @@
 ---
-title: "Parish Deaths"
+title: "Parish Deaths Sparklines"
 created: 2025-03-24
 updated: 2025-03-24
 abstract: "Sparklines of plague and non-plague parish deaths"
@@ -11,7 +11,7 @@ thumbdesc: "A screenshot of multiple sparklines of parish deaths"
 author:
 ---
 <div id="row">
-    <h4>Choose your preferences</h4>
+    <h4>Modify data:</h4>
     <div class="flex flex-wrap items-center space-x-4 mb-6">
           <fieldset class="flex flex-col space-y-2" id="data-format">
             <legend class="block text-gray-700 text-base font-bold" for="data-format">

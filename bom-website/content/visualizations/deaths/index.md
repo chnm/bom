@@ -16,6 +16,7 @@ This visualization illustrates the causes of death over time. The darker the sha
 <div id="row">
     <h3>Causes of Death by Year</h3>
     <div class="loading_chart">Loading data...</div>
+    <p class="text-gray-600 mb-2 italic"><small>Hover over cells to see detailed information</small></p>
     <svg id="chart"></svg>
     <figcaption>This figure updates regularly as new data is transcribed and added to the database.</figcaption>
     <p><a href="#top">Return to top</a></p>

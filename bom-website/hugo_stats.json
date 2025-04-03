@@ -43,6 +43,7 @@
       "script",
       "section",
       "select",
+      "small",
       "span",
       "strong",
       "sup",
@@ -70,7 +71,6 @@
       "animated",
       "appearance-none",
       "bg-amber-100",
-      "bg-blue-500",
       "bg-dbn-blue",
       "bg-dbn-green",
       "bg-gray-100",
@@ -90,7 +90,6 @@
       "border-0",
       "border-2",
       "border-b",
-      "border-blue-500",
       "border-dbn-blue",
       "border-dbn-orange",
       "border-gray-200",
@@ -203,6 +202,7 @@
       "inline-block",
       "inline-flex",
       "inset-0",
+      "italic",
       "items-center",
       "items-end",
       "items-start",
@@ -545,11 +545,8 @@
       "normailzed",
       "original",
       "overview",
-<<<<<<< HEAD
       "parish-geometries-endpoint",
-=======
       "plague",
->>>>>>> savViz
       "preparing-digital-images-for-import-into-omeka-s",
       "primary-sources",
       "problem-number-1-forgetting-about-the-data",
