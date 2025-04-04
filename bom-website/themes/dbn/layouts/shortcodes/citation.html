@@ -1,12 +1,23 @@
 {{ $url := .Page.Permalink | absURL }}
 {{ $year := .Page.Params.updated | dateFormat "2006" }}
 {{ $doi := .Page.Params.doi }}
-{{ $author := .Page.Params.author }}
+{{ $authors := .Page.Params.author }}
 
 <blockquote class="sample-citation">
-    {{ if $author }}{{ $author }}, {{ end }}&ldquo;{{ .Page.Title }},&rdquo; <em>Death by Numbers</em>, Roy
+    {{ if $authors }}
+        {{ if reflect.IsSlice $authors }}
+            {{- range $index, $author := $authors -}}
+                {{- if gt $index 0 -}}
+                    {{- if eq $index (sub (len $authors) 1) }} and {{ else }}, {{ end -}}
+                {{- end -}}
+                {{- $author -}}
+            {{- end -}}
+        {{ else }}
+            {{ $authors }}
+        {{ end }}, 
+    {{ end }}&ldquo;{{ .Page.Title }},&rdquo; <em>Death by Numbers</em>, Roy
     Rosenzweig
-    Center for History and New Media, George Mason University ({{ $year }}): <a href="{{ $url }}">{{ $url }}</a>, <a
+    Center for History and New Media, George Mason University ({{ $year }}): <a href="{{ $url }}">{{ $url }}</a>{{ if $doi }}, <a
         href="{{$doi}}">
-        {{ $doi }}</a>.
+        {{ $doi }}</a>{{ end }}.
 </blockquote>

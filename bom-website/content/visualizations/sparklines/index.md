@@ -9,6 +9,8 @@ layout: visualizations
 thumbnail: sparklines.png
 thumbdesc: "A screenshot of multiple sparklines of parish deaths"
 author:
+- Savannah Scott
+- Jason Heppler
 ---
 <div id="row">
     <h4>Modify data:</h4>

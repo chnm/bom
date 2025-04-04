@@ -9,6 +9,7 @@ layout: visualizations
 thumbnail: deathcount.png
 thumbdesc: "A screenshot showing the causes of death visualization."
 author:
+- Jason Heppler
 ---
 
 This visualization illustrates the causes of death over time. The darker the shade of red indicates a higher number of deaths for a particular cause. Each column corresponds to a year in the database (listed on the x-axis label at the bottom of the graphic) and it's corresponding cause (on the y-axis). This graphic updates regularly as new bills are added to the database.

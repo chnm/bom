@@ -9,6 +9,7 @@ layout: visualizations
 thumbnail: calendar.png
 thumbdesc: "A screenshot showing the causes of death visualization."
 author:
+- Jason Heppler
 ---
 
 This visualization illustrates the causes of death per week for a given year. This graphic updates regularly as new bills are added to the database.
