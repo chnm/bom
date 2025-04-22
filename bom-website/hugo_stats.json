@@ -193,6 +193,7 @@
       "justify-between",
       "justify-center",
       "justify-end",
+      "justify-items-start",
       "justify-start",
       "last:mr-0",
       "leading-6",
@@ -556,6 +557,7 @@
       "word-info",
       "works-cited",
       "year",
+      "year-range",
       "you-did-it"
     ]
   }
