@@ -29,19 +29,19 @@ export default class CalendarChart extends Visualization {
           ticks: 10,
           tickSize: 6,
           tickPadding: 3,
-          tickValues: d3.range(d3.min(data, d => d.week_no), d3.max(data, d => d.week_no) + 1)
+          tickValues: d3.range(d3.min(data, d => d.week_nnumber), d3.max(data, d => d.week_number) + 1)
         },
         y: {label: "Cause of Death"},
         color: {type: "linear", scheme: "Reds"},
         marks: [
-          Plot.cell(data, {x: "week_no", y: "death", fill: "count", inset: 0.5}),
+          Plot.cell(data, {x: "week_number", y: "death", fill: "count", inset: 0.5}),
           Plot.axisX({ // Add an additional x-axis at the bottom
             label: "Week Number",
             // tickFormat: d3.format("d"), // remove commas
             ticks: 10,
             tickSize: 6,
             tickPadding: 3,
-            tickValues: d3.range(d3.min(data, d => d.week_no), d3.max(data, d => d.week_no) + 1),
+            tickValues: d3.range(d3.min(data, d => d.week_number), d3.max(data, d => d.week_number) + 1),
             anchor: "bottom"
           })
         ]
@@ -64,7 +64,7 @@ export default class CalendarChart extends Visualization {
         .data(data)
         .on("mouseover", (event, d) => {
         tooltip.style("visibility", "visible")
-            .html(`Week number: ${d.week_no}<br>Count: ${d.count}`);
+            .html(`Week number: ${d.week_number}<br>Count: ${d.count}`);
         d3.select(event.currentTarget)
             .style("stroke", "#3E3E32")
             .style("stroke-width", "2px");

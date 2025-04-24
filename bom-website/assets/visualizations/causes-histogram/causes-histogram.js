@@ -19,14 +19,14 @@ export default class HistogramChart extends Visualization {
     const filteredData = data.filter(d => d.death === this.selectedCause);
 
     // Group data by year, week number, and cause of death
-    const groupedData = d3.groups(filteredData, d => d.year, d => d.week_no, d => d.death);
+    const groupedData = d3.groups(filteredData, d => d.year, d => d.week_number, d => d.death);
 
     // Flatten the grouped data for plotting
     const flattenedData = groupedData.flatMap(([year, weeks]) =>
-      weeks.flatMap(([week_no, deaths]) =>
+      weeks.flatMap(([week_number, deaths]) =>
         deaths.map(([death, records]) => ({
           year,
-          week_no,
+          week_number,
           death,
           count: d3.sum(records, d => d.count)
         }))
@@ -36,7 +36,7 @@ export default class HistogramChart extends Visualization {
     // Create the histogram plot
     const plot = Plot.plot({
       marks: [
-        Plot.rectY(flattenedData, { x: "week_no", y: "count", }),
+        Plot.rectY(flattenedData, { x: "week_number", y: "count", }),
         Plot.ruleY([0]),
         Plot.axisY({
           label: "Count",
@@ -71,7 +71,7 @@ export default class HistogramChart extends Visualization {
      .data(flattenedData)
      .on("mouseover", (event, d) => {
        tooltip.style("visibility", "visible")
-         .html(`Week number: ${d.week_no}<br>Count: ${d.count}`);
+         .html(`Week number: ${d.week_number}<br>Count: ${d.count}`);
         d3.select(event.currentTarget)
          .style("fill", "#c75000ff");
      })

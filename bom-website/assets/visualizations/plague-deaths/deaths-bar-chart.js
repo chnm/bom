@@ -5,7 +5,7 @@ import Visualization from '../common/visualization';
 export default class DeathsChart extends Visualization {
   constructor(id, data, dim) {
     const margin = {
-      top: 0, right: 40, bottom: 40, left: 10,
+      top: 40, right: 40, bottom: 60, left: 10,
     };
     super(id, data, dim, margin);
   }
@@ -23,50 +23,99 @@ export default class DeathsChart extends Visualization {
     ).flat();
 
     const colorThreshold = d3.scaleThreshold()
-      .domain([1600])
+      .domain([5000])
       .range(["black", "white"]);
 
     const plot = Plot.plot({
       padding: 0,
-      width: 800,
+      width: 1200, // Reduce width to fit in div
       height: 4000,
-      marginLeft: 150,
+      marginLeft: 180,
+      marginTop: 60,
+      marginBottom: 80,
+      marginRight: 20,
       grid: true,
+      style: {
+        fontSize: "16px", // Increase base font size
+        ".axis text": {
+          fontSize: "18px" // Larger axis text
+        },
+        ".axis-label": {
+          fontSize: "22px", // Even larger axis labels
+          fontWeight: "bold"
+        },
+        ".tick text": {
+          fontSize: "16px" // Larger tick text
+        },
+        ".plot-d-tip": {
+          fontSize: "16px",
+          background: "rgba(0, 0, 0, 0.8)",
+          color: "white",
+          padding: "10px",
+          borderRadius: "5px",
+          textAlign: "left",
+          lineHeight: "1.4"
+        }
+      },
       x: {
         axis: "top",
         label: "Year",
+        labelAnchor: "right",
+        labelOffset: 50,
         tickFormat: d3.format("d"), // remove commas
         ticks: 10,
-        tickSize: 6,
-        tickPadding: 3,
-        tickValues: d3.range(d3.min(aggregatedData, d => d.year), d3.max(aggregatedData, d => d.year) + 1)
+        tickSize: 8,
+        tickPadding: 12,
+        tickValues: d3.range(d3.min(aggregatedData, d => d.year), d3.max(aggregatedData, d => d.year) + 1),
+        tickRotate: 45
       },
-      y: {label: "Cause"},
-      color: {type: "linear", scheme: "Reds"},
+      y: {
+        label: null, // Remove y-axis label
+        tickSize: 8,
+        tickPadding: 12,
+      },
+      color: {
+        type: "log", // Use log scale for the wide range of values
+        scheme: "Reds"
+      },
       marks: [
-        Plot.cell(aggregatedData, {x: "year", y: "death", fill: "count", inset: 0.5}),
-        Plot.text(aggregatedData, {
+        Plot.cell(aggregatedData, {
           x: "year", 
           y: "death", 
-          text: d => d.count,
-          fill: d => colorThreshold(d.count),
-          inset: 0.5
+          fill: "count",
+          stroke: "#444",
+          strokeOpacity: 0,
+          strokeWidth: 1
         }),
+        Plot.tip(
+          aggregatedData,
+          Plot.pointer({
+            x: "year",
+            y: "death",
+            title: d => `Year: ${d.year}\nCause: ${d.death}\nDeaths: ${d.count.toLocaleString()}`
+          })
+        ),
         Plot.axisX({ // Add an additional x-axis at the bottom
-          label: "Year",
-          tickFormat: d3.format("d"), // remove commas
+          labelAnchor: "right",
+          labelOffset: 50,
+          tickFormat: d3.format("d"),
           ticks: 10,
-          tickSize: 6,
-          tickPadding: 3,
+          tickSize: 8,
+          tickPadding: 12,
           tickValues: d3.range(d3.min(aggregatedData, d => d.year), d3.max(aggregatedData, d => d.year) + 1),
-          anchor: "bottom"
+          anchor: "bottom",
+          tickRotate: 45
         })
       ]
     });
 
-
     d3.select(".loading_chart").remove();
     this.svg.node().append(plot);
-
+    
+    // Set cursor to pointer on cells
+    setTimeout(() => {
+      const cells = d3.selectAll("rect.plot-cell");
+      cells.style("cursor", "pointer");
+    }, 100);
   }
 }

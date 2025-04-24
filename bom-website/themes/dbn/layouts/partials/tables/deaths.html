@@ -1,12 +1,174 @@
 {{/* This is the Total Deaths table. */}}
 
-      {{ partial "tables/cod_filter.html" }}
+{{/* begin: filter accordion */}}
+<div id="accordion-flush" data-accordion="collapse"
+  data-active-classes="bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
+  data-inactive-classes="text-gray-500 dark:text-gray-400">
+  <div x-data="{ expanded: false }" class="filter__header">
+    <h2 id="accordion-flush-heading-1">
+      <button type="button" @click="expanded = ! expanded"
+        class="flex justify-between items-center py-5 w-full font-medium text-left text-gray-900 border-b border-t border-gray-200 dark:border-gray-700 dark:text-white"
+        data-accordion-target="#accordion-flush-body-1" aria-expanded="true" aria-controls="accordion-flush-body-1">
+        <span>Filter</span>
+        <svg class="w-5 h-5 ml-2 transform" :class="{'rotate-180': expanded}" viewBox="0 0 20 20"
+          fill="currentColor">
+          <path fill-rule="evenodd" d="M10.293 14.95a1 1 0 0 1-1.414 0l-4-4a1 1 0 1 1 1.414-1.414L10
+      12.586l3.293-3.293a1 1 0 1 1 1.414 1.414l-4 4z" clip-rule="evenodd"></path>
+        </svg>
+    </h2>
+    <div id="accordion-flush-body-1" aria-labelledby="accordion-flush-heading-1">
+      <div class="py-5 border-b border-gray-200 dark:border-gray-700">
+        <div x-show="expanded" x-collapse class="filter__header__content">
+          <div class="grid grid-cols-4 gap-4 pb-6">
+            <div>
+              <h3 class="text-base font-medium leading-6 text-gray-900">Causes of Death</h3>
+              <div class="py-4 px-5 max-h-64 overflow-scroll border border-slate-200">
+                <div class="filter__header__content__item" style="height: 200px;">
+                    <template x-for="cause in all_causes" :key="cause.id">
+                    <div>
+                      <input type="checkbox" :id="cause.name" :value="cause.name"
+                        x-model="filters.selectedCausesOfDeath">
+                      <label :for="cause.name" x-text="cause.name"></label>
+                    </div>
+                  </template>
+                </div>
+              </div>
+            </div>
+            <div>
+  <h3 class="text-base font-medium leading-6 text-gray-900">Year Range</h3>
+  <div class="mt-4">
+    <!-- Range slider container -->
+    <div class="relative pb-8 pt-2">
+      <!-- Year range display -->
+      <div class="flex justify-between mb-2">
+        <span class="text-sm text-gray-700" x-text="filters.selectedStartYear"></span>
+        <span class="text-sm text-gray-700" x-text="filters.selectedEndYear"></span>
+      </div>
+      
+      <!-- Slider track -->
+      <div class="w-full h-2 bg-gray-200 rounded-md relative">
+        <!-- Selected range highlight -->
+        <div 
+          class="absolute h-full bg-dbn-blue rounded-md" 
+          :style="`left: ${((filters.selectedStartYear - 1636) / (1754 - 1636)) * 100}%; right: ${100 - ((filters.selectedEndYear - 1636) / (1754 - 1636)) * 100}%`"
+        ></div>
+        
+        <!-- Min handle -->
+        <div 
+          class="absolute w-5 h-5 bg-white border-2 border-dbn-blue rounded-full -mt-1.5 transform -translate-x-1/2 cursor-pointer focus:outline-none"
+          :style="`left: ${((filters.selectedStartYear - 1636) / (1754 - 1636)) * 100}%`"
+          @mousedown="startDrag($event, 'start')"
+          @touchstart="startDrag($event, 'start')"
+          tabindex="0"
+          role="slider"
+          :aria-valuenow="filters.selectedStartYear"
+          aria-valuemin="1636"
+          aria-valuemax="1754"
+          aria-labelledby="year-range-start"
+        ></div>
+        
+        <!-- Max handle -->
+        <div 
+          class="absolute w-5 h-5 bg-white border-2 border-dbn-blue rounded-full -mt-1.5 transform -translate-x-1/2 cursor-pointer focus:outline-none"
+          :style="`left: ${((filters.selectedEndYear - 1636) / (1754 - 1636)) * 100}%`"
+          @mousedown="startDrag($event, 'end')"
+          @touchstart="startDrag($event, 'end')"
+          tabindex="0"
+          role="slider"
+          :aria-valuenow="filters.selectedEndYear"
+          aria-valuemin="1636"
+          aria-valuemax="1754"
+          aria-labelledby="year-range-end"
+        ></div>
+      </div>
+      
+      <!-- Year ticks -->
+      <div class="flex justify-between w-full mt-1">
+        <span class="text-xs text-gray-500">1636</span>
+        <span class="text-xs text-gray-500">1660</span>
+        <span class="text-xs text-gray-500">1684</span>
+        <span class="text-xs text-gray-500">1708</span>
+        <span class="text-xs text-gray-500">1732</span>
+        <span class="text-xs text-gray-500">1754</span>
+      </div>
+    </div>
+  </div>
+</div>
+            
+            <div>
+              <div class="w-1/2 inline-block relative">
+                <!-- spacer -->
+              </div>
+            </div>
+            <div>
+              <button
+              class="rounded border border-gray-200 bg-white text-sm font-medium px-4 py-2 text-gray-900 hover:bg-dbn-blue hover:text-black focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700"
+                @click="resetFilters">
+                Reset Filters
+              </button>
+              <button
+              class="rounded border border-gray-200 bg-white text-sm font-medium px-4 py-2 text-gray-900 hover:bg-dbn-blue hover:text-black focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700"
+              @click="applyFilters">
+                Apply Filters
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>  
+  </div>
+{{/* end: filter accordion */}}
+
+<div class="mt-4">
+      <div id="control" class="pb-10">
+        <div class="flex-1 flex items-center">
+          <div class="flex items-center pr-5">
+            <button
+              class="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 ml-0 rounded-l-lg leading-tight py-2 px-3 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+              :class="{'disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none': page === 1}"
+              @click="changePage(1)" :disabled="page === 1">First</button>
+            <button
+              class="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 leading-tight py-2 px-3 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+              :class="{'disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none': page === 1}"
+              @click="changePage(page - 1)" :disabled="page === 1">Previous</button>
+            <button
+              class="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 rounded-r-lg leading-tight py-2 px-3 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+              :class="{'disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none': page === pagination.lastPage}"
+              @click="changePage(page + 1)" :disabled="page === pagination.lastPage">Next</button>
+          </div>
+  
+          <div
+            class="bg-white border border-gray-300 text-gray-500 ml-0 rounded-l-lg leading-tight py-2 px-3 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+            Items per page</div>
+          <div class="w-1/2 inline-block relative">
+            <select
+              class="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 rounded-r-lg leading-tight py-2 px-3 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+              @change="setLimit()" x-model="server.limit">
+              <option value="25">25</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+          </div>
+        </div>
+  </div>
+      <div class="mb-2">
+        <div class="flex md:flex md:flex-grow flex-row justify-end space-x-1">
+          <p class="text-sm text-gray-700 py-1" x-html="getSummary"></p>
+        </div>
+      </div>
+  </div>
+
 
       {{/* begin: deaths table */}}
-    <div x-data="fetchDeaths()">
+    <div id="table-causes">
       <table class="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-700">
         <thead class="bg-gray-100 dark:bg-gray-700">
           <tr>
+<th scope="col"
+              class="py-3 px-6 text-xs font-medium tracking-wider text-center text-gray-700 uppercase dark:text-gray-400"
+              width="5%">Details</th>
+
             <th scope="col"
               class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
               width="30%" @click="sort('death')">Cause</th>
@@ -15,7 +177,7 @@
               width="20%" @click="sort('count')">Count</th>
             <th scope="col"
               class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
-              width="10%" @click="sort('week_no')">Week Number</th>
+              width="10%" @click="sort('week_number')">Week Number</th>
             <th scope="col"
               class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
               width="10%" @click="sort('year')">Year</th>
@@ -23,14 +185,18 @@
         </thead>
         <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
           <template x-for="cause in causes" :key="cause.id">
+
             <tr class="hover:bg-gray-100 dark:hover:bg-gray-700" @click="modalOpen =!modalOpen; modalBill = cause">
+<td class="py-4 px-6 text-sm font-medium text-center text-gray-900 whitespace-nowrap dark:text-white font-mono">
+                <i class="fa-solid fa-expand cursor-pointer transition-all duration-300 ease-in-out hover:scale-125 hover:text-blue-500 active:scale-90"></i></td>
+
               <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
                 x-text="cause.death"></td>
-              <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
+              <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white font-mono"
                 x-text="cause.count"></td>
-              <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                x-text="cause.week_no"></td>
-              <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
+              <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white font-mono"
+                x-text="cause.week_number"></td>
+              <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white font-mono"
                 x-text="cause.year"></td>
             </tr>
           </template>
@@ -39,7 +205,7 @@
 
       {{ partial "tables/instructions.html" }}
   
-      <modal x-show="modalOpen" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog"
+      <modal id="deaths-modal" x-show="modalOpen" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog"
         aria-modal="true">
         <div class="flex items-end justify-center min-h-screen px-4 text-center md:items-center sm:block sm:p-0">
           <div x-cloak @click="modalOpen = false" x-show="modalOpen"
@@ -69,8 +235,18 @@
                 x-text="modalBill.end_day"></span>, <span x-text="modalBill.year"></span> (<span
                 x-text="modalBill.split_year"></span>)</p>
             <p class="mt-2 text-sm text-gray-800"><strong>Description</strong>: <span x-text="modalBill.descriptive_text ? modalBill.descriptive_text : 'No description available.'"></p>
+            <p class="mt-2 text-sm text-gray-800">
+              <strong>Definition</strong>: 
+              <span 
+                x-html="modalBill.definition 
+                  ? (modalBill.definition_source 
+                      ? `${modalBill.definition} (<a href='${modalBill.definition_source}' target='_blank' class='text-dbn-red hover:underline'>source</a>)` 
+                      : modalBill.definition) 
+                  : 'No definition available.'"
+              ></span>
+            </p>
             <p class="mt-2 text-sm text-gray-800"><strong>Count</strong>: <span x-text="modalBill.count"></p>
-            <p class="mt-2 text-sm text-gray-800"><strong>Week Number</strong>: <span x-text="modalBill.week_no"></span>
+            <p class="mt-2 text-sm text-gray-800"><strong>Week Number</strong>: <span x-text="modalBill.week_number"></span>
             <div x-data="{ isMissing: false }">
               <!-- if missing is True, display "record has missing values" -->
               <p class="mt-2 text-sm text-gray-800" x-show="isMissing"><strong>Record has missing values</strong></p>
@@ -119,7 +295,6 @@
             </select>
           </div>
         </div>
-  
+ </div> 
       </div>
     {{/* end: deaths table */}}
-

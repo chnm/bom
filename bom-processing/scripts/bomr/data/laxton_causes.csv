@@ -3176,8 +3176,7 @@ year,week_number,unique_identifier,start_day,start_month,end_day,end_month,death
 1701,40,Laxton-1701-40-verso,16,September,23,September,Found Dead,,
 1701,40,Laxton-1701-40-verso,16,September,23,September,Executed,,
 1701,40,Laxton-1701-40-verso,16,September,23,September,Killed,,
-1701,40,Laxton-1701-40-verso,16,September,23,September,Suicide,2,"Hang'd herself (being distracted) at St. Clement Danes 1; Poyson'd himself (being Lunatick) at St Mary in Whitechappel 1 
-"
+1701,40,Laxton-1701-40-verso,16,September,23,September,Suicide,2,Hang'd herself (being distracted) at St. Clement Danes 1; Poyson'd himself (being Lunatick) at St Mary in Whitechappel 1
 1701,40,Laxton-1701-40-verso,16,September,23,September,Other,2,Burnt at St Bennet at Paulswharf 1; Kill'd by a Fall from a house  at St. James in Westminster 1
 1701,40,Laxton-1701-40-verso,16,September,23,September,Christened (Male),155,
 1701,40,Laxton-1701-40-verso,16,September,23,September,Christened (Female),163,
@@ -4005,7 +4004,7 @@ year,week_number,unique_identifier,start_day,start_month,end_day,end_month,death
 1702,19,Laxton-1702-19-verso,21,April,28,April,Killed,,
 1702,19,Laxton-1702-19-verso,21,April,28,April,Suicide,,
 1702,19,Laxton-1702-19-verso,21,April,28,April,Other,,
-1702,19,Laxton-1702-19-verso,21,April,28,April,Christened (Male),096,
+1702,19,Laxton-1702-19-verso,21,April,28,April,Christened (Male),96,
 1702,19,Laxton-1702-19-verso,21,April,28,April,Christened (Female),186,
 1702,19,Laxton-1702-19-verso,21,April,28,April,Christened (In All),282,
 1702,19,Laxton-1702-19-verso,21,April,28,April,Buried (Male),176,
@@ -9903,8 +9902,7 @@ year,week_number,unique_identifier,start_day,start_month,end_day,end_month,death
 1703,18,Laxton-1703-18-verso,13,April,20,April,Found Dead,,
 1703,18,Laxton-1703-18-verso,13,April,20,April,Executed,,
 1703,18,Laxton-1703-18-verso,13,April,20,April,Killed,1,Murder'd (by a Sword) at St Paul at Covent Garden 1.
-1703,18,Laxton-1703-18-verso,13,April,20,April,Suicide,2,"Cut her Throat (being Dstracted) at Hamsted, Buried at St Martin in the Fields 1; Hang'd herself (being Lunatick) at St Dunstan at Stepney 1.
-"
+1703,18,Laxton-1703-18-verso,13,April,20,April,Suicide,2,"Cut her Throat (being Dstracted) at Hamsted, Buried at St Martin in the Fields 1; Hang'd herself (being Lunatick) at St Dunstan at Stepney 1."
 1703,18,Laxton-1703-18-verso,13,April,20,April,Other,1,Green-Sickness 1
 1703,18,Laxton-1703-18-verso,13,April,20,April,Christened (Male),133,
 1703,18,Laxton-1703-18-verso,13,April,20,April,Christened (Female),126,
@@ -10732,8 +10730,7 @@ Killed with a Kick of an Horse at St Margaret in Lothbury 1."
 1703,25,Laxton-1703-25-verso,1,June,8,June,Executed,,
 1703,25,Laxton-1703-25-verso,1,June,8,June,Killed,1,"And one by a Sword at St Giles in the Fields, Buried at St Margaret in Westminster"
 1703,25,Laxton-1703-25-verso,1,June,8,June,Suicide,1,Cast himself out of a Window at St Clement  Danes 1.
-1703,25,Laxton-1703-25-verso,1,June,8,June,Other,3,"Died by Misfortune (so reported at the Coroner's-Warrant) at St Dunstan at Stepney 1; One by a Fall into a Fleet-Ditch at St Anne in Blackfryars; Kick of an Horse at St Stephen in Colemanstreet. 
-"
+1703,25,Laxton-1703-25-verso,1,June,8,June,Other,3,Died by Misfortune (so reported at the Coroner's-Warrant) at St Dunstan at Stepney 1; One by a Fall into a Fleet-Ditch at St Anne in Blackfryars; Kick of an Horse at St Stephen in Colemanstreet.
 1703,25,Laxton-1703-25-verso,1,June,8,June,Christened (Male),130,
 1703,25,Laxton-1703-25-verso,1,June,8,June,Christened (Female),135,
 1703,25,Laxton-1703-25-verso,1,June,8,June,Christened (In All),265,
@@ -17691,8 +17688,7 @@ Killed with a Kick of an Horse at St Margaret in Lothbury 1."
 1704,35,Laxton-1704-35-verso,8,August,15,August,Overlaid,,
 1704,35,Laxton-1704-35-verso,8,August,15,August,Still-born,12,
 1704,35,Laxton-1704-35-verso,8,August,15,August,Drowned,,
-1704,35,Laxton-1704-35-verso,8,August,15,August,Found Dead,1,"Found dead in the Thames at St Dunstan at Stepney 1. 
-"
+1704,35,Laxton-1704-35-verso,8,August,15,August,Found Dead,1,Found dead in the Thames at St Dunstan at Stepney 1.
 1704,35,Laxton-1704-35-verso,8,August,15,August,Executed,,
 1704,35,Laxton-1704-35-verso,8,August,15,August,Killed,,
 1704,35,Laxton-1704-35-verso,8,August,15,August,Suicide,,

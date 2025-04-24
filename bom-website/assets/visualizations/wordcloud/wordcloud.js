@@ -33,7 +33,7 @@ export default class WordCloudChart extends Visualization {
 
     const wordcloud = WordCloud(causes, {
       size: (group) => {
-        return group.reduce((acc, cur) => acc + cur.size * 0.01, 0);
+        return group.reduce((acc, cur) => acc + cur.size * 0.001, 0);
       },
       word: (d) => d.text,
     });
@@ -122,3 +122,4 @@ function WordCloud(
   cloud.start();
   return svg.node();
 }
+

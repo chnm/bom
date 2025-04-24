@@ -2,16 +2,16 @@
 #
 # Jason A. Heppler | jason@jasonheppler.org
 # Roy Rosenzweig Center for History and New Media
-# Updated: 2023-02-24
+# Updated: 2025-01-09
 
 library(tidyverse)
 
 # ----------------------------------------------------------------------
 # Data sources
 # ----------------------------------------------------------------------
-raw_wellcome_causes <- read_csv("bom-data/data-csvs/2022-04-06-Wellcome-weeklybills-causes.csv")
-raw_laxton_1700_causes <- read_csv("bom-data/data-csvs/2022-06-15-Laxton-1700-weeklybills-causes.csv")
-raw_laxton_causes <- read_csv("bom-data/data-csvs/2022-11-02-Laxton-weeklybills-causes.csv")
+raw_wellcome_causes <- read_csv("../../../bom-data/data-csvs/2022-04-06-Wellcome-weeklybills-causes.csv")
+raw_laxton_1700_causes <- read_csv("../../../bom-data/data-csvs/2022-06-15-Laxton-1700-weeklybills-causes.csv")
+raw_laxton_causes <- read_csv("../../../bom-data/data-csvs/2022-11-02-Laxton-old-weeklybills-causes.csv")
 
 # ----------------------------------------------------------------------
 # Christenings
@@ -78,8 +78,12 @@ christenings <- rbind(wellcome_christenings_long, laxton_christenings_long)
 
 names(christenings) <- tolower(names(christenings))
 names(christenings) <- gsub(" ", "_", names(christenings))
+names(wellcome_christenings_long) <- tolower(names(wellcome_christenings_long))
+names(wellcome_christenings_long) <- gsub(" ", "_", names(wellcome_christenings_long))
+names(laxton_christenings) <- tolower(names(laxton_christenings))
+names(laxton_christenings) <- gsub(" ", "_", names(laxton_christenings))
 
 # Write data
-write_csv(wellcome_christenings_long, "bom-processing/scripts/bomr/data/wellcome_christenings.csv", na = "")
-write_csv(laxton_christenings, "bom-processing/scripts/bomr/data/laxton_christenings.csv", na = "")
-write_csv(christenings, "bom-processing/scripts/bomr/data/christenings_by_gender.csv", na = "")
+write_csv(wellcome_christenings_long, "data/wellcome_christenings.csv", na = "")
+write_csv(laxton_christenings, "data/laxton_christenings.csv", na = "")
+write_csv(christenings, "data/christenings_by_gender.csv", na = "")

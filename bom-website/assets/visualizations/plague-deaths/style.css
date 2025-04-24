@@ -12,18 +12,58 @@
     --color-link-hover: #005398;
   }
 
-  
-  .tooltip {
-    background: rgba(101, 104, 109, 0.9);
-    border-radius: .2rem;
-    color: #fff;
-    display: inline-block;
-    font-size: 12px;
-    max-width: 400px;
-    padding: .2rem .4rem;
-    position: absolute;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    z-index: 300;
-    visibility: hidden;
-    }
+#row {
+  width: 100%;
+  text-align: center;
+  position: relative;
+}
+
+#chart {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+/* Ensure the SVG itself doesn't overflow */
+svg {
+  max-width: 100%;
+}
+
+/* Pointer cursor for cells */
+rect.plot-cell {
+  cursor: pointer;
+}
+
+/* Cell hover styling */
+rect.plot-cell:hover {
+  stroke: #333;
+  stroke-width: 1px;
+}
+
+/* Plot tooltip styling */
+.plot-tip {
+  background: rgba(0, 0, 0, 0.8) !important;
+  color: white !important;
+  font-size: 16px !important;
+  padding: 10px !important;
+  border-radius: 4px !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3) !important;
+  white-space: pre-line !important;
+  max-width: 300px !important;
+  line-height: 1.4 !important;
+  pointer-events: none !important;
+  z-index: 1000 !important;
+  text-align: left !important;
+}
+
+/* Observable's tooltip class */
+.plot-d-tip {
+  font-size: 16px !important;
+  padding: 8px 12px !important;
+  background: rgba(0, 0, 0, 0.8) !important;
+  color: white !important;
+  pointer-events: none !important;
+  white-space: pre-line !important;
+  border-radius: 4px !important;
+  z-index: 1000 !important;
+}

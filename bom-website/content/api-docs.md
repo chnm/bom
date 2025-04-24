@@ -433,3 +433,228 @@ You can retrieve the list of unique christening descriptions using the `/list-ch
 	...
 ]
 ```
+
+#### Statistics endpoint
+
+The `/statistics` endpoint provides aggregated data about the Bills of Mortality records for visualization and analytical purposes. This endpoint helps researchers understand data completion, coverage, and patterns across time periods.
+
+```js
+GET /statistics;
+```
+
+Parameters:
+
+- type (required): The type of statistics to return. Valid values are:
+  - `yearly`: Returns statistics grouped by year
+  - `weekly`: Returns statistics grouped by week
+  - `parish-yearly`: Returns statistics grouped by parish and year
+
+Optional parameters:
+
+- parish (optional, only for `parish-yearly` type): Filter results to a specific parish name
+
+Example requests:
+
+<https://data.chnm.org/bom/statistics?type=yearly>
+
+Response JSON:
+
+```js
+[
+  {
+    "year": 1636,
+    "weeksCompleted": 42,
+    "rowsCount": 3780,
+    "totalCount": 53
+  },
+  {
+    "year": 1637,
+    "weeksCompleted": 53,
+    "rowsCount": 4770,
+    "totalCount": 53
+  },
+  // ...
+]
+```
+
+<https://data.chnm.org/bom/statistics?type=weekly>
+
+Response JSON:
+
+```js
+[
+  {
+    "year": 1636,
+    "weekNumber": 1,
+    "rowsCount": 90
+  },
+  {
+    "year": 1636,
+    "weekNumber": 2,
+    "rowsCount": 90
+  },
+  // ...
+]
+```
+
+<https://data.chnm.org/bom/statistics?type=parish-yearly&parish=All%20Hallows%20Barking>
+
+Response JSON:
+
+```js
+[
+  {
+    "year": 1639,
+    "parish_name": "All Hallows Barking",
+    "total_buried": 175,
+    "total_plague": 23
+  },
+  {
+    "year": 1640,
+    "parish_name": "All Hallows Barking",
+    "total_buried": 134,
+    "total_plague": 0
+  },
+  // ...
+]
+```
+
+The response data structure depends on the `type` parameter:
+
+For `yearly` type:
+- `year`: The year for the statistics
+- `weeksCompleted`: The number of weeks with data in that year
+- `rowsCount`: The total number of data rows for that year
+- `totalCount`: The expected total number of weeks per year (typically 53)
+
+For `weekly` type:
+- `year`: The year for the statistics
+- `weekNumber`: The week number (1-53)
+- `rowsCount`: The number of data rows for that week
+
+For `parish-yearly` type:
+- `year`: The year for the statistics
+- `parish_name`: The canonical name of the parish
+- `total_buried`: The total number of burials recorded for that parish in that year
+- `total_plague`: The total number of plague cases recorded for that parish in that year (null if none)
+
+#### Parish geometries endpoint
+
+The `/geometries` endpoint provides GeoJSON data for parish boundaries, which can be used for mapping and spatial analysis of the Bills of Mortality data.
+
+```js
+GET /geometries;
+```
+
+Parameters:
+
+- year (optional): Filter results to parishes active in a specific year
+- subunit (optional): Filter results to a specific administrative subunit
+- city_cnty (optional): Filter results to a specific city or county
+
+Example request:
+
+<https://data.chnm.org/bom/geometries>
+
+Response JSON:
+
+```js
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": 1,
+      "properties": {
+        "par": "All Hallows Barking",
+        "civ_par": "All Hallows Barking",
+        "dbn_par": "All Hallows Barking",
+        "omeka_par": "All Hallows Barking",
+        "subunit": "City",
+        "city_cnty": "London",
+        "start_yr": 1563,
+        "sp_total": 4.23,
+        "sp_per": 0.12
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          // Coordinate arrays
+        ]
+      }
+    },
+    // More features
+  ]
+}
+```
+
+#### GeoJSON Geometries endpoint
+
+The `/geojson` endpoint provides an integrated view of parish geometries and Bills of Mortality data, allowing for spatial analysis of mortality patterns.
+
+```js
+GET /geojson;
+```
+
+Parameters:
+
+- start-year (required): A four-digit number representing the start year
+- end-year (required): A four-digit number representing the end year
+- parish (optional): Comma-separated list of parish IDs to include
+- bill-type (optional): Type of bills to include ("Weekly" or "General")
+- count-type (optional): Type of counts to include ("Buried" or "Plague")
+- year (optional): Filter geometries to parishes active in a specific year
+- subunit (optional): Filter geometries to a specific administrative subunit
+- city_cnty (optional): Filter geometries to a specific city or county
+
+Example request:
+
+<https://data.chnm.org/bom/geojson?start-year=1665&end-year=1666&bill-type=Weekly&count-type=Plague>
+
+Response JSON:
+
+```js
+{
+  "type": "FeatureCollection",
+  "metadata": {
+    "start_year": 1665,
+    "end_year": 1666,
+    "bill_type": "Weekly",
+    "count_type": "Plague"
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "id": 1,
+      "properties": {
+        "par": "All Hallows Barking",
+        "civ_par": "All Hallows Barking",
+        "dbn_par": "All Hallows Barking",
+        "omeka_par": "All Hallows Barking",
+        "subunit": "City",
+        "city_cnty": "London",
+        "start_yr": 1563,
+        "sp_total": 4.23,
+        "sp_per": 0.12,
+        "weeklyData": [
+          {
+            "week_id": "1665-1666-01", 
+            "count": 15,
+            "year": 1665,
+            "count_type": "Plague"
+          },
+          // More weekly data
+        ],
+        "totalDeaths": 356
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          // Coordinate arrays
+        ]
+      }
+    },
+    // More features
+  ]
+}
+```

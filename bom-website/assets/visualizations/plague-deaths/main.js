@@ -5,8 +5,6 @@ import DeathsChart from "visualizations/plague-deaths/deaths-bar-chart";
 const urls = [
   "https://data.chnm.org/bom/causes?start-year=1648&end-year=1754",
 ];
-const promises = [];
-urls.forEach((url) => promises.push(d3.json(url)));
 
 // Once the data is loaded, initialize the visualization.
 Promise.all(urls.map((url) => d3.json(url)))
@@ -14,7 +12,7 @@ Promise.all(urls.map((url) => d3.json(url)))
     const deathschart = new DeathsChart(
       "#chart",
       { causes: data[0] },
-      { width: 960, height: 4000 }
+      { width: 1200, height: 4000 }
     );
     deathschart.render();
   })

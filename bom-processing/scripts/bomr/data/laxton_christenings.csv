@@ -1,4 +1,4 @@
-Year,Week Number,Unique Identifier,Start Day,Start Month,End Day,End Month,Christened (Male),Christened (Female),Christened (In All)
+year,week_number,unique_identifier,start_day,start_month,end_day,end_month,christened_(male),christened_(female),christened_(in_all)
 1701,14,Laxton-1701-14-verso,18,March,25,March,165,145,310
 1701,15,Laxton-1701-15-verso,25,March,1,April,164,151,315
 1701,16,Laxton-1701-16-verso,1,April,8,April,149,157,306

@@ -1,4 +1,4 @@
-Year,Week Number,Unique Identifier,Start Day,Start Month,End Day,End Month,christening,count
+year,week_number,unique_identifier,start_day,start_month,end_day,end_month,christening,count
 1668,1,1668-01-verso,22,December,29,December,Christened (Male),114
 1668,1,1668-01-verso,22,December,29,December,Christened (Female),103
 1668,1,1668-01-verso,22,December,29,December,Christened (In All),217

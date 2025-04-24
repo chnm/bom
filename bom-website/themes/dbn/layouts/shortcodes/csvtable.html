@@ -1,0 +1,50 @@
+{{/* csvtable.html shortcode */}}
+{{ $file := .Get "file" }}
+{{ $hasHeaders := .Get "headers" | default true }}
+{{ $class := .Get "class" | default "table table-striped" }}
+
+{{ $resource := "" }}
+{{ $data := slice }}
+
+{{/* Try to find the resource */}}
+{{ $resource = resources.Get (printf "data/%s" $file) }}
+{{ if not $resource }}
+    {{ $resource = .Page.Resources.GetMatch $file }}
+{{ end }}
+
+{{ if $resource }}
+    {{ $data = $resource | transform.Unmarshal (dict "delimiter" ",") }}
+{{ end }}
+
+{{ if not $data }}
+    <p class="text-danger">Error: Could not read CSV file {{ $file }}</p>
+{{ else }}
+    <table class="{{ $class }}">
+        {{ if $hasHeaders }}
+            <thead>
+                <tr>
+                    {{ range $header := index $data 0 }}
+                        <th>{{ $header }}</th>
+                    {{ end }}
+                </tr>
+            </thead>
+        {{ end }}
+        
+        <tbody>
+            {{ $startRow := 1 }}
+            {{ if not $hasHeaders }}
+                {{ $startRow = 0 }}
+            {{ end }}
+
+            {{ range $i := seq $startRow (sub (len $data) 1) }}
+                {{ $row := index $data $i }}
+                <tr>
+                    {{ range $cell := $row }}
+                        <td>{{ $cell }}</td>
+                    {{ end }}
+                </tr>
+            {{ end }}
+        </tbody>
+    </table>
+{{ end }}
+

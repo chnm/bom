@@ -1,0 +1,28 @@
+#loading {
+  text-align: center;
+  padding: 20px;
+  font-size: 18px;
+  color: #666;
+}
+
+.visualization-container {
+  max-width: 100%;
+  overflow-x: auto;
+  margin: 0 auto;
+}
+
+/* Adjust SVG styling for better performance */
+.visualization-container svg {
+  max-width: 100%; 
+}
+
+/* Increase text clarity */
+.visualization-container text {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  text-rendering: optimizeLegibility;
+}
+
+/* Ensure bars render properly */
+.visualization-container rect {
+  shape-rendering: crispEdges;
+}
