@@ -13,7 +13,7 @@
       </div>
       <div class="flex flex-col justify-center sm:w-1/2 md:w-1/2 sm:pr-16 bg-slate-100 p-3 m-3 rounded-lg">
         <h3 class="font-medium pb-4 prose-2xl">Latest Writings</h3>
-        {{ range first 3 .Site.RegularPages }}
+        {{ range first 3 (where .Site.RegularPages "Section" "ne" "visualizations") }}
           <div id="title" class="flex flex-wrap p-5 prose">
             <p class="font-medium pb-4"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time> &middot; <a href="{{ .Permalink }}">{{ .Title }}</a></p>
             </div>
