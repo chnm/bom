@@ -1,6 +1,6 @@
 ---
 title: "Parish Deaths Sparklines"
-created: 2025-03-24
+date: 2025-03-24
 updated: 2025-03-24
 abstract: "Sparklines of plague and non-plague parish deaths"
 script: visualizations/sparklines/main.js
