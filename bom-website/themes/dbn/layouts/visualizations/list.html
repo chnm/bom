@@ -11,7 +11,7 @@
             <a href="{{.Permalink}}" class="image-link"><img class="h-40 w-60 object-cover mb-2 overflow-hidden rounded-lg shadow-sm" src="/images/viz/{{.Params.thumbnail}}"
                 title="{{.Params.thumbdesc}}" /></a>
             <h2 class="text-lg font-bold sm:text-xl md:text-xl"><a href="{{.Permalink}}">{{.Title}}</a></h2>
-            <p class="text-sm text-black">{{.Params.abstract}}<span class="inline text-xs font-medium mt-0 mr-1 mb-0 ml-1">· {{ .Params.created | dateFormat "January 2, 2006" }}</span></p>
+            <p class="text-sm text-black">{{.Params.abstract}}<span class="inline text-xs font-medium mt-0 mr-1 mb-0 ml-1">· {{ .Params.date | dateFormat "January 2, 2006" }}</span></p>
           </p>
           </div>
           {{end}}

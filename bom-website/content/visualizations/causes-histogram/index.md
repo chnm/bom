@@ -1,6 +1,6 @@
 ---
 title: "Causes Histograms"
-created: 2024-10-04
+date: 2024-10-04
 updated: 2024-10-04
 abstract: "Graphing the causes of death per week"
 script: visualizations/causes-histogram/main.js

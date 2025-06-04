@@ -1,6 +1,6 @@
 ---
 title: "Calendar of Causes"
-created: 2024-10-04
+date: 2024-10-04
 updated: 2024-10-04
 abstract: "Graphing the causes of death over time"
 script: visualizations/calendar/main.js

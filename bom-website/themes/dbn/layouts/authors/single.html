@@ -13,10 +13,10 @@
       <article>
         <h3 class="text-xl font-semibold"><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
         <p class="text-gray-600">{{ .Date.Format "2006-01-02" }}</p>
-        <p class="mt-2">{{ .Summary }}</p>
+        <p class="mt-2">{{ if eq .Section "visualizations" }}{{ .Params.abstract }}{{ else }}{{ .Summary }}<p><a href="{{ .Permalink }}">Read more...</a></p>{{ end }}</p>
       </article>
       {{ else }}
-      <p>No posts found.</p>
+      <p>No posts for this author.</p>
       {{ end }}
     </div>
   </div>

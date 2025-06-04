@@ -1,6 +1,6 @@
 ---
 title: "Counting the Causes of Death"
-created: 2023-06-06
+date: 2023-06-06
 updated: 2024-10-03
 abstract: "Charting the causes of death"
 script: visualizations/plague-deaths/main.js

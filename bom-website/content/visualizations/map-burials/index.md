@@ -1,6 +1,6 @@
 ---
 title: "Mapping Burials and Plague"
-created: 2025-02-27
+date: 2025-02-27
 updated: 2025-02-27
 abstract: "Mapping plague and non-plague deaths"
 script: visualizations/map-burials/main.js
