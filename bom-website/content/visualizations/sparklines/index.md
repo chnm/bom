@@ -1,7 +1,7 @@
 ---
-title: "Parish Deaths Sparklines"
-date: 2025-03-24
-updated: 2025-03-24
+title: "Parish Deaths"
+created: 2025-03-24
+updated: 2025-04-30
 abstract: "Sparklines of plague and non-plague parish deaths"
 script: visualizations/sparklines/main.js
 styles: visualizations/sparklines/style.css
@@ -12,6 +12,7 @@ author:
 - Savannah Scott
 - Jason Heppler
 ---
+<p>Because the range of total deaths varies significantly, it can be difficult to see the smaller counts on these graphs. Normalizing the data can improve visibility by removing drastic range differences. The two normalization options are log<sub>10</sub>(x+1) and normalized. <strong>Log<sub>10</sub>(x+1)</strong> transforms the data by adding one before taking the logarithm, which preserves zero values and mitigates right-skewed datasets, making them a more normal distribution. <strong>Normalized</strong> standardizes the data with extent normalization, which maps the minimum to zero and the maximum to one. Both make smaller values more visible, and make comparison easier.</p>
 <div id="row">
     <h4>Modify data:</h4>
     <div class="flex flex-wrap items-center space-x-4 mb-6">
