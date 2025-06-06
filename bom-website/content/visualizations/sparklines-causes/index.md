@@ -1,6 +1,6 @@
 ---
 title: "Causes of Death"
-created: 2025-04-30
+date: 2025-04-30
 updated: 2025-04-30
 abstract: "Sparklines of Causes of Deaths"
 script: visualizations/sparklines-causes/main.js

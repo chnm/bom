@@ -1,14 +1,18 @@
 ---
 title: "Mapping Suicides, Drownings, and Killings in the Bills of Mortality"
-created: 2025-04-22
-updated: 2025-04-22
-abstract: "This interactive map accompanies Herman Adasme's 'Death by Words' blog post on utilizing text analysis to extract data on suicides, drownings, and killings in the Bills of Mortality."
+date: 2025-04-22
+updated: 2025-06-06
+abstract: "Mapping text analysis on suicides, drownings, and killings in the Bills of Mortality."
 script: visualizations/map-text/main.js
 styles: visualizations/map-text/style.css
 layout: visualizations
 thumbnail: map-text.png
 thumbdesc: "A screenshot of a choropleth map of London parishes."
 author:
+- Savannah Scott
+- Hernan Adasme
+- Jason Heppler
+
 ---
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
@@ -19,6 +23,7 @@ author:
 
 <div id="row">
     <h3>Suicides, Drownings, and Killings in the Bills of Mortality</h3>
+    <p>The following visualization is an interactive version of map visualizations first created by <a href="https://deathbynumbers.org/authors/hernan-adasme/">Hernán Adasme</a> in his post "<a href="https://deathbynumbers.org/analysis/death-by-words/">Death by Numbers</a>." </p>
     <div class="flex flex-wrap items-center space-x-4 mb-6">
           <div class="flex flex-col space-y-2">
             <label class="block text-gray-700 text-base font-bold" for="cause">
