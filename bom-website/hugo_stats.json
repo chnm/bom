@@ -45,6 +45,7 @@
       "select",
       "span",
       "strong",
+      "sub",
       "sup",
       "svg",
       "table",
@@ -511,6 +512,7 @@
       "original",
       "overview",
       "plague",
+      "plague-format",
       "preparing-digital-images-for-import-into-omeka-s",
       "primary-sources",
       "problem-number-1-forgetting-about-the-data",
@@ -556,6 +558,7 @@
       "word-info",
       "works-cited",
       "year",
+      "year-range",
       "you-did-it"
     ]
   }
