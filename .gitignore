@@ -4,6 +4,7 @@ data.db
 bom-db/.eslintcache
 bom-db/node_modules/
 .env
+.env.local
 bom-processing/db/updater/bin
 .smbdelete*
 
