@@ -25,10 +25,19 @@ week_unique |>
   distinct() |> 
   arrange(week_number) |> View()
 
+week_unique |> 
+  select(year) |> 
+  distinct() |> 
+  arrange(year) |> View()
+
 ## TODO: A week number of "07" is getting introduced into the week numbers somewhere,
 ## which violates the check constraint. 
 ## A quick, temporary fix: 
 week_unique$week_number[4191] <- "7"
+
+## TODO: There's also an incorrect year value from the DataScribe export. Lets
+## temporarily fix this to handle the data import, and we'll correct this in the data.
+week_unique$year[3328] <- "1676"
 
 # -----------
 # Year Values
