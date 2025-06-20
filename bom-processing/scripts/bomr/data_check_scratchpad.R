@@ -47,3 +47,8 @@ week_unique$year[3328] <- "1676"
 ## violates the year check constraint. 
 ## A quick, temporary fix is to remove the final row: 
 year_unique <- year_unique[-nrow(year_unique), ]
+
+# TODO: Because of the year value issue we have to fix it across the overall bills data too.
+## Quick fix both columns at once:
+all_bills$year[all_bills$year == 1976] <- 1676
+all_bills$split_year[all_bills$split_year == "1975/1976"] <- "1675/1676"
