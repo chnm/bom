@@ -17,12 +17,14 @@ This visualization illustrates the causes of death per week for a given year. Th
 <div id="row">
     <h3 id="chart-title">Individual Causes of Death by Week</h3>
     <div class="flex flex-row space-x-4 mb-6">
-    <div class="flex flex-col">
-        <label for="year" class="block text-gray-700 text-sm font-bold">Year (between 1636&dash;1754):</label>
-        <input id="year" value="1636" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+    <div class="flex flex-col w-32">
+        <label for="year" class="block text-gray-700 text-sm font-bold">Year:</label>
+        <select id="year" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            <option value="">Loading years...</option>
+        </select>
     </div>
     <div class="flex items-end">
-        <button id="update-button" type="button" class="rounded border border-gray-200 bg-white text-sm font-medium px-4 py-2 text-gray-900 hover:bg-dbn-blue hover:text-black focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">Update</button>
+        <button id="update-button" type="button" class="rounded-lg border border-gray-200 bg-white text-sm font-medium px-4 py-2 text-gray-900 hover:bg-dbn-blue hover:text-black focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">Update</button>
     </div>
 </div>
     <div class="loading_chart">Loading data...</div>

@@ -91,7 +91,7 @@ We also provided an [endpoint](https://data.chnm.org/bom/causes?start-year=1648&
 ]
 ```
 
-An additional endpoint provides data on christenings as recorded in the plague bills (\``christenings/` [endpoint](http://data.chnm.org/bom/christenings?start-year=1669&end-year=1754&limit=50&offset=0)), as well as a few endpoints that only exist as ways for us to feed into our project (and, thus, aren't likely much use for others wanting to do analysis).
+An additional endpoint provides data on christenings as recorded in the plague bills (\``christenings/` [endpoint](https://data.chnm.org/bom/christenings?start-year=1669&end-year=1754&limit=50&offset=0)), as well as a few endpoints that only exist as ways for us to feed into our project (and, thus, aren't likely much use for others wanting to do analysis).
 
 This computational infrastructure feeds into the web components that we are building for the project. The first of these is an interactive and filterable table of the data that displays the returns from the `bills/` endpoint -- that is, the entirety of the dataset, count values, parishes, and chronology. We keep all of this very fast through `limit` and `offset` queries so that, in the browser, data is loaded and filtered instantly as the interface is changed.
 

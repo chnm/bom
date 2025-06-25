@@ -17,10 +17,16 @@ export default class PlagueBillsBarChartWeekly extends Visualization {
       .range([0, this.width])
       .padding(0.1);
 
+    // Show years every 5 years to reduce clutter
+    const tickIndices = this.xScale.domain().filter((d, i) => {
+      const year = this.data.plagueByWeek[d].year;
+      return year % 5 === 0; // Show years divisible by 5 (1640, 1645, 1650, etc.)
+    });
+
     this.xAxis = d3
       .axisBottom()
       .scale(this.xScale)
-      .tickValues(this.xScale.domain())
+      .tickValues(tickIndices)
       .tickFormat((d) => this.data.plagueByWeek[d].year);
 
     this.yScale = d3
@@ -35,7 +41,7 @@ export default class PlagueBillsBarChartWeekly extends Visualization {
         // so we need to find the original data
         const originalData = this.data.plagueByWeek.find((item) => item.year === d.data.year);
         const text = `Transcribed bills for <strong>${d.data.year}</strong>
-        <br>Total rows of data: ${originalData.totalCount}
+        <br>Total weeks in the data: ${originalData.totalCount}
         <br>Weeks completed: ${originalData.weeksCompleted}`
     //   const text = ``
       this.tooltip.html(text);

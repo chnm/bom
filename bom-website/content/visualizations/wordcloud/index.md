@@ -1,7 +1,7 @@
 ---
 title: "Causes of Death as a Cloud"
 date: 2023-06-27
-updated: 2023-06-27
+updated: 2025-06-24
 abstract: "Charting the causes of death"
 script: visualizations/wordcloud/main.js
 styles: visualizations/wordcloud/style.css

@@ -1,5 +1,4 @@
 import * as d3 from "d3";
-import PlagueBillsBarChart from "./counts-bar-chart";
 import PlagueBillsBarChartWeekly from "./counts-bar-chart-multiple";
 
 d3.json("https://data.chnm.org/bom/statistics?type=yearly")

@@ -1,7 +1,7 @@
 ---
 title: "Counting the Transcribed Bills"
 date: 2023-03-27
-updated: 2023-03-28
+updated: 2025-06-24
 abstract: "Charting the completeness of our transcriptions"
 script: visualizations/counts/main.js
 styles: visualizations/counts/style.css
