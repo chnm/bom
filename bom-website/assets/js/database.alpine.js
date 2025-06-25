@@ -51,17 +51,21 @@ document.addEventListener("alpine:init", () => {
     
     // Pagination state
     page: 1,
-    pageSize: 25,
+    pageSize: 100,
     server: {
-      limit: 25,
+      limit: 100,
       offset: 0,
     },
     pagination: {
       total: 0,
       lastPage: 1,
       page: 1, 
-      pageSize: 25, 
-      pageOffset: 25, 
+      pageSize: 100, 
+      pageOffset: 100,
+      cursor: null,
+      hasMore: false,
+      cursors: [], // Stack of cursors for each page
+      useCursor: true, // Flag to enable cursor-based pagination
     },
     
     /**
@@ -236,30 +240,62 @@ document.addEventListener("alpine:init", () => {
      */
     async fetchData(billType) {
       console.log("Fetching " + billType + " bills data...");
+      
+      // Cancel any ongoing requests and clear cache to prevent race conditions and stale data
+      if (window.DataService) {
+        if (window.DataService.cancelAllRequests) {
+          window.DataService.cancelAllRequests();
+        }
+        if (window.DataService.clearCache) {
+          window.DataService.clearCache('bills');
+        }
+      }
+      
       this.meta.loading = true;
       this.meta.fetching = true;
       
       try {
-        // Calculate offset based on current page and page size
-        const offset = (this.page - 1) * this.pageSize;
+        // Prepare pagination params - cursor-based is default and preferred
+        const paginationParams = {};
         
-        // Prepare direct params for API call
-        const params = {
-          'bill-type': billType || this.filters.selectedBillType,
-          'start-year': this.filters.selectedStartYear,
-          'end-year': this.filters.selectedEndYear,
-          'count-type': this.filters.selectedCountType,
-          'limit': this.pageSize,
-          'offset': offset
-        };
-        
-        // Add parish filter if selected
-        if (this.filters.selectedParishes && this.filters.selectedParishes.length > 0) {
-          params.parish = this.filters.selectedParishes.join(',');
+        // Always prefer cursor-based pagination when available
+        if (this.page === 1) {
+          // First page - no cursor needed
+          // Backend will return first 25 records
+        } else if (this.page > 1 && this.pagination.cursors.length >= this.page - 1) {
+          // Use cursor for subsequent pages
+          paginationParams.cursor = this.pagination.cursors[this.page - 2];
+        } else {
+          // Fallback to page-based pagination if cursors not available
+          paginationParams.page = this.page;
         }
         
-        // Fetch data
-        const data = await window.DataService.fetchData('bills', params);
+        // Fetch data using the updated DataService
+        const response = await window.DataService.fetchBills(
+          billType || this.filters.selectedBillType,
+          this.filters,
+          paginationParams
+        );
+        
+        // Handle new paginated response structure
+        let data, pagination;
+        if (response && response.data && Array.isArray(response.data)) {
+          // New paginated response
+          data = response.data;
+          pagination = {
+            nextCursor: response.next_cursor,
+            hasMore: response.has_more
+          };
+        } else if (Array.isArray(response)) {
+          // Legacy array response
+          data = response;
+          pagination = {
+            nextCursor: null,
+            hasMore: false
+          };
+        } else {
+          throw new Error('Unexpected response format');
+        }
         
         // Process data
         data.forEach(function(d, i) {
@@ -269,19 +305,49 @@ document.addEventListener("alpine:init", () => {
         // Update state
         this.bills = data;
         
-        // Update pagination
-        if (data.length > 0 && data[0].totalrecords) {
-          this.pagination.total = data[0].totalrecords;
-          this.pagination.lastPage = Math.ceil(this.pagination.total / this.pagination.pageSize);
+        // Update pagination state
+        if (this.pagination.useCursor) {
+          this.pagination.hasMore = pagination.hasMore;
+          
+          // Build cursor stack for navigation
+          if (pagination.nextCursor) {
+            // Ensure cursor array is the right size for current page
+            while (this.pagination.cursors.length < this.page) {
+              this.pagination.cursors.push(null);
+            }
+            // Store cursor for the NEXT page
+            this.pagination.cursors[this.page - 1] = pagination.nextCursor;
+          }
+          
+          // For cursor-based pagination, use the actual total from backend
+          if (data.length > 0 && data[0].totalrecords > 0) {
+            // First page or legacy pagination - update the total count
+            this.pagination.total = data[0].totalrecords;
+            this.pagination.lastPage = Math.ceil(this.pagination.total / this.pagination.pageSize);
+          } else if (this.pagination.total > 0) {
+            // Subsequent cursor pages - keep existing total, just update lastPage if needed
+            this.pagination.lastPage = Math.ceil(this.pagination.total / this.pagination.pageSize);
+          } else {
+            // Fallback estimate if no total available
+            this.pagination.total = data.length * this.page;
+            this.pagination.lastPage = pagination.hasMore ? this.page + 1 : this.page;
+          }
         } else {
-          this.pagination.total = 0;
-          this.pagination.lastPage = 1;
+          // Legacy pagination
+          this.pagination.cursor = null;
+          this.pagination.hasMore = false;
+          
+          if (data.length > 0 && data[0].totalrecords) {
+            this.pagination.total = data[0].totalrecords;
+            this.pagination.lastPage = Math.ceil(this.pagination.total / this.pagination.pageSize);
+          } else {
+            this.pagination.total = data.length;
+            this.pagination.lastPage = 1;
+          }
         }
         
-        // Prefetch parish yearly data for charts if we have bills
-        if (data.length > 0) {
-          this.prefetchParishYearlyData(data);
-        }
+        // Skip prefetching to improve initial page load performance
+        // Parish data will be loaded on-demand when charts are opened
         
         // Update URL after data is loaded
         this.updateUrl();
@@ -308,11 +374,13 @@ document.addEventListener("alpine:init", () => {
           }
         }
         
-        // Fetch data for each parish if not already in cache
-        for (const parish of uniqueParishes) {
-          if (!this.parishYearlyData[parish]) {
-            await this.fetchParishYearlyForSingle(parish);
-          }
+        // Fetch data for each parish in parallel if not already in cache
+        const promises = uniqueParishes
+          .filter(parish => !this.parishYearlyData[parish])
+          .map(parish => this.fetchParishYearlyForSingle(parish));
+        
+        if (promises.length > 0) {
+          await Promise.all(promises);
         }
       } catch (error) {
         console.error("Error prefetching parish yearly data:", error);
@@ -505,8 +573,35 @@ document.addEventListener("alpine:init", () => {
      * Change page in pagination
      */
     changePage(page) {
-      if (page < 1 || page > this.pagination.lastPage) {
+      if (page < 1) {
         return;
+      }
+      
+      if (this.pagination.useCursor) {
+        // Cursor-based pagination
+        if (page === 1) {
+          // Going to first page - reset everything
+          this.pagination.cursor = null;
+          this.pagination.cursors = [];
+        } else if (page === this.page + 1) {
+          // Going to next page - use the current cursor
+          if (!this.pagination.hasMore) {
+            return; // No more data available
+          }
+          // The cursor is already set from the previous response
+        } else if (page === this.page - 1 && page > 1) {
+          // Going back one page - use previous cursor
+          if (this.pagination.cursors.length >= page - 1) {
+            this.pagination.cursor = this.pagination.cursors[page - 2] || null;
+          } else {
+            // Can't go back efficiently, disable cursor temporarily
+            this.pagination.useCursor = false;
+          }
+        } else {
+          // Jumping to arbitrary page - fall back to page-based pagination
+          this.pagination.useCursor = false;
+          this.pagination.cursor = null;
+        }
       }
       
       this.page = page;
@@ -529,6 +624,13 @@ document.addEventListener("alpine:init", () => {
         this.fetchChristenings();
       } else if (currentTab === 5) {
         this.fetchParishYearly();
+      }
+      
+      // Re-enable cursor pagination after page-based fetch completes
+      if (!this.pagination.useCursor && page === 1) {
+        this.$nextTick(() => {
+          this.pagination.useCursor = true;
+        });
       }
     },
     
@@ -606,6 +708,9 @@ document.addEventListener("alpine:init", () => {
       // Reset pagination to first page when applying new filters
       this.page = 1;
       this.pagination.page = 1;
+      this.pagination.cursor = null; // Reset cursor for new filters
+      this.pagination.cursors = []; // Reset cursor stack
+      this.pagination.useCursor = true; // Re-enable cursor pagination
       
       // Get current tab to determine which data to fetch
       const currentTab = this.getOpenTab();
@@ -622,7 +727,7 @@ document.addEventListener("alpine:init", () => {
     
     /**
      * Update page size and refetch data
-     *      /
+     */
     updatePageSize() {
       // Update page size and refetch data
       this.pageSize = parseInt(this.pageSize);
@@ -639,6 +744,9 @@ document.addEventListener("alpine:init", () => {
       // Reset to first page when changing page size
       this.page = 1;
       this.pagination.page = 1;
+      this.pagination.cursor = null; // Reset cursor for new page size
+      this.pagination.cursors = []; // Reset cursor stack
+      this.pagination.useCursor = true; // Re-enable cursor pagination
       
       // Get current tab to determine which data to fetch
       const currentTab = this.getOpenTab();
@@ -671,6 +779,9 @@ document.addEventListener("alpine:init", () => {
       // Reset pagination
       this.page = 1;
       this.pagination.page = 1;
+      this.pagination.cursor = null; // Reset cursor
+      this.pagination.cursors = []; // Reset cursor stack
+      this.pagination.useCursor = true; // Re-enable cursor pagination
       
       // Get current tab to determine which data to fetch
       const currentTab = this.getOpenTab();
@@ -803,7 +914,14 @@ document.addEventListener("alpine:init", () => {
       if (this.filters.selectedParishes.length > 0) {
         params.set("parish", this.filters.selectedParishes.join(","));
       }
-      params.set("page", this.page);
+      
+      // Only include page in URL if not using cursor pagination or if on page 1
+      if (!this.pagination.useCursor || this.page === 1) {
+        if (this.page > 1) {
+          params.set("page", this.page);
+        }
+      }
+      
       params.set("bill-type", this.filters.selectedBillType);
       
       // Add tab to URL
