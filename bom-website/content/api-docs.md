@@ -112,7 +112,7 @@ Parameters:
 
 - none
 
-<http://data.chnm.org/bom/parishes>
+<https://data.chnm.org/bom/parishes>
 
 Response JSON (indexed by parish ID):
 
@@ -146,7 +146,7 @@ Parameters:
 
 The `start-year` and `end-year` parameters are required and return the range of rows in the database that fall between the two years. You must also set the `bill-type` parameter to Weekly or General.
 
-<http://data.chnm.org/bom/bills?start-year=1669&end-year=1754&bill-type=Weekly>
+<https://data.chnm.org/bom/bills?start-year=1669&end-year=1754&bill-type=Weekly>
 
 Response JSON:
 
@@ -172,7 +172,7 @@ Response JSON:
 
 Optionally, you can provide the `/bills` endpoint with the `parishes` parameter, which accepts an ID value for a parish name. You can find the corresponding parish ID value from the `/parishes` endpoint.
 
-<http://data.chnm.org/bom/bills?start-year=1648&end-year=1754&bill-type=Weekly&parishes=1,3,17&limit=50&offset=0>
+<https://data.chnm.org/bom/bills?start-year=1648&end-year=1754&bill-type=Weekly&parishes=1,3,17&limit=50&offset=0>
 
 ```js
 [
