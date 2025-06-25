@@ -17,10 +17,16 @@ export default class PlagueBillsBarChart extends Visualization {
       .range([0, this.width])
       .padding(0.1);
 
+    // Show years every 5 years to reduce clutter
+    const tickIndices = this.xScale.domain().filter((d, i) => {
+      const year = this.data.plague[d].year;
+      return year % 5 === 0; // Show years divisible by 5 (1640, 1645, 1650, etc.)
+    });
+
     this.xAxis = d3
       .axisBottom()
       .scale(this.xScale)
-      .tickValues(this.xScale.domain())
+      .tickValues(tickIndices)
       .tickFormat((d) => this.data.plague[d].year);
 
     this.yScale = d3
