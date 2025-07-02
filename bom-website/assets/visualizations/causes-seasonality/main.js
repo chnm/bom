@@ -14,6 +14,12 @@ function populateCausesDropdowns() {
       cause1Dropdown.selectAll("option").remove();
       cause2Dropdown.selectAll("option:not([value=''])").remove();
 
+      // Add 'All Causes' option to the first dropdown
+      cause1Dropdown
+        .append("option")
+        .attr("value", "All Causes")
+        .text("All Causes");
+
       // Populate both dropdowns with fetched causes
       data.forEach((cause) => {
         cause1Dropdown
@@ -30,6 +36,21 @@ function populateCausesDropdowns() {
       // Set default values
       cause1Dropdown.property("value", "Aged");
       cause2Dropdown.property("value", "Consumption");
+      
+      // Add event listener to handle dropdown state changes
+      cause1Dropdown.on("change", function() {
+        const selectedValue = this.value;
+        const cause2Dropdown = d3.select("#cause2");
+        
+        if (selectedValue === "All Causes") {
+          // Disable and clear the comparison dropdown
+          cause2Dropdown.property("disabled", true);
+          cause2Dropdown.property("value", "");
+        } else {
+          // Enable the comparison dropdown
+          cause2Dropdown.property("disabled", false);
+        }
+      });
     })
     .catch((error) => {
       console.error("There was an error fetching the list of causes.", error);
@@ -83,11 +104,16 @@ function fetchDataAndRender(year, cause1, cause2) {
 
       // Update the chart title with colored text
       const colors = ['#3b82f6', '#ef4444', '#10b981', '#f59e0b'];
-      let title = `Seasonality of <span style="color: ${colors[0]}; font-weight: 600;">${cause1}</span>`;
-      if (cause2) {
-        title += ` compared to <span style="color: ${colors[1]}; font-weight: 600;">${cause2}</span>`;
+      let title;
+      if (cause1 === 'All Causes') {
+        title = `Seasonality of <span style="color: ${colors[0]}; font-weight: 600;">All Causes</span> (${year})`;
+      } else {
+        title = `Seasonality of <span style="color: ${colors[0]}; font-weight: 600;">${cause1}</span>`;
+        if (cause2) {
+          title += ` compared to <span style="color: ${colors[1]}; font-weight: 600;">${cause2}</span>`;
+        }
+        title += ` (${year})`;
       }
-      title += ` (${year})`;
 
       d3.select("#chart-title").html(title);
     })
@@ -109,6 +135,9 @@ document.getElementById("update-button").addEventListener("click", () => {
   const cause1 = document.getElementById("cause1").value;
   const cause2 = document.getElementById("cause2").value;
 
-  fetchDataAndRender(year, cause1, cause2 || null);
+  // Don't pass cause2 if cause1 is "All Causes"
+  const finalCause2 = cause1 === "All Causes" ? null : (cause2 || null);
+  
+  fetchDataAndRender(year, cause1, finalCause2);
 });
 

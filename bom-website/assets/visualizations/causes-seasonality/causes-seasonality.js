@@ -17,10 +17,17 @@ export default class SeasonalityChart extends Visualization {
     const data = this.data;
     
     // Filter data based on selected causes
-    const filteredData = data.filter(d => {
-      return d.death === this.selectedCause1 || 
-             (this.selectedCause2 && d.death === this.selectedCause2);
-    });
+    let filteredData;
+    if (this.selectedCause1 === 'All Causes') {
+      // Show all causes when 'All Causes' is selected
+      filteredData = data;
+    } else {
+      // Filter by specific causes
+      filteredData = data.filter(d => {
+        return d.death === this.selectedCause1 || 
+               (this.selectedCause2 && d.death === this.selectedCause2);
+      });
+    }
 
     // Group by cause and week number, summing counts
     const weeklyData = d3.rollup(
