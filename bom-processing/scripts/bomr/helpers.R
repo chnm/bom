@@ -1205,7 +1205,10 @@ derive_causes <- function(data_sources) {
     "Plague Deaths$",
     "^Increase/Decrease",
     "Parishes (Clear|Infected)",
-    "Ounces in"
+    "Ounces in",
+    "Found Dead",
+    "Found dead",
+    "Description"
   )
   exclude_regex <- paste(exclude_patterns, collapse = "|")
   
