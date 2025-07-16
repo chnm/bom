@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "bomr-python"
+version = "0.1.2"
+description = "Data preparation of the Bills of Mortality"
+authors = ["Roy Rosenzweig Center for History and New Media"]
+readme = "README.md"
+packages = [{include = "bomr"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pandas = "^2.0.0"
+numpy = "^1.24.0"
+typer = "^0.9.0"
+rich = "^13.0.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.0.0"
+black = "^23.0.0"
+flake8 = "^6.0.0"
+jupyter = "^1.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+bomr = "bomr.main:main"
