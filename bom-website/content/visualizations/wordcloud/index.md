@@ -10,6 +10,7 @@ thumbnail: wordcloud.png
 thumbdesc: "A screenshot showing..."
 author:
 - Jason Heppler
+category: "cause-analysis"
 ---
 
 The following visualization displays a word cloud of causes of death within the Plague Bills. The size of the text indicates a greater number of occurrences. This graphic updates regularly as new bills are added to the database.

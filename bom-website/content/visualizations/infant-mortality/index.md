@@ -11,6 +11,7 @@ thumbdesc: "A screenshot showing the visualization of infant and maternal mortal
 author:
 - Jessica Otis 
 - Katie Kania
+category: "cause-analysis"
 ---
 
 Using the data from the Monarch’s Bills and our categories, three interactive graphs were created with the Flourish app from Canva. The first graph is a pie chart which displays the numerical distribution of deaths by year, cause, and parish. The second is a grouped bar chart that breaks down mortality totals by year, which geographic parish subunit they occurred in (within the London walls, outside (without) the London walls, Westminster, and Middlesex and Surrey) and what age category they fell under. From this graph three conclusions can be drawn. Infants within the first 30 days of life are the most vulnerable population across London. The greatest concentration of deaths is in parishes outside the walls of London and of Middlesex and Surrey. And, the highest mortality rate as a single category were infants 1-12 months old located outside the walls of London.

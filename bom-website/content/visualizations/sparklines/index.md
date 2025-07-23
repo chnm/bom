@@ -11,6 +11,7 @@ thumbdesc: "A screenshot of multiple sparklines of parish deaths"
 author:
 - Savannah Scott
 - Jason Heppler
+category: "temporal"
 ---
 <p>Because the range of total deaths varies significantly, it can be difficult to see the smaller counts on these graphs. Normalizing the data can improve visibility by removing drastic range differences. The two normalization options are log<sub>10</sub>(x+1) and normalized. <strong>Log<sub>10</sub>(x+1)</strong> transforms the data by adding one before taking the logarithm, which preserves zero values and mitigates right-skewed datasets, making them a more normal distribution. <strong>Normalized</strong> standardizes the data with extent normalization, which maps the minimum to zero and the maximum to one. Both make smaller values more visible, and make comparison easier.</p>
 <div id="row">

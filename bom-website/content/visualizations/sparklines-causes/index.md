@@ -9,6 +9,8 @@ layout: visualizations
 thumbnail: sparklines-causes.png
 thumbdesc: "A screenshot of multiple sparklines of causes of deaths"
 author:
+- Savannah Scott
+category: "temporal"
 ---
 <p>Because the range of total deaths varies significantly, it can be difficult to see the smaller counts on these graphs. Normalizing the data can improve visibility by removing drastic range differences. The two normalization options are log<sub>10</sub>(x+1) and normalized. <strong>Log<sub>10</sub>(x+1)</strong> transforms the data by adding one before taking the logarithm, which preserves zero values and mitigates right-skewed datasets, making them a more normal distribution. <strong>Normalized</strong> standardizes the data with mean normalization, which subtracts the average from each value. Both make smaller values more visible, and make comparison easier.</p>
 <p>The <strong>remove plague deaths</strong> option graphs all causes of death except plague. Plague deaths are the primary outlier due to the outbreak in 1665. Removing the plague deaths allows greater visibility for smaller values with the original dataset.</p>

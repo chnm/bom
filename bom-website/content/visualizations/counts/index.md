@@ -10,6 +10,7 @@ thumbnail: plaguechart.png
 thumbdesc: "A screenshot showing a bar chart of transcribed bills counts."
 author:
 - Jason Heppler
+category: "project-data"
 ---
 
 This visualization is our "dashboard" for visualizing our progress transcribing the Plague Bills. The chart indicates the total number of weeks, while the bar fills to count the number of weeks that have been transcribed. Mouse over the bars to see the raw data. This graphic updates regularly as new bills are added to the database.

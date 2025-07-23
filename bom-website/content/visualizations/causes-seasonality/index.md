@@ -10,6 +10,7 @@ thumbnail: seasonality.png
 thumbdesc: "A screenshot showing the causes of death seasonality visualization."
 author:
 - Jason Heppler
+category: "temporal"
 ---
 
 This visualization illustrates the seasonality of causes of death across the year, allowing you to analyze patterns and compare different causes. You can select a single cause to view its seasonal distribution, or compare two causes side by side.

@@ -1,51 +1,118 @@
 {{ define "main" }}
 <main>
-<div class="flex min-h-screen pt-7 justify-start bg-white mx-auto w-full lg:max-w-screen-lg sm:max-w-screen-sm md:max-w-screen-md">
-    <div class="mx-auto w-full prose prose-lg">
-      <h2 class="text-4xl font-medium">{{ .Title }}</h2>
-      {{.Content}}
-      <div id="content" class="posts">
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-          {{ range .Pages }}
-          <div class="bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col h-full">
-            <div class="overflow-hidden">
-              <a href="{{.Permalink}}" class="block relative h-48">
-                <img class="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300" 
-                     src="/images/viz/{{.Params.thumbnail}}" 
-                     alt="{{.Params.thumbdesc}}" 
-                     title="{{.Params.thumbdesc}}" />
-              </a>
-            </div>
-            <div class="p-6 flex flex-col flex-grow">
-              <h3 class="text-lg font-bold mb-3 leading-tight">
-                <a href="{{.Permalink}}" class="hover:text-dbn-blue transition-colors duration-200">{{.Title}}</a>
-              </h3>
-              <p class="text-gray-700 mb-4 text-sm flex-grow">{{.Params.abstract}}</p>
+<div class="min-h-screen pt-7 bg-white">
+    <!-- Header Section -->
+    <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mb-8">
+        <h2 class="text-4xl font-medium pt-4">{{.Title}}</h2>
+        <div class="prose prose-lg text-gray-600 max-w-none">
+          {{.Content}}
+        </div>
+      </div>
+
+      <!-- Filter Dashboard -->
+      <div class="mb-8">
+        <div class="flex flex-wrap justify-center gap-3 mb-6">
+          <button class="filter-btn active rounded border border-gray-200 bg-dbn-blue text-sm font-medium px-4 py-2 text-black hover:bg-dbn-blue hover:text-black focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700" data-filter="all">
+            All Visualizations <span class="ml-2 bg-white/30 px-2 py-1 rounded text-xs">{{ len .Pages }}</span>
+          </button>
+          <button class="filter-btn rounded border border-gray-200 bg-white text-sm font-medium px-4 py-2 text-gray-900 hover:bg-dbn-blue hover:text-black focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700" data-filter="temporal">
+            Temporal Analysis <span class="ml-2 bg-gray-100 px-2 py-1 rounded text-xs">6</span>
+          </button>
+          <button class="filter-btn rounded border border-gray-200 bg-white text-sm font-medium px-4 py-2 text-gray-900 hover:bg-dbn-blue hover:text-black focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700" data-filter="geographic-mapping">
+            Geographic Mapping <span class="ml-2 bg-gray-100 px-2 py-1 rounded text-xs">3</span>
+          </button>
+          <button class="filter-btn rounded border border-gray-200 bg-white text-sm font-medium px-4 py-2 text-gray-900 hover:bg-dbn-blue hover:text-black focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700" data-filter="cause-analysis">
+            Cause Analysis <span class="ml-2 bg-gray-100 px-2 py-1 rounded text-xs">2</span>
+          </button>
+          <button class="filter-btn rounded border border-gray-200 bg-white text-sm font-medium px-4 py-2 text-gray-900 hover:bg-dbn-blue hover:text-black focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700" data-filter="project-data">
+            Project Data <span class="ml-2 bg-gray-100 px-2 py-1 rounded text-xs">1</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Visualizations Grid -->
+      <div id="viz-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-16">
+        {{ range .Pages }}
+        <div class="viz-card bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden group transform hover:-translate-y-1" 
+             data-category="{{ .Params.category }}">
+          <div class="overflow-hidden">
+            <a href="{{.Permalink}}" class="block relative h-64">
+              <img class="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500" 
+                   src="/images/viz/{{.Params.thumbnail}}" 
+                   alt="{{.Params.thumbdesc}}" 
+                   title="{{.Params.thumbdesc}}" />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </a>
+          </div>
+          <div class="p-6 flex flex-col flex-grow">
+            <h3 class="text-xl mb-3 leading-tight line-clamp-2">
+              <a href="{{.Permalink}}" class="text-black hover:text-dbn-blue transition-colors duration-200">{{.Title}}</a>
+            </h3>
+            <p class="text-gray-600 mb-4 text-sm leading-relaxed line-clamp-3 flex-grow">{{.Params.abstract}}</p>
+            <div class="mt-auto">
+              <div class="text-xs text-gray-500 mb-2">
+                <div>{{ .Params.date | dateFormat "Jan 2006" }}</div>
+              </div>
+              {{ if .Params.author }}
               <div class="text-xs text-gray-500 mb-4">
-                <div class="flex items-center">
-                  <span>{{ .Params.date | dateFormat "January 2, 2006" }}</span>
-                </div>
-                {{ if .Params.author }}
-                <div class="mt-1">
-                  {{ if reflect.IsSlice .Params.author }}
-                  {{ delimit .Params.author ", " " & " }}
-                  {{ else }}
-                  {{ .Params.author }}
-                  {{ end }}
-                </div>
+                {{ if reflect.IsSlice .Params.author }}
+                {{ delimit .Params.author ", " " & " }}
+                {{ else }}
+                {{ .Params.author }}
                 {{ end }}
               </div>
-              <div class="mt-auto">
-                <a href="{{.Permalink}}" class="inline-block text-dbn-blue font-medium text-sm hover:underline">
-                  View Visualization →
+              {{ else }}
+              <div class="mb-4"></div>
+              {{ end }}
+              <div class="pt-2 border-t border-gray-100">
+                <a href="{{.Permalink}}" class="inline-flex items-center text-dbn-blue font-medium text-sm hover:underline">
+                  Explore
+                  <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                  </svg>
                 </a>
               </div>
             </div>
           </div>
-          {{end}}
         </div>
-      </div>
+        {{end}}
       </div>
     </div>
+</div>
+
+<!-- Filter functionality -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const vizCards = document.querySelectorAll('.viz-card');
+    
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const filter = this.dataset.filter;
+            
+            // Update active button
+            filterBtns.forEach(b => {
+                b.classList.remove('active', 'bg-dbn-blue', 'text-black');
+                b.classList.add('bg-white', 'text-gray-900');
+            });
+            this.classList.add('active', 'bg-dbn-blue', 'text-black');
+            this.classList.remove('bg-white', 'text-gray-900');
+            
+            // Filter cards
+            vizCards.forEach(card => {
+                if (filter === 'all' || card.dataset.category === filter) {
+                    card.style.display = 'block';
+                    card.style.opacity = '0';
+                    setTimeout(() => card.style.opacity = '1', 50);
+                } else {
+                    card.style.opacity = '0';
+                    setTimeout(() => card.style.display = 'none', 300);
+                }
+            });
+        });
+    });
+});
+</script>
 </main>
 {{ end }}
