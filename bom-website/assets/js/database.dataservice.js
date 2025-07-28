@@ -92,11 +92,44 @@ const DataService = {
   async _performFetch(urlString, endpoint, signal, enableCache = true) {
     try {
       console.log('Fetching data from:', urlString);
-      const response = await fetch(urlString, { signal });
+      
+      // Add a reasonable timeout for slow connections (30 seconds)
+      const timeoutId = setTimeout(() => {
+        if (!signal.aborted) {
+          console.warn('Request taking longer than expected:', urlString);
+        }
+      }, 30000);
+      
+      // Try a simpler request first to debug CORS issues
+      const response = await fetch(urlString, { 
+        signal,
+        method: 'GET',
+        mode: 'cors',
+        // Add some headers for better connection handling
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
+      
+      clearTimeout(timeoutId);
       
       if (!response.ok) {
-        console.error(`HTTP error ${response.status} for URL: ${urlString}`);
-        throw new Error(`HTTP error ${response.status}`);
+        console.error(`HTTP error ${response.status} (${response.statusText}) for URL: ${urlString}`);
+        
+        // Provide more specific error messages for common HTTP errors
+        if (response.status === 405) {
+          throw new Error(`API endpoint not available (Method Not Allowed). Please try again later.`);
+        } else if (response.status === 404) {
+          throw new Error(`Data not found. The requested resource may not exist.`);
+        } else if (response.status === 403) {
+          throw new Error(`Access denied. You may not have permission to access this data.`);
+        } else if (response.status >= 500) {
+          throw new Error(`Server error (${response.status}). Please try again later.`);
+        } else if (response.status === 429) {
+          throw new Error(`Too many requests. Please wait a moment and try again.`);
+        } else {
+          throw new Error(`HTTP error ${response.status}. Please try again.`);
+        }
       }
       
       const responseData = await response.json();
@@ -160,8 +193,30 @@ const DataService = {
         console.log('Request cancelled:', urlString);
         throw error;
       }
+      
+      // Log error details for debugging
+      console.error(`Error fetching ${endpoint}:`, error.name, error.message);
+      
+      // Handle CORS errors specifically
+      if (error.message.includes('CORS') || error.message.includes('Cross-Origin')) {
+        console.error(`CORS error fetching ${endpoint} data:`, error);
+        throw new Error('API access blocked. There may be a server configuration issue.');
+      }
+      
+      // Handle network errors more gracefully
+      if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError') || error.name === 'TypeError') {
+        console.error(`Network error fetching ${endpoint} data. Connection may be slow or unstable:`, error);
+        throw new Error('Connection timeout or network error. Please check your internet connection.');
+      }
+      
+      // Handle timeout errors specifically
+      if (error.name === 'TimeoutError' || error.message.includes('timeout')) {
+        console.error(`Request timeout fetching ${endpoint} data:`, error);
+        throw new Error('Request timed out. Your connection may be slow.');
+      }
+      
       console.error(`Error fetching ${endpoint} data:`, error);
-      return [];
+      throw new Error(`Failed to load data: ${error.message}`);
     }
   },
   

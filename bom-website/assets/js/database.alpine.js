@@ -23,6 +23,8 @@ document.addEventListener("alpine:init", () => {
     disabled: false,
     isMissing: false,
     isIllegible: false,
+    initialized: false,
+    initializationStage: 'starting',
     
     // Filter state
     filters: {
@@ -40,13 +42,17 @@ document.addEventListener("alpine:init", () => {
       loading: "Loading data...",
       error: "Error loading data. Please try again.",
       noResults: "No data available. Please try different filters.",
+      slowConnection: "Data is taking longer than usual to load...",
+      connectionError: "Unable to load data. There may be a server issue."
     },
     
     // Loading state
     meta: {
       loading: false,
       fetching: false,
-      error: null
+      error: null,
+      slowConnection: false,
+      connectionTimeout: null
     },
     
     // Pagination state
@@ -69,43 +75,76 @@ document.addEventListener("alpine:init", () => {
     },
     
     /**
-     * Initialize the component
+     * Initialize the component with progressive loading
      */
     init() {
       console.log("Initializing Bills of Mortality application");
       
-      // Parse URL parameters
+      // Start with a lightweight initialization
+      this.initializationStage = 'parsing';
       this.parseURLParams();
       
-      // Initialize data
-      this.fetchStaticData()
-        .then(() => {
-          // Get the initial tab from URL or default to tab 1
-          const urlParams = window.URLService ? window.URLService.getParams() : {};
-          const initialTab = urlParams.tab || 1;
-          this.activeTab = initialTab;
-          
-          console.log("Initial tab is " + initialTab);
-          
-          // Set Alpine store if available
-          if (window.Alpine && window.Alpine.store) {
-            try {
-              window.Alpine.store('openTab', initialTab);
-            } catch (e) {
-              console.warn('Unable to set active tab in Alpine store:', e);
-            }
-          }
-          
-          // Load data for the initial tab
-          this.switchTab(initialTab);
+      // Use requestAnimationFrame to defer heavy initialization
+      requestAnimationFrame(() => {
+        this.initializeAsync();
+      });
+    },
+    
+    /**
+     * Async initialization to prevent blocking
+     */
+    async initializeAsync() {
+      try {
+        this.initializationStage = 'loading_static';
+        
+        // Initialize static data with timeout
+        const staticDataPromise = this.fetchStaticData();
+        const timeoutPromise = new Promise((_, reject) => {
+          setTimeout(() => reject(new Error('Static data loading timeout')), 10000);
         });
         
-      // Listen for history navigation
-      window.addEventListener('popstate', () => {
-        this.parseURLParams();
-        const currentTab = this.getOpenTab();
-        this.switchTab(currentTab);
-      });
+        await Promise.race([staticDataPromise, timeoutPromise]);
+        
+        this.initializationStage = 'setting_up';
+        
+        // Get the initial tab from URL or default to tab 1
+        const urlParams = window.URLService ? window.URLService.getParams() : {};
+        const initialTab = urlParams.tab || 1;
+        this.activeTab = initialTab;
+        
+        console.log("Initial tab is " + initialTab);
+        
+        // Set Alpine store if available
+        if (window.Alpine && window.Alpine.store) {
+          try {
+            window.Alpine.store('openTab', initialTab);
+          } catch (e) {
+            console.warn('Unable to set active tab in Alpine store:', e);
+          }
+        }
+        
+        this.initializationStage = 'ready';
+        this.initialized = true;
+        
+        // Load data for the initial tab with a small delay
+        setTimeout(() => {
+          this.switchTab(initialTab);
+        }, 100);
+        
+        // Listen for history navigation
+        window.addEventListener('popstate', () => {
+          if (this.initialized) {
+            this.parseURLParams();
+            const currentTab = this.getOpenTab();
+            this.switchTab(currentTab);
+          }
+        });
+        
+      } catch (error) {
+        console.error('Initialization failed:', error);
+        this.initializationStage = 'error';
+        this.meta.error = 'Failed to initialize application. Please refresh the page.';
+      }
     },
     
     /**
@@ -143,26 +182,33 @@ document.addEventListener("alpine:init", () => {
     },
     
     /**
-     * Fetch static data for filters
+     * Fetch static data for filters with optimized loading
      */
     async fetchStaticData() {
       try {
-        // Fetch parishes data
-        const parishes = await window.DataService.fetchParishes();
+        // Fetch all static data in parallel for better performance
+        const [parishes, causes, christenings] = await Promise.all([
+          window.DataService.fetchParishes(),
+          window.DataService.fetchAllCauses(),
+          window.DataService.fetchAllChristenings()
+        ]);
+        
+        // Process parishes
         this.parishes = parishes;
         
-        // Fetch causes of death data
-        const causes = await window.DataService.fetchAllCauses();
+        // Process causes with IDs
         this.all_causes = causes;
         this.all_causes.forEach(function(d, i) {
           d.id = i;
         });
         
-        // Fetch christenings data
-        const christenings = await window.DataService.fetchAllChristenings();
+        // Process christenings
         this.all_christenings = christenings;
+        
+        console.log('Static data loaded successfully');
       } catch (error) {
         console.error("Error fetching static data:", error);
+        throw error; // Re-throw to be caught by initialization
       }
     },
     
@@ -253,6 +299,21 @@ document.addEventListener("alpine:init", () => {
       
       this.meta.loading = true;
       this.meta.fetching = true;
+      this.meta.error = null;
+      this.meta.slowConnection = false;
+      
+      // Clear any existing timeout first
+      if (this.meta.connectionTimeout) {
+        clearTimeout(this.meta.connectionTimeout);
+        this.meta.connectionTimeout = null;
+      }
+      
+      // Set up slow connection detection (15 seconds)
+      this.meta.connectionTimeout = setTimeout(() => {
+        if (this.meta.fetching) {
+          this.meta.slowConnection = true;
+        }
+      }, 15000);
       
       try {
         // Prepare pagination params - cursor-based is default and preferred
@@ -354,10 +415,16 @@ document.addEventListener("alpine:init", () => {
       } catch (error) {
         console.error("Error fetching bills data:", error);
         this.bills = [];
-        this.messages.loading = this.messages.noResults;
+        this.meta.error = error.message || this.messages.error;
       } finally {
+        // Clear the timeout
+        if (this.meta.connectionTimeout) {
+          clearTimeout(this.meta.connectionTimeout);
+          this.meta.connectionTimeout = null;
+        }
         this.meta.loading = false;
         this.meta.fetching = false;
+        this.meta.slowConnection = false;
       }
     },
     
@@ -454,6 +521,21 @@ document.addEventListener("alpine:init", () => {
       console.log("Fetching death causes data...");
       this.meta.loading = true;
       this.meta.fetching = true;
+      this.meta.error = null;
+      this.meta.slowConnection = false;
+      
+      // Clear any existing timeout first
+      if (this.meta.connectionTimeout) {
+        clearTimeout(this.meta.connectionTimeout);
+        this.meta.connectionTimeout = null;
+      }
+      
+      // Set up slow connection detection (15 seconds)
+      this.meta.connectionTimeout = setTimeout(() => {
+        if (this.meta.fetching) {
+          this.meta.slowConnection = true;
+        }
+      }, 15000);
       
       try {
         // Calculate offset based on page
@@ -497,10 +579,16 @@ document.addEventListener("alpine:init", () => {
       } catch (error) {
         console.error("Error fetching deaths data:", error);
         this.causes = [];
-        this.messages.loading = this.messages.noResults;
+        this.meta.error = error.message || this.messages.error;
       } finally {
+        // Clear the timeout
+        if (this.meta.connectionTimeout) {
+          clearTimeout(this.meta.connectionTimeout);
+          this.meta.connectionTimeout = null;
+        }
         this.meta.loading = false;
         this.meta.fetching = false;
+        this.meta.slowConnection = false;
       }
     },
     
@@ -511,6 +599,21 @@ document.addEventListener("alpine:init", () => {
       console.log("Fetching christenings data...");
       this.meta.loading = true;
       this.meta.fetching = true;
+      this.meta.error = null;
+      this.meta.slowConnection = false;
+      
+      // Clear any existing timeout first
+      if (this.meta.connectionTimeout) {
+        clearTimeout(this.meta.connectionTimeout);
+        this.meta.connectionTimeout = null;
+      }
+      
+      // Set up slow connection detection (15 seconds)
+      this.meta.connectionTimeout = setTimeout(() => {
+        if (this.meta.fetching) {
+          this.meta.slowConnection = true;
+        }
+      }, 15000);
       
       try {
         // Calculate offset based on page
@@ -554,9 +657,16 @@ document.addEventListener("alpine:init", () => {
       } catch (error) {
         console.error("Error fetching christenings:", error);
         this.christenings = [];
+        this.meta.error = error.message || this.messages.error;
       } finally {
+        // Clear the timeout
+        if (this.meta.connectionTimeout) {
+          clearTimeout(this.meta.connectionTimeout);
+          this.meta.connectionTimeout = null;
+        }
         this.meta.loading = false;
         this.meta.fetching = false;
+        this.meta.slowConnection = false;
       }
     },
     
@@ -880,8 +990,16 @@ document.addEventListener("alpine:init", () => {
      * Get summary text for pagination
      */
     getSummary(type) {
-      // If data is loading, show loading message
+      // If there's an actual connection error (not just slow loading), show error message
+      if (this.meta.error && !this.meta.loading) {
+        return this.messages.connectionError + ' <a href="https://github.com/YOUR_USERNAME/YOUR_REPO/tree/main/data" class="text-blue-600 hover:text-blue-800 underline" target="_blank" rel="noopener">Download CSV files instead</a>';
+      }
+      
+      // If data is loading, show appropriate loading message
       if (this.meta.loading) {
+        if (this.meta.slowConnection) {
+          return this.messages.slowConnection + ' <a href="https://github.com/YOUR_USERNAME/YOUR_REPO/tree/main/data" class="text-blue-600 hover:text-blue-800 underline" target="_blank" rel="noopener">Download CSV files instead</a>';
+        }
         return this.messages.loading;
       }
       
