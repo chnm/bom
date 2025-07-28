@@ -69,10 +69,21 @@
         </div>
       </div>
 
-      <a href="/pedagogy/"
-        class="inline-block px-3 py-2 items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75 ml-2">
-        Pedagogy
-      </a>
+      <div x-data="{ open: false }" class="inline-block relative">
+        <button @click="open = !open"
+          class="inline-block px-3 py-2 items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75 ml-2">
+          Pedagogy
+          <svg class="w-4 h-4 ml-1 inline align-middle" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </button>
+        <div x-show="open" @click.away="open = false" x-cloak class="absolute bg-white text-black mt-2 rounded shadow-lg z-50 min-w-[200px]">
+          <a href="/teaching/" class="text-dbn-green block px-4 py-2 text-sm hover:bg-gray-200">Overview</a>
+          <hr class="border-gray-300" />
+          <a href="/teaching/humanities-data/" class="text-dbn-green block px-4 py-2 text-sm hover:bg-gray-200">Humanities Data</a>
+        </div>
+      </div>
 
       <!-- About Menu -->
       <div x-data="{ open: false }" class="inline-block relative">

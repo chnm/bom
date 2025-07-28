@@ -1,6 +1,6 @@
 ---
 title: Pedagogy
-slug: /pedagogy/
+slug: /teaching/
 ---
 
 The London Bills of Mortality make an excellent resource to use in a classroom environment and are appropriate for students grades 8-12, undergraduates, and graduates. You may find below a poster presentation on using the bills in the classroom and a link to the prototype of a text-based adventure game to survive the Great Plague of 1665.

@@ -1,6 +1,8 @@
 ---
 title: Humanities Data with Death By Numbers Lesson Plan
 date: 2025-07-24
+author: 
+  - Dan Howlett
 ---
 
 Death By Numbers is a data transcription project turning the London Bills of Mortality into structured data from primary sources.  This lesson plan will use the Bills and the Death By Numbers project to introduce students at the high school or college level to thinking about historical sources as humanities data.  Death By Numbers includes a database, data visualizations, and numerous blog posts that can provide additional context to the project and history.
