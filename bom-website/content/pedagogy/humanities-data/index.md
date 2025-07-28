@@ -1,6 +1,5 @@
 ---
 title: Humanities Data with Death By Numbers Lesson Plan
-slug: /pedagogy/humanities-data/
 date: 2025-07-24
 ---
 
@@ -16,11 +15,11 @@ Death By Numbers is a data transcription project turning the London Bills of Mor
 
 ## I. The Bills as Data (10-15 minutes)
 
- Here is a 1666 General Bill, meaning a cumulative record of all the deaths recorded in the weekly Bills for the year.  It provides various types of data captured in the Death By Numbers dataset. In class, have students look at the 1666 General Bill and see how many different types of data could be extracted from this source.  Spend 10 minutes as a class looking at the Bill and considering what categories of data are included.  
+Here is a 1666 General Bill, meaning a cumulative record of all the deaths recorded in the weekly Bills for the year. It provides various types of data captured in the Death By Numbers dataset. In class, have students look at the 1666 General Bill and see how many different types of data could be extracted from this source. Spend 10 minutes as a class looking at the Bill and considering what categories of data are included.  
 
- ![A close-up of a document. AI-generated content may be incorrect.](hd-image1.jpg)
+{{< figure src="/pedagogy/humanities-data/pedagogy-hd-image1.jpg" caption="Figure 1. Verso of the 1666 General Bill." alt="Front page of the 1666 general bill." >}}
 
- ![A close-up of a book. AI-generated content may be incorrect.](hd-image2.jpg)
+{{< figure src="/pedagogy/humanities-data/pedagogy-hd-image2.jpg" caption="Figure 2. Recto of the 1666 General Bill." alt="Back page of the 1666 general bill" >}}
 
 The Death By Numbers project transcribed considered two main types of data: geographic and cause of death.  Each weekly Bill of Mortality broke down the number of Burials and Plague deaths by Parish, allowing for a geographic analysis of plague deaths by tracking the spread of plague across the city each week.  The parish lists are also separated into different areas of the city which allows for urban vs rural comparison.  The weekly Burial data obscures the cause of death by location, but it also allows for analysis of geographic change.  The causes of death data under Diseases and Casualties shows the cumulative totals of each cause of death for the year 1666 as reported in the weekly bills of mortality.  Here, some causes are combined such as “Chrisoms and Infants” and “Gout and Sciatica.”  In the weekly Bills, these causes are rarely combined so the transcriptions can uncover the totals without these mixed categories of data.
 
