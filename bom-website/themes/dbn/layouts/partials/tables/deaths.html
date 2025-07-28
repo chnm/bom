@@ -172,21 +172,62 @@
           </tr>
         </thead>
         <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
-          <template x-for="cause in causes" :key="cause.id">
-
-            <tr class="hover:bg-gray-100 dark:hover:bg-gray-700" @click="modalOpen =!modalOpen; modalBill = cause">
-<td class="py-4 px-6 text-sm font-medium text-center text-gray-900 whitespace-nowrap dark:text-white font-mono">
-                <i class="fa-solid fa-expand cursor-pointer transition-all duration-300 ease-in-out hover:scale-125 hover:text-blue-500 active:scale-90"></i></td>
-
-              <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                x-text="cause.death"></td>
-              <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white font-mono"
-                x-text="cause.count"></td>
-              <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white font-mono"
-                x-text="cause.week_number"></td>
-              <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white font-mono"
-                x-text="cause.year"></td>
+          <!-- Loading state -->
+          <template x-if="meta.loading">
+            <tr>
+              <td colspan="5" class="py-12 text-center">
+                <div class="flex flex-col items-center justify-center space-y-3">
+                  <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-600"></div>
+                  <div class="text-sm text-gray-600">
+                    <span x-show="!meta.slowConnection">Loading data...</span>
+                    <span x-show="meta.slowConnection" class="text-amber-600">Taking longer than expected... <a href="https://github.com/YOUR_USERNAME/YOUR_REPO/tree/main/data" class="text-blue-600 hover:text-blue-800 underline" target="_blank" rel="noopener">Download CSV files instead</a></span>
+                  </div>
+                </div>
+              </td>
             </tr>
+          </template>
+          
+          <!-- Error state -->
+          <template x-if="meta.error && !meta.loading">
+            <tr>
+              <td colspan="5" class="py-12 text-center">
+                <div class="flex flex-col items-center justify-center space-y-3">
+                  <div class="text-red-500">
+                    <svg class="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L4.732 15.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                    </svg>
+                  </div>
+                  <div class="text-sm text-gray-600">
+                    <div class="font-medium text-red-600 mb-2">Unable to load data</div>
+                    <div>Your connection may be too slow or unstable.</div>
+                    <div class="mt-2">
+                      <a href="https://github.com/YOUR_USERNAME/YOUR_REPO/tree/main/data" class="text-blue-600 hover:text-blue-800 underline" target="_blank" rel="noopener">Download CSV files instead</a>
+                      <span class="mx-2">or</span>
+                      <button @click="applyFilters()" class="text-blue-600 hover:text-blue-800 underline">try again</button>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </template>
+          
+          <!-- Data rows -->
+          <template x-if="!meta.loading && !meta.error">
+            <template x-for="cause in causes" :key="cause.id">
+              <tr class="hover:bg-gray-100 dark:hover:bg-gray-700" @click="modalOpen =!modalOpen; modalBill = cause">
+                <td class="py-4 px-6 text-sm font-medium text-center text-gray-900 whitespace-nowrap dark:text-white font-mono">
+                  <i class="fa-solid fa-expand cursor-pointer transition-all duration-300 ease-in-out hover:scale-125 hover:text-blue-500 active:scale-90"></i></td>
+
+                <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  x-text="cause.death"></td>
+                <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white font-mono"
+                  x-text="cause.count"></td>
+                <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white font-mono"
+                  x-text="cause.week_number"></td>
+                <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white font-mono"
+                  x-text="cause.year"></td>
+              </tr>
+            </template>
           </template>
         </tbody>
       </table>
