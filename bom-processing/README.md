@@ -12,3 +12,33 @@ This directory contains scripts and documentation related to data processing.
   - **python-analysis**: Python scripts for analyzing and data-checking the transcribed bills.
   - The BOM Catalog Excel file is in progress and does not contain all bills known to the project; it currently focuses on bills from the 1630s-1690s. For the Bills of Mortality database code, see `/bom-db`
   - Files associated with the early stage of this project are also available at https://github.com/jmotis/billsofmortality
+
+## Testing with Dummy Data
+
+For our records, we stress-tested the database (2025-06-10) by generating a copy of the data as dummy data. We generated the extra data with the following SQL: 
+
+```sql
+INSERT INTO bom.bill_of_mortality (
+    parish_id, count_type, count, year, week_id, bill_type, 
+    missing, illegible, source, unique_identifier
+)
+SELECT 
+    parish_id, 
+    count_type || '_DUMMY' AS count_type,  -- Suffix count_type to make combinations unique
+    count, 
+    year,
+    week_id, 
+    bill_type,
+    missing, 
+    illegible, 
+    'DUMMY_DATA_' || CURRENT_DATE::text AS source,
+    'DUMMY_' || COALESCE(unique_identifier, id::text) AS unique_identifier
+FROM bom.bill_of_mortality
+WHERE source IS NULL OR source NOT LIKE 'DUMMY_DATA_%';
+```
+
+We can remove this dummy data with the following SQL: 
+
+```sql
+DELETE FROM bom.bill_of_mortality WHERE count_type LIKE '%_DUMMY';
+```

@@ -72,54 +72,92 @@ process_bodleian_data <- function(data, source_name) {
       `End Month` = as.character(`End Month`)
     )
   
-  # Convert all illegible and missing flags to logical (TRUE/FALSE) before processing
-  data <- data |>
-    mutate(across(starts_with("is_illegible") | starts_with("is_missing"), 
-                  ~ifelse(is.na(.), FALSE, as.logical(.))))
+  # Check if illegible and missing columns exist, convert to logical if they do
+  illegible_cols <- names(data)[starts_with("is_illegible", vars = names(data))]
+  missing_cols <- names(data)[starts_with("is_missing", vars = names(data))]
+  
+  # Convert existing flag columns to logical
+  if (length(illegible_cols) > 0 || length(missing_cols) > 0) {
+    data <- data |>
+      mutate(across(any_of(c(illegible_cols, missing_cols)), 
+                    ~ifelse(is.na(.), FALSE, as.logical(.))))
+  }
   
   # Process main data (parishes)
-  main_data <- data |>
+  temp_data <- data |>
     select(-starts_with("is_")) |>
-    select(!1:4) |>
+    select(!1:4)
+  
+  # Dynamically determine how many metadata columns we have
+  # The first few columns are typically: UniqueID, Year, Week, Start Day, End Day, Start Month, End Month
+  metadata_cols <- min(7, ncol(temp_data) - 1)  # Ensure at least 1 column remains for pivot
+  
+  # Check if we have enough columns for pivot_longer
+  if (ncol(temp_data) <= metadata_cols) {
+    cat("Warning: Dataset", version, "has only", ncol(temp_data), "columns after preprocessing, need more than", metadata_cols, "metadata columns. Adjusting...\n")
+    metadata_cols <- ncol(temp_data) - 1  # Leave at least 1 column for pivot
+  }
+  
+  # Convert all data columns to character to ensure consistent types for pivot_longer
+  temp_data <- temp_data |>
+    mutate(across((metadata_cols + 1):ncol(temp_data), ~as.character(.)))
+  
+  main_data <- temp_data |>
     pivot_longer(
-      cols = -(1:7),  # Exclude the first 7 columns (metadata)
+      cols = -(1:metadata_cols),  # Exclude the metadata columns
       names_to = "parish_name",
       values_to = "count"
     )
   
-  # Process illegible flags
-  illegible_data <- data |>
-    select(!1:4) |>
-    select(Year, Week, UniqueID, 
-           `Start Day`, `Start Month`, 
-           `End Day`, `End Month`,
-           starts_with("is_illegible")) |>
-    pivot_longer(
-      cols = starts_with("is_illegible"),
-      names_to = "parish_name",
-      values_to = "illegible"
-    ) |>
-    mutate(
-      parish_name = str_remove(parish_name, "is_illegible_"),
-      illegible = ifelse(is.na(illegible), FALSE, as.logical(illegible))  # Force logical type
-    )
+  # Process illegible flags (only if they exist)
+  if (length(illegible_cols) > 0) {
+    illegible_data <- data |>
+      select(!1:4) |>
+      select(Year, Week, UniqueID, 
+             `Start Day`, `Start Month`, 
+             `End Day`, `End Month`,
+             starts_with("is_illegible")) |>
+      pivot_longer(
+        cols = starts_with("is_illegible"),
+        names_to = "parish_name",
+        values_to = "illegible"
+      ) |>
+      mutate(
+        parish_name = str_remove(parish_name, "is_illegible_"),
+        illegible = ifelse(is.na(illegible), FALSE, as.logical(illegible))
+      )
+  } else {
+    # Create illegible_data with default FALSE values
+    illegible_data <- main_data |>
+      select(Year, Week, UniqueID, `Start Day`, `Start Month`, 
+             `End Day`, `End Month`, parish_name) |>
+      mutate(illegible = FALSE)
+  }
   
-  # Process missing flags
-  missing_data <- data |>
-    select(!1:4) |>
-    select(Year, Week, UniqueID, 
-           `Start Day`, `Start Month`, 
-           `End Day`, `End Month`,
-           starts_with("is_missing")) |>
-    pivot_longer(
-      cols = starts_with("is_missing"),
-      names_to = "parish_name",
-      values_to = "missing"
-    ) |>
-    mutate(
-      parish_name = str_remove(parish_name, "is_missing_"),
-      missing = ifelse(is.na(missing), FALSE, as.logical(missing))  # Force logical type
-    )
+  # Process missing flags (only if they exist)
+  if (length(missing_cols) > 0) {
+    missing_data <- data |>
+      select(!1:4) |>
+      select(Year, Week, UniqueID, 
+             `Start Day`, `Start Month`, 
+             `End Day`, `End Month`,
+             starts_with("is_missing")) |>
+      pivot_longer(
+        cols = starts_with("is_missing"),
+        names_to = "parish_name",
+        values_to = "missing"
+      ) |>
+      mutate(
+        parish_name = str_remove(parish_name, "is_missing_"),
+        missing = ifelse(is.na(missing), FALSE, as.logical(missing))
+      )
+  } else {
+    # Create missing_data with default FALSE values
+    missing_data <- main_data |>
+      select(Year, Week, UniqueID, `Start Day`, `Start Month`, 
+             `End Day`, `End Month`, parish_name) |>
+      mutate(missing = FALSE)
+  }
   
   # Join the data
   combined_data <- main_data |>
@@ -1205,7 +1243,10 @@ derive_causes <- function(data_sources) {
     "Plague Deaths$",
     "^Increase/Decrease",
     "Parishes (Clear|Infected)",
-    "Ounces in"
+    "Ounces in",
+    "Found Dead",
+    "Found dead",
+    "Description"
   )
   exclude_regex <- paste(exclude_patterns, collapse = "|")
   

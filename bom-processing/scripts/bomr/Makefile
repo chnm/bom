@@ -1,7 +1,3 @@
-# Database update
-# The following inserts updated data into the bom tables.
-# TODO: Implement the script here.
-
 # Datasette ---------------------------------------------------------------
 # The following is for simple spot-checking the data files.
 # Dependencies: sqlite, sqlite-utils, datasette

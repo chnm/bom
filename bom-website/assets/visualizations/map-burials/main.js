@@ -218,13 +218,16 @@ function populateCountTypeDropdown() {
   optionCountType2.value = "Plague";
   optionCountType2.text = "Plague";
   countTypeSelect.appendChild(optionCountType2);
+  
+  // Set default to Plague
+  countTypeSelect.value = "Plague";
 }
 
 // Initial fetch and render - but only after map is initialized
 document.addEventListener("DOMContentLoaded", function () {
   // Give a little time for map to initialize
   setTimeout(() => {
-    fetchDataAndRender(1636, 1754, "Buried");
+    fetchDataAndRender(1622, 1685, "Plague");
   }, 500);
 });
 
@@ -255,15 +258,15 @@ document.getElementById("reset-button").addEventListener("click", () => {
     endYearSelect.value = lastYear;
   }
 
-  // Reset to Buried count type
-  document.getElementById("count-type").value = "Buried";
+  // Reset to Plague count type
+  document.getElementById("count-type").value = "Plague";
 
   // Get the selected years (or fall back to defaults)
-  const startYear = startYearSelect.value || 1636;
-  const endYear = endYearSelect.value || 1754;
+  const startYear = startYearSelect.value || 1622;
+  const endYear = endYearSelect.value || 1685;
 
   // Fetch and render with selected or default years
-  fetchDataAndRender(startYear, endYear, "Buried");
+  fetchDataAndRender(startYear, endYear, "Plague");
 });
 
 //initialize map

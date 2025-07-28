@@ -5,7 +5,7 @@
 #
 # Jason A. Heppler | jason@jasonheppler.org
 # Roy Rosenzweig Center for History and New Media
-# Updated: 2025-03-05
+# Updated: 2025-07-l0
 
 library(tidyverse)
 source("helpers.R")
@@ -199,6 +199,10 @@ laxton_new_weekly <- process_weekly_bills(Laxton_new_weekly_parishes,
                                       "Laxton",
                                       has_flags = TRUE)
 
+laxton_weekly <- process_weekly_bills(Laxton_weeklybills_parishes,
+                                      "Laxton",
+                                      has_flags = TRUE)
+
 heh_1635 <- process_weekly_bills(HEH1635_weeklybills_parishes,
                                       "HEH",
                                       has_flags = TRUE)
@@ -210,19 +214,33 @@ bodleian_versions <- list(
   list(data = BodleianV3_weeklybills_parishes, version = "Bodleian V3"),
   list(data = BLV1_weeklybills_parishes, version = "Bodleian V1"),
   list(data = BLV2_weeklybills_parishes, version = "Bodleian V2"),
-  list(data = BLV3_weeklybills_parishes, version = "Bodleian V3")
+  list(data = BLV3_weeklybills_parishes, version = "Bodleian V3"),
+  list(data = BLV4_weeklybills_parishes_missingbillsdataset, version = "Bodleian V4"),
+  list(data = BLV4_weeklybills_parishes_originaldataset, version = "Bodleian V4"),
+  list(data = BL1877.e.7.V1PostFire_minus3foldbill, version = "Bodleian V1 Post-Fire"),
+  list(data = BLV1_1673_1674_weeklybills_parishes, version = "Bodleian V1 1673-1674")
 )
 
 # Process all versions and store in a single dataframe
-bodleian_all_versions <- map_df(bodleian_versions, function(v) {
+bodleian_all_versions <- map(bodleian_versions, function(v) {
+  cat("Processing dataset:", v$version, "with", ncol(v$data), "columns\n")
+  
   # First convert all potential count columns to character
   data_with_char_counts <- v$data %>%
-    mutate(across(where(is.numeric), as.character))
+    mutate(across(where(is.numeric), ~as.character(.)))
   
   # Then process
-  process_bodleian_data(data_with_char_counts, v$version) %>%
-    mutate(version = v$version)
-})
+  tryCatch({
+    result <- process_bodleian_data(data_with_char_counts, v$version) %>%
+      mutate(version = v$version)
+    cat("Successfully processed", v$version, "\n")
+    return(result)
+  }, error = function(e) {
+    cat("Error processing", v$version, ":", e$message, "\n")
+    cat("Dataset columns:", paste(names(v$data)[1:min(10, ncol(v$data))], collapse = ", "), "\n")
+    stop(e)
+  })
+}) %>% list_rbind()
 
 # Fix column names
 bodleian_weekly <- bodleian_all_versions |>

@@ -12,3 +12,7 @@ bom-processing/db/updater/bin
 dbupdate
 bom-processing/scripts/bomr/.Rapp.history
 bom-processing/db/updater/bin
+
+.RData
+.Rhistory
+.vscode/

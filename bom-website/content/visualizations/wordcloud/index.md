@@ -1,7 +1,7 @@
 ---
 title: "Causes of Death as a Cloud"
 date: 2023-06-27
-updated: 2023-06-27
+updated: 2025-06-24
 abstract: "Charting the causes of death"
 script: visualizations/wordcloud/main.js
 styles: visualizations/wordcloud/style.css
@@ -10,9 +10,10 @@ thumbnail: wordcloud.png
 thumbdesc: "A screenshot showing..."
 author:
 - Jason Heppler
+category: "cause-analysis"
 ---
 
-The following visualization displays a word cloud of causes of death within the Plague Bills. The size of the text indicates a greater number of occurances. This graphic updates regularly as new bills are added to the database.
+The following visualization displays a word cloud of causes of death within the Plague Bills. The size of the text indicates a greater number of occurrences. This graphic updates regularly as new bills are added to the database.
 
 <div id="row">
     <h3>Word Cloud of Causes of Death</h3>

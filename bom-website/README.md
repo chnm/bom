@@ -1,6 +1,6 @@
 # bom-website
 
-The website and blog for the Death by Numbers project.
+The website and blog for the [Death by Numbers](https://deathbynumbers.org/) project.
 
 ## Building and previewing the website
 

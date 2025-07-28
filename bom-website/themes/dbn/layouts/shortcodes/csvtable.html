@@ -1,7 +1,7 @@
 {{/* csvtable.html shortcode */}}
 {{ $file := .Get "file" }}
 {{ $hasHeaders := .Get "headers" | default true }}
-{{ $class := .Get "class" | default "table table-striped" }}
+{{ $class := .Get "class" | default "table-auto" }}
 
 {{ $resource := "" }}
 {{ $data := slice }}
@@ -19,32 +19,42 @@
 {{ if not $data }}
     <p class="text-danger">Error: Could not read CSV file {{ $file }}</p>
 {{ else }}
-    <table class="{{ $class }}">
-        {{ if $hasHeaders }}
-            <thead>
-                <tr>
-                    {{ range $header := index $data 0 }}
-                        <th>{{ $header }}</th>
-                    {{ end }}
-                </tr>
-            </thead>
-        {{ end }}
-        
-        <tbody>
-            {{ $startRow := 1 }}
-            {{ if not $hasHeaders }}
-                {{ $startRow = 0 }}
+<div class="mb-12 shadow-md rounded-lg border border-gray-200">
+    <div class="overflow-x-auto overflow-y-auto max-h-[70vh] scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100" style="scrollbar-width: thin; scrollbar-color: #94a3b8 #f1f5f9;">
+        <table class="{{ $class }} min-w-full divide-y divide-gray-200">
+            {{ if $hasHeaders }}
+                <thead class="bg-gray-100 sticky top-0 z-10">
+                    <tr>
+                        {{ range $header := index $data 0 }}
+                            <th scope="col" class="px-6 py-4 text-left text-sm font-semibold text-gray-800 whitespace-nowrap">{{ $header }}</th>
+                        {{ end }}
+                    </tr>
+                </thead>
             {{ end }}
+            
+            <tbody class="bg-white divide-y divide-gray-200">
+                {{ $startRow := 1 }}
+                {{ if not $hasHeaders }}
+                    {{ $startRow = 0 }}
+                {{ end }}
 
-            {{ range $i := seq $startRow (sub (len $data) 1) }}
-                {{ $row := index $data $i }}
-                <tr>
-                    {{ range $cell := $row }}
-                        <td>{{ $cell }}</td>
-                    {{ end }}
-                </tr>
-            {{ end }}
-        </tbody>
-    </table>
+                {{ range $i := seq $startRow (sub (len $data) 1) }}
+                    {{ $row := index $data $i }}
+                    <tr class="hover:bg-gray-50">
+                        {{ range $idx, $cell := $row }}
+                            {{ if eq $idx 0 }}
+                                <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ $cell }}</td>
+                            {{ else if and (gt (len $cell) 0) (lt $idx 3) }}
+                                <td class="px-6 py-4 text-sm font-medium text-gray-700">{{ $cell }}</td>
+                            {{ else }}
+                                <td class="px-6 py-4 text-sm text-gray-600">{{ $cell }}</td>
+                            {{ end }}
+                        {{ end }}
+                    </tr>
+                {{ end }}
+            </tbody>
+        </table>
+    </div>
+</div>
 {{ end }}
 
