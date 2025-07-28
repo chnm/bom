@@ -3,7 +3,6 @@
 Main project repo for Death by Numbers, a project on the London Bills of Mortality. This is our "monorepo" of all content related to the project. These are broken down into a few different areas (please consult these directory's individual READMEs for more information.)
 
 - **bom-data**: Data files (CSVs, Excel files, and shapefiles) and exports from the transcribed bills of mortality.
-- **bom-db**: The Vue application that creates the web GUI for the database.
 - **bom-processing**: R and Python Scripts, database migrations, and scripts for making maps.
 - **bom-website**: The website for deathbynumbers.org, built with the static-site generator Hugo and custom dbn theme.
 
