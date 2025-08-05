@@ -14,7 +14,7 @@ This directory contains scripts and documentation related to data processing.
 
 ## Testing with Dummy Data
 
-For our records, we stress-tested the database (2025-06-10) by generating a copy of the data as dummy data. We generated the extra data with the following SQL: 
+For our records, we stress-tested the database (2025-06-10) by generating a copy of the data as dummy data that allowed us to work with 1,600,000+ rows. We generated the extra data with the following SQL: 
 
 ```sql
 INSERT INTO bom.bill_of_mortality (
