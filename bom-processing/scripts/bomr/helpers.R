@@ -1,3 +1,11 @@
+# Column normalization function
+normalize_column_names <- function(data) {
+  data |>
+    rename_with(~tolower(.)) |>
+    rename_with(~str_replace_all(., " ", "_")) |>
+    rename_with(~str_remove_all(., '"'))
+}
+
 # Logging function
 log_data_check <- function(data, stage_name) {
   total_rows <- nrow(data)
@@ -48,28 +56,36 @@ check_whitespace <- function(df) {
 }
 
 process_bodleian_data <- function(data, source_name) {
+  # Debug: show available columns
+  message(sprintf("Processing Bodleian %s - available columns: %s", 
+                  source_name, paste(names(data)[1:min(15, ncol(data))], collapse = ", ")))
+  
   # Standardize column names (your existing code)
   data <- data |>
     rename_with(
       ~ case_when(
-        . == "Unique ID" ~ "UniqueID",
-        . == "Unique_ID" ~ "UniqueID",
-        . == "unique_id" ~ "UniqueID",
-        . == "End month" ~ "End Month",
+        . == "Unique ID" ~ "unique_id",
+        . == "Unique_ID" ~ "unique_id",
+        . == "unique_id" ~ "unique_id",
+        . == "End month" ~ "end_month",
         TRUE ~ .
       )
     )
+  
+  # Check for week column name before mutate
+  week_col <- if("week" %in% names(data)) "week" else "week_number"
   
   # Standardize column data types
   data <- data |>
     mutate(
       across(where(is.character), str_trim),
-      Year = as.integer(Year),
-      Week = as.integer(Week),
-      `Start Day` = as.integer(`Start Day`),
-      `End Day` = as.integer(`End Day`),
-      `Start Month` = as.character(`Start Month`),
-      `End Month` = as.character(`End Month`)
+      year = as.integer(year),
+      # Handle both 'week' and 'week_number' column names
+      week = as.integer(.data[[week_col]]),
+      start_day = as.integer(start_day),
+      end_day = as.integer(end_day),
+      start_month = as.character(start_month),
+      end_month = as.character(end_month)
     )
   
   # Check if illegible and missing columns exist, convert to logical if they do
@@ -89,7 +105,7 @@ process_bodleian_data <- function(data, source_name) {
     select(!1:4)
   
   # Dynamically determine how many metadata columns we have
-  # The first few columns are typically: UniqueID, Year, Week, Start Day, End Day, Start Month, End Month
+  # The first few columns are typically: unique_id, year, week, Start Day, End Day, Start Month, End Month
   metadata_cols <- min(7, ncol(temp_data) - 1)  # Ensure at least 1 column remains for pivot
   
   # Check if we have enough columns for pivot_longer
@@ -104,18 +120,33 @@ process_bodleian_data <- function(data, source_name) {
   
   main_data <- temp_data |>
     pivot_longer(
-      cols = -(1:metadata_cols),  # Exclude the metadata columns
+      cols = -all_of(1:metadata_cols),  # Exclude the metadata columns
       names_to = "parish_name",
       values_to = "count"
     )
+  
+  # Find the unique identifier column
+  unique_col <- case_when(
+    "unique_identifier" %in% names(data) ~ "unique_identifier",
+    "unique_id" %in% names(data) ~ "unique_id", 
+    "uniqueid" %in% names(data) ~ "uniqueid",
+    TRUE ~ names(data)[grepl("unique", names(data), ignore.case = TRUE)][1]
+  )
+  
+  if (is.na(unique_col)) {
+    stop(sprintf("No unique identifier column found in Bodleian data. Available columns: %s", 
+                 paste(names(data), collapse = ", ")))
+  }
+  
+  message(sprintf("Using unique column: %s", unique_col))
   
   # Process illegible flags (only if they exist)
   if (length(illegible_cols) > 0) {
     illegible_data <- data |>
       select(!1:4) |>
-      select(Year, Week, UniqueID, 
-             `Start Day`, `Start Month`, 
-             `End Day`, `End Month`,
+      select(year, all_of(week_col), all_of(unique_col), 
+             start_day, start_month, 
+             end_day, end_month,
              starts_with("is_illegible")) |>
       pivot_longer(
         cols = starts_with("is_illegible"),
@@ -129,8 +160,8 @@ process_bodleian_data <- function(data, source_name) {
   } else {
     # Create illegible_data with default FALSE values
     illegible_data <- main_data |>
-      select(Year, Week, UniqueID, `Start Day`, `Start Month`, 
-             `End Day`, `End Month`, parish_name) |>
+      select(year, all_of(week_col), all_of(unique_col), start_day, start_month, 
+             end_day, end_month, parish_name) |>
       mutate(illegible = FALSE)
   }
   
@@ -138,9 +169,9 @@ process_bodleian_data <- function(data, source_name) {
   if (length(missing_cols) > 0) {
     missing_data <- data |>
       select(!1:4) |>
-      select(Year, Week, UniqueID, 
-             `Start Day`, `Start Month`, 
-             `End Day`, `End Month`,
+      select(year, all_of(week_col), all_of(unique_col), 
+             start_day, start_month, 
+             end_day, end_month,
              starts_with("is_missing")) |>
       pivot_longer(
         cols = starts_with("is_missing"),
@@ -154,19 +185,19 @@ process_bodleian_data <- function(data, source_name) {
   } else {
     # Create missing_data with default FALSE values
     missing_data <- main_data |>
-      select(Year, Week, UniqueID, `Start Day`, `Start Month`, 
-             `End Day`, `End Month`, parish_name) |>
+      select(year, all_of(week_col), all_of(unique_col), start_day, start_month, 
+             end_day, end_month, parish_name) |>
       mutate(missing = FALSE)
   }
   
+  # Create join columns vector
+  join_cols <- c("year", week_col, unique_col, "start_day", 
+                 "start_month", "end_day", "end_month", "parish_name")
+  
   # Join the data
   combined_data <- main_data |>
-    left_join(illegible_data, 
-              by = c("Year", "Week", "UniqueID", "Start Day", 
-                     "Start Month", "End Day", "End Month", "parish_name")) |>
-    left_join(missing_data,
-              by = c("Year", "Week", "UniqueID", "Start Day", 
-                     "Start Month", "End Day", "End Month", "parish_name")) |>
+    left_join(illegible_data, by = join_cols) |>
+    left_join(missing_data, by = join_cols) |>
     mutate(source = source_name)
   
   message(sprintf("Processed Bodleian %s data: %d rows", 
@@ -209,7 +240,7 @@ process_weekly_bills <- function(data, source_name, has_flags = TRUE) {
   
   # Standardize types for key columns
   data <- data |>
-    mutate(across(c("Year", "Week"), as.character))
+    mutate(across(c("year", "week"), as.character))
   
   if(has_flags) {
     # Process data with missing/illegible flags
@@ -262,9 +293,9 @@ process_general_bills <- function(data, source_name) {
       # Remove all is_missing and is_illegible columns
       select(-matches("is_(missing|illegible)")) |>
       select(
-        `Start day`, `Start month`, `Start year`,
-        `End day`, `End month`, `End year`,
-        `Unique Identifier`,
+        start_day, start_month, start_year,
+        end_day, end_month, end_year,
+        unique_identifier,
         matches(" - (Buried|Plague)$")
       )
   } else {
@@ -275,9 +306,9 @@ process_general_bills <- function(data, source_name) {
   }
   
   # Get metadata columns
-  metadata_cols <- c("Start day", "Start month", "Start year",
-                     "End day", "End month", "End year",
-                     "Unique Identifier")
+  metadata_cols <- c("start_day", "start_month", "start_year",
+                     "end_day", "end_month", "end_year",
+                     "unique_identifier")
   
   # For pre-plague data, we need to pivot twice
   if(is_pre_plague) {
@@ -635,59 +666,104 @@ process_unique_weeks <- function(data_sources) {
   process_source_weeks <- function(data, source_name) {
     message(sprintf("Processing weeks from %s...", source_name))
     
-    # Standardize column names first
-    week_data <- data |>
-      rename_with(~ifelse(. == "week", "week_number", .)) |>
-      select(
-        year,
-        week_number,
-        start_day,
-        end_day,
-        start_month,
-        end_month,
-        unique_identifier
-      ) |>
+    # Debug: show column names
+    message(sprintf("Columns in %s: %s", source_name, paste(names(data), collapse = ", ")))
+    
+    # Check for existing week_number column to avoid duplicates
+    week_data <- data
+    if ("week" %in% names(data) && !"week_number" %in% names(data)) {
+      week_data <- week_data |> rename(week_number = week)
+    } else if ("week" %in% names(data) && "week_number" %in% names(data)) {
+      # If both exist, drop the 'week' column and keep 'week_number'
+      week_data <- week_data |> select(-week)
+    }
+    
+    # Select only columns that exist
+    required_cols <- c("year", "week_number")
+    optional_cols <- c("start_day", "end_day", "start_month", "end_month", "unique_identifier")
+    
+    # Find which columns actually exist
+    cols_to_select <- c(
+      intersect(required_cols, names(week_data)),
+      intersect(optional_cols, names(week_data))
+    )
+    
+    message(sprintf("Selecting columns: %s", paste(cols_to_select, collapse = ", ")))
+    
+    week_data <- week_data |>
+      select(all_of(cols_to_select))
+    
+    # Apply mutations only to columns that exist
+    if ("start_day" %in% names(week_data)) {
+      week_data <- week_data |> mutate(start_day = as.numeric(as.character(start_day)))
+    }
+    if ("end_day" %in% names(week_data)) {
+      week_data <- week_data |> mutate(end_day = as.numeric(as.character(end_day)))
+    }
+    
+    # Standard mutations for required columns
+    week_data <- week_data |>
       mutate(
-        # Ensure numeric conversion first
-        start_day = as.numeric(as.character(start_day)),
-        end_day = as.numeric(as.character(end_day)),
-        
-        # Standardize types
         year = as.integer(year),
         week_number = as.character(week_number),
-        
-        # Pad days with leading zeros
-        start_day_pad = sprintf("%02d", start_day),
-        end_day_pad = sprintf("%02d", end_day),
-        
-        # Create week_id
         week_tmp = str_pad(week_number, 2, pad = "0"),
         week_id = ifelse(
           as.numeric(week_number) > 15,
           paste0(year - 1, "-", year, "-", week_tmp),
           paste0(year, "-", year + 1, "-", week_tmp)
-        ),
-        
-        # Create year range and join ID
+        )
+      )
+    
+    # Add day padding only if day columns exist
+    if ("start_day" %in% names(week_data)) {
+      week_data <- week_data |> mutate(start_day_pad = sprintf("%02d", start_day))
+    }
+    if ("end_day" %in% names(week_data)) {
+      week_data <- week_data |> mutate(end_day_pad = sprintf("%02d", end_day))
+    }
+    
+    # Add more complex mutations based on available columns
+    week_data <- week_data |>
+      mutate(
         year_range = str_sub(week_id, 1, 9),
-        start_month_num = month_to_number(start_month),
-        end_month_num = month_to_number(end_month),
-        
-        # Create numeric joinid in format yyyymmddyyyymmdd
-        joinid = paste0(
-          year, start_month_num, start_day_pad,
-          year, end_month_num, end_day_pad
-        ),
-        
-        # Calculate split year
         split_year = ifelse(
           as.numeric(week_number) > 15,
           paste0(year - 1, "/", year),
           paste0(year)
         )
-      ) |>
-      select(-week_tmp, -start_month_num, -end_month_num, -start_day_pad, -end_day_pad) |>
-      drop_na(year)
+      )
+    
+    # Only add month/day dependent columns if those columns exist
+    if (all(c("start_month", "end_month") %in% names(week_data))) {
+      week_data <- week_data |>
+        mutate(
+          start_month_num = month_to_number(start_month),
+          end_month_num = month_to_number(end_month)
+        )
+      
+      # Only create joinid if we have day columns too
+      if (all(c("start_day_pad", "end_day_pad") %in% names(week_data))) {
+        week_data <- week_data |>
+          mutate(
+            joinid = paste0(
+              year, start_month_num, start_day_pad,
+              year, end_month_num, end_day_pad
+            )
+          )
+      }
+    }
+    
+    # Remove temporary columns that exist
+    cols_to_remove <- intersect(
+      c("week_tmp", "start_month_num", "end_month_num", "start_day_pad", "end_day_pad"),
+      names(week_data)
+    )
+    
+    if (length(cols_to_remove) > 0) {
+      week_data <- week_data |> select(-all_of(cols_to_remove))
+    }
+    
+    week_data <- week_data |> drop_na(year)
     
     # Check for years that are not four digits
     non_standard_years <- week_data |> 
@@ -733,7 +809,7 @@ process_unique_weeks <- function(data_sources) {
   # Report on processing
   message(sprintf("\nProcessed %d total weeks", nrow(all_weeks)))
   message(sprintf("Found %d unique weeks", nrow(unique_weeks)))
-  message(sprintf("Year range: %d - %d", 
+  message(sprintf("year range: %d - %d", 
                   min(unique_weeks$year), 
                   max(unique_weeks$year)))
   
@@ -757,7 +833,7 @@ process_unique_years <- function(week_data) {
   
   # Report on processing
   message(sprintf("Found %d unique years", nrow(year_unique)))
-  message(sprintf("Year range: %d - %d", 
+  message(sprintf("year range: %d - %d", 
                   min(year_unique$year), 
                   max(year_unique$year)))
   
@@ -858,12 +934,12 @@ create_lookup_table <- function(data, source_name, n_descriptive_cols) {
       select(!all_of(1:skip_cols)) |>
       select(
         all_of(descriptive_cols[1:n_descriptive_cols]),  # Only take existing columns
-        `Unique Identifier`,
-        `Start Day`, 
-        `Start Month`,
-        `End Day`,
-        `End Month`,
-        Year
+        unique_identifier,
+        start_day, 
+        start_month,
+        end_day,
+        end_month,
+        year
       ) |>
       pivot_longer(
         all_of(descriptive_cols[1:n_descriptive_cols]), 
@@ -873,18 +949,18 @@ create_lookup_table <- function(data, source_name, n_descriptive_cols) {
       mutate(
         # Clean up identifiers and death types
         across(where(is.character), str_trim),
-        `Unique Identifier` = str_trim(`Unique Identifier`),
+        unique_identifier = str_trim(unique_identifier),
         death_type = str_remove(death_type, regex("\\(Descriptive Text\\)")),
         death_type = str_trim(death_type),
         # Create join ID
         join_id = paste0(
-          `Start Day`,
-          `Start Month`,
-          `End Day`,
-          `End Month`,
-          Year, "-",
+          start_day,
+          start_month,
+          end_day,
+          end_month,
+          year, "-",
           death_type, "-",
-          `Unique Identifier`
+          unique_identifier
         )
       ) |>
       # Drop the columns we don't need anymore
@@ -896,7 +972,7 @@ create_lookup_table <- function(data, source_name, n_descriptive_cols) {
   }, error = function(e) {
     message("Error processing lookup table: ", e$message)
     # Attempt to identify key columns
-    key_cols <- c("Unique Identifier", "Start Day", "Start Month", "End Day", "End Month", "Year")
+    key_cols <- c("unique_identifier", "start_day", "start_month", "end_day", "end_month", "year")
     available_cols <- intersect(key_cols, names(data_converted))
     
     if (length(available_cols) < 5) {
@@ -925,13 +1001,13 @@ create_lookup_table <- function(data, source_name, n_descriptive_cols) {
         death_type = str_remove(death_type, regex("\\(Descriptive Text\\)")),
         death_type = str_trim(death_type),
         join_id = paste0(
-          if("Start Day" %in% available_cols) `Start Day` else "00",
-          if("Start Month" %in% available_cols) `Start Month` else "Jan",
-          if("End Day" %in% available_cols) `End Day` else "00",
-          if("End Month" %in% available_cols) `End Month` else "Jan",
-          if("Year" %in% available_cols) Year else "0000", "-",
+          if("start_day" %in% available_cols) start_day else "00",
+          if("start_month" %in% available_cols) start_month else "Jan",
+          if("end_day" %in% available_cols) end_day else "00",
+          if("end_month" %in% available_cols) end_month else "Jan",
+          if("year" %in% available_cols) year else "0000", "-",
           death_type, "-",
-          if("Unique Identifier" %in% available_cols) `Unique Identifier` else "unknown"
+          if("unique_identifier" %in% available_cols) unique_identifier else "unknown"
         )
       ) |>
       select(join_id, death_type, descriptive_text)
@@ -945,7 +1021,7 @@ process_bodleian_causes <- function(data, source_name) {
   
   # First, identify death columns and descriptive text columns
   all_cols <- names(data)
-  death_cols <- all_cols[!grepl("is_missing|is_illegible|Omeka|DataScribe|\\(Descriptive Text\\)|Year|Week|Unique|Start|End", all_cols)]
+  death_cols <- all_cols[!grepl("is_missing|is_illegible|Omeka|DataScribe|\\(Descriptive Text\\)|year|week|Unique|Start|End", all_cols)]
   descriptive_cols <- all_cols[grepl("\\(Descriptive Text\\)", all_cols)]
   
   message(sprintf("Found %d death columns and %d descriptive text columns", 
@@ -962,8 +1038,8 @@ process_bodleian_causes <- function(data, source_name) {
   }
   
   # Check if required metadata columns exist
-  metadata_cols <- c("Year", "Week Number", "Unique Identifier", 
-                     "Start Day", "Start Month", "End Day", "End Month")
+  metadata_cols <- c("year", "week_number", "unique_identifier", 
+                     "start_day", "start_month", "end_day", "end_month")
   
   # Find the metadata columns in the dataset
   metadata_cols_found <- sapply(metadata_cols, function(col) {
@@ -1133,10 +1209,23 @@ process_bodleian_causes <- function(data, source_name) {
 process_causes_of_death <- function(data, source_name, lookup_table, skip_cols, pivot_range) {
   message(sprintf("Processing %s causes of death...", source_name))
   
+  # Debug: print column names to see what we're working with
+  message(sprintf("Available columns: %s", paste(names(data)[1:min(10, ncol(data))], collapse = ", ")))
+  message(sprintf("Total columns before processing: %d", ncol(data)))
+  
   # Process main data
   result <- data |>
     select(!all_of(1:skip_cols)) |>
     select(!contains("(Descriptive")) |>
+    select(!contains("is_missing")) |>
+    select(!contains("is_illegible"))
+  
+  # Debug: show structure after column removal
+  message(sprintf("Total columns after skipping %d cols and removing descriptive: %d", skip_cols, ncol(result)))
+  message(sprintf("Pivot range requested: %d to %d", pivot_range[1], pivot_range[2]))
+  message(sprintf("Available columns after cleanup: %s", paste(names(result)[1:min(15, ncol(result))], collapse = ", ")))
+  
+  result <- result |>
     # Convert all columns in pivot range to character before pivoting
     mutate(across(all_of(pivot_range[1]:pivot_range[2]), as.character)) |>
     pivot_longer(
@@ -1147,21 +1236,19 @@ process_causes_of_death <- function(data, source_name, lookup_table, skip_cols, 
     mutate(
       across(where(is.character), str_trim),
       death = str_trim(death),
-      `Unique Identifier` = str_trim(`Unique Identifier`),
+      unique_identifier = str_trim(unique_identifier),
       join_id = paste0(
-        `Start Day`, 
-        `Start Month`, 
-        `End Day`, 
-        `End Month`, 
-        Year, "-", 
+        start_day, 
+        start_month, 
+        end_day, 
+        end_month, 
+        year, "-", 
         death, "-", 
-        `Unique Identifier`
+        unique_identifier
       )
     ) |>
     left_join(lookup_table, by = "join_id") |>
-    select(-join_id, -death_type) |>
-    rename_with(tolower) |>
-    rename_with(~gsub(" ", "_", .))
+    select(-join_id, -death_type)
   
   # Standardize data types
   result <- result |>
@@ -1175,7 +1262,10 @@ process_causes_of_death <- function(data, source_name, lookup_table, skip_cols, 
       start_day = as.character(as.numeric(start_day)),
       end_day = as.character(as.numeric(end_day)),
       start_month = as.character(start_month),
-      end_month = as.character(end_month)
+      end_month = as.character(end_month),
+      
+      # Standardize the problematic column if it exists
+      across(contains("increase/decrease"), ~as.character(.))
     )
   
   return(result)

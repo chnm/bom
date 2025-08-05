@@ -118,11 +118,11 @@ func importData(ctx context.Context, db *pgxpool.Pool, config ImportConfig) erro
 func getFilename(table string) string {
 	switch table {
 	case "year":
-		return "year_unique.csv"
+		return "years.csv"
 	case "week":
-		return "week_unique.csv"
+		return "weeks.csv"
 	case "parishes":
-		return "parishes_unique.csv"
+		return "parishes.csv"
 	case "christenings":
 		return "christenings_by_parish.csv"
 	case "causes_of_death":
@@ -151,8 +151,6 @@ func createTempTables(ctx context.Context, tx pgx.Tx) error {
 	_, err = tx.Exec(ctx, `
 		CREATE TEMPORARY TABLE temp_year (
 			year integer NOT NULL,
-			year_id integer NOT NULL,
-			id integer NOT NULL,
 			CONSTRAINT temp_year_check CHECK (year > 1400 AND year < 1800)
 		);
 
@@ -174,7 +172,7 @@ func createTempTables(ctx context.Context, tx pgx.Tx) error {
 		CREATE TEMPORARY TABLE temp_parish (
 			parish_name text NOT NULL,
 			canonical_name text NOT NULL,
-			parish_id integer
+			id integer
 		);
 
 		CREATE TEMPORARY TABLE temp_christening (
@@ -210,20 +208,16 @@ func createTempTables(ctx context.Context, tx pgx.Tx) error {
 		);
 
 		CREATE TEMPORARY TABLE temp_bills (
-			unique_identifier text,
-			parish_name text,
+			parish_id integer,
 			count_type text,
 			count int,
+			year integer,
+			joinid text,
+			bill_type text,
 			missing boolean,
 			illegible boolean,
 			source text,
-			bill_type text,
-			start_year text,
-			end_year text,
-			joinid text,
-			parish_id integer,
-			year integer,
-			split_year text
+			unique_identifier text
 		);
 	`)
 	return err
@@ -250,6 +244,9 @@ func importTable(ctx context.Context, tx pgx.Tx, table, filename string) error {
 	// Prepare temp table name and column list
 	tempTable := "temp_" + getTempTableName(table)
 
+	log.Printf("Using temp table: %s", tempTable)
+	log.Printf("CSV header: %v", header)
+
 	// Insert each row using COPY protocol
 	count := 0
 
@@ -270,6 +267,11 @@ func importTable(ctx context.Context, tx pgx.Tx, table, filename string) error {
 			values[i] = convertValue(val, header[i], table)
 		}
 
+		// Log first few rows for debugging
+		if count < 3 {
+			log.Printf("Row %d: %v -> %v", count+1, record, values)
+		}
+
 		rows = append(rows, values)
 		count++
 	}
@@ -281,7 +283,6 @@ func importTable(ctx context.Context, tx pgx.Tx, table, filename string) error {
 		getColumnNames(header, table),
 		pgx.CopyFromRows(rows),
 	)
-
 	if err != nil {
 		return fmt.Errorf("failed to copy data: %w", err)
 	}
@@ -314,7 +315,7 @@ func convertValue(val, column, table string) interface{} {
 
 	// Convert values based on column and table
 	switch {
-	case column == "year" || column == "year_id" || column == "id" ||
+	case column == "year" || column == "id" ||
 		column == "week_number" || column == "start_day" || column == "end_day" ||
 		column == "week" || column == "count" || column == "parish_id":
 		num, err := strconv.Atoi(val)
@@ -323,7 +324,7 @@ func convertValue(val, column, table string) interface{} {
 		}
 		return nil
 	case column == "missing" || column == "illegible":
-		return val == "true" || val == "t" || val == "1"
+		return val == "true" || val == "True" || val == "t" || val == "1"
 	default:
 		return val
 	}
@@ -406,20 +407,20 @@ func updateTables(ctx context.Context, tx pgx.Tx) error {
 			parish_name = tp.parish_name,
 			canonical_name = tp.canonical_name
 		FROM temp_parish tp
-		WHERE p.id = tp.parish_id
+		WHERE p.id = tp.id
 		AND (p.canonical_name IS DISTINCT FROM tp.canonical_name
 			OR p.parish_name IS DISTINCT FROM tp.parish_name);
 			
 		-- Then insert new parishes that don't exist yet
 		INSERT INTO bom.parishes (id, parish_name, canonical_name)
-		SELECT DISTINCT parish_id, parish_name, canonical_name 
+		SELECT DISTINCT id, parish_name, canonical_name 
 		FROM temp_parish tp
-		WHERE parish_id IS NOT NULL
+		WHERE id IS NOT NULL
 		AND NOT EXISTS (
 			SELECT 1 FROM bom.parishes p 
-			WHERE p.id = tp.parish_id
-			OR p.parish_name = tp.parish_name
-		);
+			WHERE p.parish_name = tp.parish_name
+		)
+		ON CONFLICT (parish_name) DO NOTHING;
 
 		GET DIAGNOSTICS rows_processed = ROW_COUNT;
 		end_time := clock_timestamp();
@@ -432,38 +433,40 @@ func updateTables(ctx context.Context, tx pgx.Tx) error {
 		-- Christenings
 		start_time := clock_timestamp();
 		SELECT COUNT(*) INTO rows_before FROM bom.christenings;
-		
+
 		INSERT INTO bom.christenings (
-		christening, count, week_number, start_day, start_month,
-		end_day, end_month, year, missing, illegible, source,
-		bill_type, joinid, unique_identifier
-	)
-	WITH deduplicated_christenings AS (
-		SELECT DISTINCT ON (
-			parish_name, week, start_day, start_month,
-			end_day, end_month, year
-		)
-			parish_name, count, week, start_day, start_month,
-			end_day, end_month, year, missing, illegible, 
-			source, bill_type, joinid, unique_identifier
-		FROM temp_christening c
-		WHERE parish_name IS NOT NULL
-		AND EXISTS (SELECT 1 FROM bom.week w WHERE w.joinid = c.joinid)
-		ORDER BY 
-			parish_name, week, start_day, start_month,
-			end_day, end_month, year, count DESC
-	)
-	SELECT * FROM deduplicated_christenings
-		ON CONFLICT (christening, week_number, start_day, start_month, end_day, end_month, year) 
-		DO UPDATE
-		SET 
-			count = EXCLUDED.count,
-			missing = EXCLUDED.missing,
-			illegible = EXCLUDED.illegible,
-			source = EXCLUDED.source,
-			bill_type = EXCLUDED.bill_type,
-			joinid = EXCLUDED.joinid,
-			unique_identifier = EXCLUDED.unique_identifier;
+      christening, count, week_number, start_day, start_month,
+      end_day, end_month, year, missing, illegible, source,
+      bill_type, joinid, unique_identifier
+  )
+  WITH deduplicated_christenings AS (
+      SELECT DISTINCT ON (
+          parish_name, week, start_day, start_month,
+          end_day, end_month, year
+      )
+          parish_name AS christening,  -- Fix: alias to match target column
+          count,
+          week AS week_number,         -- Fix: alias to match target column
+          start_day, start_month,
+          end_day, end_month, year, missing, illegible,
+          source, bill_type, joinid, unique_identifier
+      FROM temp_christening c
+      WHERE parish_name IS NOT NULL
+      AND EXISTS (SELECT 1 FROM bom.week w WHERE w.joinid = c.joinid)
+      ORDER BY
+          parish_name, week, start_day, start_month,
+          end_day, end_month, year, count DESC
+  )
+  SELECT * FROM deduplicated_christenings
+  ON CONFLICT (christening, week_number, start_day, start_month, end_day, end_month, year)
+  DO UPDATE SET
+      count = EXCLUDED.count,
+      missing = EXCLUDED.missing,
+      illegible = EXCLUDED.illegible,
+      source = EXCLUDED.source,
+      bill_type = EXCLUDED.bill_type,
+      joinid = EXCLUDED.joinid,
+      unique_identifier = EXCLUDED.unique_identifier;
 		
 		GET DIAGNOSTICS rows_processed = ROW_COUNT;
 		end_time := clock_timestamp();
@@ -485,7 +488,7 @@ func updateTables(ctx context.Context, tx pgx.Tx) error {
   FROM temp_causes_of_death c
   WHERE death IS NOT NULL
   AND EXISTS (SELECT 1 FROM bom.week w WHERE w.joinid = c.joinid)
-  ON CONFLICT (death, year, week_id) 
+  ON CONFLICT (death, year, week_id, source_name) 
   DO UPDATE
   SET 
     count = EXCLUDED.count,
@@ -522,7 +525,7 @@ func updateTables(ctx context.Context, tx pgx.Tx) error {
 		ORDER BY parish_id, count_type, year, joinid, count DESC
 	)
 		SELECT * FROM deduplicated_bills
-		ON CONFLICT (parish_id, count_type, year, week_id) 
+		ON CONFLICT (parish_id, count_type, year, week_id, source) 
 		DO UPDATE
 		SET 
 			count = EXCLUDED.count,
@@ -548,7 +551,6 @@ func updateTables(ctx context.Context, tx pgx.Tx) error {
 		RAISE;
 	END $$;
 	`)
-
 	if err != nil {
 		return fmt.Errorf("failed to execute update procedure: %w", err)
 	}

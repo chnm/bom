@@ -5,7 +5,7 @@
 #
 # Jason A. Heppler | jason@jasonheppler.org
 # Roy Rosenzweig Center for History and New Media
-# Updated: 2025-07-l0
+# Updated: 2025-07-30
 
 library(tidyverse)
 source("helpers.R")
@@ -35,8 +35,8 @@ for (file in files) {
     filename <- str_remove(filename, "^[0-9]{4}-[0-9]{2}-[0-9]{2}-")
     # Replace any dashes with underscores
     filename <- gsub("-", "_", filename)
-    # Read the CSV file and assign it to a variable
-    assign(filename, read_csv(file))
+    # Read the CSV file, normalize column names, and assign it to a variable
+    assign(filename, normalize_column_names(read_csv(file)))
     # Store information about the loaded file
     loaded_files[[filename]] <- list(
       original_filename = basename(file),
@@ -105,12 +105,12 @@ for (dataset_name in causes_datasets) {
     } else if (grepl("laxton_1700", dataset_name, ignore.case = TRUE)) {
       source_name <- "laxton_1700"
       skip_cols <- 4
-      pivot_range <- c(8, 125)
+      pivot_range <- c(12, 125) 
       n_descriptive_cols <- 7
     } else if (grepl("laxton", dataset_name, ignore.case = TRUE)) {
       source_name <- "laxton_pre1700"
-      skip_cols <- 4
-      pivot_range <- c(8, 125)
+      skip_cols <- 4  # Skip same as other datasets to preserve unique_identifier
+      pivot_range <- c(8, 70)  # After removing is_missing/is_illegible columns, causes start much earlier
       n_descriptive_cols <- 7
     } else {
       cat(sprintf("Unknown dataset pattern: %s, skipping\n", dataset_name))
@@ -136,6 +136,12 @@ for (dataset_name in causes_datasets) {
     if (is.null(combined_processed_cause)) {
       combined_processed_cause <- processed_cause
     } else {
+      # Standardize types before combining to avoid type mismatch errors
+      combined_processed_cause <- combined_processed_cause |>
+        mutate(across(contains("increase/decrease"), ~as.character(.)))
+      processed_cause <- processed_cause |>
+        mutate(across(contains("increase/decrease"), ~as.character(.)))
+      
       # Ensure column order is consistent
       combined_processed_cause <- bind_rows(combined_processed_cause, processed_cause)
     }
@@ -184,42 +190,76 @@ deaths_unique <- deaths_unique |>
   mutate(death_id = row_number())
 
 # ----------------------------------------------------------------------
-# Weekly Bills
+# Weekly Bills - Dynamic Processing
 # ----------------------------------------------------------------------
-# Forthcoming: British Library (BL)
-wellcome_weekly <- process_weekly_bills(`1669_1670_Wellcome_weeklybills_parishes`, 
-                                      "Wellcome", 
-                                      has_flags = FALSE)
+# Find and process parish datasets dynamically
+parish_datasets <- names(loaded_files)[grep("parishes", names(loaded_files))]
+message(sprintf("Found %d parish datasets: %s", 
+                length(parish_datasets),
+                paste(parish_datasets, collapse=", ")))
 
-laxton_old_weekly <- process_weekly_bills(Laxton_old_weeklybills_parishes, 
-                                    "Laxton", 
-                                    has_flags = TRUE)
+# Process each parish dataset
+processed_weekly <- list()
+for (dataset_name in parish_datasets) {
+  # Skip if variable doesn't exist
+  if (!exists(dataset_name)) {
+    cat(sprintf("Variable %s not found, skipping\n", dataset_name))
+    next
+  }
+  
+  # Get the data
+  dataset_processing <- get(dataset_name)
+  
+  # Determine source name and flags based on filename pattern
+  if (grepl("wellcome", dataset_name, ignore.case = TRUE)) {
+    source_name <- "Wellcome"
+    has_flags <- FALSE
+  } else if (grepl("laxton", dataset_name, ignore.case = TRUE)) {
+    source_name <- "Laxton"
+    has_flags <- TRUE
+  } else if (grepl("heh", dataset_name, ignore.case = TRUE)) {
+    source_name <- "HEH"
+    has_flags <- TRUE
+  } else if (grepl("millar", dataset_name, ignore.case = TRUE)) {
+    # Skip millar datasets - they're processed separately as general bills
+    next
+  } else {
+    source_name <- str_extract(dataset_name, "^[^_]+")
+    has_flags <- TRUE  # Default assumption
+  }
+  
+  cat(sprintf("Processing parish dataset: %s as %s\n", dataset_name, source_name))
+  processed_parish <- tryCatch({
+    process_weekly_bills(dataset_processing, source_name, has_flags)
+  }, error = function(e) {
+    cat(sprintf("Error processing parish dataset %s: %s\n", dataset_name, e$message))
+    return(NULL)
+  })
+  
+  if (!is.null(processed_parish)) {
+    processed_weekly[[dataset_name]] <- processed_parish
+    cat(sprintf("Successfully processed %s (%d rows)\n", 
+                dataset_name, nrow(processed_parish)))
+  }
+}
 
-laxton_new_weekly <- process_weekly_bills(Laxton_new_weekly_parishes,
-                                      "Laxton",
-                                      has_flags = TRUE)
+# Process Bodleian datasets dynamically
+bodleian_datasets <- names(loaded_files)[grep("bodleian|blv|bl1877", names(loaded_files), ignore.case = TRUE)]
+bodleian_versions <- list()
 
-laxton_weekly <- process_weekly_bills(Laxton_weeklybills_parishes,
-                                      "Laxton",
-                                      has_flags = TRUE)
-
-heh_1635 <- process_weekly_bills(HEH1635_weeklybills_parishes,
-                                      "HEH",
-                                      has_flags = TRUE)
-
-# Bring together all Bodleian versions
-bodleian_versions <- list(
-  list(data = BodleianV1_weeklybills_parishes, version = "Bodleian V1"),
-  list(data = BodleianV2_weeklybills_parishes, version = "Bodleian V2"),
-  list(data = BodleianV3_weeklybills_parishes, version = "Bodleian V3"),
-  list(data = BLV1_weeklybills_parishes, version = "Bodleian V1"),
-  list(data = BLV2_weeklybills_parishes, version = "Bodleian V2"),
-  list(data = BLV3_weeklybills_parishes, version = "Bodleian V3"),
-  list(data = BLV4_weeklybills_parishes_missingbillsdataset, version = "Bodleian V4"),
-  list(data = BLV4_weeklybills_parishes_originaldataset, version = "Bodleian V4"),
-  list(data = BL1877.e.7.V1PostFire_minus3foldbill, version = "Bodleian V1 Post-Fire"),
-  list(data = BLV1_1673_1674_weeklybills_parishes, version = "Bodleian V1 1673-1674")
-)
+for (dataset_name in bodleian_datasets) {
+  if (exists(dataset_name)) {
+    # Extract version from dataset name
+    version_name <- str_replace(dataset_name, "_weeklybills_parishes.*", "") |>
+      str_replace_all("_", " ") |>
+      str_to_title()
+    
+    bodleian_versions[[length(bodleian_versions) + 1]] <- list(
+      data = get(dataset_name),
+      version = version_name
+    )
+  }
+}
 
 # Process all versions and store in a single dataframe
 bodleian_all_versions <- map(bodleian_versions, function(v) {
@@ -243,55 +283,63 @@ bodleian_all_versions <- map(bodleian_versions, function(v) {
 }) %>% list_rbind()
 
 # Fix column names
-bodleian_weekly <- bodleian_all_versions |>
-  rename_with(tolower) |>
-  rename_with(~str_replace_all(., " ", "_")) |>
-  rename(unique_identifier = uniqueid)
-rm(bodleian_all_versions)
+#bodleian_weekly <- bodleian_all_versions |>
+#  rename_with(tolower) |>
+#  rename_with(~str_replace_all(., " ", "_")) |>
+#  rename(unique_identifier = uniqueid)
+#rm(bodleian_all_versions)
 
-# Combine all weekly data into a single frame
-weekly_bills <- bind_rows(
-  wellcome_weekly |> 
-    mutate(
-      week = as.numeric(week), 
-      year = as.numeric(year),
-      start_day = as.numeric(start_day), 
-      end_day = as.numeric(end_day),
-      count = as.character(count)
-    ), 
-  laxton_new_weekly |> 
-    mutate(
-      week = as.numeric(week), 
-      year = as.numeric(year),
-      start_day = as.numeric(start_day), 
-      end_day = as.numeric(end_day),
-      count = as.character(count)
-    ), 
-  laxton_old_weekly |> 
-    mutate(
-      week = as.numeric(week), 
-      year = as.numeric(year),
-      start_day = as.numeric(start_day), 
-      end_day = as.numeric(end_day),
-      count = as.character(count)
-    ), 
-  heh_1635 |> 
-    mutate(
-      week = as.numeric(week), 
-      year = as.numeric(year),
-      start_day = as.numeric(start_day), 
-      end_day = as.numeric(end_day),
-      count = as.character(count)
-    ),
-  bodleian_weekly |> 
-    mutate(
-      week = as.numeric(week), 
-      year = as.numeric(year),
-      start_day = as.numeric(start_day), 
-      end_day = as.numeric(end_day),
-      count = as.character(count)
-    )
-) |> 
+# Combine dynamically processed weekly data
+weekly_bills_list <- list()
+
+# Add processed parish datasets
+for (dataset_name in names(processed_weekly)) {
+  if (!is.null(processed_weekly[[dataset_name]])) {
+    # Debug: show available columns
+    dataset <- processed_weekly[[dataset_name]]
+    cat(sprintf("Dataset %s columns: %s\n", dataset_name, 
+                paste(names(dataset)[1:min(10, ncol(dataset))], collapse = ", ")))
+    
+    # Check which columns exist before mutating (only warn about essential columns)
+    essential_cols <- c("week", "year", "count")
+    optional_cols <- c("start_day", "end_day")
+    
+    missing_essential <- setdiff(essential_cols, names(dataset))
+    if (length(missing_essential) > 0) {
+      cat(sprintf("ERROR: Dataset %s missing essential columns: %s\n", 
+                  dataset_name, paste(missing_essential, collapse = ", ")))
+    }
+    
+    # Only convert columns that exist
+    converted_dataset <- dataset
+    if ("week" %in% names(dataset)) converted_dataset <- converted_dataset |> mutate(week = as.numeric(week))
+    if ("year" %in% names(dataset)) converted_dataset <- converted_dataset |> mutate(year = as.numeric(year))
+    if ("start_day" %in% names(dataset)) converted_dataset <- converted_dataset |> mutate(start_day = as.numeric(start_day))
+    if ("end_day" %in% names(dataset)) converted_dataset <- converted_dataset |> mutate(end_day = as.numeric(end_day))
+    if ("count" %in% names(dataset)) converted_dataset <- converted_dataset |> mutate(count = as.character(count))
+    
+    weekly_bills_list[[dataset_name]] <- converted_dataset
+  }
+}
+
+# Add Bodleian data if it exists
+if (exists("bodleian_all_versions")) {
+  cat(sprintf("Bodleian data columns: %s\n", 
+              paste(names(bodleian_all_versions)[1:min(10, ncol(bodleian_all_versions))], collapse = ", ")))
+  
+  # Only convert columns that exist in Bodleian data
+  bodleian_converted <- bodleian_all_versions
+  if ("week" %in% names(bodleian_all_versions)) bodleian_converted <- bodleian_converted |> mutate(week = as.numeric(week))
+  if ("year" %in% names(bodleian_all_versions)) bodleian_converted <- bodleian_converted |> mutate(year = as.numeric(year))
+  if ("start_day" %in% names(bodleian_all_versions)) bodleian_converted <- bodleian_converted |> mutate(start_day = as.numeric(start_day))
+  if ("end_day" %in% names(bodleian_all_versions)) bodleian_converted <- bodleian_converted |> mutate(end_day = as.numeric(end_day))
+  if ("count" %in% names(bodleian_all_versions)) bodleian_converted <- bodleian_converted |> mutate(count = as.character(count))
+  
+  weekly_bills_list[["bodleian_weekly"]] <- bodleian_converted
+}
+
+# Combine all weekly data
+weekly_bills <- bind_rows(weekly_bills_list) |> 
   mutate(
     bill_type = "Weekly",
     count = as.numeric(count)  # Convert back to numeric after binding
@@ -456,9 +504,6 @@ all_bills <- all_bills |> select(-version)
 # Write data
 # --------------------------------------------------
 # Write data to csv: causes of death
-write_csv(causes_wellcome, "data/wellcome_causes.csv", na = "")
-write_csv(causes_laxton, "data/laxton_causes.csv", na = "")
-write_csv(causes_laxton_1700, "data/laxton_causes_1700.csv", na = "")
 write_csv(deaths_unique, "data/deaths_unique.csv", na = "")
 write_csv(deaths_long, na = "", "data/causes_of_death.csv")
 

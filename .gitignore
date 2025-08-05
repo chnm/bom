@@ -8,6 +8,13 @@ bom-db/node_modules/
 bom-processing/db/updater/bin
 .smbdelete*
 
+CLAUDE.md
+bom-processing/scripts/bompy/data-raw/
+bom-processing/scripts/bompy/logs/
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+profile_default/
+ipython_config.py
 
 dbupdate
 bom-processing/scripts/bomr/.Rapp.history
