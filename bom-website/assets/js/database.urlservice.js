@@ -10,28 +10,41 @@ const URLService = {
    */
   getParams() {
     const params = new URLSearchParams(window.location.search);
-    
+
     return {
-      startYear: params.has('start-year') ? parseInt(params.get('start-year')) : 1636,
-      endYear: params.has('end-year') ? parseInt(params.get('end-year')) : 1754,
-      countType: params.get('count-type') || '',
-      parishes: params.has('parish') 
-        ? params.get('parish').split(',').filter(p => p.trim() !== '')
+      startYear: params.has("start-year")
+        ? parseInt(params.get("start-year"))
+        : 1636,
+      endYear: params.has("end-year") ? parseInt(params.get("end-year")) : 1754,
+      countType: params.get("count-type") || "",
+      parishes: params.has("parish")
+        ? params
+            .get("parish")
+            .split(",")
+            .filter((p) => p.trim() !== "")
         : [],
-      page: params.has('page') ? Math.max(1, parseInt(params.get('page'))) : 1,
-      billType: params.has('bill-type') && ['Weekly', 'General', 'Total'].includes(params.get('bill-type'))
-        ? params.get('bill-type')
-        : 'Weekly',
-      tab: params.has('tab') ? parseInt(params.get('tab')) : 1,
-      causesOfDeath: params.has('causes')
-        ? params.get('causes').split(',').filter(c => c.trim() !== '')
+      page: params.has("page") ? Math.max(1, parseInt(params.get("page"))) : 1,
+      billType:
+        params.has("bill-type") &&
+        ["weekly", "general", "total"].includes(params.get("bill-type"))
+          ? params.get("bill-type")
+          : "weekly",
+      tab: params.has("tab") ? parseInt(params.get("tab")) : 1,
+      causesOfDeath: params.has("causes")
+        ? params
+            .get("causes")
+            .split(",")
+            .filter((c) => c.trim() !== "")
         : [],
-      christenings: params.has('christenings')
-        ? params.get('christenings').split(',').filter(c => c.trim() !== '')
-        : []
+      christenings: params.has("christenings")
+        ? params
+            .get("christenings")
+            .split(",")
+            .filter((c) => c.trim() !== "")
+        : [],
     };
   },
-  
+
   /**
    * Updates the URL with new parameters without page reload
    * @param {Object} params - Parameters to update
@@ -39,38 +52,38 @@ const URLService = {
    */
   updateParams(params, replace = false) {
     const urlParams = new URLSearchParams();
-    
+
     // Add parameters if they have values
-    if (params.startYear) urlParams.set('start-year', params.startYear);
-    if (params.endYear) urlParams.set('end-year', params.endYear);
-    if (params.countType) urlParams.set('count-type', params.countType);
-    
+    if (params.startYear) urlParams.set("start-year", params.startYear);
+    if (params.endYear) urlParams.set("end-year", params.endYear);
+    if (params.countType && params.countType !== "All") urlParams.set("count-type", params.countType);
+
     if (params.parishes && params.parishes.length > 0) {
-      urlParams.set('parish', params.parishes.join(','));
+      urlParams.set("parish", params.parishes.join(","));
     }
-    
+
     if (params.causesOfDeath && params.causesOfDeath.length > 0) {
-      urlParams.set('causes', params.causesOfDeath.join(','));
+      urlParams.set("causes", params.causesOfDeath.join(","));
     }
-    
+
     if (params.christenings && params.christenings.length > 0) {
-      urlParams.set('christenings', params.christenings.join(','));
+      urlParams.set("christenings", params.christenings.join(","));
     }
-    
-    if (params.page && params.page > 1) urlParams.set('page', params.page);
-    if (params.billType) urlParams.set('bill-type', params.billType);
-    if (params.tab) urlParams.set('tab', params.tab);
-    
+
+    if (params.page && params.page > 1) urlParams.set("page", params.page);
+    if (params.billType) urlParams.set("bill-type", params.billType);
+    if (params.tab) urlParams.set("tab", params.tab);
+
     // Update browser history
     const newUrl = `${window.location.pathname}?${urlParams}`;
-    
+
     if (replace) {
-      history.replaceState({}, '', newUrl);
+      history.replaceState({}, "", newUrl);
     } else {
-      history.pushState({}, '', newUrl);
+      history.pushState({}, "", newUrl);
     }
   },
-  
+
   /**
    * Converts filters object to URL parameters format
    * @param {Object} filters - Filters object from Alpine state
@@ -88,10 +101,10 @@ const URLService = {
       christenings: filters.selectedChristenings,
       billType: filters.selectedBillType,
       page: pagination.page,
-      tab: tab
+      tab: tab,
     };
   },
-  
+
   /**
    * Updates filters object based on URL parameters
    * @param {Object} filters - Filters object to update
@@ -100,7 +113,7 @@ const URLService = {
    */
   updateFiltersFromURL(filters, pagination) {
     const params = this.getParams();
-    
+
     // Update filters
     filters.selectedStartYear = params.startYear;
     filters.selectedEndYear = params.endYear;
@@ -109,12 +122,12 @@ const URLService = {
     filters.selectedCausesOfDeath = params.causesOfDeath;
     filters.selectedChristenings = params.christenings;
     filters.selectedBillType = params.billType;
-    
+
     // Update pagination
     pagination.page = params.page;
-    
+
     return params.tab;
-  }
+  },
 };
 
 // Export the service
