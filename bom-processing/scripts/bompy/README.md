@@ -4,7 +4,7 @@ A robust Python pipeline for processing historical Bills of Mortality data into 
 
 ## Overview
 
-This pipeline solves the critical problem of processing heterogeneous historical Bills of Mortality CSV files into clean, normalized database tables. Key features:
+This pipeline solves the critical problem of processing DataScribe exprts for the Bills of Mortality CSV files into clean, normalized database tables. Key features:
 
 - **Data Integrity**: Column normalization without corrupting historical parish names or data values
 - **PostgreSQL Compatibility**: Outputs match exact DDL schema constraints and foreign key relationships  
@@ -126,29 +126,56 @@ make test
 
 ```
 bompy/
-├── src/bom/
-│   ├── config.py           # Dataset patterns and column mappings
-│   ├── models.py           # PostgreSQL-aligned data models
-│   ├── loaders/
-│   │   ├── csv_loader.py   # CSV loading with column normalization
-│   │   └── registry.py     # Dataset type detection
-│   ├── extractors/
-│   │   ├── weeks.py        # Week extraction and ID generation
-│   │   ├── parishes.py     # Parish extraction and mapping
-│   │   └── years.py        # Year extraction and validation
-│   ├── processors/
-│   │   └── bills.py        # Bills of mortality record generation
-│   └── utils/
-│       ├── columns.py      # Column normalization utilities
-│       └── validation.py   # PostgreSQL schema validation
-├── data-raw/               # Input CSV files
-├── data/                   # Generated PostgreSQL-ready outputs
-├── process_all_data.py     # Main processing pipeline
-├── test_bills_processor.py # Bills processor testing
-├── test_schema_alignment.py # Schema validation testing
-├── Makefile               # Common commands
-├── pyproject.toml         # Poetry configuration
-└── README.md              # This file
+├── CLAUDE.md                           # Claude Code instructions
+├── Makefile                           # Common commands
+├── README.md                          # This file
+├── poetry.lock                        # Poetry lock file
+├── pyproject.toml                     # Poetry configuration
+├── process_all_data.py                # Main processing pipeline
+├── data-raw/                          # Input CSV files (25 historical datasets)
+├── data/                              # Generated PostgreSQL-ready outputs (11 files)
+│   ├── London Parish Authority File.csv
+│   ├── dictionary.csv
+├── logs/                              # Processing logs and error files
+│   ├── bills_processor_test_*.log
+│   ├── bom_pipeline*.log
+│   └── *_errors.log files
+├── notebooks/                         # Jupyter analysis notebooks (7 notebooks)
+├── src/bom/                           # Main Python package
+│   ├── __init__.py
+│   ├── config.py                      # Dataset patterns and column mappings
+│   ├── models.py                      # PostgreSQL-aligned data models
+│   ├── extractors/                    # Data extraction modules
+│   │   ├── __init__.py
+│   │   ├── parishes.py                # Parish extraction and mapping
+│   │   ├── weeks.py                   # Week extraction and ID generation
+│   │   └── years.py                   # Year extraction and validation
+│   ├── loaders/                       # Data loading modules
+│   │   ├── __init__.py
+│   │   ├── csv_loader.py              # CSV loading with column normalization
+│   │   └── registry.py                # Dataset type detection
+│   ├── processors/                    # Data processing modules
+│   │   ├── __init__.py
+│   │   ├── bills.py                   # Bills of mortality record generation
+│   │   ├── christenings.py            # General christening records
+│   │   ├── christenings_gender.py     # Gender-based christening data
+│   │   ├── christenings_parish.py     # Parish-level christening aggregates
+│   │   └── foodstuffs.py              # Historical food price data
+│   └── utils/                         # Utility modules
+│       ├── __init__.py
+│       ├── columns.py                 # Column normalization utilities
+│       ├── logging.py                 # Logging configuration
+│       └── validation.py              # PostgreSQL schema validation
+└── tests/                             # Test files and diagnostic scripts
+    ├── analyze_christening_data.py
+    ├── analyze_coverage_gap.py
+    ├── debug_columns.py
+    ├── diagnose_files.py
+    ├── test_bills_processor.py
+    ├── test_causes.py
+    ├── test_foodstuffs_processor.py
+    ├── test_loader.py
+    └── test_schema_alignment.py
 ```
 
 ## Output Files
