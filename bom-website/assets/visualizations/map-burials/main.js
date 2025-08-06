@@ -26,7 +26,7 @@ function fetchDataAndRender(startYear, endYear, countType) {
   mapContainer.appendChild(loadingDiv);
 
   // Construct URL with parameters
-  const url = `http://data.chnm.org/bom/shapefiles?start-year=${startYear}&end-year=${endYear}&bill-type=weekly&count-type=${countType}`;
+  const url = `https://data.chnm.org/bom/shapefiles?start-year=${startYear}&end-year=${endYear}&bill-type=weekly&count-type=${countType}`;
 
   d3.json(url)
     .then((geojsonData) => {
