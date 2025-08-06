@@ -179,12 +179,22 @@ class BillsProcessor:
         week_mapping: Dict[str, str]
     ) -> List[BillOfMortalityRecord]:
         """Process parish data structure."""
-        # Find parish columns (exclude total columns and metadata)
-        parish_columns = [
-            col for col in df.columns 
-            if not col.lower().startswith(('total', 'year', 'week', 'start_', 'end_', 'unique_'))
-            and any(pattern in col.lower() for pattern in ['buried', 'plague', 'christened', 'baptized'])
-        ]
+        # Find parish columns (exclude total columns, metadata, and aggregate christening columns)
+        parish_columns = []
+        for col in df.columns:
+            col_lower = col.lower()
+            # Skip metadata columns
+            if col_lower.startswith(('total', 'year', 'week', 'start_', 'end_', 'unique_')):
+                continue
+            # Skip aggregate christening columns (these belong to christening data, not parish data)
+            if any(phrase in col_lower for phrase in [
+                'christened in the', 'buried in the', 'plague in the',
+                'christened in all', 'buried in all', 'plague in all'
+            ]):
+                continue
+            # Include individual parish columns
+            if any(pattern in col_lower for pattern in ['buried', 'plague', 'christened', 'baptized']):
+                parish_columns.append(col)
         
         logger.info(f"Found {len(parish_columns)} parish columns in {source_name}")
         
@@ -210,7 +220,7 @@ class BillsProcessor:
         # Process each row in the dataframe
         for idx, row in df.iterrows():
             try:
-                year = int(row['year']) if pd.notna(row.get('year')) else None
+                year = self._extract_year_from_row(row)
                 if not year:
                     continue
                 
@@ -219,7 +229,7 @@ class BillsProcessor:
                 
                 # Determine bill type based on unique identifier and week data
                 unique_identifier = row.get('unique_identifier', '')
-                bill_type = self._determine_bill_type(unique_identifier, week_id)
+                bill_type = self._determine_bill_type(unique_identifier, week_id, source_name)
                 
                 # Create a record for EVERY parish×count_type combination for this bill
                 # This matches R's approach of creating comprehensive records
@@ -329,7 +339,7 @@ class BillsProcessor:
         # Process each row in the dataframe
         for idx, row in df.iterrows():
             try:
-                year = int(row['year']) if pd.notna(row.get('year')) else None
+                year = self._extract_year_from_row(row)
                 if not year:
                     continue
                 
@@ -348,7 +358,8 @@ class BillsProcessor:
                         count = 0
                     else:
                         try:
-                            count = int(count_value)
+                            # Convert decimal values to integers (e.g., 1.0 -> 1)
+                            count = int(float(count_value))
                         except (ValueError, TypeError):
                             # For causes, text values might be descriptive
                             count = None
@@ -412,8 +423,45 @@ class BillsProcessor:
     def _find_week_id_for_row(self, row: pd.Series, week_mapping: Dict[str, str]) -> Optional[str]:
         """Find joinid for a row by creating it from row data."""
         try:
-            # Try to create joinid from row data
-            year = int(row.get('year', 0))
+            # Extract year using the same logic as the main processing
+            year = self._extract_year_from_row(row)
+            if not year:
+                return None
+            
+            # Check if this is a general bill (has start_year/end_year but no week data)
+            is_general_bill = ('start_year' in row.index or 'end_year' in row.index) and 'week' not in row.index
+            
+            if is_general_bill:
+                # For general bills, use the start date from the row
+                # General bills span a full year but we need to match existing week records
+                start_day = int(row.get('start_day', 17)) if pd.notna(row.get('start_day')) else 17
+                start_month = str(row.get('start_month', 'december')) if pd.notna(row.get('start_month')) else 'december'
+                
+                # For general bills, try to find an existing week record that starts with the same date
+                # Use the start date for both start and end to match existing weekly records
+                from ..extractors.weeks import WeekExtractor
+                extractor = WeekExtractor()
+                joinid = extractor.create_joinid(year, start_month, start_day, start_month, start_day + 7)
+                
+                # If that doesn't work, try to find any existing week record for this year/month
+                if joinid not in week_mapping:
+                    # Try common general bill week patterns that might exist
+                    potential_joinids = [
+                        extractor.create_joinid(year, start_month, start_day, start_month, min(start_day + 7, 31)),
+                        extractor.create_joinid(year, start_month, start_day, start_month, 24) if start_day == 17 else None,
+                        extractor.create_joinid(year, start_month, 17, start_month, 24),  # Common Dec 17-24 pattern
+                    ]
+                    
+                    for potential_id in potential_joinids:
+                        if potential_id and potential_id in week_mapping:
+                            return potential_id
+                    
+                    # If still no match, add it to the mapping for consistency
+                    week_mapping[joinid] = joinid
+                
+                return joinid
+            
+            # For weekly bills, try to create joinid from date data
             start_day = int(row.get('start_day', 1)) if pd.notna(row.get('start_day')) else 1
             end_day = int(row.get('end_day', 7)) if pd.notna(row.get('end_day')) else 7
             start_month = str(row.get('start_month', 'january')) if pd.notna(row.get('start_month')) else 'january'
@@ -432,17 +480,42 @@ class BillsProcessor:
         except Exception:
             return None
     
-    def _determine_bill_type(self, unique_identifier: str, week_id: Optional[str]) -> str:
+    def _extract_year_from_row(self, row: pd.Series) -> Optional[int]:
+        """Extract year from row data, handling both weekly and general bill formats."""
+        # Try weekly bills format first (year column)
+        if 'year' in row.index and pd.notna(row.get('year')):
+            try:
+                return int(row['year'])
+            except (ValueError, TypeError):
+                pass
+        
+        # Try general bills format (start_year or end_year columns)
+        year_columns = ['start_year', 'end_year']
+        for col in year_columns:
+            if col in row.index and pd.notna(row.get(col)):
+                try:
+                    return int(row[col])
+                except (ValueError, TypeError):
+                    continue
+        
+        return None
+    
+    def _determine_bill_type(self, unique_identifier: str, week_id: Optional[str], source_name: str) -> str:
         """
         Determine if this is a general or weekly bill.
         
         Args:
             unique_identifier: The unique identifier from the row
             week_id: The computed week_id
+            source_name: The name of the source dataset/file
             
         Returns:
             "general" or "weekly"
         """
+        # Check source filename for "general" pattern (highest priority)
+        if source_name and 'general' in source_name.lower():
+            return "general"
+        
         if not unique_identifier:
             return "weekly"  # Default
         

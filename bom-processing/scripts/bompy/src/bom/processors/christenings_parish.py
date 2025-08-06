@@ -268,7 +268,8 @@ class ChristeningsParishProcessor:
         for field in week_fields:
             if field in row.index and not pd.isna(row[field]):
                 try:
-                    return int(row[field])
+                    # Convert decimal values to integers (e.g., 14.0 -> 14)
+                    return int(float(row[field]))
                 except (ValueError, TypeError):
                     continue
                     
@@ -299,7 +300,8 @@ class ChristeningsParishProcessor:
             if field in row.index and not pd.isna(row[field]):
                 if field_type in ['start_day', 'end_day']:
                     try:
-                        return int(row[field])
+                        # Convert decimal values to integers (e.g., 18.0 -> 18)
+                        return int(float(row[field]))
                     except (ValueError, TypeError):
                         continue
                 else:
@@ -344,12 +346,16 @@ class ChristeningsParishProcessor:
             
         # Try to extract numeric value
         try:
-            # Remove common punctuation and whitespace
-            clean_value = re.sub(r'[^\d]', '', value_str)
-            if clean_value:
-                return int(clean_value)
+            # First try direct conversion for decimal values
+            return int(float(value_str))
         except (ValueError, TypeError):
-            pass
+            try:
+                # Fallback: Remove common punctuation and whitespace
+                clean_value = re.sub(r'[^\d]', '', value_str)
+                if clean_value:
+                    return int(clean_value)
+            except (ValueError, TypeError):
+                pass
             
         return None
     

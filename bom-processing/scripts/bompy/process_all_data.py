@@ -63,7 +63,7 @@ def main():
     for csv_file in csv_files:
         try:
             df, info = loader.load(csv_file)
-            all_dataframes.append((df, info.dataset_type))
+            all_dataframes.append((df, info.dataset_type))  # Use dataset_type instead of file_path
             total_input_rows += len(df)
 
             logger.info(
@@ -325,6 +325,42 @@ def main():
     output_files = {}
     for table_name, df in dataframes.items():
         if len(df) > 0:
+            # Fix integer columns that pandas converts to float when there are NaN values
+            if table_name == "weeks" and len(df) > 0:
+                # Convert start_day and end_day to nullable integer to avoid .0 in CSV
+                if "start_day" in df.columns:
+                    df["start_day"] = df["start_day"].astype("Int64")
+                if "end_day" in df.columns:
+                    df["end_day"] = df["end_day"].astype("Int64")
+                if "week_number" in df.columns:
+                    df["week_number"] = df["week_number"].astype("Int64")
+                if "year" in df.columns:
+                    df["year"] = df["year"].astype("Int64")
+            
+            # Fix integer columns for christenings tables
+            if table_name in ["christenings", "christenings_by_parish", "christenings_by_gender"] and len(df) > 0:
+                # Convert integer columns to nullable integer to avoid .0 in CSV
+                if "week_number" in df.columns:
+                    df["week_number"] = df["week_number"].astype("Int64")
+                if "year" in df.columns:
+                    df["year"] = df["year"].astype("Int64")
+                if "start_day" in df.columns:
+                    df["start_day"] = df["start_day"].astype("Int64")
+                if "end_day" in df.columns:
+                    df["end_day"] = df["end_day"].astype("Int64")
+                if "count" in df.columns:
+                    df["count"] = df["count"].astype("Int64")
+                if "week" in df.columns:
+                    df["week"] = df["week"].astype("Int64")
+            
+            # Fix integer columns for causes_of_death table
+            if table_name == "causes_of_death" and len(df) > 0:
+                # Convert count and year columns to nullable integer to avoid .0 in CSV
+                if "count" in df.columns:
+                    df["count"] = df["count"].astype("Int64")
+                if "year" in df.columns:
+                    df["year"] = df["year"].astype("Int64")
+            
             output_file = output_dir / f"{table_name}.csv"
             df.to_csv(output_file, index=False)
             output_files[table_name] = output_file
