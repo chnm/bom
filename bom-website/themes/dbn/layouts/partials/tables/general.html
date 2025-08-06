@@ -102,7 +102,7 @@
           <!-- Data rows -->
           <template x-if="!meta.loading && !meta.error">
             <template x-for="bill in bills" :key="bill.id">
-              <tr class="hover:bg-gray-100 dark:hover:bg-gray-700" @click="modalOpen =!modalOpen; modalBill = bill">
+              <tr class="hover:bg-gray-100 dark:hover:bg-gray-700" @click="openModal(bill)">
                 <td class="py-4 px-6 text-sm font-medium text-center text-gray-900 whitespace-nowrap dark:text-white font-mono">
                   <i class="fa-solid fa-expand cursor-pointer transition-all duration-300 ease-in-out hover:scale-125 hover:text-blue-500 active:scale-90"></i></td>
 

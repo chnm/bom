@@ -193,8 +193,8 @@ Optionally, you can provide the `/bills` endpoint with the `parishes` parameter,
 	...
 	{
 		"name":"St Mary Rotherhithe",
-		"bill_type":"Weekly",
-		"count_type":"Plague",
+		"bill_type":"weekly",
+		"count_type":"plague",
 		"count":null,
 		"start_day":21,
 		"start_month":"December",
@@ -208,8 +208,8 @@ Optionally, you can provide the `/bills` endpoint with the `parishes` parameter,
 	...
 	{
 		"name":"All Hallows the Great",
-		"bill_type":"Weekly",
-		"count_type":"Buried",
+		"bill_type":"weekly",
+		"count_type":"buried",
 		"count":1,
 		"start_day":28,
 		"start_month":"December",
@@ -237,8 +237,8 @@ To return the entire dataset with both Weekly and General bills, simply leave of
 [
     {
 	    "name":"All Hallows Barking",
-	    "bill_type":"Weekly",
-	    "count_type":"Plague",
+	    "bill_type":"weekly",
+	    "count_type":"plague",
 	    "count":null,
 	    "start_day":21,
 	    "start_month":"December",
@@ -601,8 +601,8 @@ Parameters:
 - start-year (required): A four-digit number representing the start year
 - end-year (required): A four-digit number representing the end year
 - parish (optional): Comma-separated list of parish IDs to include
-- bill-type (optional): Type of bills to include ("Weekly" or "General")
-- count-type (optional): Type of counts to include ("Buried" or "Plague")
+- bill-type (optional): Type of bills to include ("weekly" or "general")
+- count-type (optional): Type of counts to include ("buried" or "plague")
 - year (optional): Filter geometries to parishes active in a specific year
 - subunit (optional): Filter geometries to a specific administrative subunit
 - city_cnty (optional): Filter geometries to a specific city or county

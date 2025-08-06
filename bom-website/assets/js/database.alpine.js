@@ -263,6 +263,9 @@ document.addEventListener("alpine:init", () => {
         this.causes = [];
         this.christenings = [];
 
+        // Set filter state for weekly tab
+        this.filters.selectedBillType = "weekly";
+        
         // weekly tab
         this.fetchData("weekly");
       } else if (tabIndex === 2) {
@@ -270,6 +273,9 @@ document.addEventListener("alpine:init", () => {
         this.causes = [];
         this.christenings = [];
 
+        // Set filter state for general tab
+        this.filters.selectedBillType = "general";
+        
         // general tab
         this.fetchData("general");
       } else if (tabIndex === 3) {

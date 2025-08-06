@@ -30,7 +30,9 @@ const DataService = {
    * @returns {Promise<Array|Object>} - Promise resolving to the fetched data or paginated response
    */
   async fetchData(endpoint, params = {}) {
+    console.log('fetchData called with endpoint:', endpoint, 'baseUrl:', this.baseUrl);
     const url = new URL(`${this.baseUrl}/${endpoint}`);
+    console.log('Constructed URL before params:', url.toString());
     
     // Add query parameters
     Object.entries(params).forEach(([key, value]) => {
@@ -267,13 +269,20 @@ const DataService = {
    * @returns {Promise<Object>} - Paginated response with data, next_cursor, and has_more
    */
   async fetchBills(billType, filters, pagination) {
+    console.log('fetchBills called with:', { billType, filters, pagination });
     const params = {
       'bill-type': billType,
       'start-year': filters.selectedStartYear,
-      'end-year': filters.selectedEndYear,
-      'count-type': filters.selectedCountType,
-      'parish': filters.selectedParishes
+      'end-year': filters.selectedEndYear
     };
+    
+    // Only add non-empty parameters
+    if (filters.selectedCountType && filters.selectedCountType !== '') {
+      params['count-type'] = filters.selectedCountType;
+    }
+    if (filters.selectedParishes && filters.selectedParishes.length > 0) {
+      params['parish'] = filters.selectedParishes;
+    }
     
     // Prioritize cursor-based pagination (default and preferred)
     if (pagination.cursor) {
@@ -293,6 +302,7 @@ const DataService = {
       params.limit = 100;
     }
     
+    console.log('Calling fetchData with endpoint:', 'bills', 'and params:', params);
     return this.fetchData('bills', params);
   },
   
