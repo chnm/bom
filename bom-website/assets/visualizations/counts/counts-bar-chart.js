@@ -101,7 +101,7 @@ export default class PlagueBillsBarChart extends Visualization {
                 event.pageX -
                 this.tooltip.node().getBoundingClientRect().width -
                 10
-              }px`
+              }px`,
             );
         } else {
           this.tooltip

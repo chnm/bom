@@ -37,13 +37,15 @@ export default class PlagueBillsBarChartWeekly extends Visualization {
     this.yAxis = d3.axisRight().scale(this.yScale).ticks(10);
 
     this.tooltipRender = (e, d) => {
-        // tooltip gets data from the stack, not the original data
-        // so we need to find the original data
-        const originalData = this.data.plagueByWeek.find((item) => item.year === d.data.year);
-        const text = `Transcribed bills for <strong>${d.data.year}</strong>
+      // tooltip gets data from the stack, not the original data
+      // so we need to find the original data
+      const originalData = this.data.plagueByWeek.find(
+        (item) => item.year === d.data.year,
+      );
+      const text = `Transcribed bills for <strong>${d.data.year}</strong>
         <br>Total weeks in the data: ${originalData.totalCount}
-        <br>Weeks completed: ${originalData.weeksCompleted}`
-    //   const text = ``
+        <br>Weeks completed: ${originalData.weeksCompleted}`;
+      //   const text = ``
       this.tooltip.html(text);
       this.tooltip.style("visibility", "visible");
     };
@@ -51,7 +53,7 @@ export default class PlagueBillsBarChartWeekly extends Visualization {
 
   render() {
     const stack = d3.stack().keys(["weeksCompleted", "totalCount"])(
-      this.data.plagueByWeek
+      this.data.plagueByWeek,
     );
 
     console.log("stack", stack);
@@ -102,7 +104,7 @@ export default class PlagueBillsBarChartWeekly extends Visualization {
       .attr("y", (d) => this.yScale(d[1]))
       .attr("height", (d) => this.yScale(d[0]) - this.yScale(d[1]))
       .attr("width", this.xScale.bandwidth());
-    
+
     // Add the tooltip.
     this.tooltip = d3
       .select("body")
@@ -127,7 +129,7 @@ export default class PlagueBillsBarChartWeekly extends Visualization {
                 event.pageX -
                 this.tooltip.node().getBoundingClientRect().width -
                 10
-              }px`
+              }px`,
             );
         } else {
           this.tooltip
@@ -136,5 +138,17 @@ export default class PlagueBillsBarChartWeekly extends Visualization {
         }
       })
       .on("mouseout", () => this.tooltip.style("visibility", "hidden"));
+
+    // Add dotted baseline at 52 weeks
+    this.viz
+      .append("line")
+      .attr("class", "baseline-52")
+      .attr("x1", 0)
+      .attr("x2", this.width)
+      .attr("y1", this.yScale(52))
+      .attr("y2", this.yScale(52))
+      .attr("stroke", "#666")
+      .attr("stroke-width", 1)
+      .attr("stroke-dasharray", "3,3");
   }
 }

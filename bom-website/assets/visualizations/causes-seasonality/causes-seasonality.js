@@ -29,6 +29,9 @@ export default class SeasonalityChart extends Visualization {
       });
     }
 
+    // Filter out data with week_number above 54
+    filteredData = filteredData.filter(d => d.week_number <= 54);
+
     // Group by cause and week number, summing counts
     const weeklyData = d3.rollup(
       filteredData,

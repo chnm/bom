@@ -26,7 +26,7 @@ function fetchDataAndRender(startYear, endYear, countType) {
   mapContainer.appendChild(loadingDiv);
 
   // Construct URL with parameters
-  const url = `https://data.chnm.org/bom/shapefiles?start-year=${startYear}&end-year=${endYear}&bill-type=Weekly&count-type=${countType}`;
+  const url = `http://data.chnm.org/bom/shapefiles?start-year=${startYear}&end-year=${endYear}&bill-type=weekly&count-type=${countType}`;
 
   d3.json(url)
     .then((geojsonData) => {
@@ -210,24 +210,24 @@ function populateCountTypeDropdown() {
   const countTypeSelect = document.getElementById("count-type");
 
   const optionCountType1 = document.createElement("option");
-  optionCountType1.value = "Buried";
-  optionCountType1.text = "Buried";
+  optionCountType1.value = "buried";
+  optionCountType1.text = "buried";
   countTypeSelect.appendChild(optionCountType1);
 
   const optionCountType2 = document.createElement("option");
-  optionCountType2.value = "Plague";
-  optionCountType2.text = "Plague";
+  optionCountType2.value = "plague";
+  optionCountType2.text = "plague";
   countTypeSelect.appendChild(optionCountType2);
-  
+
   // Set default to Plague
-  countTypeSelect.value = "Plague";
+  countTypeSelect.value = "plague";
 }
 
 // Initial fetch and render - but only after map is initialized
 document.addEventListener("DOMContentLoaded", function () {
   // Give a little time for map to initialize
   setTimeout(() => {
-    fetchDataAndRender(1622, 1685, "Plague");
+    fetchDataAndRender(1622, 1685, "plague");
   }, 500);
 });
 
@@ -259,14 +259,14 @@ document.getElementById("reset-button").addEventListener("click", () => {
   }
 
   // Reset to Plague count type
-  document.getElementById("count-type").value = "Plague";
+  document.getElementById("count-type").value = "plague";
 
   // Get the selected years (or fall back to defaults)
   const startYear = startYearSelect.value || 1622;
   const endYear = endYearSelect.value || 1685;
 
   // Fetch and render with selected or default years
-  fetchDataAndRender(startYear, endYear, "Plague");
+  fetchDataAndRender(startYear, endYear, "plague");
 });
 
 //initialize map
@@ -360,7 +360,7 @@ function renderDirectGeoJSON(geojsonData, startYr, endYr, countType) {
     d = typeof d === "number" && !isNaN(d) ? d : 0;
 
     // Use different color schemes for plague vs buried
-    if (countType === "Plague") {
+    if (countType === "plague") {
       // Red color scheme for plague deaths
       return d > 1000
         ? "#67000d"
@@ -398,7 +398,7 @@ function renderDirectGeoJSON(geojsonData, startYr, endYr, countType) {
   }
 
   // Set title text based on count type
-  const titleText = countType === "Plague" ? "Plague Deaths" : "Burials";
+  const titleText = countType === "plague" ? "Plague Deaths" : "Burials";
 
   // Create GeoJSON layer
   try {
@@ -408,7 +408,7 @@ function renderDirectGeoJSON(geojsonData, startYr, endYr, countType) {
         try {
           // Get total deaths from the feature properties
           const deaths =
-            countType === "Plague"
+            countType === "plague"
               ? feature.properties?.total_plague || 0
               : feature.properties?.total_buried || 0;
 
@@ -473,14 +473,14 @@ function renderDirectGeoJSON(geojsonData, startYr, endYr, countType) {
 
   info.update = function (props) {
     const deathCount =
-      countType === "Plague"
+      countType === "plague"
         ? props?.total_plague || 0
         : props?.total_buried || 0;
     this._div.innerHTML =
       "<h4>Parish Information</h4>" +
       (props
         ? `Parish: ${props.dbn_par || props.civ_par || "Unknown"}<br/>
-             Total ${countType === "Plague" ? "plague deaths" : "burials"}: ${deathCount}<br/>`
+             Total ${countType === "plague" ? "plague deaths" : "burials"}: ${deathCount}<br/>`
         : "Hover over a parish");
   };
 
@@ -515,7 +515,7 @@ function renderDirectGeoJSON(geojsonData, startYr, endYr, countType) {
       color: "#000000",
       fillOpacity: 0.8,
       fillColor: getColor(
-        countType === "Plague"
+        countType === "plague"
           ? layer.feature.properties?.total_plague || 0
           : layer.feature.properties?.total_buried || 0,
       ),

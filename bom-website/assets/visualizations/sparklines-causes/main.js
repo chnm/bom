@@ -18,7 +18,7 @@ function fetchDataAndRender(dataFormat) {
         //check if "remove plague" is checked; if so remove plague from tidy and sorted data
         //make the graphs
         let checkbox = document.getElementById('plague')
-        let noPlague = sortedResult.filter((d) => d.death != "Plague")
+        let noPlague = sortedResult.filter((d) => d.death != "plague")
         d3.select("#facets").selectAll("*").remove();
         if (checkbox.checked ){
           makeGraphs(dataFormat, checkbox, noPlague)

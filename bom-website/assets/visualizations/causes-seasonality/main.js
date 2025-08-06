@@ -34,14 +34,14 @@ function populateCausesDropdowns() {
       });
 
       // Set default values
-      cause1Dropdown.property("value", "Aged");
-      cause2Dropdown.property("value", "Consumption");
-      
+      cause1Dropdown.property("value", "aged");
+      cause2Dropdown.property("value", "consumption");
+
       // Add event listener to handle dropdown state changes
-      cause1Dropdown.on("change", function() {
+      cause1Dropdown.on("change", function () {
         const selectedValue = this.value;
         const cause2Dropdown = d3.select("#cause2");
-        
+
         if (selectedValue === "All Causes") {
           // Disable and clear the comparison dropdown
           cause2Dropdown.property("disabled", true);
@@ -103,9 +103,9 @@ function fetchDataAndRender(year, cause1, cause2) {
       }
 
       // Update the chart title with colored text
-      const colors = ['#3b82f6', '#ef4444', '#10b981', '#f59e0b'];
+      const colors = ["#3b82f6", "#ef4444", "#10b981", "#f59e0b"];
       let title;
-      if (cause1 === 'All Causes') {
+      if (cause1 === "All Causes") {
         title = `Seasonality of <span style="color: ${colors[0]}; font-weight: 600;">All Causes</span> (${year})`;
       } else {
         title = `Seasonality of <span style="color: ${colors[0]}; font-weight: 600;">${cause1}</span>`;
@@ -127,7 +127,7 @@ populateCausesDropdowns();
 populateYearDropdown();
 
 // Initial fetch and render
-fetchDataAndRender(1648, "Aged", "Consumption");
+fetchDataAndRender(1648, "aged", "consumption");
 
 // Add event listener to the update button
 document.getElementById("update-button").addEventListener("click", () => {
@@ -136,8 +136,7 @@ document.getElementById("update-button").addEventListener("click", () => {
   const cause2 = document.getElementById("cause2").value;
 
   // Don't pass cause2 if cause1 is "All Causes"
-  const finalCause2 = cause1 === "All Causes" ? null : (cause2 || null);
-  
+  const finalCause2 = cause1 === "All Causes" ? null : cause2 || null;
+
   fetchDataAndRender(year, cause1, finalCause2);
 });
-
