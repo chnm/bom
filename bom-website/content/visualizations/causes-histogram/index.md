@@ -20,7 +20,7 @@ This visualization illustrates the causes of death per week for a given year. Th
     <div class="flex flex-row space-x-4 mb-6">
     <div class="flex flex-col">
         <label for="year" class="block text-gray-700 text-sm font-bold">Year:</label>
-        <input id="year" value="1668" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        <select id="year" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></select>
     </div>
     <div class="flex flex-col">
         <label for="cause" class="block text-gray-700 text-sm font-bold">Cause of death:</label>
