@@ -525,14 +525,12 @@ func updateTables(ctx context.Context, tx pgx.Tx) error {
 		ORDER BY parish_id, count_type, year, joinid, count DESC
 	)
 		SELECT * FROM deduplicated_bills
-		ON CONFLICT (parish_id, count_type, year, week_id, source) 
+		ON CONFLICT (parish_id, count_type, year, week_id, source, bill_type) 
 		DO UPDATE
 		SET 
 			count = EXCLUDED.count,
-			bill_type = EXCLUDED.bill_type,
 			missing = EXCLUDED.missing,
 			illegible = EXCLUDED.illegible,
-			source = EXCLUDED.source,
 			unique_identifier = EXCLUDED.unique_identifier;
 		
 		GET DIAGNOSTICS rows_processed = ROW_COUNT;
