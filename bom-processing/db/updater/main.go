@@ -442,7 +442,7 @@ func updateTables(ctx context.Context, tx pgx.Tx) error {
   WITH deduplicated_christenings AS (
       SELECT DISTINCT ON (
           parish_name, week, start_day, start_month,
-          end_day, end_month, year
+          end_day, end_month, year, bill_type
       )
           parish_name AS christening,  -- Fix: alias to match target column
           count,
@@ -455,16 +455,15 @@ func updateTables(ctx context.Context, tx pgx.Tx) error {
       AND EXISTS (SELECT 1 FROM bom.week w WHERE w.joinid = c.joinid)
       ORDER BY
           parish_name, week, start_day, start_month,
-          end_day, end_month, year, count DESC
+          end_day, end_month, year, bill_type, count DESC
   )
   SELECT * FROM deduplicated_christenings
-  ON CONFLICT (christening, week_number, start_day, start_month, end_day, end_month, year)
+  ON CONFLICT (christening, week_number, start_day, start_month, end_day, end_month, year, bill_type)
   DO UPDATE SET
       count = EXCLUDED.count,
       missing = EXCLUDED.missing,
       illegible = EXCLUDED.illegible,
       source = EXCLUDED.source,
-      bill_type = EXCLUDED.bill_type,
       joinid = EXCLUDED.joinid,
       unique_identifier = EXCLUDED.unique_identifier;
 		
