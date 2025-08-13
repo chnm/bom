@@ -35,8 +35,8 @@ class WeekExtractor:
         month_clean = str(month).lower().strip()
         return self.month_mapping.get(month_clean, "01")
     
-    def create_joinid(self, year: int, start_month: Optional[str], start_day: Optional[int], 
-                     end_month: Optional[str], end_day: Optional[int]) -> str:
+    def create_joinid(self, start_year: int, start_month: Optional[str], start_day: Optional[int], 
+                     end_year: int, end_month: Optional[str], end_day: Optional[int]) -> str:
         """Create joinid in format yyyymmddyyyymmdd."""
         start_month_num = self.month_to_number(start_month)
         end_month_num = self.month_to_number(end_month)
@@ -44,7 +44,7 @@ class WeekExtractor:
         start_day_pad = f"{start_day:02d}" if start_day else "01"
         end_day_pad = f"{end_day:02d}" if end_day else "07"  # Default week length
         
-        return f"{year}{start_month_num}{start_day_pad}{year}{end_month_num}{end_day_pad}"
+        return f"{start_year}{start_month_num}{start_day_pad}{end_year}{end_month_num}{end_day_pad}"
     
     def create_week_id(self, year: int, week_number: Optional[int]) -> str:
         """Create week_id for historical date ranges."""
@@ -150,13 +150,17 @@ class WeekExtractor:
         end_month = str(row["end_month"]) if pd.notna(row.get("end_month")) else None
         unique_identifier = str(row["unique_identifier"]) if pd.notna(row.get("unique_identifier")) else None
         
+        # Handle year-spanning periods (for general bills)
+        start_year = int(row.get("start_year", year)) if pd.notna(row.get("start_year")) else year
+        end_year = int(row.get("end_year", year)) if pd.notna(row.get("end_year")) else year
+        
         # Detect general bills and set week_number = 90
         if self._is_general_bill(unique_identifier, start_month, end_month, start_day, end_day):
             week_number = 90
             logger.debug(f"Detected general bill: {unique_identifier}, setting week_number = 90")
         
         # Create computed fields
-        joinid = self.create_joinid(year, start_month, start_day, end_month, end_day)
+        joinid = self.create_joinid(start_year, start_month, start_day, end_year, end_month, end_day)
         week_id = self.create_week_id(year, week_number)
         split_year = self.create_split_year(year, week_number)
         year_range = week_id.split("-")[0] + "-" + week_id.split("-")[1] if "-" in week_id else str(year)

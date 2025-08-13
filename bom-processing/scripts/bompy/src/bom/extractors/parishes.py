@@ -69,6 +69,34 @@ class ParishExtractor:
         
         return cleaned.strip()
     
+    def _standardize_parish_name(self, parish_name: str) -> str:
+        """Standardize parish name case and formatting."""
+        # Convert underscores to spaces 
+        parish_name = parish_name.replace('_', ' ')
+        
+        # Standardize case: Title case for most words, but preserve 'St' abbreviations
+        words = parish_name.split()
+        standardized_words = []
+        for word in words:
+            word_lower = word.lower()
+            if word_lower in ['st', 's']:
+                standardized_words.append(word_lower.title())  # 'St', 'S'
+            elif word_lower.startswith('st'):
+                # Handle cases like 'stbotolphs' -> 'St Botolphs' 
+                if len(word) > 2 and word[2:].isalpha():
+                    standardized_words.append('St ' + word[2:].title())
+                else:
+                    standardized_words.append(word.title())
+            else:
+                standardized_words.append(word.title())
+        
+        parish_name = ' '.join(standardized_words)
+        
+        # Clean up spacing
+        parish_name = re.sub(r'\s+', ' ', parish_name).strip()
+        
+        return parish_name
+    
     def is_valid_parish_name(self, name: str) -> bool:
         """Check if a name is a valid parish name (not descriptive text)."""
         if not name or pd.isna(name):
@@ -136,7 +164,35 @@ class ParishExtractor:
                 if col.endswith(('_buried', '_plague', '_christened')) and not col.startswith('total')
             ]
             
-            all_parish_cols = parish_cols + potential_parish_cols
+            # For General Bills: Look for individual parish columns without suffixes
+            is_general_bill = 'general' in source_name.lower()
+            general_bill_parish_cols = []
+            
+            if is_general_bill:
+                for col in df.columns:
+                    col_lower = col.lower()
+                    # Skip metadata and aggregate columns
+                    if col_lower.startswith(('omeka', 'datascribe', 'image_', 'is_missing', 'is_illegible')):
+                        continue
+                    if col_lower.startswith(('total', 'year', 'week', 'start_', 'end_', 'unique_')):
+                        continue
+                    if any(phrase in col_lower for phrase in [
+                        'christened in the', 'buried in the', 'plague in the'
+                    ]):
+                        continue  # Skip aggregate columns
+                        
+                    # Include individual parish columns for general bills  
+                    # Handle both original format ('St Alban Woodstreet') and normalized format ('st_alban_woodstreet')
+                    if (col.startswith(('St ', 'Christ ', 'Trinity', 'Alhal', 'S ')) or 
+                        col_lower.startswith(('st_', 'christ_', 'trinity', 'alhal', 's_')) or
+                        any(word in col for word in ['Parish', 'Church', 'Precinct']) or
+                        any(word in col_lower for word in ['parish', 'church', 'precinct']) or
+                        col.endswith(' Parish') or col_lower.endswith('_parish')):
+                        general_bill_parish_cols.append(col)
+                
+                logger.info(f"Found {len(general_bill_parish_cols)} general bill parish columns in {source_name}")
+            
+            all_parish_cols = parish_cols + potential_parish_cols + general_bill_parish_cols
             
             if parish_cols:
                 logger.info(f"Found parish columns in {source_name}: {parish_cols}")
@@ -155,8 +211,20 @@ class ParishExtractor:
                 # Extract parish names from column names themselves
                 for col in potential_parish_cols:
                     # Remove suffixes like _buried, _plague to get parish name
-                    parish_name = re.sub(r'_(buried|plague|christened)$', '', col)
-                    parish_name = parish_name.replace('_', ' ').title()
+                    parish_name = re.sub(r'_(buried|plague|christened|baptized|other)$', '', col)
+                    parish_name = re.sub(r'\s+(buried|plague|christened|baptized|other)$', '', parish_name, flags=re.IGNORECASE)
+                    parish_name = self._standardize_parish_name(parish_name)
+                    cleaned = self.clean_parish_name(parish_name)
+                    if cleaned and self.is_valid_parish_name(cleaned):
+                        parish_names.add(cleaned)
+            
+            # For General Bills: Extract parish names directly from column names
+            if general_bill_parish_cols:
+                for col in general_bill_parish_cols:
+                    # Remove suffixes and standardize case like weekly bills
+                    parish_name = re.sub(r'_(buried|plague|christened|baptized|other)$', '', col)
+                    parish_name = re.sub(r'\s+(buried|plague|christened|baptized|other)$', '', parish_name, flags=re.IGNORECASE)
+                    parish_name = self._standardize_parish_name(parish_name)
                     cleaned = self.clean_parish_name(parish_name)
                     if cleaned and self.is_valid_parish_name(cleaned):
                         parish_names.add(cleaned)
