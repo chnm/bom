@@ -12,13 +12,17 @@ document.addEventListener("alpine:init", () => {
     all_christenings: [],
     parishYearlyData: {},
 
-    // Tab state
-    activeTab: 1,
+    // Tab state - Two-tiered system
+    primaryTab: "annual", // annual, yearly, bread-death
+    secondaryTab: "parishes", // parishes, deaths, christenings, foodstuffs, ages
+    activeTab: 1, // Legacy support
     dragging: null,
+    weekDragging: null,
 
     // UI state
     modalOpen: false,
     instructionsOpen: false,
+    filtersOpen: false,
     modalBill: [],
     disabled: false,
     isMissing: false,
@@ -33,6 +37,8 @@ document.addEventListener("alpine:init", () => {
       selectedCountType: "",
       selectedStartYear: 1636,
       selectedEndYear: 1754,
+      selectedStartWeek: 1,
+      selectedEndWeek: 52,
       selectedCausesOfDeath: [],
       selectedChristenings: [],
     },
@@ -133,15 +139,14 @@ document.addEventListener("alpine:init", () => {
 
         // Load data for the initial tab with a small delay
         setTimeout(() => {
-          this.switchTab(initialTab);
+          this.loadTabData();
         }, 100);
 
         // Listen for history navigation
         window.addEventListener("popstate", () => {
           if (this.initialized) {
             this.parseURLParams();
-            const currentTab = this.getOpenTab();
-            this.switchTab(currentTab);
+            this.loadTabData();
           }
         });
       } catch (error) {
@@ -158,10 +163,53 @@ document.addEventListener("alpine:init", () => {
     parseURLParams() {
       const params = new URLSearchParams(window.location.search);
 
+      // Handle two-tiered tab system
+      if (params.has("primary-tab")) {
+        const primaryTab = params.get("primary-tab");
+        if (["annual", "yearly", "bread-death"].includes(primaryTab)) {
+          this.primaryTab = primaryTab;
+        }
+      }
+
+      if (params.has("secondary-tab")) {
+        const secondaryTab = params.get("secondary-tab");
+        if (["parishes", "deaths", "christenings", "foodstuffs", "ages"].includes(secondaryTab)) {
+          this.secondaryTab = secondaryTab;
+        }
+      }
+
+      // Legacy tab support - convert old tab numbers to new system
+      if (params.has("tab")) {
+        const tabNum = parseInt(params.get("tab"));
+        switch (tabNum) {
+          case 1:
+            this.primaryTab = "annual";
+            this.secondaryTab = "parishes";
+            break;
+          case 2:
+            this.primaryTab = "yearly";
+            this.secondaryTab = "parishes";
+            break;
+          case 3:
+            this.primaryTab = "annual";
+            this.secondaryTab = "deaths";
+            break;
+          case 4:
+            this.primaryTab = "annual";
+            this.secondaryTab = "christenings";
+            break;
+        }
+        this.activeTab = tabNum; // Keep legacy support
+      }
+
       if (params.has("start-year"))
         this.filters.selectedStartYear = parseInt(params.get("start-year"));
       if (params.has("end-year"))
         this.filters.selectedEndYear = parseInt(params.get("end-year"));
+      if (params.has("start-week"))
+        this.filters.selectedStartWeek = parseInt(params.get("start-week"));
+      if (params.has("end-week"))
+        this.filters.selectedEndWeek = parseInt(params.get("end-week"));
       if (params.has("count-type"))
         this.filters.selectedCountType = params.get("count-type");
       if (params.has("parish")) {
@@ -220,7 +268,7 @@ document.addEventListener("alpine:init", () => {
     },
 
     /**
-     * Get current active tab
+     * Get current active tab (legacy support)
      */
     getOpenTab() {
       try {
@@ -238,6 +286,94 @@ document.addEventListener("alpine:init", () => {
       } catch (e) {
         console.error("Error determining active tab:", e);
         return 1; // Default to tab 1 on error
+      }
+    },
+
+    /**
+     * Get current primary tab
+     */
+    getPrimaryTab() {
+      return this.primaryTab;
+    },
+
+    /**
+     * Get current secondary tab
+     */
+    getSecondaryTab() {
+      return this.secondaryTab;
+    },
+
+    /**
+     * Set primary tab and handle secondary tab defaults
+     */
+    setPrimaryTab(tab) {
+      this.primaryTab = tab;
+      
+      // Set appropriate default secondary tab based on primary tab
+      if (tab === "annual" || tab === "yearly") {
+        this.secondaryTab = "parishes";
+      } else if (tab === "bread-death") {
+        this.secondaryTab = "foodstuffs";
+      }
+      
+      // Load data for the new tab combination
+      this.loadTabData();
+      this.updateUrl();
+    },
+
+    /**
+     * Set secondary tab and load appropriate data
+     */
+    setSecondaryTab(tab) {
+      this.secondaryTab = tab;
+      this.loadTabData();
+      this.updateUrl();
+    },
+
+    /**
+     * Load data based on current primary and secondary tab combination
+     */
+    loadTabData() {
+      // Clear existing data first
+      this.bills = [];
+      this.causes = [];
+      this.christenings = [];
+
+      const combo = `${this.primaryTab}-${this.secondaryTab}`;
+
+      switch (combo) {
+        case "annual-parishes":
+          this.filters.selectedBillType = "weekly";
+          this.fetchData("weekly");
+          break;
+        case "annual-deaths":
+          this.filters.selectedBillType = "weekly";
+          this.fetchDeaths();
+          break;
+        case "annual-christenings":
+          this.fetchChristenings();
+          break;
+        case "yearly-parishes":
+          this.filters.selectedBillType = "general";
+          this.fetchData("general");
+          break;
+        case "yearly-deaths":
+          this.filters.selectedBillType = "general";
+          this.fetchDeaths();
+          break;
+        case "yearly-christenings":
+          this.fetchChristenings();
+          break;
+        case "bread-death-foodstuffs":
+          // Placeholder for foodstuffs data
+          console.log("Loading foodstuffs data - to be implemented");
+          break;
+        case "bread-death-ages":
+          // Placeholder for ages data
+          console.log("Loading ages data - to be implemented");
+          break;
+        default:
+          console.warn("Unknown tab combination:", combo);
       }
     },
 
@@ -266,7 +402,7 @@ document.addEventListener("alpine:init", () => {
         // Set filter state for weekly tab
         this.filters.selectedBillType = "weekly";
         
-        // weekly tab
+        // weekly tab - fetch weekly data
         this.fetchData("weekly");
       } else if (tabIndex === 2) {
         // Clear other arrays first to avoid display issues
@@ -276,7 +412,7 @@ document.addEventListener("alpine:init", () => {
         // Set filter state for general tab
         this.filters.selectedBillType = "general";
         
-        // general tab
+        // general tab - fetch general data
         this.fetchData("general");
       } else if (tabIndex === 3) {
         // Clear other arrays first to avoid display issues
@@ -580,6 +716,7 @@ document.addEventListener("alpine:init", () => {
         const params = {
           "start-year": this.filters.selectedStartYear,
           "end-year": this.filters.selectedEndYear,
+          "bill-type": this.filters.selectedBillType,
           limit: this.pageSize,
           offset: offset,
         };
@@ -663,6 +800,7 @@ document.addEventListener("alpine:init", () => {
         const params = {
           "start-year": this.filters.selectedStartYear,
           "end-year": this.filters.selectedEndYear,
+          "bill-type": this.filters.selectedBillType,
           limit: this.pageSize,
           offset: offset,
         };
@@ -762,23 +900,49 @@ document.addEventListener("alpine:init", () => {
       this.page = page;
       this.pagination.page = page;
 
-      // Get current tab to determine which data to fetch
-      const currentTab = this.getOpenTab();
+      // Use the new two-tiered tab system to determine which data to fetch
+      const combo = `${this.primaryTab}-${this.secondaryTab}`;
 
       // Set a loading state
       this.meta.loading = true;
 
-      // Fetch new data for the page
-      if (currentTab === 1) {
-        this.fetchData("weekly");
-      } else if (currentTab === 2) {
-        this.fetchData("general");
-      } else if (currentTab === 3) {
-        this.fetchDeaths();
-      } else if (currentTab === 4) {
-        this.fetchChristenings();
-      } else if (currentTab === 5) {
-        this.fetchParishYearly();
+      // Fetch new data for the page based on current tab combination
+      switch (combo) {
+        case "annual-parishes":
+          this.fetchData(this.filters.selectedBillType);
+          break;
+        case "annual-deaths":
+          this.fetchDeaths();
+          break;
+        case "annual-christenings":
+          this.fetchChristenings();
+          break;
+        case "yearly-parishes":
+          this.fetchData(this.filters.selectedBillType);
+          break;
+        case "yearly-deaths":
+          this.fetchDeaths();
+          break;
+        case "yearly-christenings":
+          this.fetchChristenings();
+          break;
+        case "bread-death-foodstuffs":
+          // Future implementation
+          console.log("Foodstuffs pagination - to be implemented");
+          break;
+        case "bread-death-ages":
+          // Future implementation
+          console.log("Ages pagination - to be implemented");
+          break;
+        default:
+          console.warn("Unknown tab combination for pagination:", combo);
+          // Fallback to legacy system for safety
+          const currentTab = this.getOpenTab();
+          if (currentTab === 1) {
+            this.fetchData(this.filters.selectedBillType);
+          } else if (currentTab === 2) {
+            this.fetchData(this.filters.selectedBillType);
+          }
       }
 
       // Re-enable cursor pagination after page-based fetch completes
@@ -865,17 +1029,11 @@ document.addEventListener("alpine:init", () => {
       this.pagination.cursors = []; // Reset cursor stack
       this.pagination.useCursor = true; // Re-enable cursor pagination
 
-      // Get current tab to determine which data to fetch
-      const currentTab = this.getOpenTab();
-      if (currentTab === 1) {
-        this.fetchData("weekly");
-      } else if (currentTab === 2) {
-        this.fetchData("general");
-      } else if (currentTab === 3) {
-        this.fetchDeaths();
-      } else if (currentTab === 4) {
-        this.fetchChristenings();
-      }
+      // Use new tab system for data fetching
+      this.loadTabData();
+      
+      // Close the filter panel
+      this.filtersOpen = false;
     },
 
     /**
@@ -904,9 +1062,9 @@ document.addEventListener("alpine:init", () => {
       // Get current tab to determine which data to fetch
       const currentTab = this.getOpenTab();
       if (currentTab === 1) {
-        this.fetchData("weekly");
+        this.fetchData(this.filters.selectedBillType);
       } else if (currentTab === 2) {
-        this.fetchData("general");
+        this.fetchData(this.filters.selectedBillType);
       } else if (currentTab === 3) {
         this.fetchDeaths();
       } else if (currentTab === 4) {
@@ -923,6 +1081,8 @@ document.addEventListener("alpine:init", () => {
       // Restore defaults
       this.filters.selectedStartYear = 1636;
       this.filters.selectedEndYear = 1754;
+      this.filters.selectedStartWeek = 1;
+      this.filters.selectedEndWeek = 52;
       this.filters.selectedCountType = "";
       this.filters.selectedBillType = "weekly";
       this.filters.selectedParishes = [];
@@ -936,18 +1096,45 @@ document.addEventListener("alpine:init", () => {
       this.pagination.cursors = []; // Reset cursor stack
       this.pagination.useCursor = true; // Re-enable cursor pagination
 
-      // Get current tab to determine which data to fetch
-      const currentTab = this.getOpenTab();
-      if (currentTab === 1) {
-        this.fetchData("weekly");
-      } else if (currentTab === 2) {
-        this.fetchData("general");
-      } else if (currentTab === 3) {
-        this.fetchDeaths();
-      } else if (currentTab === 4) {
-        this.fetchChristenings();
-      } else if (currentTab === 5) {
-        this.fetchParishYearly();
+      // Get current tab combination to determine which data to fetch
+      const combo = `${this.primaryTab}-${this.secondaryTab}`;
+      
+      switch (combo) {
+        case "annual-parishes":
+          this.fetchData(this.filters.selectedBillType);
+          break;
+        case "annual-deaths":
+          this.fetchDeaths();
+          break;
+        case "annual-christenings":
+          this.fetchChristenings();
+          break;
+        case "yearly-parishes":
+          this.fetchData(this.filters.selectedBillType);
+          break;
+        case "yearly-deaths":
+          this.fetchDeaths();
+          break;
+        case "yearly-christenings":
+          this.fetchChristenings();
+          break;
+        case "bread-death-foodstuffs":
+          // Future implementation
+          console.log("Foodstuffs reset - to be implemented");
+          break;
+        case "bread-death-ages":
+          // Future implementation
+          console.log("Ages reset - to be implemented");
+          break;
+        default:
+          console.warn("Unknown tab combination for reset:", combo);
+          // Fallback to legacy system for safety
+          const currentTab = this.getOpenTab();
+          if (currentTab === 1) {
+            this.fetchData(this.filters.selectedBillType);
+          } else if (currentTab === 2) {
+            this.fetchData(this.filters.selectedBillType);
+          }
       }
     },
 
@@ -1095,7 +1282,13 @@ document.addEventListener("alpine:init", () => {
 
       params.set("start-year", this.filters.selectedStartYear);
       params.set("end-year", this.filters.selectedEndYear);
-      if (this.filters.selectedCountType && this.filters.selectedCountType !== "All") {
+      if (this.filters.selectedStartWeek !== 1) {
+        params.set("start-week", this.filters.selectedStartWeek);
+      }
+      if (this.filters.selectedEndWeek !== 52) {
+        params.set("end-week", this.filters.selectedEndWeek);
+      }
+      if (this.filters.selectedCountType && this.filters.selectedCountType !== "all") {
         params.set("count-type", this.filters.selectedCountType);
       }
       if (this.filters.selectedParishes.length > 0) {
@@ -1111,7 +1304,11 @@ document.addEventListener("alpine:init", () => {
 
       params.set("bill-type", this.filters.selectedBillType);
 
-      // Add tab to URL
+      // Add two-tiered tab system to URL
+      params.set("primary-tab", this.primaryTab);
+      params.set("secondary-tab", this.secondaryTab);
+
+      // Add legacy tab to URL for backward compatibility
       params.set("tab", this.getOpenTab());
 
       // Use the history API to update the URL without reloading
@@ -1121,14 +1318,21 @@ document.addEventListener("alpine:init", () => {
     /**
      * Open modal with chart
      */
-    openModal(bill) {
-      this.modalBill = bill;
+    openModal(item) {
+      this.modalBill = item;
       this.modalOpen = true;
 
       // Initialize chart only after modal is open and we have data
       this.$nextTick(() => {
-        if (bill && bill.name) {
-          this.initModalChart(bill.name);
+        if (item && item.name) {
+          // Parish data
+          this.initModalChart(item.name, 'parish');
+        } else if (item && item.death) {
+          // Death data
+          this.initModalChart(item.death, 'death');
+        } else if (item && item.christening) {
+          // Christening data
+          this.initModalChart(item.christening, 'christening');
         }
       });
     },
@@ -1136,21 +1340,26 @@ document.addEventListener("alpine:init", () => {
     /**
      * Initialize modal chart
      */
-    initModalChart(parishName) {
-      if (!parishName) {
-        console.error("No parish name provided for chart initialization");
+    initModalChart(identifier, dataType = 'parish') {
+      if (!identifier) {
+        console.error("No identifier provided for chart initialization");
         return;
       }
 
-      // Use IDs to ensure we get the right elements
-      const chartContainer = document.getElementById("modal-chart-container");
-      const loadingIndicator = document.getElementById(
-        "modal-loading-indicator",
-      );
-      const errorMessage = document.getElementById("modal-error-message");
+      // Get container IDs based on data type
+      const suffixes = {
+        'parish': '',
+        'death': '-deaths', 
+        'christening': '-christenings'
+      };
+      
+      const suffix = suffixes[dataType] || '';
+      const chartContainer = document.getElementById(`modal-chart-container${suffix}`);
+      const loadingIndicator = document.getElementById(`modal-loading-indicator${suffix}`);
+      const errorMessage = document.getElementById(`modal-error-message${suffix}`);
 
       if (!chartContainer) {
-        console.error("Chart container not found");
+        console.error(`Chart container not found: modal-chart-container${suffix}`);
         return;
       }
 
@@ -1165,21 +1374,36 @@ document.addEventListener("alpine:init", () => {
       if (window.ChartService) {
         window.ChartService.loadPlotLibrary()
           .then(() => {
-            // Get data from cache if available, otherwise fetch
-            if (this.parishYearlyData[parishName]) {
-              return this.parishYearlyData[parishName];
+            // Get appropriate data based on type
+            let dataPromise;
+            const cacheKey = `${dataType}-${identifier}`;
+            
+            if (dataType === 'parish') {
+              if (this.parishYearlyData[identifier]) {
+                dataPromise = Promise.resolve(this.parishYearlyData[identifier]);
+              } else {
+                dataPromise = window.DataService.fetchParishYearly(identifier).then(
+                  (data) => {
+                    this.parishYearlyData[identifier] = data;
+                    return data;
+                  }
+                );
+              }
+            } else if (dataType === 'death') {
+              // For now, use a placeholder until backend API is ready
+              dataPromise = this.generateMockChartData(identifier, 'death');
+            } else if (dataType === 'christening') {
+              // For now, use a placeholder until backend API is ready
+              dataPromise = this.generateMockChartData(identifier, 'christening');
             } else {
-              return window.DataService.fetchParishYearly(parishName).then(
-                (data) => {
-                  this.parishYearlyData[parishName] = data;
-                  return data;
-                },
-              );
+              dataPromise = Promise.reject(new Error(`Unknown data type: ${dataType}`));
             }
+            
+            return dataPromise;
           })
           .then((data) => {
             // Use ChartService to render the chart
-            window.ChartService.createModalDetailChart(chartContainer, data);
+            window.ChartService.createModalDetailChart(chartContainer, data, dataType);
 
             // Hide loading indicator
             if (loadingIndicator) loadingIndicator.style.display = "none";
@@ -1201,6 +1425,41 @@ document.addEventListener("alpine:init", () => {
       } else {
         console.error("ChartService not available");
       }
+    },
+
+    /**
+     * Generate mock chart data for deaths and christenings
+     * TODO: Replace with real API calls when backend is ready
+     */
+    generateMockChartData(identifier, dataType) {
+      return new Promise((resolve) => {
+        // Generate sample data for demonstration
+        const startYear = 1636;
+        const endYear = 1754;
+        const data = [];
+        
+        for (let year = startYear; year <= endYear; year += 5) {
+          const baseCount = Math.floor(Math.random() * 100) + 20;
+          const variation = Math.floor(Math.random() * 50) - 25;
+          
+          if (dataType === 'death') {
+            data.push({
+              year: year,
+              total_deaths: Math.max(1, baseCount + variation),
+              cause: identifier
+            });
+          } else if (dataType === 'christening') {
+            data.push({
+              year: year,
+              total_christenings: Math.max(1, baseCount + variation),
+              type: identifier
+            });
+          }
+        }
+        
+        // Simulate async delay
+        setTimeout(() => resolve(data), 300);
+      });
     },
 
     /**
@@ -1323,6 +1582,117 @@ document.addEventListener("alpine:init", () => {
       window.addEventListener("touchmove", moveHandler);
       window.addEventListener("mouseup", endHandler);
       window.addEventListener("touchend", endHandler);
+    },
+
+    /**
+     * Handle week range slider dragging
+     */
+    startWeekDrag(event, handle) {
+      // Set the current handle being dragged
+      this.weekDragging = handle;
+
+      // Prevent text selection during drag
+      event.preventDefault();
+
+      // Get the slider track element
+      const track = event.target.parentElement;
+
+      // Calculate position and update week
+      const updatePosition = (e) => {
+        // Get event position (support both mouse and touch)
+        const clientX = e.type.includes("touch")
+          ? e.touches[0].clientX
+          : e.clientX;
+
+        // Calculate position relative to the track
+        const rect = track.getBoundingClientRect();
+        const position = (clientX - rect.left) / rect.width;
+
+        // Convert position to week value (1-52)
+        const minWeek = 1;
+        const maxWeek = 52;
+        const range = maxWeek - minWeek;
+
+        // Calculate the new week based on position
+        let newWeek = Math.round(minWeek + position * range);
+
+        // Clamp the week to valid range
+        newWeek = Math.max(minWeek, Math.min(maxWeek, newWeek));
+
+        // Update the appropriate week based on which handle is being dragged
+        if (this.weekDragging === "start") {
+          // Ensure start week doesn't exceed end week
+          this.filters.selectedStartWeek = Math.min(
+            newWeek,
+            this.filters.selectedEndWeek,
+          );
+        } else if (this.weekDragging === "end") {
+          // Ensure end week doesn't go below start week
+          this.filters.selectedEndWeek = Math.max(
+            newWeek,
+            this.filters.selectedStartWeek,
+          );
+        }
+      };
+
+      // Handle the initial position
+      updatePosition(event);
+
+      // Set up event listeners for dragging
+      const moveHandler = (e) => updatePosition(e);
+      const endHandler = () => {
+        // Clear dragging state
+        this.weekDragging = null;
+
+        // Remove event listeners
+        window.removeEventListener("mousemove", moveHandler);
+        window.removeEventListener("touchmove", moveHandler);
+        window.removeEventListener("mouseup", endHandler);
+        window.removeEventListener("touchend", endHandler);
+
+        // Validate the selected weeks
+        this.validateWeekInput();
+      };
+
+      // Add event listeners
+      window.addEventListener("mousemove", moveHandler);
+      window.addEventListener("touchmove", moveHandler);
+      window.addEventListener("mouseup", endHandler);
+      window.addEventListener("touchend", endHandler);
+    },
+
+    /**
+     * Validate week input range
+     */
+    validateWeekInput() {
+      // Ensure weeks are within valid range
+      this.filters.selectedStartWeek = Math.max(1, Math.min(52, this.filters.selectedStartWeek || 1));
+      this.filters.selectedEndWeek = Math.max(1, Math.min(52, this.filters.selectedEndWeek || 52));
+
+      // Ensure start week doesn't exceed end week
+      if (this.filters.selectedStartWeek > this.filters.selectedEndWeek) {
+        this.filters.selectedEndWeek = this.filters.selectedStartWeek;
+      }
+    },
+
+    /**
+     * Get count type options based on current tab context
+     */
+    getCountTypeOptions() {
+      const secondaryTab = this.getSecondaryTab();
+      let options = '<option value="all">All</option>';
+      
+      if (secondaryTab === 'parishes') {
+        options += '<option value="buried">Buried</option>';
+        options += '<option value="plague">Plague</option>';
+      } else if (secondaryTab === 'deaths') {
+        options += '<option value="total">Total</option>';
+      } else if (secondaryTab === 'christenings') {
+        options += '<option value="buried">Buried</option>';
+        options += '<option value="plague">Plague</option>';
+      }
+      
+      return options;
     },
   }));
 });

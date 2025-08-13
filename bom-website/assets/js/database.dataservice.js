@@ -4,7 +4,7 @@
  */
 
 const DataService = {
-  baseUrl: 'https://data.chnm.org/bom',
+  baseUrl: 'http://localhost:8090/bom',
   cache: {},
   
   // Request management
@@ -276,8 +276,16 @@ const DataService = {
       'end-year': filters.selectedEndYear
     };
     
+    // Add week range parameters if they're not the default values
+    if (filters.selectedStartWeek && filters.selectedStartWeek > 1) {
+      params['start-week'] = filters.selectedStartWeek;
+    }
+    if (filters.selectedEndWeek && filters.selectedEndWeek < 52) {
+      params['end-week'] = filters.selectedEndWeek;
+    }
+    
     // Only add non-empty parameters
-    if (filters.selectedCountType && filters.selectedCountType !== '') {
+    if (filters.selectedCountType && filters.selectedCountType !== '' && filters.selectedCountType !== 'all') {
       params['count-type'] = filters.selectedCountType;
     }
     if (filters.selectedParishes && filters.selectedParishes.length > 0) {
@@ -316,6 +324,7 @@ const DataService = {
     const params = {
       'start-year': filters.selectedStartYear,
       'end-year': filters.selectedEndYear,
+      'bill-type': filters.selectedBillType || 'weekly',
       'limit': pagination.pageSize,
       'offset': (pagination.page - 1) * pagination.pageSize
     };
@@ -346,6 +355,7 @@ const DataService = {
     const params = {
       'start-year': filters.selectedStartYear,
       'end-year': filters.selectedEndYear,
+      'bill-type': filters.selectedBillType || 'weekly',
       'id': filters.selectedChristenings,
       'limit': pagination.pageSize,
       'offset': (pagination.page - 1) * pagination.pageSize
