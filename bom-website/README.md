@@ -25,3 +25,9 @@ Then, anytime TailwindCSS components are added to a layout or content file, you 
 ```
 npm run build-tw
 ```
+
+or 
+
+```
+make tailwind
+```
