@@ -1,60 +1,115 @@
-{{/* begin: filter accordion */}}
-<div id="accordion-flush" data-accordion="collapse"
-  data-active-classes="bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
-  data-inactive-classes="text-gray-500 dark:text-gray-400">
-  <div x-data="{ expanded: false }" class="filter__header">
-    <h2 id="accordion-flush-heading-1">
-      <button type="button" @click="expanded = ! expanded"
-        class="flex justify-between items-center py-5 w-full font-medium text-left text-gray-900 border-b border-t border-gray-200 dark:border-gray-700 dark:text-white"
-        data-accordion-target="#accordion-flush-body-1" aria-expanded="true" aria-controls="accordion-flush-body-1">
-        <span>Filter</span>
-        <svg class="w-5 h-5 ml-2 transform" :class="{'rotate-180': expanded}" viewBox="0 0 20 20"
-          fill="currentColor">
-          <path fill-rule="evenodd" d="M10.293 14.95a1 1 0 0 1-1.414 0l-4-4a1 1 0 1 1 1.414-1.414L10
-      12.586l3.293-3.293a1 1 0 1 1 1.414 1.414l-4 4z" clip-rule="evenodd"></path>
-        </svg>
-    </h2>
-    <div id="accordion-flush-body-1" aria-labelledby="accordion-flush-heading-1">
-      <div class="py-5 border-b border-gray-200 dark:border-gray-700">
-        <div x-show="expanded" x-collapse class="filter__header__content">
-          <div class="grid grid-cols-4 gap-4 pb-6">
-            <div>
-              <h3 class="text-base font-medium leading-6 text-gray-900">Parishes</h3>
-              <div class="py-4 px-5 max-h-64 overflow-scroll border border-slate-200">
-                <div class="filter__header__content__item" style="height: 200px;">
-                  <template x-for="parish in parishes" :key="parish.id">
-                    <div>
-                      <input type="checkbox" :id="parish.canonical_name" :value="parish.id"
-                        x-model="filters.selectedParishes">
-                      <label :for="parish.canonical_name" x-text="parish.canonical_name"></label>
-                    </div>
-                  </template>
-                </div>
-              </div>
+{{/* begin: slide-out filter content */}}
+<div class="p-6">
+  <div class="space-y-8">
+    {{/* Parishes filter - Show for parish-related tabs */}}
+    <div 
+      x-show="getSecondaryTab() === 'parishes'"
+      class="space-y-3">
+      <h3 class="text-sm font-medium text-gray-700">Parishes</h3>
+      <div class="bg-gray-50 rounded-lg border border-gray-200 p-4 h-48 overflow-y-auto">
+        <div class="space-y-2">
+          <template x-for="parish in parishes" :key="parish.id">
+            <div class="flex items-center">
+              <input 
+                type="checkbox" 
+                :id="parish.canonical_name" 
+                :value="parish.id"
+                x-model="filters.selectedParishes"
+                class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+              >
+              <label 
+                :for="parish.canonical_name" 
+                x-text="parish.canonical_name"
+                class="ml-2 text-sm text-gray-600 cursor-pointer"
+              ></label>
             </div>
-            <div>
-              <!-- Year Range Slider Replacement -->
-              <h3 class="text-base font-medium leading-6 text-gray-900">Year Range</h3>
-              <div class="mt-4">
-                <!-- Range slider container -->
-                <div class="relative pb-8 pt-2">
-                  <!-- Year range display -->
-                  <div class="flex justify-between mb-2">
-                    <span class="text-sm text-gray-700" x-text="filters.selectedStartYear"></span>
-                    <span class="text-sm text-gray-700" x-text="filters.selectedEndYear"></span>
+          </template>
+        </div>
+      </div>
+    </div>
+
+    {{/* Causes of Death filter - Show for deaths tab */}}
+    <div 
+      x-show="getSecondaryTab() === 'deaths'"
+      class="space-y-3">
+      <h3 class="text-sm font-medium text-gray-700">Causes of Death</h3>
+      <div class="bg-gray-50 rounded-lg border border-gray-200 p-4 h-48 overflow-y-auto">
+        <div class="space-y-2">
+          <template x-for="cause in all_causes" :key="cause.id">
+            <div class="flex items-center">
+              <input 
+                type="checkbox" 
+                :id="cause.name" 
+                :value="cause.name"
+                x-model="filters.selectedCausesOfDeath"
+                class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+              >
+              <label 
+                :for="cause.name" 
+                x-text="cause.name"
+                class="ml-2 text-sm text-gray-600 cursor-pointer"
+              ></label>
+            </div>
+          </template>
+        </div>
+      </div>
+    </div>
+
+    {{/* Christenings filter - Show for christenings tab */}}
+    <div 
+      x-show="getSecondaryTab() === 'christenings'"
+      class="space-y-3">
+      <h3 class="text-sm font-medium text-gray-700">Christenings</h3>
+      <div class="bg-gray-50 rounded-lg border border-gray-200 p-4 h-48 overflow-y-auto">
+        <div class="space-y-2">
+          <template x-for="christening_parish in all_christenings" :key="christening_parish.id">
+            <div class="flex items-center">
+              <input 
+                type="checkbox" 
+                :id="christening_parish.canonical_name" 
+                :value="christening_parish.id"
+                x-model="filters.selectedChristenings"
+                class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+              >
+              <label 
+                :for="christening_parish.canonical_name" 
+                x-text="christening_parish.name"
+                class="ml-2 text-sm text-gray-600 cursor-pointer"
+              ></label>
+            </div>
+          </template>
+        </div>
+      </div>
+    </div>
+
+    {{/* Year Range filter - Show for all tabs */}}
+    <div class="space-y-3">
+      <h3 class="text-sm font-medium text-gray-700">Year Range</h3>
+      <div class="bg-gray-50 rounded-lg border border-gray-200 p-4">
+                <!-- Year range display -->
+                <div class="flex justify-between mb-4">
+                  <div class="text-center">
+                    <div class="text-xs text-gray-500 mb-1">From</div>
+                    <div class="text-sm font-medium text-gray-700" x-text="filters.selectedStartYear"></div>
                   </div>
-                  
-                  <!-- Slider track -->
+                  <div class="text-center">
+                    <div class="text-xs text-gray-500 mb-1">To</div>
+                    <div class="text-sm font-medium text-gray-700" x-text="filters.selectedEndYear"></div>
+                  </div>
+                </div>
+                
+                <!-- Slider track -->
+                <div class="relative pb-6">
                   <div class="w-full h-2 bg-gray-200 rounded-md relative">
                     <!-- Selected range highlight -->
                     <div 
-                      class="absolute h-full bg-dbn-blue rounded-md" 
+                      class="absolute h-full bg-blue-500 rounded-md" 
                       :style="`left: ${((filters.selectedStartYear - 1636) / (1754 - 1636)) * 100}%; right: ${100 - ((filters.selectedEndYear - 1636) / (1754 - 1636)) * 100}%`"
                     ></div>
                     
                     <!-- Min handle -->
                     <div 
-                      class="absolute w-5 h-5 bg-white border-2 border-dbn-blue rounded-full -mt-1.5 transform -translate-x-1/2 cursor-pointer focus:outline-none"
+                      class="absolute w-5 h-5 bg-white border-2 border-blue-500 rounded-full -mt-1.5 transform -translate-x-1/2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
                       :style="`left: ${((filters.selectedStartYear - 1636) / (1754 - 1636)) * 100}%`"
                       @mousedown="startDrag($event, 'start')"
                       @touchstart="startDrag($event, 'start')"
@@ -63,12 +118,11 @@
                       :aria-valuenow="filters.selectedStartYear"
                       aria-valuemin="1636"
                       aria-valuemax="1754"
-                      aria-labelledby="year-range-start"
                     ></div>
                     
                     <!-- Max handle -->
                     <div 
-                      class="absolute w-5 h-5 bg-white border-2 border-dbn-blue rounded-full -mt-1.5 transform -translate-x-1/2 cursor-pointer focus:outline-none"
+                      class="absolute w-5 h-5 bg-white border-2 border-blue-500 rounded-full -mt-1.5 transform -translate-x-1/2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
                       :style="`left: ${((filters.selectedEndYear - 1636) / (1754 - 1636)) * 100}%`"
                       @mousedown="startDrag($event, 'end')"
                       @touchstart="startDrag($event, 'end')"
@@ -77,51 +131,133 @@
                       :aria-valuenow="filters.selectedEndYear"
                       aria-valuemin="1636"
                       aria-valuemax="1754"
-                      aria-labelledby="year-range-end"
                     ></div>
                   </div>
                   
                   <!-- Year ticks -->
-                  <div class="flex justify-between w-full mt-1">
-                    <span class="text-xs text-gray-500">1636</span>
-                    <span class="text-xs text-gray-500">1660</span>
-                    <span class="text-xs text-gray-500">1684</span>
-                    <span class="text-xs text-gray-500">1708</span>
-                    <span class="text-xs text-gray-500">1732</span>
-                    <span class="text-xs text-gray-500">1754</span>
+                  <div class="flex justify-between w-full mt-2">
+                    <span class="text-xs text-gray-400">1636</span>
+                    <span class="text-xs text-gray-400">1660</span>
+                    <span class="text-xs text-gray-400">1684</span>
+                    <span class="text-xs text-gray-400">1708</span>
+                    <span class="text-xs text-gray-400">1732</span>
+                    <span class="text-xs text-gray-400">1754</span>
                   </div>
                 </div>
-              </div>
-            </div>
-            <div>
-              <div class="w-1/2 inline-block relative">
-                <h3 class="text-base font-medium leading-6 text-gray-900">Count Type</h3>
-                <select
-                  class="w-full bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 rounded-lg leading-tight py-2 px-3 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                  @change="setCountType()" x-model="filters.selectedCountType">
-                  <option value="all">All</option>
-                  <option x-show="activeTab === 1" value="buried">Buried</option>
-                  <option x-show="activeTab === 1" value="plague">Plague</option>
-                  <option x-show="activeTab === 2" value="total">Total</option>
-                </select>
-              </div>
-            </div>
-            <div>
-              <button
-              class="rounded border border-gray-200 bg-white text-sm font-medium px-4 py-2 text-gray-900 hover:bg-dbn-blue hover:text-black focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700"
-                @click="resetFilters">
-                Reset Filters
-              </button>
-              <button
-              class="rounded border border-gray-200 bg-white text-sm font-medium px-4 py-2 text-gray-900 hover:bg-dbn-blue hover:text-black focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700"
-              @click="applyFilters">
-                Apply Filters
-              </button>
-             </div>
+
+                <!-- Week Number Slider - Only for Annual Parish data and Christenings -->
+                <div 
+                  x-show="(getPrimaryTab() === 'annual' && getSecondaryTab() === 'parishes') || 
+                          getSecondaryTab() === 'christenings'"
+                  x-transition:enter="transition ease-out duration-200"
+                  x-transition:enter-start="opacity-0 transform scale-95"
+                  x-transition:enter-end="opacity-100 transform scale-100"
+                  x-transition:leave="transition ease-in duration-150"
+                  x-transition:leave-start="opacity-100 transform scale-100"
+                  x-transition:leave-end="opacity-0 transform scale-95"
+                  class="mt-4">
+                  <div class="border-t border-gray-200 pt-4">
+                    <div class="text-xs font-medium text-gray-600 mb-3">Week Range</div>
+                    <!-- Week range display -->
+                    <div class="flex justify-between mb-4">
+                      <div class="text-center">
+                        <div class="text-xs text-gray-500 mb-1">From Week</div>
+                        <div class="text-sm font-medium text-gray-700" x-text="filters.selectedStartWeek || 1"></div>
+                      </div>
+                      <div class="text-center">
+                        <div class="text-xs text-gray-500 mb-1">To Week</div>
+                        <div class="text-sm font-medium text-gray-700" x-text="filters.selectedEndWeek || 52"></div>
+                      </div>
+                    </div>
+                    
+                    <!-- Week slider track -->
+                    <div class="relative pb-6">
+                      <div class="w-full h-2 bg-gray-200 rounded-md relative">
+                        <!-- Selected week range highlight -->
+                        <div 
+                          class="absolute h-full bg-green-500 rounded-md" 
+                          :style="`left: ${(((filters.selectedStartWeek || 1) - 1) / 51) * 100}%; right: ${100 - (((filters.selectedEndWeek || 52) - 1) / 51) * 100}%`"
+                        ></div>
+                        
+                        <!-- Min week handle -->
+                        <div 
+                          class="absolute w-5 h-5 bg-white border-2 border-green-500 rounded-full -mt-1.5 transform -translate-x-1/2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+                          :style="`left: ${(((filters.selectedStartWeek || 1) - 1) / 51) * 100}%`"
+                          @mousedown="startWeekDrag($event, 'start')"
+                          @touchstart="startWeekDrag($event, 'start')"
+                          tabindex="0"
+                          role="slider"
+                          :aria-valuenow="filters.selectedStartWeek || 1"
+                          aria-valuemin="1"
+                          aria-valuemax="52"
+                        ></div>
+                        
+                        <!-- Max week handle -->
+                        <div 
+                          class="absolute w-5 h-5 bg-white border-2 border-green-500 rounded-full -mt-1.5 transform -translate-x-1/2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+                          :style="`left: ${(((filters.selectedEndWeek || 52) - 1) / 51) * 100}%`"
+                          @mousedown="startWeekDrag($event, 'end')"
+                          @touchstart="startWeekDrag($event, 'end')"
+                          tabindex="0"
+                          role="slider"
+                          :aria-valuenow="filters.selectedEndWeek || 52"
+                          aria-valuemin="1"
+                          aria-valuemax="52"
+                        ></div>
+                      </div>
+                      
+                      <!-- Week ticks -->
+                      <div class="flex justify-between w-full mt-2">
+                        <span class="text-xs text-gray-400">1</span>
+                        <span class="text-xs text-gray-400">13</span>
+                        <span class="text-xs text-gray-400">26</span>
+                        <span class="text-xs text-gray-400">39</span>
+                        <span class="text-xs text-gray-400">52</span>
+                      </div>
+                    </div>
+                  </div>
         </div>
       </div>
     </div>
-  </div>  
+
+    {{/* Count Type filter - Show only for Annual Parish data and Christenings */}}
+    <div 
+      x-show="(getPrimaryTab() === 'annual' && getSecondaryTab() === 'parishes') || 
+              getSecondaryTab() === 'christenings'"
+      class="space-y-3">
+      <h3 class="text-sm font-medium text-gray-700">Count Type</h3>
+      <div class="bg-gray-50 rounded-lg border border-gray-200 p-4">
+        <select
+          class="w-full bg-white border border-gray-200 text-gray-700 rounded-lg py-2 px-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+          @change="setCountType()" 
+          x-model="filters.selectedCountType"
+          x-html="getCountTypeOptions()">
+        </select>
+      </div>
+    </div>
+
+    {{/* Actions - Show for all tabs */}}
+    <div class="space-y-3">
+      <h3 class="text-sm font-medium text-gray-700">Actions</h3>
+      <div class="space-y-2">
+        <button
+          class="w-full inline-flex justify-center items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+          @click="applyFilters">
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.707A1 1 0 013 7V4z"/>
+          </svg>
+          Apply Filters
+        </button>
+        <button
+          class="w-full inline-flex justify-center items-center px-4 py-2 text-sm font-medium text-gray-500 bg-gray-50 border border-gray-200 rounded-lg hover:bg-gray-100 hover:text-gray-700 focus:ring-2 focus:ring-gray-500 focus:border-gray-500 transition-colors duration-200"
+          @click="resetFilters">
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+          </svg>
+          Reset Filters
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
-</div>
-{{/* end: filter accordion */}}
+{{/* end: slide-out filter content */}}

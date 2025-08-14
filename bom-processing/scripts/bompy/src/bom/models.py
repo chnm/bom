@@ -93,6 +93,7 @@ class CausesOfDeathRecord:
     source_name: Optional[str]
     definition: Optional[str]  # From dictionary
     definition_source: Optional[str]
+    bill_type: Optional[str]  # 'weekly' or 'general'
     
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary for DataFrame creation."""
@@ -105,6 +106,7 @@ class CausesOfDeathRecord:
             "source_name": self.source_name,
             "definition": self.definition,
             "definition_source": self.definition_source,
+            "bill_type": self.bill_type,
         }
 
 @dataclass

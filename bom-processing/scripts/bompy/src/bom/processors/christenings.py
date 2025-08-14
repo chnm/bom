@@ -53,6 +53,10 @@ class ChristeningsProcessor:
             week_number = self._extract_week_number(row)
             unique_identifier = self._extract_unique_identifier(row)
             
+            # For General Bills, set week_number to 90 if not present (indicates annual data)
+            if week_number is None and 'general' in dataset_name.lower():
+                week_number = 90
+            
             # Extract date information
             start_day = self._extract_date_field(row, 'start_day')
             start_month = self._extract_date_field(row, 'start_month')
@@ -87,7 +91,7 @@ class ChristeningsProcessor:
                     missing=self._is_missing_value(raw_value),
                     illegible=self._is_illegible_value(raw_value),
                     source=dataset_name,
-                    bill_type=self._determine_bill_type(week_number),
+                    bill_type=self._determine_bill_type(dataset_name, week_number),
                     joinid=joinid,
                     unique_identifier=unique_identifier
                 )
@@ -189,7 +193,7 @@ class ChristeningsProcessor:
     
     def _extract_year(self, row: pd.Series) -> Optional[int]:
         """Extract year from row data."""
-        year_fields = ['year', 'Year']
+        year_fields = ['year', 'Year', 'start_year', 'Start Year']
         
         for field in year_fields:
             if field in row.index and not pd.isna(row[field]):
@@ -316,13 +320,28 @@ class ChristeningsProcessor:
         
         return any(indicator in value_str for indicator in illegible_indicators)
     
-    def _determine_bill_type(self, week_number: Optional[int]) -> Optional[str]:
-        """Determine bill type based on week number."""
+    def _determine_bill_type(self, source_name: str, week_number: Optional[int]) -> Optional[str]:
+        """Determine bill type based on source dataset name and week number.
+        
+        Args:
+            source_name: Name of source dataset file
+            week_number: Week number from the data
+            
+        Returns:
+            "general" or "weekly" or None
+        """
+        # Check source filename for "general" pattern (highest priority)
+        if source_name and 'general' in source_name.lower():
+            return "general"
+        
+        # Fallback to week number logic for files without clear naming
         if week_number == 90:
             return "general"
         elif week_number and 1 <= week_number <= 53:
             return "weekly"
-        return None
+        
+        # Default for files without clear indicators
+        return "weekly"
     
     def get_records(self) -> List[ChristeningRecord]:
         """Get all processed christening records."""

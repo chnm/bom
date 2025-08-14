@@ -9,6 +9,7 @@ bom-processing/db/updater/bin
 .smbdelete*
 
 CLAUDE.md
+.claude/
 bom-processing/scripts/bompy/data-raw/
 bom-processing/scripts/bompy/logs/
 .ipynb_checkpoints

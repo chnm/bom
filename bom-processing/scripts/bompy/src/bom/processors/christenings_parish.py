@@ -112,6 +112,10 @@ class ChristeningsParishProcessor:
             week_number = self._extract_week_number(row)
             unique_identifier = self._extract_unique_identifier(row)
             
+            # For General Bills, set week_number to 90 if not present (indicates annual data)
+            if week_number is None and 'general' in dataset_name.lower():
+                week_number = 90
+            
             # Validate year range (1400-1800)
             if year and (year < 1400 or year >= 1800):
                 logger.warning(f"Invalid year {year} in record {unique_identifier} from {dataset_name}. Skipping record.")
@@ -131,13 +135,17 @@ class ChristeningsParishProcessor:
             end_day = self._extract_date_field(row, 'end_day')
             end_month = self._extract_date_field(row, 'end_month')
             
+            # Extract year information (for general bills, we need both start and end years)
+            start_year = self._extract_start_year(row, year)
+            end_year = self._extract_end_year(row, year)
+            
             # Create joinid for week lookup
-            joinid = self._create_joinid(year, week_number, unique_identifier, 
+            joinid = self._create_joinid(start_year, end_year, week_number, unique_identifier, 
                                        start_day, start_month, end_day, end_month)
             week_record = week_mapping.get(joinid)
             
             # Determine bill type
-            bill_type = self._determine_bill_type(week_number)
+            bill_type = self._determine_bill_type(dataset_name, week_number)
             
             # Process each parish christening column
             for column_name in parish_christening_columns:
@@ -250,7 +258,7 @@ class ChristeningsParishProcessor:
     
     def _extract_year(self, row: pd.Series) -> Optional[int]:
         """Extract year from row data."""
-        year_fields = ['year', 'Year']
+        year_fields = ['year', 'Year', 'start_year', 'Start Year']
         
         for field in year_fields:
             if field in row.index and not pd.isna(row[field]):
@@ -309,7 +317,34 @@ class ChristeningsParishProcessor:
                     
         return None
     
-    def _create_joinid(self, year: int, week_number: Optional[int], 
+    def _extract_start_year(self, row: pd.Series, default_year: int) -> int:
+        """Extract start year from row data, with fallback to default year."""
+        start_year_fields = ['start_year', 'Start Year', 'year', 'Year']
+        
+        for field in start_year_fields:
+            if field in row.index and not pd.isna(row[field]):
+                try:
+                    return int(row[field])
+                except (ValueError, TypeError):
+                    continue
+                    
+        return default_year
+    
+    def _extract_end_year(self, row: pd.Series, default_year: int) -> int:
+        """Extract end year from row data, with fallback to default year."""
+        end_year_fields = ['end_year', 'End Year']
+        
+        for field in end_year_fields:
+            if field in row.index and not pd.isna(row[field]):
+                try:
+                    return int(row[field])
+                except (ValueError, TypeError):
+                    continue
+                    
+        # Fallback to start year or default year
+        return self._extract_start_year(row, default_year)
+    
+    def _create_joinid(self, start_year: int, end_year: int, week_number: Optional[int], 
                       unique_identifier: str, start_day: Optional[int] = None,
                       start_month: Optional[str] = None, end_day: Optional[int] = None,
                       end_month: Optional[str] = None) -> str:
@@ -319,18 +354,33 @@ class ChristeningsParishProcessor:
         
         # Use WeekExtractor's create_joinid method for consistency
         if start_day and start_month and end_day and end_month:
-            return extractor.create_joinid(year, start_month, start_day, end_month, end_day)
+            return extractor.create_joinid(start_year, start_month, start_day, end_year, end_month, end_day)
         else:
             # Fallback to default date range if specific dates not available
-            return extractor.create_joinid(year, "january", 1, "january", 7)
+            return extractor.create_joinid(start_year, "january", 1, end_year, "january", 7)
     
-    def _determine_bill_type(self, week_number: Optional[int]) -> Optional[str]:
-        """Determine bill type based on week number."""
+    def _determine_bill_type(self, source_name: str, week_number: Optional[int]) -> Optional[str]:
+        """Determine bill type based on source dataset name and week number.
+        
+        Args:
+            source_name: Name of source dataset file
+            week_number: Week number from the data
+            
+        Returns:
+            "general" or "weekly" or None
+        """
+        # Check source filename for "general" pattern (highest priority)
+        if source_name and 'general' in source_name.lower():
+            return "general"
+        
+        # Fallback to week number logic for files without clear naming
         if week_number == 90:
             return "general"
         elif week_number and 1 <= week_number <= 53:
             return "weekly"
-        return None
+        
+        # Default for files without clear indicators
+        return "weekly"
     
     def _parse_count(self, raw_value: Any) -> Optional[int]:
         """Parse count value from raw data."""
