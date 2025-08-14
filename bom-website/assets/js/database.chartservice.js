@@ -120,10 +120,11 @@ const ChartService = {
   /**
    * Creates an interactive detailed chart for the modal view
    * @param {HTMLElement} container - Container element for the chart
-   * @param {Array} data - Yearly data for the parish
+   * @param {Array} data - Yearly data for the parish, death, or christening
+   * @param {string} dataType - Type of data: 'parish', 'death', or 'christening'
    * @param {Object} options - Chart options
    */
-  createModalDetailChart(container, data, options = {}) {
+  createModalDetailChart(container, data, dataType = 'parish', options = {}) {
     if (!container || !data || !window.Plot) {
       console.error("Missing requirements for modal chart rendering");
       return;
@@ -137,33 +138,52 @@ const ChartService = {
       const chartContainer = document.createElement("div");
       chartContainer.className = "chart-container";
 
-      // Keep all data in a variable for redrawing
-      const allData = data
-        .filter((d) => d.total_buried > 0)
-        .sort((a, b) => a.year - b.year);
+      // Process data based on type
+      let allData, noDataMessage, legendItems, yField, titleField;
+      
+      if (dataType === 'parish') {
+        // Keep all data in a variable for redrawing
+        allData = data
+          .filter((d) => d.total_buried > 0)
+          .sort((a, b) => a.year - b.year);
+        noDataMessage = 'No burial data available for this parish';
+        legendItems = [
+          { type: "plague", color: "#EF3054", field: "total_plague" },
+          { type: "buried", color: "#96ADC8", field: "total_buried" },
+        ];
+      } else if (dataType === 'death') {
+        allData = data
+          .filter((d) => d.total_deaths > 0)
+          .sort((a, b) => a.year - b.year);
+        noDataMessage = 'No death data available for this cause';
+        legendItems = [
+          { type: "deaths", color: "#DC2626", field: "total_deaths" },
+        ];
+      } else if (dataType === 'christening') {
+        allData = data
+          .filter((d) => d.total_christenings > 0)
+          .sort((a, b) => a.year - b.year);
+        noDataMessage = 'No christening data available for this type';
+        legendItems = [
+          { type: "christenings", color: "#059669", field: "total_christenings" },
+        ];
+      }
 
       if (allData.length === 0) {
-        container.innerHTML =
-          '<div class="text-center py-4 text-gray-500">No burial data available for this parish</div>';
+        container.innerHTML = `<div class="text-center py-4 text-gray-500">${noDataMessage}</div>`;
         return;
       }
 
-      // State for category visibility
-      const categoryVisibility = {
-        plague: true,
-        buried: true,
-      };
+      // State for category visibility (initialize based on data type)
+      const categoryVisibility = {};
+      legendItems.forEach(item => {
+        categoryVisibility[item.type] = true;
+      });
 
       // Create custom interactive legend
       const legendContainer = document.createElement("div");
       legendContainer.className =
         "custom-legend flex justify-center gap-6 mb-3 mt-1";
-
-      // Create legend items with proper colors
-      const legendItems = [
-        { type: "plague", color: "#EF3054" },
-        { type: "buried", color: "#96ADC8" },
-      ];
 
       legendItems.forEach((item) => {
         const itemEl = document.createElement("div");
@@ -215,28 +235,50 @@ const ChartService = {
         // Always clear the chart container before redrawing
         chartContainer.innerHTML = "";
 
-        // Create long-form data for stacked chart based on visibility
+        // Create long-form data for stacked chart based on visibility and data type
         const longFormData = [];
         allData.forEach((d) => {
-          // Add plague deaths (if visible and exists)
-          if (categoryVisibility.plague && d.total_plague) {
-            longFormData.push({
-              year: d.year,
-              type: "plague",
-              value: d.total_plague,
-              total: d.total_buried,
-            });
-          }
+          if (dataType === 'parish') {
+            // Add plague deaths (if visible and exists)
+            if (categoryVisibility.plague && d.total_plague) {
+              longFormData.push({
+                year: d.year,
+                type: "plague",
+                value: d.total_plague,
+                total: d.total_buried,
+              });
+            }
 
-          // Add non-plague deaths (if visible)
-          if (categoryVisibility.buried) {
-            const nonplague = d.total_buried - (d.total_plague || 0);
-            longFormData.push({
-              year: d.year,
-              type: "buried",
-              value: nonplague,
-              total: d.total_buried,
-            });
+            // Add non-plague deaths (if visible)
+            if (categoryVisibility.buried) {
+              const nonplague = d.total_buried - (d.total_plague || 0);
+              longFormData.push({
+                year: d.year,
+                type: "buried",
+                value: nonplague,
+                total: d.total_buried,
+              });
+            }
+          } else if (dataType === 'death') {
+            // Add deaths data
+            if (categoryVisibility.deaths && d.total_deaths) {
+              longFormData.push({
+                year: d.year,
+                type: "deaths",
+                value: d.total_deaths,
+                total: d.total_deaths,
+              });
+            }
+          } else if (dataType === 'christening') {
+            // Add christenings data
+            if (categoryVisibility.christenings && d.total_christenings) {
+              longFormData.push({
+                year: d.year,
+                type: "christenings",
+                value: d.total_christenings,
+                total: d.total_christenings,
+              });
+            }
           }
         });
 
@@ -293,11 +335,18 @@ const ChartService = {
               fill: "type",
               title: (d) => {
                 const yearStr = d.year.toString().replace(/,/g, "");
-                if (d.type === "plague") {
-                  return `${yearStr}: ${d.value} plague deaths (${d.total} total deaths)`;
-                } else {
-                  return `${yearStr}: ${d.value} burials (${d.total} total burials)`;
+                if (dataType === 'parish') {
+                  if (d.type === "plague") {
+                    return `${yearStr}: ${d.value} plague deaths (${d.total} total deaths)`;
+                  } else {
+                    return `${yearStr}: ${d.value} burials (${d.total} total burials)`;
+                  }
+                } else if (dataType === 'death') {
+                  return `${yearStr}: ${d.value} deaths from this cause`;
+                } else if (dataType === 'christening') {
+                  return `${yearStr}: ${d.value} christenings of this type`;
                 }
+                return `${yearStr}: ${d.value} ${d.type}`;
               },
               stack: true,
             }),

@@ -24,11 +24,9 @@ const URLService = {
             .filter((p) => p.trim() !== "")
         : [],
       page: params.has("page") ? Math.max(1, parseInt(params.get("page"))) : 1,
-      billType:
-        params.has("bill-type") &&
-        ["weekly", "general", "total"].includes(params.get("bill-type"))
-          ? params.get("bill-type")
-          : "weekly",
+      billType: params.has("bill-type")
+        ? params.get("bill-type")
+        : "weekly",
       tab: params.has("tab") ? parseInt(params.get("tab")) : 1,
       causesOfDeath: params.has("causes")
         ? params
@@ -56,7 +54,7 @@ const URLService = {
     // Add parameters if they have values
     if (params.startYear) urlParams.set("start-year", params.startYear);
     if (params.endYear) urlParams.set("end-year", params.endYear);
-    if (params.countType && params.countType !== "All") urlParams.set("count-type", params.countType);
+    if (params.countType && params.countType !== "All" && params.countType !== "all") urlParams.set("count-type", params.countType);
 
     if (params.parishes && params.parishes.length > 0) {
       urlParams.set("parish", params.parishes.join(","));

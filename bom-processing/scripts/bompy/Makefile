@@ -127,6 +127,16 @@ validate-outputs: ## Validate generated CSV files
 	done
 	@echo -e "$(GREEN)Validation complete!$(RESET)"
 
+.PHONY: check-coverage
+check-coverage: ## Analyze data coverage by parish and year
+	@echo -e "$(CYAN)Analyzing data coverage...$(RESET)"
+	@if [ ! -f "$(DATA_OUTPUT_DIR)/all_bills.csv" ]; then \
+		echo -e "$(RED)Error: No processed data found. Run 'make process-all' first.$(RESET)"; \
+		exit 1; \
+	fi
+	poetry run python analyze_data_coverage.py
+	@echo -e "$(GREEN)Coverage analysis complete!$(RESET)"
+
 ##@ Analysis Commands
 
 .PHONY: notebooks

@@ -28,7 +28,7 @@ def main():
     """Process all Bills of Mortality data and generate PostgreSQL-ready outputs."""
     
     # Configuration flags
-    ENABLE_GLOBAL_DEDUPLICATION = False  # Set to True to remove duplicate records across sources
+    ENABLE_GLOBAL_DEDUPLICATION = True  # Set to True to remove duplicate records across sources
 
     start_time = time.time()
 
@@ -63,7 +63,7 @@ def main():
     for csv_file in csv_files:
         try:
             df, info = loader.load(csv_file)
-            all_dataframes.append((df, info.dataset_type))  # Use dataset_type instead of file_path
+            all_dataframes.append((df, csv_file.name))  # Use original filename for General Bills detection
             total_input_rows += len(df)
 
             logger.info(
@@ -77,7 +77,7 @@ def main():
                 data_types = df.dtypes.to_dict()
 
                 log_data_quality_metrics(
-                    dataset_name=info.dataset_type,
+                    dataset_name=csv_file.name,
                     shape=df.shape,
                     null_counts=null_counts,
                     unique_counts=unique_counts,
@@ -133,9 +133,24 @@ def main():
         f"Processing {len(bill_dataframes)} datasets (parish + causes) for bills"
     )
 
-    bill_records, cause_records = bills_processor.process_parish_dataframes(
+    bill_records, cause_records, new_week_records, new_year_records = bills_processor.process_parish_dataframes(
         bill_dataframes, parish_records, valid_weeks
     )
+    
+    # Merge new week records from general bills processing with deduplication
+    if new_week_records:
+        existing_joinids = {w.joinid for w in valid_weeks}
+        deduplicated_weeks = [w for w in new_week_records if w.joinid not in existing_joinids]
+        valid_weeks.extend(deduplicated_weeks)
+        logger.info(f"✓ Added {len(deduplicated_weeks)} new unique week records from general bills (filtered {len(new_week_records) - len(deduplicated_weeks)} duplicates)")
+    
+    # Merge new year records from general bills processing with deduplication  
+    if new_year_records:
+        existing_years = {y.year for y in year_records}
+        deduplicated_years = [y for y in new_year_records if y.year not in existing_years]
+        year_records.extend(deduplicated_years)
+        logger.info(f"✓ Added {len(deduplicated_years)} new unique year records from general bills (filtered {len(new_year_records) - len(deduplicated_years)} duplicates)")
+    
     logger.info(f"✓ Generated {len(bill_records)} bill of mortality records")
     logger.info(f"✓ Generated {len(cause_records)} causes of death records")
 
@@ -228,31 +243,60 @@ def main():
         validation_errors=validation_errors,
     )
 
-    # Global deduplication for bills (optional)
+    # Source-aware deduplication for bills (optional)
     if ENABLE_GLOBAL_DEDUPLICATION:
-        logger.info("Performing global deduplication on bills...")
+        logger.info("Performing source-aware deduplication on bills...")
         pre_dedup_count = len(valid_bills)
-        seen_keys = {}
         
+        # Group records by (parish_id, count_type, year, joinid)
+        groups = {}
         for record in valid_bills:
             key = (record.parish_id, record.count_type, record.year, record.joinid)
-            if key not in seen_keys:
-                seen_keys[key] = record
-            else:
-                # Keep the record with higher count, or the newer one if counts are equal
-                existing = seen_keys[key]
-                if (record.count or 0) > (existing.count or 0):
-                    seen_keys[key] = record
+            if key not in groups:
+                groups[key] = []
+            groups[key].append(record)
         
-        valid_bills = list(seen_keys.values())
+        # Process each group for source-aware deduplication
+        deduplicated_bills = []
+        same_source_removed = 0
+        cross_source_kept = 0
+        
+        for key, records in groups.items():
+            if len(records) == 1:
+                # No duplicates
+                deduplicated_bills.extend(records)
+            else:
+                # Handle duplicates - keep different sources, remove same-source duplicates
+                unique_id_to_record = {}
+                
+                for record in records:
+                    uid = record.unique_identifier
+                    if uid not in unique_id_to_record:
+                        # First time seeing this unique_identifier
+                        unique_id_to_record[uid] = record
+                    else:
+                        # Duplicate unique_identifier (same source) - keep the one with higher count
+                        existing = unique_id_to_record[uid]
+                        if (record.count or 0) > (existing.count or 0):
+                            unique_id_to_record[uid] = record
+                        same_source_removed += 1
+                
+                # Keep all records with different unique_identifiers (different sources)
+                final_records = list(unique_id_to_record.values())
+                deduplicated_bills.extend(final_records)
+                
+                if len(final_records) > 1:
+                    cross_source_kept += len(final_records)
+        
+        valid_bills = deduplicated_bills
         post_dedup_count = len(valid_bills)
         
-        if pre_dedup_count != post_dedup_count:
-            logger.info(f"Global deduplication removed {pre_dedup_count - post_dedup_count} duplicate bill records")
-        else:
-            logger.info("No duplicate bill records found across sources")
+        logger.info(f"Source-aware deduplication results:")
+        logger.info(f"  • Removed {same_source_removed} same-source duplicate records")
+        logger.info(f"  • Preserved {cross_source_kept} cross-source records")
+        logger.info(f"  • Total records: {pre_dedup_count} → {post_dedup_count}")
     else:
-        logger.info("Global deduplication disabled - preserving all source records")
+        logger.info("Source-aware deduplication disabled - preserving all source records")
 
     # Validate causes records
     valid_causes = []
@@ -271,39 +315,67 @@ def main():
         validation_errors=cause_validation_errors,
     )
 
-    # Global deduplication for causes (optional)
+    # Source-aware deduplication for causes (optional)
     if ENABLE_GLOBAL_DEDUPLICATION:
-        logger.info("Performing global deduplication on causes...")
+        logger.info("Performing source-aware deduplication on causes...")
         pre_dedup_count = len(valid_causes)
-        seen_keys = {}
         
+        # Group records by (death, year, joinid)
+        groups = {}
         for record in valid_causes:
             key = (record.death, record.year, record.joinid)
-            if key not in seen_keys:
-                seen_keys[key] = record
-            else:
-                # Keep the record with non-null count, or higher count if both have counts
-                existing = seen_keys[key]
-                should_replace = False
-                
-                if existing.count is None and record.count is not None:
-                    should_replace = True
-                elif existing.count is not None and record.count is not None:
-                    should_replace = record.count > existing.count
-                # If both are None or existing has count and new doesn't, keep existing
-                
-                if should_replace:
-                    seen_keys[key] = record
+            if key not in groups:
+                groups[key] = []
+            groups[key].append(record)
         
-        valid_causes = list(seen_keys.values())
+        # Process each group for source-aware deduplication
+        deduplicated_causes = []
+        same_source_removed = 0
+        cross_source_kept = 0
+        
+        for key, records in groups.items():
+            if len(records) == 1:
+                # No duplicates
+                deduplicated_causes.extend(records)
+            else:
+                # Handle duplicates - keep different sources, remove same-source duplicates
+                unique_id_to_record = {}
+                
+                for record in records:
+                    uid = record.source_name  # Use source_name for causes deduplication
+                    if uid not in unique_id_to_record:
+                        # First time seeing this source_name
+                        unique_id_to_record[uid] = record
+                    else:
+                        # Duplicate source_name (same source) - use better record selection
+                        existing = unique_id_to_record[uid]
+                        should_replace = False
+                        
+                        if existing.count is None and record.count is not None:
+                            should_replace = True
+                        elif existing.count is not None and record.count is not None:
+                            should_replace = record.count > existing.count
+                        
+                        if should_replace:
+                            unique_id_to_record[uid] = record
+                        same_source_removed += 1
+                
+                # Keep all records with different source_names (different sources)
+                final_records = list(unique_id_to_record.values())
+                deduplicated_causes.extend(final_records)
+                
+                if len(final_records) > 1:
+                    cross_source_kept += len(final_records)
+        
+        valid_causes = deduplicated_causes
         post_dedup_count = len(valid_causes)
         
-        if pre_dedup_count != post_dedup_count:
-            logger.info(f"Global deduplication removed {pre_dedup_count - post_dedup_count} duplicate cause records")
-        else:
-            logger.info("No duplicate cause records found across sources")
+        logger.info(f"Source-aware cause deduplication results:")
+        logger.info(f"  • Removed {same_source_removed} same-source duplicate records")
+        logger.info(f"  • Preserved {cross_source_kept} cross-source records") 
+        logger.info(f"  • Total records: {pre_dedup_count} → {post_dedup_count}")
     else:
-        logger.info("Global deduplication disabled - preserving all source records")
+        logger.info("Source-aware deduplication disabled - preserving all source records")
 
     # Generate CSV outputs
     logger.info("\n=== Generating CSV Outputs ===")

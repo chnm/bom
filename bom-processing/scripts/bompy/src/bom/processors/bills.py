@@ -5,8 +5,9 @@ from typing import List, Dict, Set, Optional, Tuple
 from loguru import logger
 import re
 
-from ..models import BillOfMortalityRecord, CausesOfDeathRecord, ParishRecord, WeekRecord
+from ..models import BillOfMortalityRecord, CausesOfDeathRecord, ParishRecord, WeekRecord, YearRecord
 from ..utils.validation import SchemaValidator
+from .general_bills import GeneralBillsProcessor
 
 
 class BillsProcessor:
@@ -14,6 +15,9 @@ class BillsProcessor:
     
     def __init__(self, dictionary_path: Optional[str] = None):
         self.validator = SchemaValidator()
+        
+        # Initialize specialized General Bills processor
+        self.general_bills_processor = GeneralBillsProcessor()
         
         # Count type patterns to identify what type of data each column represents
         self.count_type_patterns = {
@@ -87,10 +91,23 @@ class BillsProcessor:
         
         return normalized
     
-    def identify_count_type(self, column_name: str) -> str:
+    def identify_count_type(self, column_name: str, is_general_bill: bool = False) -> str:
         """Identify the count type from column name."""
         col_lower = column_name.lower()
         
+        # For general bills, check aggregate columns first
+        if is_general_bill:
+            if 'christened in' in col_lower:
+                return 'christened'
+            elif 'plague in' in col_lower:
+                return 'plague'
+            elif 'buried in' in col_lower:
+                return 'buried'
+            else:
+                # Default: individual parish columns in general bills are burial counts
+                return 'buried'
+        
+        # Original logic for weekly bills
         for count_type, pattern in self.count_type_patterns.items():
             if re.search(pattern, col_lower):
                 return count_type
@@ -98,15 +115,34 @@ class BillsProcessor:
         # Default fallback - if column contains numbers, assume it's buried
         return 'buried'
     
-    def extract_parish_name_from_column(self, column_name: str) -> str:
+    def extract_parish_name_from_column(self, column_name: str, is_general_bill: bool = False) -> str:
         """Extract parish name from column name by removing count type suffixes."""
-        # Remove common suffixes
+        # Remove count type suffixes
         parish_name = re.sub(r'_(buried|plague|christened|baptized|other)$', '', column_name)
+        parish_name = re.sub(r'\s+(buried|plague|christened|baptized|other)$', '', parish_name, flags=re.IGNORECASE)
         
-        # Convert underscores to spaces and title case
-        parish_name = parish_name.replace('_', ' ').title()
+        # Convert underscores to spaces and standardize case
+        parish_name = parish_name.replace('_', ' ')
         
-        # Clean up any artifacts
+        # Standardize case: Title case for most words, but preserve 'St' abbreviations
+        words = parish_name.split()
+        standardized_words = []
+        for word in words:
+            word_lower = word.lower()
+            if word_lower in ['st', 's']:
+                standardized_words.append(word_lower.title())  # 'St', 'S'
+            elif word_lower.startswith('st'):
+                # Handle cases like 'stbotolphs' -> 'St Botolphs' 
+                if len(word) > 2 and word[2:].isalpha():
+                    standardized_words.append('St ' + word[2:].title())
+                else:
+                    standardized_words.append(word.title())
+            else:
+                standardized_words.append(word.title())
+        
+        parish_name = ' '.join(standardized_words)
+        
+        # Clean up spacing
         parish_name = re.sub(r'\s+', ' ', parish_name).strip()
         
         return parish_name
@@ -131,7 +167,7 @@ class BillsProcessor:
         dataframes: List[tuple[pd.DataFrame, str]], 
         parish_records: List[ParishRecord],
         week_records: List[WeekRecord]
-    ) -> Tuple[List[BillOfMortalityRecord], List[CausesOfDeathRecord]]:
+    ) -> Tuple[List[BillOfMortalityRecord], List[CausesOfDeathRecord], List[WeekRecord], List[YearRecord]]:
         """
         Process DataFrames into BillOfMortalityRecord and CausesOfDeathRecord objects.
         Handles both parish data and causes data with different processing logic.
@@ -142,13 +178,15 @@ class BillsProcessor:
             week_records: List of WeekRecord objects for week_id mapping
             
         Returns:
-            Tuple of (BillOfMortalityRecord list, CausesOfDeathRecord list)
+            Tuple of (BillOfMortalityRecord list, CausesOfDeathRecord list, WeekRecord list, YearRecord list)
         """
         parish_mapping = self.create_parish_id_mapping(parish_records)
         week_mapping = self.create_week_id_mapping(week_records)
         
         bill_records = []
         cause_records = []
+        all_new_week_records = []
+        all_new_year_records = []
         
         for df, source_name in dataframes:
             logger.info(f"Processing bills from {source_name}")
@@ -162,14 +200,29 @@ class BillsProcessor:
                 cause_records.extend(records)
                 logger.info(f"Generated {len(records)} cause records from {source_name}")
             else:
-                # Process parish data
-                records = self._process_parish_dataframe(df, source_name, parish_mapping, week_mapping)
-                bill_records.extend(records)
-                logger.info(f"Generated {len(records)} bill records from {source_name}")
+                # Check if this is a General Bills dataset
+                if self.general_bills_processor.is_general_bill_dataset(source_name):
+                    # Use specialized General Bills processor
+                    records, new_week_records, new_year_records = self.general_bills_processor.process_general_bills_dataframe(
+                        df, source_name, parish_records, week_records
+                    )
+                    bill_records.extend(records)
+                    all_new_week_records.extend(new_week_records)
+                    all_new_year_records.extend(new_year_records)
+                    logger.info(f"Generated {len(records)} General Bills records from {source_name}")
+                    logger.info(f"Created {len(new_week_records)} new week records from {source_name}")
+                    logger.info(f"Created {len(new_year_records)} new year records from {source_name}")
+                else:
+                    # Process as Weekly Bills data
+                    records = self._process_parish_dataframe(df, source_name, parish_mapping, week_mapping)
+                    bill_records.extend(records)
+                    logger.info(f"Generated {len(records)} Weekly Bills records from {source_name}")
         
         logger.info(f"Total bill of mortality records: {len(bill_records)}")
         logger.info(f"Total causes of death records: {len(cause_records)}")
-        return bill_records, cause_records
+        logger.info(f"Total new week records: {len(all_new_week_records)}")
+        logger.info(f"Total new year records: {len(all_new_year_records)}")
+        return bill_records, cause_records, all_new_week_records, all_new_year_records
     
     def _process_parish_dataframe(
         self, 
@@ -179,6 +232,9 @@ class BillsProcessor:
         week_mapping: Dict[str, str]
     ) -> List[BillOfMortalityRecord]:
         """Process parish data structure."""
+        # Detect if this is a general bill dataset
+        is_general_bill = 'general' in source_name.lower()
+        
         # Find parish columns (exclude total columns, metadata, and aggregate christening columns)
         parish_columns = []
         for col in df.columns:
@@ -186,15 +242,38 @@ class BillsProcessor:
             # Skip metadata columns
             if col_lower.startswith(('total', 'year', 'week', 'start_', 'end_', 'unique_')):
                 continue
-            # Skip aggregate christening columns (these belong to christening data, not parish data)
-            if any(phrase in col_lower for phrase in [
-                'christened in the', 'buried in the', 'plague in the',
-                'christened in all', 'buried in all', 'plague in all'
-            ]):
+            # Skip explicit metadata fields
+            if col_lower.startswith(('omeka', 'datascribe', 'image_', 'is_missing', 'is_illegible')):
                 continue
-            # Include individual parish columns
-            if any(pattern in col_lower for pattern in ['buried', 'plague', 'christened', 'baptized']):
-                parish_columns.append(col)
+                
+            if is_general_bill:
+                # For general bills, include aggregate columns and individual parish columns
+                if any(phrase in col_lower for phrase in [
+                    'christened_in_the', 'buried_in_the', 'plague_in_the',
+                    'christened in the', 'buried in the', 'plague in the'  # Handle spaces too
+                ]):
+                    parish_columns.append(col)  # Include aggregate columns for general bills
+                elif (col_lower.startswith(('st ', 'st_', 'saint ', 'saint_')) or 
+                      col.startswith(('St ', 'St_', 'Saint ', 'Saint_')) or
+                      col_lower.startswith(('christ ', 'christ_')) or col.startswith(('Christ ', 'Christ_')) or
+                      col_lower.startswith(('trinity', 'alhal', 'alhallows')) or col.startswith(('Trinity', 'Alhal', 'Alhallows')) or
+                      col_lower.startswith('s ') or col.startswith('S ') or  # "S Sepulchres Parish"
+                      any(word in col_lower for word in ['parish', 'church', 'precinct']) or
+                      any(word in col for word in ['Parish', 'Church', 'Precinct']) or
+                      col_lower.endswith('_parish') or col.endswith(' Parish')):
+                    # Additional checks for individual parish names in general bills
+                    if not any(skip in col_lower for skip in ['omeka', 'datascribe', 'image_', 'unique_', 'start_', 'end_']):
+                        parish_columns.append(col)  # Include individual parish columns
+            else:
+                # Original logic for weekly bills - exclude aggregate columns
+                if any(phrase in col_lower for phrase in [
+                    'christened in the', 'buried in the', 'plague in the',
+                    'christened in all', 'buried in all', 'plague in all'
+                ]):
+                    continue
+                # Include individual parish columns with suffixes
+                if any(pattern in col_lower for pattern in ['buried', 'plague', 'christened', 'baptized']):
+                    parish_columns.append(col)
         
         logger.info(f"Found {len(parish_columns)} parish columns in {source_name}")
         
@@ -205,9 +284,9 @@ class BillsProcessor:
         # Extract unique parishes and count types from columns
         parish_count_combinations = []
         for col in parish_columns:
-            parish_name = self.extract_parish_name_from_column(col)
+            parish_name = self.extract_parish_name_from_column(col, is_general_bill)
             parish_id = self._find_parish_id(parish_name, parish_mapping)
-            count_type = self.identify_count_type(col)
+            count_type = self.identify_count_type(col, is_general_bill)
             
             if parish_id:
                 parish_count_combinations.append((parish_id, count_type, col))
@@ -346,6 +425,10 @@ class BillsProcessor:
                 # Create joinid for this row to find week_id
                 week_id = self._find_week_id_for_row(row, week_mapping)
                 
+                # Determine bill type based on unique identifier and week data
+                unique_identifier = row.get('unique_identifier', '')
+                bill_type = self._determine_bill_type(unique_identifier, week_id, source_name)
+                
                 # Create a record for EVERY cause for this bill
                 for cause_col in cause_columns:
                     count_value = row[cause_col]
@@ -381,7 +464,8 @@ class BillsProcessor:
                         descriptive_text=None,
                         source_name=source_name,
                         definition=definition_info.get('definition'),
-                        definition_source=definition_info.get('source')
+                        definition_source=definition_info.get('source'),
+                        bill_type=bill_type
                     )
                     
                     # Always add the record (preserve empty records for completeness)
@@ -441,15 +525,15 @@ class BillsProcessor:
                 # Use the start date for both start and end to match existing weekly records
                 from ..extractors.weeks import WeekExtractor
                 extractor = WeekExtractor()
-                joinid = extractor.create_joinid(year, start_month, start_day, start_month, start_day + 7)
+                joinid = extractor.create_joinid(year, start_month, start_day, year, start_month, start_day + 7)
                 
                 # If that doesn't work, try to find any existing week record for this year/month
                 if joinid not in week_mapping:
                     # Try common general bill week patterns that might exist
                     potential_joinids = [
-                        extractor.create_joinid(year, start_month, start_day, start_month, min(start_day + 7, 31)),
-                        extractor.create_joinid(year, start_month, start_day, start_month, 24) if start_day == 17 else None,
-                        extractor.create_joinid(year, start_month, 17, start_month, 24),  # Common Dec 17-24 pattern
+                        extractor.create_joinid(year, start_month, start_day, year, start_month, min(start_day + 7, 31)),
+                        extractor.create_joinid(year, start_month, start_day, year, start_month, 24) if start_day == 17 else None,
+                        extractor.create_joinid(year, start_month, 17, year, start_month, 24),  # Common Dec 17-24 pattern
                     ]
                     
                     for potential_id in potential_joinids:
@@ -470,7 +554,7 @@ class BillsProcessor:
             # Import WeekExtractor to use its joinid creation logic
             from ..extractors.weeks import WeekExtractor
             extractor = WeekExtractor()
-            joinid = extractor.create_joinid(year, start_month, start_day, end_month, end_day)
+            joinid = extractor.create_joinid(year, start_month, start_day, year, end_month, end_day)
             
             # Return the joinid directly if it exists in the week mapping
             if joinid in week_mapping:
