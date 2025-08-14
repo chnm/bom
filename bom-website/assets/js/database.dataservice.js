@@ -4,7 +4,7 @@
  */
 
 const DataService = {
-  baseUrl: "https://data.chnm.org",
+  baseUrl: "http://data.chnm.org",
   cache: {},
 
   // Request management
