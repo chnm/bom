@@ -48,31 +48,31 @@
                 <button
                   class="py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200"
                   :class="{ 
-                    'border-blue-500 text-blue-600': getPrimaryTab() === 'annual', 
+                    'border-dbn-red text-dbn-red': getPrimaryTab() === 'annual', 
                     'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': getPrimaryTab() !== 'annual' 
                   }"
                   @click="setPrimaryTab('annual')"
                   type="button"
                 >
-                  Annual Data
+                  Weekly Data
                 </button>
                 <button
                   class="py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200"
                   :class="{ 
-                    'border-blue-500 text-blue-600': getPrimaryTab() === 'yearly', 
+                    'border-dbn-red text-dbn-red': getPrimaryTab() === 'yearly', 
                     'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': getPrimaryTab() !== 'yearly' 
                   }"
                   @click="setPrimaryTab('yearly')"
                   type="button"
                 >
-                  Yearly Data
+                  Annual Data
                 </button>
                 <!-- Temporarily hidden: Bread and Death tab -->
                 <!--
                 <button
                   class="py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200"
                   :class="{ 
-                    'border-blue-500 text-blue-600': getPrimaryTab() === 'bread-death', 
+                    'border-dbn-red text-dbn-red': getPrimaryTab() === 'bread-death', 
                     'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': getPrimaryTab() !== 'bread-death' 
                   }"
                   @click="setPrimaryTab('bread-death')"
@@ -112,40 +112,40 @@
               <button
                 class="px-4 py-2 text-xs font-bold uppercase rounded-lg transition-colors duration-200"
                 :class="{ 
-                  'bg-blue-100 text-blue-700': getSecondaryTab() === 'parishes', 
+                  'bg-dbn-red bg-opacity-20 text-dbn-red': getSecondaryTab() === 'parishes', 
                   'bg-gray-100 text-gray-600 hover:bg-gray-200': getSecondaryTab() !== 'parishes' 
                 }"
                 @click="setSecondaryTab('parishes')"
                 type="button"
               >
-                Parishes
+                By Parish
               </button>
               <button
                 class="px-4 py-2 text-xs font-bold uppercase rounded-lg transition-colors duration-200"
                 :class="{ 
-                  'bg-blue-100 text-blue-700': getSecondaryTab() === 'deaths', 
+                  'bg-dbn-red bg-opacity-20 text-dbn-red': getSecondaryTab() === 'deaths', 
                   'bg-gray-100 text-gray-600 hover:bg-gray-200': getSecondaryTab() !== 'deaths' 
                 }"
                 @click="setSecondaryTab('deaths')"
                 type="button"
               >
-                Deaths
+                By Cause of Death
               </button>
               <button
                 class="px-4 py-2 text-xs font-bold uppercase rounded-lg transition-colors duration-200"
                 :class="{ 
-                  'bg-blue-100 text-blue-700': getSecondaryTab() === 'christenings', 
+                  'bg-dbn-red bg-opacity-20 text-dbn-red': getSecondaryTab() === 'christenings', 
                   'bg-gray-100 text-gray-600 hover:bg-gray-200': getSecondaryTab() !== 'christenings' 
                 }"
                 @click="setSecondaryTab('christenings')"
                 type="button"
               >
-                Christenings
+                By Christening
               </button>
             </nav>
             <button 
               @click="filtersOpen = true"
-              class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+              class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-700 focus:ring-2 focus:ring-dbn-red focus:border-dbn-red transition-colors duration-200"
               type="button">
               <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.707A1 1 0 013 7V4z"/>
@@ -162,40 +162,44 @@
               <button
                 class="px-4 py-2 text-xs font-bold uppercase rounded-lg transition-colors duration-200"
                 :class="{ 
-                  'bg-blue-100 text-blue-700': getSecondaryTab() === 'parishes', 
+                  'bg-dbn-red bg-opacity-20 text-dbn-red': getSecondaryTab() === 'parishes', 
                   'bg-gray-100 text-gray-600 hover:bg-gray-200': getSecondaryTab() !== 'parishes' 
                 }"
                 @click="setSecondaryTab('parishes')"
                 type="button"
               >
-                Parishes
+                By Parish
               </button>
               <button
                 class="px-4 py-2 text-xs font-bold uppercase rounded-lg transition-colors duration-200"
                 :class="{ 
-                  'bg-blue-100 text-blue-700': getSecondaryTab() === 'deaths', 
+                  'bg-dbn-red bg-opacity-20 text-dbn-red': getSecondaryTab() === 'deaths', 
                   'bg-gray-100 text-gray-600 hover:bg-gray-200': getSecondaryTab() !== 'deaths' 
                 }"
                 @click="setSecondaryTab('deaths')"
                 type="button"
               >
-                Deaths
+                By Cause of Death
               </button>
               <button
                 class="px-4 py-2 text-xs font-bold uppercase rounded-lg transition-colors duration-200"
                 :class="{ 
-                  'bg-blue-100 text-blue-700': getSecondaryTab() === 'christenings', 
+                  'bg-dbn-red bg-opacity-20 text-dbn-red': getSecondaryTab() === 'christenings', 
                   'bg-gray-100 text-gray-600 hover:bg-gray-200': getSecondaryTab() !== 'christenings' 
                 }"
                 @click="setSecondaryTab('christenings')"
                 type="button"
               >
-                Christenings
+                By Christening
               </button>
             </nav>
             <button 
               @click="filtersOpen = true"
-              class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+              :disabled="getSecondaryTab() === 'deaths'"
+              :class="{
+                'inline-flex items-center px-3 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-700 focus:ring-2 focus:ring-dbn-red focus:border-dbn-red transition-colors duration-200': getSecondaryTab() !== 'deaths',
+                'inline-flex items-center px-3 py-2 text-sm font-medium text-gray-400 bg-gray-50 border border-gray-300 rounded-lg cursor-not-allowed': getSecondaryTab() === 'deaths'
+              }"
               type="button">
               <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.707A1 1 0 013 7V4z"/>
@@ -212,7 +216,7 @@
               <button
                 class="px-4 py-2 text-xs font-bold uppercase rounded-lg transition-colors duration-200"
                 :class="{ 
-                  'bg-blue-100 text-blue-700': getSecondaryTab() === 'foodstuffs', 
+                  'bg-dbn-red bg-opacity-20 text-dbn-red': getSecondaryTab() === 'foodstuffs', 
                   'bg-gray-100 text-gray-600 hover:bg-gray-200': getSecondaryTab() !== 'foodstuffs' 
                 }"
                 @click="setSecondaryTab('foodstuffs')"
@@ -223,7 +227,7 @@
               <button
                 class="px-4 py-2 text-xs font-bold uppercase rounded-lg transition-colors duration-200"
                 :class="{ 
-                  'bg-blue-100 text-blue-700': getSecondaryTab() === 'ages', 
+                  'bg-dbn-red bg-opacity-20 text-dbn-red': getSecondaryTab() === 'ages', 
                   'bg-gray-100 text-gray-600 hover:bg-gray-200': getSecondaryTab() !== 'ages' 
                 }"
                 @click="setSecondaryTab('ages')"
@@ -234,7 +238,7 @@
             </nav>
             <button 
               @click="filtersOpen = true"
-              class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+              class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-700 focus:ring-2 focus:ring-dbn-red focus:border-dbn-red transition-colors duration-200"
               type="button">
               <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.707A1 1 0 013 7V4z"/>
@@ -260,15 +264,15 @@
             {{ partial "tables/general.html" }}
           </div>
           <div x-show="getPrimaryTab() === 'yearly' && getSecondaryTab() === 'deaths' && initialized">
-            <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 text-center">
+            <div class="border border-dbn-blue rounded-lg p-6 text-center">
               <div class="mb-4">
                 <img src="/images/missing.png" alt="Data unavailable" class="w-12 h-12 mx-auto rounded-full">
               </div>
-              <h3 class="text-lg font-medium text-blue-900 mb-2">Data Currently Unavailable</h3>
-              <p class="text-blue-700 mb-4">
-                Yearly death data is not currently part of our dataset. We are working to include this information in future updates.
+              <h3 class="text-lg font-medium text-dbn-red mb-2">Data Currently Unavailable</h3>
+              <p class="mb-4">
+                Yearly data broken down by cause of death is not currently part of our dataset. We are working to include this information in future updates.
               </p>
-              <p class="text-sm text-blue-600">
+              <p class="text-sm">
                 Please check back in the future or explore our other data categories in the meantime.
               </p>
             </div>
@@ -308,16 +312,16 @@
       <div 
         x-show="filtersOpen"
         x-transition:enter="transition ease-out duration-300"
-        x-transition:enter-start="transform translate-x-full"
-        x-transition:enter-end="transform translate-x-0"
+        x-transition:enter-start="transform translate-y-full"
+        x-transition:enter-end="transform translate-y-0"
         x-transition:leave="transition ease-in duration-200"
-        x-transition:leave-start="transform translate-x-0"
-        x-transition:leave-end="transform translate-x-full"
-        class="fixed top-0 right-0 h-full w-96 bg-white shadow-xl z-50 overflow-y-auto"
+        x-transition:leave-start="transform translate-y-0"
+        x-transition:leave-end="transform translate-y-full"
+        class="fixed bottom-0 left-0 right-0 max-h-[32rem] bg-white shadow-xl z-50 overflow-y-auto rounded-t-lg"
         @click.stop>
         
         {{/* Filter panel header */}}
-        <div class="flex items-center justify-between p-6 border-b border-gray-200">
+        <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
           <h2 class="text-lg font-medium text-gray-900">Filters</h2>
           <button 
             @click="filtersOpen = false"

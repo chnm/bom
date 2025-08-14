@@ -86,13 +86,13 @@
     </div>
 
     {{/* Column 2: Sliders */}}
-    <div class="space-y-4">
+    <div class="space-y-6">
       {{/* Year Range filter - Show for all tabs */}}
       <div class="space-y-3">
         <h3 class="text-sm font-medium text-gray-700">Year Range</h3>
-        <div class="bg-gray-50 rounded-lg border border-gray-200 p-3">
+        <div class="bg-gray-50 rounded-lg border border-gray-200 p-4">
                 <!-- Year range display -->
-                <div class="flex justify-between mb-3">
+                <div class="flex justify-between mb-4">
                   <div class="text-center">
                     <div class="text-xs text-gray-500 mb-1">From</div>
                     <div class="text-sm font-medium text-gray-700" x-text="filters.selectedStartYear"></div>
@@ -104,7 +104,7 @@
                 </div>
                 
                 <!-- Slider track -->
-                <div class="relative pb-4">
+                <div class="relative pb-6">
                   <div class="w-full h-2 bg-gray-200 rounded-md relative">
                     <!-- Selected range highlight -->
                     <div 
@@ -140,7 +140,7 @@
                   </div>
                   
                   <!-- Year ticks -->
-                  <div class="flex justify-between w-full mt-1">
+                  <div class="flex justify-between w-full mt-2">
                     <span class="text-xs text-gray-400">1636</span>
                     <span class="text-xs text-gray-400">1660</span>
                     <span class="text-xs text-gray-400">1684</span>
@@ -150,20 +150,21 @@
                   </div>
                 </div>
 
-                <!-- Week Number Slider - Only for Annual Parish data -->
+                <!-- Week Number Slider - Only for Annual Parish data and Christenings -->
                 <div 
-                  x-show="getPrimaryTab() === 'annual' && getSecondaryTab() === 'parishes'"
+                  x-show="(getPrimaryTab() === 'annual' && getSecondaryTab() === 'parishes') || 
+                          getSecondaryTab() === 'christenings'"
                   x-transition:enter="transition ease-out duration-200"
                   x-transition:enter-start="opacity-0 transform scale-95"
                   x-transition:enter-end="opacity-100 transform scale-100"
                   x-transition:leave="transition ease-in duration-150"
                   x-transition:leave-start="opacity-100 transform scale-100"
                   x-transition:leave-end="opacity-0 transform scale-95"
-                  class="mt-3">
-                  <div class="border-t border-gray-200 pt-3">
-                    <div class="text-xs font-medium text-gray-600 mb-2">Week Range</div>
+                  class="mt-4">
+                  <div class="border-t border-gray-200 pt-4">
+                    <div class="text-xs font-medium text-gray-600 mb-3">Week Range</div>
                     <!-- Week range display -->
-                    <div class="flex justify-between mb-3">
+                    <div class="flex justify-between mb-4">
                       <div class="text-center">
                         <div class="text-xs text-gray-500 mb-1">From Week</div>
                         <div class="text-sm font-medium text-gray-700" x-text="filters.selectedStartWeek || 1"></div>
@@ -175,7 +176,7 @@
                     </div>
                     
                     <!-- Week slider track -->
-                    <div class="relative pb-4">
+                    <div class="relative pb-6">
                       <div class="w-full h-2 bg-gray-200 rounded-md relative">
                         <!-- Selected week range highlight -->
                         <div 
@@ -211,7 +212,7 @@
                       </div>
                       
                       <!-- Week ticks -->
-                      <div class="flex justify-between w-full mt-1">
+                      <div class="flex justify-between w-full mt-2">
                         <span class="text-xs text-gray-400">1</span>
                         <span class="text-xs text-gray-400">13</span>
                         <span class="text-xs text-gray-400">26</span>
@@ -220,16 +221,16 @@
                       </div>
                     </div>
                   </div>
-                </div>
         </div>
       </div>
     </div>
 
     {{/* Column 3: Count Type and Actions */}}
     <div class="space-y-6">
-      {{/* Count Type filter - Show only for Annual Parish data */}}
+      {{/* Count Type filter - Show only for Annual Parish data and Christenings */}}
       <div 
-        x-show="getPrimaryTab() === 'annual' && getSecondaryTab() === 'parishes'"
+        x-show="(getPrimaryTab() === 'annual' && getSecondaryTab() === 'parishes') || 
+                getSecondaryTab() === 'christenings'"
         class="space-y-3">
         <h3 class="text-sm font-medium text-gray-700">Count Type</h3>
         <div class="bg-gray-50 rounded-lg border border-gray-200 p-4">

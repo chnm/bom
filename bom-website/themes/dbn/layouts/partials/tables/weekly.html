@@ -100,8 +100,10 @@
                   x-text="bill.name"></td>
                 <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
                   x-text="bill.count_type"></td>
-                <td class="py-4 px-6 text-sm font-medium text-center text-gray-900 whitespace-nowrap dark:text-white font-mono"
-                  x-text="bill.count ? bill.count : '-'"></td>
+                <td class="py-4 px-6 text-sm font-medium text-center text-gray-900 whitespace-nowrap dark:text-white font-mono">
+                  <span x-show="bill.count" x-text="bill.count"></span>
+                  <span x-show="!bill.count" class="px-2 py-1 bg-amber-100 text-amber-800 rounded">-</span>
+                </td>
                 <td class="py-4 px-6 text-sm font-medium text-center text-gray-900 whitespace-nowrap dark:text-white font-mono"
                   x-text="bill.week_number"></td>
                 <td class="py-4 px-6 text-sm font-medium text-center text-gray-900 whitespace-nowrap dark:text-white font-mono"
