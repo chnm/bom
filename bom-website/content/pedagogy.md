@@ -8,6 +8,7 @@ The London Bills of Mortality make an excellent resource to use in a classroom e
 - [Early Modern Death in the 21st Century Classroom](/context/teaching-early-modern-death/)
 - [Gaming the Great Plague of London](https://1665plague.rrchnm.org)
 
-## Lessons
+## Lesson Plans
 
 - [Humanities Data with Death By Numbers Lesson Plan](/teaching/humanities-data/)
+- [Urban Plague with Death By Numbers Lesson Plan](/teaching/humanities-data/)
