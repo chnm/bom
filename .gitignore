@@ -16,6 +16,7 @@ bom-processing/scripts/bompy/logs/
 */.ipynb_checkpoints/*
 profile_default/
 ipython_config.py
+__pycache__/
 
 dbupdate
 bom-processing/scripts/bomr/.Rapp.history
