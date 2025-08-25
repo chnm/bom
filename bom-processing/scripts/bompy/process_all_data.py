@@ -63,7 +63,7 @@ def main():
     for csv_file in csv_files:
         try:
             df, info = loader.load(csv_file)
-            all_dataframes.append((df, csv_file.name))  # Use original filename for General Bills detection
+            all_dataframes.append((df, csv_file.name, info.dataset_type))  # Include dataset type for filtering
             total_input_rows += len(df)
 
             logger.info(
@@ -102,18 +102,18 @@ def main():
 
     # Extract parishes
     parish_extractor = ParishExtractor()
-    parish_records = parish_extractor.extract_parishes_from_dataframes(all_dataframes)
+    parish_records = parish_extractor.extract_parishes_from_dataframes([(df, name) for df, name, _ in all_dataframes])
     logger.info(f"✓ Extracted {len(parish_records)} unique parishes")
 
     # Extract weeks
     week_extractor = WeekExtractor()
-    week_records = week_extractor.extract_weeks_from_dataframes(all_dataframes)
+    week_records = week_extractor.extract_weeks_from_dataframes([(df, name) for df, name, _ in all_dataframes])
     valid_weeks = week_extractor.validate_weeks(week_records)
     logger.info(f"✓ Extracted {len(valid_weeks)} valid weeks")
 
     # Extract years
     year_extractor = YearExtractor()
-    year_records = year_extractor.extract_years_from_dataframes(all_dataframes)
+    year_records = year_extractor.extract_years_from_dataframes([(df, name) for df, name, _ in all_dataframes])
     logger.info(f"✓ Extracted {len(year_records)} unique years")
 
     # Process bills
@@ -126,8 +126,8 @@ def main():
     # Filter to parish and causes datasets for bills processing
     bill_dataframes = [
         (df, name)
-        for df, name in all_dataframes
-        if "parish" in name.lower() or "causes" in name.lower()
+        for df, name, dataset_type in all_dataframes
+        if "parish" in name.lower() or "causes" in name.lower() or "parish" in dataset_type.lower() or "causes" in dataset_type.lower()
     ]
     logger.info(
         f"Processing {len(bill_dataframes)} datasets (parish + causes) for bills"
@@ -160,7 +160,7 @@ def main():
     
     # Filter to foodstuffs datasets
     foodstuffs_datasets = {
-        name: df for df, name in all_dataframes
+        name: df for df, name, _ in all_dataframes
         if "foodstuff" in name.lower()
     }
     
@@ -179,7 +179,7 @@ def main():
     # Process gender christenings
     gender_processor = ChristeningsGenderProcessor()
     gender_datasets = {
-        name: df for df, name in all_dataframes
+        name: df for df, name, _ in all_dataframes
         if "gender" in name.lower()
     }
     
@@ -195,7 +195,7 @@ def main():
     # Process parish christenings
     parish_processor = ChristeningsParishProcessor()
     parish_datasets = {
-        name: df for df, name in all_dataframes
+        name: df for df, name, _ in all_dataframes
         if "parish" in name.lower()
     }
     
@@ -211,7 +211,7 @@ def main():
     # Keep old processor for backward compatibility (combine all records)
     christenings_processor = ChristeningsProcessor()
     all_christenings_datasets = {
-        name: df for df, name in all_dataframes
+        name: df for df, name, _ in all_dataframes
         if "gender" in name.lower() or "christening" in name.lower() or "parish" in name.lower()
     }
     

@@ -27,6 +27,7 @@ DATASET_PATTERNS = {
     "qc_parishes": r"qc.*parishes",
     "qc_causes": r"qc.*causes",
     "datascribe_parishes": r"datascribe.*dataset",
+    "bl_parishes": r"bl1877.*minus3foldbill",  # Special BL file with parish data
     "bl_special": r"bl1877.*",
     "laxton_foodstuffs": r"laxton.*foodstuffs",
     "laxton_gender": r"laxton.*gender",

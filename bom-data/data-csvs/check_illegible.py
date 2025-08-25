@@ -41,7 +41,7 @@ def check_illegible_data():
             with open(filename, 'r', encoding='utf-8') as f:
                 reader = csv.DictReader(f)
                 
-                # Find ALL is_illegible columns
+                # Find all is_illegible columns
                 illegible_columns = [col for col in reader.fieldnames if col == 'is_illegible']
                 
                 if not illegible_columns:

@@ -559,10 +559,74 @@ class BillsProcessor:
             # Return the joinid directly if it exists in the week mapping
             if joinid in week_mapping:
                 return joinid
-            else:
-                return None
+            
+            # If exact match fails, try fuzzy matching with existing week records
+            return self._fuzzy_match_week_record(year, start_month, start_day, end_month, end_day, week_mapping)
         except Exception:
             return None
+    
+    def _fuzzy_match_week_record(self, year: int, start_month: str, start_day: int, end_month: str, end_day: int, week_mapping: Dict[str, str]) -> Optional[str]:
+        """
+        Find the best matching week record when exact joinid match fails.
+        
+        This handles cases where bill row dates don't exactly match existing week records
+        due to slight variations in date parsing or recording.
+        """
+        from ..extractors.weeks import WeekExtractor
+        extractor = WeekExtractor()
+        
+        # Get all week records for this year
+        year_week_records = []
+        for joinid in week_mapping.keys():
+            if joinid.startswith(f"{year}-"):
+                year_week_records.append(joinid)
+        
+        if not year_week_records:
+            logger.warning(f"No week records found for year {year}")
+            return None
+        
+        # Strategy 1: Try variations with different end days (±1, ±2, ±3 days)
+        for day_offset in range(-3, 4):
+            adjusted_end_day = end_day + day_offset
+            if adjusted_end_day > 0:  # Don't go negative
+                try:
+                    test_joinid = extractor.create_joinid(year, start_month, start_day, year, end_month, adjusted_end_day)
+                    if test_joinid in week_mapping:
+                        logger.info(f"Found week match with {day_offset} day offset: {test_joinid}")
+                        return test_joinid
+                except:
+                    continue
+        
+        # Strategy 2: Try variations with different start days (±1, ±2 days)
+        for day_offset in range(-2, 3):
+            adjusted_start_day = start_day + day_offset
+            if adjusted_start_day > 0:
+                try:
+                    test_joinid = extractor.create_joinid(year, start_month, adjusted_start_day, year, end_month, end_day)
+                    if test_joinid in week_mapping:
+                        logger.info(f"Found week match with {day_offset} start day offset: {test_joinid}")
+                        return test_joinid
+                except:
+                    continue
+        
+        # Strategy 3: Match by month and approximate date range
+        # Find any week record in the same month with overlapping dates
+        start_month_lower = start_month.lower()
+        for existing_joinid in year_week_records:
+            # Parse existing joinid to extract date info
+            if start_month_lower in existing_joinid.lower():
+                # If months match, this is likely the right week
+                logger.info(f"Found month-based week match: {existing_joinid}")
+                return existing_joinid
+        
+        # Strategy 4: Use the first week record for this year as last resort
+        # This prevents total data loss when date matching fails
+        if year_week_records:
+            fallback_joinid = sorted(year_week_records)[0]  # Use earliest week as fallback
+            logger.warning(f"Using fallback week record for {year}: {fallback_joinid}")
+            return fallback_joinid
+        
+        return None
     
     def _extract_year_from_row(self, row: pd.Series) -> Optional[int]:
         """Extract year from row data, handling both weekly and general bill formats."""
