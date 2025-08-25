@@ -13,7 +13,7 @@ author:
 category: "temporal"
 ---
 
-This visualization illustrates the seasonality of causes of death across the year, allowing you to analyze patterns and compare different causes. You can select a single cause to view its seasonal distribution, or compare two causes side by side.
+This visualization illustrates the seasonality of causes of death across the year, allowing you to analyze patterns and compare different causes. You can select a single cause to view its seasonal distribution, or compare two causes side by side. Dashed lines indicate areas where there are gaps in the data, and represent an interpolation between existing data. 
 
 <div id="row">
     <h3 id="chart-title">Seasonality of Causes of Death</h3>
