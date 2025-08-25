@@ -1,114 +1,144 @@
-import * as d3 from "d3";
-import Visualization from "../common/visualization";
-
-export default class PlagueBillsBarChart extends Visualization {
-  constructor(el, data, options) {
-    const margin = {
-      top: 0,
-      right: 40,
-      bottom: 40,
-      left: 10,
+export default class PlagueBillsBarChart {
+  constructor(selector, data, options = {}) {
+    this.selector = selector;
+    this.data = data;
+    this.options = {
+      width: 960,
+      height: 500,
+      marginTop: 20,
+      marginRight: 40,
+      marginBottom: 60,
+      marginLeft: 50,
+      color: "#7f5a83",
+      ...options
     };
-    super(el, data, options, margin);
-
-    this.xScale = d3
-      .scaleBand()
-      .domain(d3.range(this.data.plague.length))
-      .range([0, this.width])
-      .padding(0.1);
-
-    // Show years every 5 years to reduce clutter
-    const tickIndices = this.xScale.domain().filter((d, i) => {
-      const year = this.data.plague[d].year;
-      return year % 5 === 0; // Show years divisible by 5 (1640, 1645, 1650, etc.)
-    });
-
-    this.xAxis = d3
-      .axisBottom()
-      .scale(this.xScale)
-      .tickValues(tickIndices)
-      .tickFormat((d) => this.data.plague[d].year);
-
-    this.yScale = d3
-      .scaleLinear()
-      .domain([0, d3.max(this.data.plague, (d) => d.count)])
-      .range([this.height, 0]);
-
-    this.yAxis = d3.axisRight().scale(this.yScale).ticks(10);
-
-    this.tooltipRender = (e, d) => {
-      const text = `Transcribed bills for <strong>${d.year}</strong>
-        <br>Total rows of data: ${d.count}`;
-      this.tooltip.html(text);
-      this.tooltip.style("visibility", "visible");
-    };
+    
+    // Load Observable Plot if not available
+    this.plotPromise = this.loadPlot();
   }
 
-  render() {
-    this.viz
-      .append("g")
-      .attr("class", "x axis")
-      .attr("transform", `translate(0, ${this.height})`)
-      .call(this.xAxis)
-      .selectAll("text")
-      .attr("y", 0)
-      .attr("x", 9)
-      .attr("dy", ".35em")
-      .attr("transform", "rotate(90)")
-      .style("text-anchor", "start");
+  async loadPlot() {
+    // Use existing ChartService if available
+    if (window.ChartService && window.ChartService.loadPlotLibrary) {
+      return await window.ChartService.loadPlotLibrary();
+    }
 
-    this.viz
-      .append("g")
-      .attr("class", "y axis")
-      .attr("transform", `translate(${this.width},0)`)
-      .call(this.yAxis);
+    if (window.Plot) {
+      return window.Plot;
+    }
 
-    // Remove the loading message.
-    d3.select(".loading_rows").remove();
+    return new Promise((resolve, reject) => {
+      const script = document.createElement("script");
+      script.type = "module";
+      script.textContent = `
+        import * as Plot from "https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6/+esm";
+        window.Plot = Plot;
+        document.dispatchEvent(new Event("plot-loaded"));
+      `;
+      document.head.appendChild(script);
 
-    this.viz
-      .selectAll("rect")
-      .data(this.data.plague)
-      .enter()
-      .append("rect")
-      .style("fill", "#7f5a83")
-      .attr("x", (d, i) => this.xScale(i))
-      .attr("y", (d) => this.yScale(d.count))
-      .attr("width", this.xScale.bandwidth())
-      .attr("height", (d) => this.height - this.yScale(d.count));
+      document.addEventListener(
+        "plot-loaded",
+        () => resolve(window.Plot),
+        { once: true }
+      );
 
-    // Add the tooltip.
-    this.tooltip = d3
-      .select("body")
-      .append("div")
-      .attr("class", "tooltip")
-      .attr("id", "chart-tooltip")
-      .style("position", "absolute")
-      .style("visibility", "hidden");
-
-    this.viz
-      .selectAll("rect")
-      .on("mouseover", this.tooltipRender)
-      .on("mousemove", () => {
-        // Show the tooltip to the right of the mouse, unless we are
-        // on the rightmost 25% of the browser.
-        if (event.clientX / this.width >= 0.75) {
-          this.tooltip
-            .style("top", `${event.pageY - 10}px`)
-            .style(
-              "left",
-              `${
-                event.pageX -
-                this.tooltip.node().getBoundingClientRect().width -
-                10
-              }px`,
-            );
-        } else {
-          this.tooltip
-            .style("top", `${event.pageY - 10}px`)
-            .style("left", `${event.pageX + 10}px`);
+      setTimeout(() => {
+        if (!window.Plot) {
+          reject(new Error("Failed to load Observable Plot"));
         }
-      })
-      .on("mouseout", () => this.tooltip.style("visibility", "hidden"));
+      }, 5000);
+    });
+  }
+
+  async render() {
+    try {
+      // Wait for Plot to load
+      await this.plotPromise;
+
+      // Remove any loading message
+      const loadingElement = document.querySelector(".loading_rows");
+      if (loadingElement) {
+        loadingElement.remove();
+      }
+
+      // Clear the container
+      const container = document.querySelector(this.selector);
+      if (!container) {
+        throw new Error(`Container not found: ${this.selector}`);
+      }
+      container.innerHTML = "";
+
+      // Prepare the data
+      const chartData = this.data.plague || [];
+      
+      if (chartData.length === 0) {
+        container.innerHTML = '<div class="text-center py-8 text-gray-500">No data available</div>';
+        return;
+      }
+
+      // Sort data by year to ensure proper display
+      chartData.sort((a, b) => a.year - b.year);
+
+      // Create the Observable Plot chart
+      const chart = window.Plot.plot({
+        width: this.options.width,
+        height: this.options.height,
+        marginTop: this.options.marginTop,
+        marginRight: this.options.marginRight,
+        marginBottom: this.options.marginBottom,
+        marginLeft: this.options.marginLeft,
+        
+        x: {
+          type: "band",
+          domain: chartData.map(d => d.year),
+          padding: 0.1,
+          label: "Year",
+          tickRotate: 45,
+          tickFormat: (d, i) => {
+            // Show years every 5 years to reduce clutter
+            return d % 5 === 0 ? d.toString() : "";
+          }
+        },
+        
+        y: {
+          grid: true,
+          label: "Number of Rows",
+          domain: [0, Math.max(...chartData.map(d => d.count)) * 1.1]
+        },
+        
+        marks: [
+          window.Plot.barY(chartData, {
+            x: "year",
+            y: "count",
+            fill: this.options.color,
+            title: (d) => `Transcribed bills for ${d.year}\nTotal rows of data: ${d.count.toLocaleString()}`
+          }),
+          window.Plot.ruleY([0]),
+          
+          // Add interactive tooltip
+          window.Plot.tip(
+            chartData,
+            window.Plot.pointerX({
+              x: "year",
+              y: "count",
+              title: (d) => `${d.year}: ${d.count.toLocaleString()} rows of data`
+            })
+          )
+        ]
+      });
+
+      // Append the chart to the container
+      container.appendChild(chart);
+
+      return chart;
+    } catch (error) {
+      console.error("Error rendering chart:", error);
+      const container = document.querySelector(this.selector);
+      if (container) {
+        container.innerHTML = `<div class="text-center text-red-500 py-4">Error rendering chart: ${error.message}</div>`;
+      }
+      throw error;
+    }
   }
 }

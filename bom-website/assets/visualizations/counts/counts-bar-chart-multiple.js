@@ -31,7 +31,7 @@ export default class PlagueBillsBarChartWeekly extends Visualization {
 
     this.yScale = d3
       .scaleLinear()
-      .domain([0, d3.max(this.data.plagueByWeek, (d) => d.weeksCompleted)])
+      .domain([0, d3.max(this.data.plagueByWeek, (d) => d.totalCount)])
       .range([this.height, 0]);
 
     this.yAxis = d3.axisRight().scale(this.yScale).ticks(10);
@@ -45,15 +45,21 @@ export default class PlagueBillsBarChartWeekly extends Visualization {
       const text = `Transcribed bills for <strong>${d.data.year}</strong>
         <br>Total weeks in the data: ${originalData.totalCount}
         <br>Weeks completed: ${originalData.weeksCompleted}`;
-      //   const text = ``
       this.tooltip.html(text);
       this.tooltip.style("visibility", "visible");
     };
   }
 
   render() {
-    const stack = d3.stack().keys(["weeksCompleted", "totalCount"])(
-      this.data.plagueByWeek,
+    // Transform the data to have proper stacking fields
+    const transformedData = this.data.plagueByWeek.map(d => ({
+      ...d,
+      weeksCompleted: d.weeksCompleted || 0,
+      remainingWeeks: Math.max(0, (d.totalCount || 0) - (d.weeksCompleted || 0))
+    }));
+
+    const stack = d3.stack().keys(["weeksCompleted", "remainingWeeks"])(
+      transformedData,
     );
 
     console.log("stack", stack);

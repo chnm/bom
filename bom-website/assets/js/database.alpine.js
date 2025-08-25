@@ -41,6 +41,7 @@ document.addEventListener("alpine:init", () => {
       selectedEndWeek: 52,
       selectedCausesOfDeath: [],
       selectedChristenings: [],
+      showIllegibleOnly: false,
     },
 
     // Status messages
@@ -1088,6 +1089,7 @@ document.addEventListener("alpine:init", () => {
       this.filters.selectedParishes = [];
       this.filters.selectedCausesOfDeath = [];
       this.filters.selectedChristenings = [];
+      this.filters.showIllegibleOnly = false;
 
       // Reset pagination
       this.page = 1;

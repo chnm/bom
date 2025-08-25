@@ -118,7 +118,7 @@ const ChartService = {
   },
 
   /**
-   * Creates an interactive detailed chart for the modal view
+   * Creates an interactive detailed chart for the modal view with faceted weekly/general views
    * @param {HTMLElement} container - Container element for the chart
    * @param {Array} data - Yearly data for the parish, death, or christening
    * @param {string} dataType - Type of data: 'parish', 'death', or 'christening'
@@ -134,266 +134,365 @@ const ChartService = {
       // Clear the chart container
       container.innerHTML = "";
 
-      // Define a chart container div
-      const chartContainer = document.createElement("div");
-      chartContainer.className = "chart-container";
-
-      // Process data based on type
-      let allData, noDataMessage, legendItems, yField, titleField;
-      
+      // For parish data, we'll show side-by-side comparison of weekly vs general bills
       if (dataType === 'parish') {
-        // Keep all data in a variable for redrawing
-        allData = data
-          .filter((d) => d.total_buried > 0)
-          .sort((a, b) => a.year - b.year);
-        noDataMessage = 'No burial data available for this parish';
-        legendItems = [
-          { type: "plague", color: "#EF3054", field: "total_plague" },
-          { type: "buried", color: "#96ADC8", field: "total_buried" },
-        ];
-      } else if (dataType === 'death') {
-        allData = data
-          .filter((d) => d.total_deaths > 0)
-          .sort((a, b) => a.year - b.year);
-        noDataMessage = 'No death data available for this cause';
-        legendItems = [
-          { type: "deaths", color: "#DC2626", field: "total_deaths" },
-        ];
-      } else if (dataType === 'christening') {
-        allData = data
-          .filter((d) => d.total_christenings > 0)
-          .sort((a, b) => a.year - b.year);
-        noDataMessage = 'No christening data available for this type';
-        legendItems = [
-          { type: "christenings", color: "#059669", field: "total_christenings" },
-        ];
+        return this.createFacetedParishChart(container, data, options);
+      } else {
+        // For non-parish data (deaths, christenings), use single chart approach
+        return this.createSingleModalChart(container, data, dataType, options);
       }
-
-      if (allData.length === 0) {
-        container.innerHTML = `<div class="text-center py-4 text-gray-500">${noDataMessage}</div>`;
-        return;
-      }
-
-      // State for category visibility (initialize based on data type)
-      const categoryVisibility = {};
-      legendItems.forEach(item => {
-        categoryVisibility[item.type] = true;
-      });
-
-      // Create custom interactive legend
-      const legendContainer = document.createElement("div");
-      legendContainer.className =
-        "custom-legend flex justify-center gap-6 mb-3 mt-1";
-
-      legendItems.forEach((item) => {
-        const itemEl = document.createElement("div");
-        itemEl.className = "flex items-center gap-2 cursor-pointer select-none";
-        itemEl.dataset.type = item.type;
-
-        // Color swatch - made larger and more visible
-        const swatch = document.createElement("div");
-        swatch.className = "inline-block w-4 h-4 rounded";
-        swatch.style.backgroundColor = item.color;
-        swatch.style.opacity = categoryVisibility[item.type] ? 1 : 0.3;
-        swatch.style.border = "1px solid #ddd";
-
-        // Label
-        const label = document.createElement("span");
-        label.textContent = item.type;
-        label.className = "text-sm font-medium";
-        label.style.opacity = categoryVisibility[item.type] ? 1 : 0.5;
-        label.style.textDecoration = categoryVisibility[item.type]
-          ? "none"
-          : "line-through";
-
-        // Add click handler to toggle visibility
-        itemEl.addEventListener("click", () => {
-          categoryVisibility[item.type] = !categoryVisibility[item.type];
-
-          // Update legend appearance
-          swatch.style.opacity = categoryVisibility[item.type] ? 1 : 0.3;
-          label.style.opacity = categoryVisibility[item.type] ? 1 : 0.5;
-          label.style.textDecoration = categoryVisibility[item.type]
-            ? "none"
-            : "line-through";
-
-          // Redraw chart with updated visibility
-          drawChart();
-        });
-
-        itemEl.appendChild(swatch);
-        itemEl.appendChild(label);
-        legendContainer.appendChild(itemEl);
-      });
-
-      // Add custom legend above chart
-      container.appendChild(legendContainer);
-      container.appendChild(chartContainer);
-
-      // Function to draw/redraw the chart based on visibility
-      const drawChart = () => {
-        // Always clear the chart container before redrawing
-        chartContainer.innerHTML = "";
-
-        // Create long-form data for stacked chart based on visibility and data type
-        const longFormData = [];
-        allData.forEach((d) => {
-          if (dataType === 'parish') {
-            // Add plague deaths (if visible and exists)
-            if (categoryVisibility.plague && d.total_plague) {
-              longFormData.push({
-                year: d.year,
-                type: "plague",
-                value: d.total_plague,
-                total: d.total_buried,
-              });
-            }
-
-            // Add non-plague deaths (if visible)
-            if (categoryVisibility.buried) {
-              const nonplague = d.total_buried - (d.total_plague || 0);
-              longFormData.push({
-                year: d.year,
-                type: "buried",
-                value: nonplague,
-                total: d.total_buried,
-              });
-            }
-          } else if (dataType === 'death') {
-            // Add deaths data
-            if (categoryVisibility.deaths && d.total_deaths) {
-              longFormData.push({
-                year: d.year,
-                type: "deaths",
-                value: d.total_deaths,
-                total: d.total_deaths,
-              });
-            }
-          } else if (dataType === 'christening') {
-            // Add christenings data
-            if (categoryVisibility.christenings && d.total_christenings) {
-              longFormData.push({
-                year: d.year,
-                type: "christenings",
-                value: d.total_christenings,
-                total: d.total_christenings,
-              });
-            }
-          }
-        });
-
-        // Ensure we have data to plot
-        if (longFormData.length === 0) {
-          const noDataMessage = document.createElement("div");
-          noDataMessage.className = "text-center py-10 text-gray-500";
-          noDataMessage.textContent =
-            "No data to display - please enable at least one category";
-          chartContainer.appendChild(noDataMessage);
-          return;
-        }
-
-        const years = [...new Set(longFormData.map((d) => d.year))].sort();
-
-        // Calculate max value for y domain
-        const maxValue = Math.max(...longFormData.map((d) => d.value)) * 1.1;
-
-        // Create the chart
-        const chart = window.Plot.plot({
-          width: container.clientWidth || 400,
-          height: 220,
-          marginTop: 20,
-          marginRight: 40,
-          marginBottom: 50,
-          marginLeft: 50,
-          x: {
-            type: "band",
-            domain: years,
-            padding: 0.1,
-            label: "Year",
-            tickRotate: -45,
-            tickAnchor: "end",
-            tickFormat: (d, i) =>
-              i % 5 === 0 ? d.toString().replace(/,/g, "") : "",
-          },
-          y: {
-            grid: true,
-            label: "Count",
-            domain: [0, maxValue],
-          },
-          color: {
-            domain: legendItems
-              .map((item) => item.type)
-              .filter((type) => categoryVisibility[type]),
-            range: legendItems
-              .filter((item) => categoryVisibility[item.type])
-              .map((item) => item.color),
-          },
-          marks: [
-            window.Plot.barY(longFormData, {
-              x: "year",
-              y: "value",
-              fill: "type",
-              title: (d) => {
-                const yearStr = d.year.toString().replace(/,/g, "");
-                if (dataType === 'parish') {
-                  if (d.type === "plague") {
-                    return `${yearStr}: ${d.value} plague deaths (${d.total} total deaths)`;
-                  } else {
-                    return `${yearStr}: ${d.value} burials (${d.total} total burials)`;
-                  }
-                } else if (dataType === 'death') {
-                  return `${yearStr}: ${d.value} deaths from this cause`;
-                } else if (dataType === 'christening') {
-                  return `${yearStr}: ${d.value} christenings of this type`;
-                }
-                return `${yearStr}: ${d.value} ${d.type}`;
-              },
-              stack: true,
-            }),
-            window.Plot.ruleY([0]),
-            window.Plot.tip(
-              longFormData,
-              window.Plot.pointerX({
-                x: "year",
-                y: "value",
-                title: (d) => `${d.year}: ${d.value} ${d.type.toLowerCase()}`,
-              }),
-            ),
-          ],
-        });
-
-        // Add the chart to the dedicated chart container
-        chartContainer.appendChild(chart);
-      };
-
-      // Initial chart render
-      drawChart();
-
-      return {
-        updateVisibility: (type, visible) => {
-          categoryVisibility[type] = visible;
-
-          // Update legend appearance
-          const legendItem = legendContainer.querySelector(
-            `[data-type="${type}"]`,
-          );
-          if (legendItem) {
-            const swatch = legendItem.querySelector("div");
-            const label = legendItem.querySelector("span");
-            if (swatch) swatch.style.opacity = visible ? 1 : 0.3;
-            if (label) {
-              label.style.opacity = visible ? 1 : 0.5;
-              label.style.textDecoration = visible ? "none" : "line-through";
-            }
-          }
-
-          drawChart();
-        },
-        redraw: () => drawChart(),
-      };
     } catch (error) {
       console.error("Error creating modal chart:", error);
       container.innerHTML = `<div class="text-center text-red-500 py-4">Error drawing chart: ${error.message}</div>`;
+    }
+  },
+
+  /**
+   * Creates a faceted chart showing buried vs plague deaths as separate charts
+   * @param {HTMLElement} container - Container element for the chart
+   * @param {Array} data - Parish yearly data
+   * @param {Object} options - Chart options
+   */
+  createFacetedParishChart(container, data, options = {}) {
+    // Filter data to only include records with burial data
+    const validData = data.filter(d => d.total_buried > 0).sort((a, b) => a.year - b.year);
+    
+    if (validData.length === 0) {
+      container.innerHTML = '<div class="text-center py-8 text-gray-500">No burial data available for this parish</div>';
+      return;
+    }
+
+    // Create main container with flexbox layout
+    const mainContainer = document.createElement("div");
+    mainContainer.className = "flex flex-col gap-4";
+
+    // Create faceted chart layout
+    const chartsContainer = document.createElement("div");
+    chartsContainer.className = "grid grid-cols-1 lg:grid-cols-2 gap-6";
+
+    // Create individual chart containers
+    const buriedContainer = document.createElement("div");
+    buriedContainer.className = "facet-chart";
+    const buriedTitle = document.createElement("h4");
+    buriedTitle.className = "text-sm font-semibold text-gray-700 mb-2 text-center";
+    buriedTitle.textContent = "Total Buried";
+    buriedContainer.appendChild(buriedTitle);
+
+    const plagueContainer = document.createElement("div");
+    plagueContainer.className = "facet-chart";
+    const plagueTitle = document.createElement("h4");
+    plagueTitle.className = "text-sm font-semibold text-gray-700 mb-2 text-center";
+    plagueTitle.textContent = "Plague Deaths";
+    plagueContainer.appendChild(plagueTitle);
+
+    // Add containers to layout
+    chartsContainer.appendChild(buriedContainer);
+    chartsContainer.appendChild(plagueContainer);
+    mainContainer.appendChild(chartsContainer);
+    container.appendChild(mainContainer);
+
+    // Calculate shared Y-axis domain for comparison
+    const buriedValues = validData.map(d => d.total_buried || 0);
+    const plagueValues = validData.map(d => d.total_plague || 0);
+    const maxValue = Math.max(...buriedValues, ...plagueValues) * 1.1;
+
+    // Get the full year range for consistent X-axis domains
+    const allYears = validData.map(d => d.year).sort((a, b) => a - b);
+    const yearRange = { min: allYears[0], max: allYears[allYears.length - 1] };
+
+    // Create charts for each facet
+    const charts = [];
+
+    // Buried chart
+    charts.push(this.createSingleDataFacetChart(buriedContainer, validData, 'buried', maxValue, yearRange));
+
+    // Plague chart  
+    charts.push(this.createSingleDataFacetChart(plagueContainer, validData, 'plague', maxValue, yearRange));
+
+    return {
+      charts: charts,
+      redraw: () => charts.forEach(chart => chart && chart.redraw && chart.redraw())
+    };
+  },
+
+  /**
+   * Creates a single facet chart for buried or plague data
+   * @param {HTMLElement} container - Container for the chart
+   * @param {Array} data - Data for this facet
+   * @param {string} dataType - 'buried' or 'plague'
+   * @param {number} maxValue - Maximum value for Y-axis
+   * @param {Object} yearRange - Object with min and max years for consistent X-axis
+   */
+  createSingleDataFacetChart(container, data, dataType, maxValue, yearRange) {
+    const sortedData = data.sort((a, b) => a.year - b.year);
+    
+    // Create chart container
+    const chartContainer = document.createElement("div");
+    chartContainer.className = "chart-content";
+    container.appendChild(chartContainer);
+
+    // Prepare data based on facet type - include ALL years in range, even with zero values
+    let chartData, color, yField, label;
+    
+    // Create full year range array
+    const fullYearRange = [];
+    for (let year = yearRange.min; year <= yearRange.max; year++) {
+      fullYearRange.push(year);
+    }
+    
+    if (dataType === 'buried') {
+      chartData = fullYearRange.map(year => {
+        const dataPoint = sortedData.find(d => d.year === year);
+        return {
+          year: year,
+          value: dataPoint ? Math.max(0, dataPoint.total_buried || 0) : 0
+        };
+      });
+      color = "#96ADC8";
+      yField = "value";
+      label = "Total Buried";
+    } else if (dataType === 'plague') {
+      chartData = fullYearRange.map(year => {
+        const dataPoint = sortedData.find(d => d.year === year);
+        return {
+          year: year,
+          value: dataPoint ? Math.max(0, dataPoint.total_plague || 0) : 0
+        };
+      });
+      color = "#EF3054";
+      yField = "value";
+      label = "Plague Deaths";
+    }
+
+    // Create the chart - make it wider for modal
+    const chart = window.Plot.plot({
+      width: 450, // Increased from 300
+      height: 220, // Slightly taller
+      marginTop: 20,
+      marginRight: 40,
+      marginBottom: 50,
+      marginLeft: 60,
+      x: {
+        type: "band",
+        domain: fullYearRange, // Use full year range for consistent alignment
+        padding: 0.1,
+        label: "Year",
+        tickRotate: -45,
+        tickFormat: (d, i) => i % 5 === 0 ? d.toString() : "",
+      },
+      y: {
+        grid: true,
+        label: "Count",
+        domain: [0, maxValue],
+        tickFormat: d => d.toLocaleString()
+      },
+      marks: [
+        window.Plot.barY(chartData.filter(d => d.value > 0), { // Only show bars for non-zero values
+          x: "year",
+          y: yField,
+          fill: color,
+          title: (d) => `${d.year}: ${d.value.toLocaleString()} ${label.toLowerCase()}`
+        }),
+        window.Plot.ruleY([0]),
+        window.Plot.tip(
+          chartData.filter(d => d.value > 0),
+          window.Plot.pointerX({
+            x: "year",
+            y: yField,
+            title: (d) => `${d.year}: ${d.value.toLocaleString()} ${label.toLowerCase()}`
+          })
+        )
+      ]
+    });
+
+    chartContainer.appendChild(chart);
+    return { 
+      chart, 
+      redraw: () => {
+        chartContainer.innerHTML = "";
+        return this.createSingleDataFacetChart(container, data, dataType, maxValue, yearRange);
+      }
+    };
+  },
+
+  /**
+   * Creates a single modal chart for non-parish data types
+   * @param {HTMLElement} container - Container element for the chart
+   * @param {Array} data - Data array
+   * @param {string} dataType - Type of data ('death' or 'christening')
+   * @param {Object} options - Chart options
+   */
+  createSingleModalChart(container, data, dataType, options = {}) {
+    let allData, noDataMessage, color, yField, labelSingular, labelPlural;
+    
+    if (dataType === 'death') {
+      allData = data.filter(d => d.total_deaths > 0).sort((a, b) => a.year - b.year);
+      noDataMessage = 'No death data available for this cause';
+      color = "#DC2626";
+      yField = "total_deaths";
+      labelSingular = "death";
+      labelPlural = "deaths";
+    } else if (dataType === 'christening') {
+      allData = data.filter(d => d.total_christenings > 0).sort((a, b) => a.year - b.year);
+      noDataMessage = 'No christening data available for this type';
+      color = "#059669";
+      yField = "total_christenings";
+      labelSingular = "christening";
+      labelPlural = "christenings";
+    }
+
+    if (!allData || allData.length === 0) {
+      container.innerHTML = `<div class="text-center py-8 text-gray-500">${noDataMessage}</div>`;
+      return;
+    }
+
+    const years = allData.map(d => d.year);
+    const maxValue = Math.max(...allData.map(d => d[yField])) * 1.1;
+
+    const chart = window.Plot.plot({
+      width: container.clientWidth || 400,
+      height: 250,
+      marginTop: 20,
+      marginRight: 40,
+      marginBottom: 50,
+      marginLeft: 60,
+      x: {
+        type: "band",
+        domain: years,
+        padding: 0.1,
+        label: "Year",
+        tickRotate: -45,
+        tickFormat: (d, i) => i % 5 === 0 ? d.toString() : "",
+      },
+      y: {
+        grid: true,
+        label: `Number of ${labelPlural}`,
+        domain: [0, maxValue],
+        tickFormat: d => d.toLocaleString()
+      },
+      marks: [
+        window.Plot.barY(allData, {
+          x: "year",
+          y: yField,
+          fill: color,
+          title: (d) => `${d.year}: ${d[yField].toLocaleString()} ${d[yField] === 1 ? labelSingular : labelPlural}`
+        }),
+        window.Plot.ruleY([0]),
+        window.Plot.tip(
+          allData,
+          window.Plot.pointerX({
+            x: "year",
+            y: yField,
+            title: (d) => `${d.year}: ${d[yField].toLocaleString()} ${d[yField] === 1 ? labelSingular : labelPlural}`
+          })
+        )
+      ]
+    });
+
+    container.appendChild(chart);
+
+    return {
+      chart,
+      redraw: () => this.createSingleModalChart(container, data, dataType, options)
+    };
+  },
+
+  /**
+   * Creates a simple bar chart for data counts
+   * @param {HTMLElement} container - Container element for the chart
+   * @param {Array} data - Data array with year and count properties
+   * @param {Object} options - Chart options
+   */
+  createDataCountsBarChart(container, data, options = {}) {
+    if (!container || !data || !window.Plot) {
+      console.error("Missing requirements for data counts chart rendering");
+      return;
+    }
+
+    try {
+      // Clear previous content
+      container.innerHTML = "";
+
+      // Filter and sort data
+      const chartData = data
+        .filter((d) => d.count > 0)
+        .sort((a, b) => a.year - b.year);
+
+      if (chartData.length === 0) {
+        container.innerHTML = '<div class="text-center py-8 text-gray-500">No data available</div>';
+        return;
+      }
+
+      // Set default options
+      const defaultOptions = {
+        width: container.clientWidth || 800,
+        height: 400,
+        marginTop: 20,
+        marginRight: 40,
+        marginBottom: 60,
+        marginLeft: 60,
+        color: "#7f5a83",
+      };
+
+      // Merge with provided options
+      const chartOptions = { ...defaultOptions, ...options };
+
+      // Create the chart
+      const chart = window.Plot.plot({
+        width: chartOptions.width,
+        height: chartOptions.height,
+        marginTop: chartOptions.marginTop,
+        marginRight: chartOptions.marginRight,
+        marginBottom: chartOptions.marginBottom,
+        marginLeft: chartOptions.marginLeft,
+        
+        x: {
+          type: "band",
+          domain: chartData.map(d => d.year),
+          padding: 0.1,
+          label: "Year",
+          tickRotate: 45,
+          tickFormat: (d) => {
+            // Show years every 5 years to reduce clutter
+            return d % 5 === 0 ? d.toString() : "";
+          }
+        },
+        
+        y: {
+          grid: true,
+          label: "Number of Records",
+          domain: [0, Math.max(...chartData.map(d => d.count)) * 1.1],
+          tickFormat: d => d.toLocaleString()
+        },
+        
+        marks: [
+          window.Plot.barY(chartData, {
+            x: "year",
+            y: "count",
+            fill: chartOptions.color,
+            title: (d) => `${d.year}: ${d.count.toLocaleString()} records`
+          }),
+          window.Plot.ruleY([0]),
+          
+          // Add interactive tooltip
+          window.Plot.tip(
+            chartData,
+            window.Plot.pointerX({
+              x: "year",
+              y: "count",
+              title: (d) => `Transcribed bills for ${d.year}\nTotal rows of data: ${d.count.toLocaleString()}`
+            })
+          )
+        ]
+      });
+
+      // Add to DOM
+      container.appendChild(chart);
+
+      return chart;
+    } catch (error) {
+      console.error("Error creating data counts chart:", error);
+      container.innerHTML = `<div class="text-red-500 text-center py-4">Error creating chart: ${error.message}</div>`;
     }
   },
 };
