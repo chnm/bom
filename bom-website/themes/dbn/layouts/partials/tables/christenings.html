@@ -94,8 +94,12 @@
                 </td>
                 <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
                   x-text="christening.christening"></td>
-                <td class="py-4 px-6 text-sm font-medium text-center text-gray-900 whitespace-nowrap dark:text-white font-mono"
-                  x-text="christening.count"></td>
+                <td class="py-4 px-6 text-sm font-medium text-center text-gray-900 whitespace-nowrap dark:text-white font-mono">
+                  <span x-show="christening.count && !christening.illegible" x-text="christening.count"></span>
+                  <span x-show="christening.count && christening.illegible" class="px-2 py-1 bg-amber-100 text-amber-800 rounded" x-text="christening.count"></span>
+                  <span x-show="!christening.count && christening.illegible" class="px-2 py-1 bg-amber-100 text-amber-800 rounded">-</span>
+                  <span x-show="!christening.count && !christening.illegible">-</span>
+                </td>
                 <td class="py-4 px-6 text-sm font-medium text-center text-gray-900 whitespace-nowrap dark:text-white font-mono"
                   x-text="christening.week_number"></td>
                 <td class="py-4 px-6 text-sm font-medium text-center text-gray-900 whitespace-nowrap dark:text-white font-mono"
@@ -167,7 +171,10 @@
           
       <!-- Christening details -->
       <p class="mt-2 text-sm text-gray-800"><strong>Description</strong>: <span x-text="modalBill.christening"></span></p>
-      <p class="mt-2 text-sm text-gray-800"><strong>Count</strong>: <span x-text="modalBill.count ? modalBill.count : 'No count available.'"></span></p>
+      <p class="mt-2 text-sm text-gray-800"><strong>Count</strong>: <span x-text="modalBill.count ? modalBill.count : 'No count available.'"></span>
+        <span x-show="modalBill.missing === true" class="ml-2 px-2 py-0.5 bg-amber-100 text-amber-800 text-xs rounded-full">The data for this record is marked as missing</span>
+        <span x-show="modalBill.illegible === true" class="ml-2 px-2 py-0.5 bg-amber-100 text-amber-800 text-xs rounded-full">The data for this record is marked as illegible</span>
+      </p>
       <p class="mt-2 text-sm text-gray-800"><strong>Week Number</strong>: <span x-text="modalBill.week_number"></span></p>
       <p class="mt-2 text-sm text-gray-800"><strong>Year</strong>: <span x-text="modalBill.year"></span></p>
       

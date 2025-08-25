@@ -26,14 +26,14 @@
             Cause Analysis <span class="ml-2 bg-gray-100 px-2 py-1 rounded text-xs">2</span>
           </button>
           <button class="filter-btn rounded border border-gray-200 bg-white text-sm font-medium px-4 py-2 text-gray-900 hover:bg-dbn-blue hover:text-black focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700" data-filter="project-data">
-            Project Data <span class="ml-2 bg-gray-100 px-2 py-1 rounded text-xs">1</span>
+            Project Data <span class="ml-2 bg-gray-100 px-2 py-1 rounded text-xs">2</span>
           </button>
         </div>
       </div>
 
       <!-- Visualizations Grid -->
       <div id="viz-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-16">
-        {{ range .Pages }}
+        {{ range .Pages.ByTitle }}
         <div class="viz-card bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden group transform hover:-translate-y-1" 
              data-category="{{ .Params.category }}">
           <div class="overflow-hidden">

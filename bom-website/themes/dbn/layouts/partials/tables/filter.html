@@ -242,6 +242,30 @@
         </div>
       </div>
 
+      {{/* Data Quality Filter - Show for all tabs */}}
+      <div class="space-y-3">
+        <h3 class="text-sm font-medium text-gray-700">Data Quality</h3>
+        <div class="bg-gray-50 rounded-lg border border-gray-200 p-4">
+          <div class="flex items-center">
+            <input 
+              type="checkbox" 
+              id="illegible-filter"
+              x-model="filters.showIllegibleOnly"
+              class="h-4 w-4 text-amber-600 border-gray-300 rounded focus:ring-amber-500"
+            >
+            <label 
+              for="illegible-filter"
+              class="ml-2 text-sm text-gray-600 cursor-pointer"
+            >
+              Show only illegible data
+            </label>
+          </div>
+          <p class="mt-2 text-xs text-gray-500">
+            Display only records where the original data was difficult to read
+          </p>
+        </div>
+      </div>
+
       {{/* Actions - Show for all tabs */}}
       <div class="space-y-3">
         <h3 class="text-sm font-medium text-gray-700">Actions</h3>
