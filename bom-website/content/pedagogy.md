@@ -11,4 +11,4 @@ The London Bills of Mortality make an excellent resource to use in a classroom e
 ## Lesson Plans
 
 - [Humanities Data with Death By Numbers Lesson Plan](/teaching/humanities-data/)
-- [Urban Plague with Death By Numbers Lesson Plan](/teaching/humanities-data/)
+- [Urban Plague with Death By Numbers Lesson Plan](/teaching/urban-data/)
