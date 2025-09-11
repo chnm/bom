@@ -315,14 +315,31 @@ class BillsProcessor:
                 for parish_id, count_type, col in parish_count_combinations:
                     count_value = row[col]
                     
+                    # Look for corresponding is_missing and is_illegible flag columns
+                    is_missing_col = self._find_flag_column(col, df.columns, 'is_missing')
+                    is_illegible_col = self._find_flag_column(col, df.columns, 'is_illegible')
+                    
+                    # Get flag values from the flag columns if they exist
+                    explicit_missing = False
+                    explicit_illegible = False
+                    
+                    if is_missing_col and is_missing_col in row.index:
+                        missing_val = row[is_missing_col]
+                        explicit_missing = self._is_flag_true(missing_val)
+                    
+                    if is_illegible_col and is_illegible_col in row.index:
+                        illegible_val = row[is_illegible_col]
+                        explicit_illegible = self._is_flag_true(illegible_val)
+                    
                     # Handle missing/empty counts (preserve them as 0 with flags)
                     if pd.isna(count_value) or count_value == '' or count_value == 0:
                         count = 0
-                        is_missing = pd.isna(count_value) or count_value == ''
+                        # Use explicit missing flag if available, otherwise infer from empty value
+                        is_missing = explicit_missing or (pd.isna(count_value) or count_value == '')
                     else:
                         try:
                             count = int(count_value)
-                            is_missing = False
+                            is_missing = explicit_missing  # Use explicit flag
                         except (ValueError, TypeError):
                             # Invalid count - preserve as 0 with missing flag
                             count = 0
@@ -337,7 +354,7 @@ class BillsProcessor:
                         joinid=week_id,
                         bill_type=bill_type,
                         missing=is_missing,
-                        illegible=False,
+                        illegible=explicit_illegible,  # Use explicit illegible flag
                         source=source_name,
                         unique_identifier=unique_identifier
                     )
@@ -677,6 +694,69 @@ class BillsProcessor:
             return "general"
         
         return "weekly"  # Default for all other cases
+    
+    def _find_flag_column(self, data_column: str, all_columns, flag_type: str) -> Optional[str]:
+        """
+        Find the corresponding is_missing or is_illegible flag column for a data column.
+        
+        After column normalization, the pattern becomes:
+        [Data Column] -> look for nearest is_missing_X or is_illegible_X column
+        
+        Args:
+            data_column: Name of the data column (normalized)
+            all_columns: List of all column names in the DataFrame (normalized)
+            flag_type: Either 'is_missing' or 'is_illegible'
+            
+        Returns:
+            Name of the corresponding flag column, or None if not found
+        """
+        try:
+            columns_list = list(all_columns)
+            data_col_index = columns_list.index(data_column)
+            
+            # Search forward and backward for the closest flag column
+            # DataScribe pattern: data_col, is_missing_X, is_illegible_X
+            search_range = min(10, len(columns_list))  # Look within reasonable distance
+            
+            # Search forward first (most common case)
+            for offset in range(1, search_range):
+                if data_col_index + offset < len(columns_list):
+                    potential_col = columns_list[data_col_index + offset]
+                    # Match exact flag_type or numbered versions (is_illegible_1, is_illegible_2, etc.)
+                    if potential_col == flag_type or potential_col.startswith(f"{flag_type}_"):
+                        return potential_col
+                    # Stop searching if we hit another data column (parish name)
+                    if self._looks_like_data_column(potential_col):
+                        break
+            
+            # Search backward as backup
+            for offset in range(1, min(5, data_col_index + 1)):
+                if data_col_index - offset >= 0:
+                    potential_col = columns_list[data_col_index - offset]
+                    if potential_col == flag_type or potential_col.startswith(f"{flag_type}_"):
+                        return potential_col
+            
+            return None
+        except (ValueError, IndexError):
+            return None
+    
+    def _looks_like_data_column(self, column_name: str) -> bool:
+        """Check if a column name looks like a data column (not a flag column)."""
+        col_lower = column_name.lower()
+        return not any(flag in col_lower for flag in ['is_missing', 'is_illegible', 'omeka', 'datascribe', 'unique_identifier', 'start_', 'end_', 'year', 'week'])
+    
+    def _is_flag_true(self, value) -> bool:
+        """Check if a flag value should be considered True."""
+        if pd.isna(value):
+            return False
+        # Handle various representations of True
+        if isinstance(value, bool):
+            return value
+        if isinstance(value, (int, float)):
+            return value == 1 or value == 1.0
+        if isinstance(value, str):
+            return value.strip().lower() in ('1', 'true', 'yes', 'y')
+        return False
     
     def _find_parish_id(self, parish_name: str, parish_mapping: Dict[str, int]) -> Optional[int]:
         """Find parish ID using fuzzy matching."""

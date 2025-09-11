@@ -70,7 +70,7 @@ def main():
         bills_processor = BillsProcessor()
         
         try:
-            bill_records = bills_processor.process_parish_dataframes(
+            bill_records, cause_records, new_week_records, new_year_records = bills_processor.process_parish_dataframes(
                 dataframes, parish_records, valid_weeks
             )
             
@@ -80,7 +80,7 @@ def main():
             if bill_records:
                 logger.info("Sample bill records:")
                 for i, record in enumerate(bill_records[:5]):
-                    logger.info(f"  {i+1}. Parish {record.parish_id}, {record.count_type}: {record.count}, Year: {record.year}, Week: {record.week_id}")
+                    logger.info(f"  {i+1}. Parish {record.parish_id}, {record.count_type}: {record.count}, Year: {record.year}, Week: {record.joinid}")
             
             # Validate all records
             validator = SchemaValidator()
