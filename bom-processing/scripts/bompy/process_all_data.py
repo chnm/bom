@@ -4,31 +4,39 @@
 import sys
 import time
 from pathlib import Path
-from loguru import logger
+from typing import Any, Dict, List
+
 import pandas as pd
-from typing import List, Dict, Any
+from loguru import logger
 
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 
+from bom.extractors import ParishExtractor, WeekExtractor, YearExtractor
 from bom.loaders import CSVLoader
-from bom.extractors import WeekExtractor, ParishExtractor, YearExtractor
-from bom.processors import (BillsProcessor, FoodstuffsProcessor, ChristeningsProcessor, 
-                             ChristeningsGenderProcessor, ChristeningsParishProcessor)
-from bom.utils.validation import SchemaValidator
+from bom.processors import (
+    BillsProcessor,
+    ChristeningsGenderProcessor,
+    ChristeningsParishProcessor,
+    ChristeningsProcessor,
+    FoodstuffsProcessor,
+)
 from bom.utils.logging import (
-    setup_logging,
+    log_data_quality_metrics,
     log_processing_summary,
     log_validation_results,
-    log_data_quality_metrics,
+    setup_logging,
 )
+from bom.utils.validation import SchemaValidator
 
 
 def main():
     """Process all Bills of Mortality data and generate PostgreSQL-ready outputs."""
-    
+
     # Configuration flags
-    ENABLE_GLOBAL_DEDUPLICATION = True  # Set to True to remove duplicate records across sources
+    ENABLE_GLOBAL_DEDUPLICATION = (
+        True  # Set to True to remove duplicate records across sources
+    )
 
     start_time = time.time()
 
@@ -41,7 +49,7 @@ def main():
     logger.info(f"📝 Log file: {log_file}")
 
     # Setup paths
-    data_raw_dir = Path(__file__).parent / "data-raw"
+    data_raw_dir = Path(__file__).parent / "../../../bom-data/data-csvs"
     output_dir = Path(__file__).parent / "data"
     output_dir.mkdir(exist_ok=True)
 
@@ -63,7 +71,9 @@ def main():
     for csv_file in csv_files:
         try:
             df, info = loader.load(csv_file)
-            all_dataframes.append((df, csv_file.name, info.dataset_type))  # Include dataset type for filtering
+            all_dataframes.append(
+                (df, csv_file.name, info.dataset_type)
+            )  # Include dataset type for filtering
             total_input_rows += len(df)
 
             logger.info(
@@ -102,18 +112,24 @@ def main():
 
     # Extract parishes
     parish_extractor = ParishExtractor()
-    parish_records = parish_extractor.extract_parishes_from_dataframes([(df, name) for df, name, _ in all_dataframes])
+    parish_records = parish_extractor.extract_parishes_from_dataframes(
+        [(df, name) for df, name, _ in all_dataframes]
+    )
     logger.info(f"✓ Extracted {len(parish_records)} unique parishes")
 
     # Extract weeks
     week_extractor = WeekExtractor()
-    week_records = week_extractor.extract_weeks_from_dataframes([(df, name) for df, name, _ in all_dataframes])
+    week_records = week_extractor.extract_weeks_from_dataframes(
+        [(df, name) for df, name, _ in all_dataframes]
+    )
     valid_weeks = week_extractor.validate_weeks(week_records)
     logger.info(f"✓ Extracted {len(valid_weeks)} valid weeks")
 
     # Extract years
     year_extractor = YearExtractor()
-    year_records = year_extractor.extract_years_from_dataframes([(df, name) for df, name, _ in all_dataframes])
+    year_records = year_extractor.extract_years_from_dataframes(
+        [(df, name) for df, name, _ in all_dataframes]
+    )
     logger.info(f"✓ Extracted {len(year_records)} unique years")
 
     # Process bills
@@ -127,43 +143,60 @@ def main():
     bill_dataframes = [
         (df, name)
         for df, name, dataset_type in all_dataframes
-        if "parish" in name.lower() or "causes" in name.lower() or "parish" in dataset_type.lower() or "causes" in dataset_type.lower()
+        if "parish" in name.lower()
+        or "causes" in name.lower()
+        or "parish" in dataset_type.lower()
+        or "causes" in dataset_type.lower()
     ]
     logger.info(
         f"Processing {len(bill_dataframes)} datasets (parish + causes) for bills"
     )
 
-    bill_records, cause_records, new_week_records, new_year_records = bills_processor.process_parish_dataframes(
+    (
+        bill_records,
+        cause_records,
+        new_week_records,
+        new_year_records,
+        subtotal_records,
+    ) = bills_processor.process_parish_dataframes(
         bill_dataframes, parish_records, valid_weeks
     )
-    
+
     # Merge new week records from general bills processing with deduplication
     if new_week_records:
         existing_joinids = {w.joinid for w in valid_weeks}
-        deduplicated_weeks = [w for w in new_week_records if w.joinid not in existing_joinids]
+        deduplicated_weeks = [
+            w for w in new_week_records if w.joinid not in existing_joinids
+        ]
         valid_weeks.extend(deduplicated_weeks)
-        logger.info(f"✓ Added {len(deduplicated_weeks)} new unique week records from general bills (filtered {len(new_week_records) - len(deduplicated_weeks)} duplicates)")
-    
-    # Merge new year records from general bills processing with deduplication  
+        logger.info(
+            f"✓ Added {len(deduplicated_weeks)} new unique week records from general bills (filtered {len(new_week_records) - len(deduplicated_weeks)} duplicates)"
+        )
+
+    # Merge new year records from general bills processing with deduplication
     if new_year_records:
         existing_years = {y.year for y in year_records}
-        deduplicated_years = [y for y in new_year_records if y.year not in existing_years]
+        deduplicated_years = [
+            y for y in new_year_records if y.year not in existing_years
+        ]
         year_records.extend(deduplicated_years)
-        logger.info(f"✓ Added {len(deduplicated_years)} new unique year records from general bills (filtered {len(new_year_records) - len(deduplicated_years)} duplicates)")
-    
+        logger.info(
+            f"✓ Added {len(deduplicated_years)} new unique year records from general bills (filtered {len(new_year_records) - len(deduplicated_years)} duplicates)"
+        )
+
     logger.info(f"✓ Generated {len(bill_records)} bill of mortality records")
     logger.info(f"✓ Generated {len(cause_records)} causes of death records")
+    logger.info(f"✓ Generated {len(subtotal_records)} subtotal records")
 
     # Process foodstuffs data
     logger.info("\n=== Processing Foodstuffs Data ===")
     foodstuffs_processor = FoodstuffsProcessor()
-    
+
     # Filter to foodstuffs datasets
     foodstuffs_datasets = {
-        name: df for df, name, _ in all_dataframes
-        if "foodstuff" in name.lower()
+        name: df for df, name, _ in all_dataframes if "foodstuff" in name.lower()
     }
-    
+
     if foodstuffs_datasets:
         logger.info(f"Processing {len(foodstuffs_datasets)} foodstuffs datasets")
         foodstuffs_processor.process_datasets(foodstuffs_datasets)
@@ -175,50 +208,61 @@ def main():
 
     # Process christenings data - split into gender and parish processing
     logger.info("\n=== Processing Christenings Data ===")
-    
+
     # Process gender christenings
     gender_processor = ChristeningsGenderProcessor()
     gender_datasets = {
-        name: df for df, name, _ in all_dataframes
-        if "gender" in name.lower()
+        name: df for df, name, _ in all_dataframes if "gender" in name.lower()
     }
-    
+
     if gender_datasets:
-        logger.info(f"Processing {len(gender_datasets)} gender datasets for christenings")
+        logger.info(
+            f"Processing {len(gender_datasets)} gender datasets for christenings"
+        )
         gender_processor.process_datasets(gender_datasets)
         gender_christening_records = gender_processor.get_records()
-        logger.info(f"✓ Generated {len(gender_christening_records)} gender christening records")
+        logger.info(
+            f"✓ Generated {len(gender_christening_records)} gender christening records"
+        )
     else:
         logger.info("No gender datasets found for christenings")
         gender_christening_records = []
-    
+
     # Process parish christenings
     parish_processor = ChristeningsParishProcessor()
     parish_datasets = {
-        name: df for df, name, _ in all_dataframes
-        if "parish" in name.lower()
+        name: df for df, name, _ in all_dataframes if "parish" in name.lower()
     }
-    
+
     if parish_datasets:
-        logger.info(f"Processing {len(parish_datasets)} parish datasets for christenings")
+        logger.info(
+            f"Processing {len(parish_datasets)} parish datasets for christenings"
+        )
         parish_processor.process_datasets(parish_datasets, parish_records, valid_weeks)
         parish_christening_records = parish_processor.get_records()
-        logger.info(f"✓ Generated {len(parish_christening_records)} parish christening records")
+        logger.info(
+            f"✓ Generated {len(parish_christening_records)} parish christening records"
+        )
     else:
         logger.info("No parish datasets found for christenings")
         parish_christening_records = []
-    
+
     # Keep old processor for backward compatibility (combine all records)
     christenings_processor = ChristeningsProcessor()
     all_christenings_datasets = {
-        name: df for df, name, _ in all_dataframes
-        if "gender" in name.lower() or "christening" in name.lower() or "parish" in name.lower()
+        name: df
+        for df, name, _ in all_dataframes
+        if "gender" in name.lower()
+        or "christening" in name.lower()
+        or "parish" in name.lower()
     }
-    
+
     if all_christenings_datasets:
         christenings_processor.process_datasets(all_christenings_datasets)
         christening_records = christenings_processor.get_records()
-        logger.info(f"✓ Generated {len(christening_records)} total christening records (combined)")
+        logger.info(
+            f"✓ Generated {len(christening_records)} total christening records (combined)"
+        )
     else:
         christening_records = []
 
@@ -247,7 +291,7 @@ def main():
     if ENABLE_GLOBAL_DEDUPLICATION:
         logger.info("Performing source-aware deduplication on bills...")
         pre_dedup_count = len(valid_bills)
-        
+
         # Group records by (parish_id, count_type, year, joinid)
         groups = {}
         for record in valid_bills:
@@ -255,12 +299,12 @@ def main():
             if key not in groups:
                 groups[key] = []
             groups[key].append(record)
-        
+
         # Process each group for source-aware deduplication
         deduplicated_bills = []
         same_source_removed = 0
         cross_source_kept = 0
-        
+
         for key, records in groups.items():
             if len(records) == 1:
                 # No duplicates
@@ -268,7 +312,7 @@ def main():
             else:
                 # Handle duplicates - keep different sources, remove same-source duplicates
                 unique_id_to_record = {}
-                
+
                 for record in records:
                     uid = record.unique_identifier
                     if uid not in unique_id_to_record:
@@ -280,23 +324,25 @@ def main():
                         if (record.count or 0) > (existing.count or 0):
                             unique_id_to_record[uid] = record
                         same_source_removed += 1
-                
+
                 # Keep all records with different unique_identifiers (different sources)
                 final_records = list(unique_id_to_record.values())
                 deduplicated_bills.extend(final_records)
-                
+
                 if len(final_records) > 1:
                     cross_source_kept += len(final_records)
-        
+
         valid_bills = deduplicated_bills
         post_dedup_count = len(valid_bills)
-        
+
         logger.info(f"Source-aware deduplication results:")
         logger.info(f"  • Removed {same_source_removed} same-source duplicate records")
         logger.info(f"  • Preserved {cross_source_kept} cross-source records")
         logger.info(f"  • Total records: {pre_dedup_count} → {post_dedup_count}")
     else:
-        logger.info("Source-aware deduplication disabled - preserving all source records")
+        logger.info(
+            "Source-aware deduplication disabled - preserving all source records"
+        )
 
     # Validate causes records
     valid_causes = []
@@ -319,7 +365,7 @@ def main():
     if ENABLE_GLOBAL_DEDUPLICATION:
         logger.info("Performing source-aware deduplication on causes...")
         pre_dedup_count = len(valid_causes)
-        
+
         # Group records by (death, year, joinid)
         groups = {}
         for record in valid_causes:
@@ -327,12 +373,12 @@ def main():
             if key not in groups:
                 groups[key] = []
             groups[key].append(record)
-        
+
         # Process each group for source-aware deduplication
         deduplicated_causes = []
         same_source_removed = 0
         cross_source_kept = 0
-        
+
         for key, records in groups.items():
             if len(records) == 1:
                 # No duplicates
@@ -340,7 +386,7 @@ def main():
             else:
                 # Handle duplicates - keep different sources, remove same-source duplicates
                 unique_id_to_record = {}
-                
+
                 for record in records:
                     uid = record.source_name  # Use source_name for causes deduplication
                     if uid not in unique_id_to_record:
@@ -350,32 +396,34 @@ def main():
                         # Duplicate source_name (same source) - use better record selection
                         existing = unique_id_to_record[uid]
                         should_replace = False
-                        
+
                         if existing.count is None and record.count is not None:
                             should_replace = True
                         elif existing.count is not None and record.count is not None:
                             should_replace = record.count > existing.count
-                        
+
                         if should_replace:
                             unique_id_to_record[uid] = record
                         same_source_removed += 1
-                
+
                 # Keep all records with different source_names (different sources)
                 final_records = list(unique_id_to_record.values())
                 deduplicated_causes.extend(final_records)
-                
+
                 if len(final_records) > 1:
                     cross_source_kept += len(final_records)
-        
+
         valid_causes = deduplicated_causes
         post_dedup_count = len(valid_causes)
-        
+
         logger.info(f"Source-aware cause deduplication results:")
         logger.info(f"  • Removed {same_source_removed} same-source duplicate records")
-        logger.info(f"  • Preserved {cross_source_kept} cross-source records") 
+        logger.info(f"  • Preserved {cross_source_kept} cross-source records")
         logger.info(f"  • Total records: {pre_dedup_count} → {post_dedup_count}")
     else:
-        logger.info("Source-aware deduplication disabled - preserving all source records")
+        logger.info(
+            "Source-aware deduplication disabled - preserving all source records"
+        )
 
     # Generate CSV outputs
     logger.info("\n=== Generating CSV Outputs ===")
@@ -387,10 +435,17 @@ def main():
         "years": pd.DataFrame([y.to_dict() for y in year_records]),
         "all_bills": pd.DataFrame([b.to_dict() for b in valid_bills]),
         "causes_of_death": pd.DataFrame([c.to_dict() for c in valid_causes]),
+        "subtotals": pd.DataFrame([s.to_dict() for s in subtotal_records]),
         "foodstuffs": pd.DataFrame([f.to_dict() for f in foodstuff_records]),
-        "christenings_by_gender": pd.DataFrame([c.to_dict() for c in gender_christening_records]),
-        "christenings_by_parish": pd.DataFrame([c.to_dict() for c in parish_christening_records]),
-        "christenings": pd.DataFrame([c.to_dict() for c in christening_records]),  # Keep for backward compatibility
+        "christenings_by_gender": pd.DataFrame(
+            [c.to_dict() for c in gender_christening_records]
+        ),
+        "christenings_by_parish": pd.DataFrame(
+            [c.to_dict() for c in parish_christening_records]
+        ),
+        "christenings": pd.DataFrame(
+            [c.to_dict() for c in christening_records]
+        ),  # Keep for backward compatibility
     }
 
     # Write CSV files
@@ -408,9 +463,13 @@ def main():
                     df["week_number"] = df["week_number"].astype("Int64")
                 if "year" in df.columns:
                     df["year"] = df["year"].astype("Int64")
-            
+
             # Fix integer columns for christenings tables
-            if table_name in ["christenings", "christenings_by_parish", "christenings_by_gender"] and len(df) > 0:
+            if (
+                table_name
+                in ["christenings", "christenings_by_parish", "christenings_by_gender"]
+                and len(df) > 0
+            ):
                 # Convert integer columns to nullable integer to avoid .0 in CSV
                 if "week_number" in df.columns:
                     df["week_number"] = df["week_number"].astype("Int64")
@@ -424,7 +483,7 @@ def main():
                     df["count"] = df["count"].astype("Int64")
                 if "week" in df.columns:
                     df["week"] = df["week"].astype("Int64")
-            
+
             # Fix integer columns for causes_of_death table
             if table_name == "causes_of_death" and len(df) > 0:
                 # Convert count and year columns to nullable integer to avoid .0 in CSV
@@ -432,7 +491,7 @@ def main():
                     df["count"] = df["count"].astype("Int64")
                 if "year" in df.columns:
                     df["year"] = df["year"].astype("Int64")
-            
+
             output_file = output_dir / f"{table_name}.csv"
             df.to_csv(output_file, index=False)
             output_files[table_name] = output_file
@@ -450,6 +509,7 @@ def main():
         "years": len(year_records),
         "bill_of_mortality": len(valid_bills),
         "causes_of_death": len(valid_causes),
+        "subtotals": len(subtotal_records),
         "foodstuffs": len(foodstuff_records),
         "christenings_by_gender": len(gender_christening_records),
         "christenings_by_parish": len(parish_christening_records),
