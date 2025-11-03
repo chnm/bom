@@ -16,19 +16,18 @@ DATA_RAW_DIR := data-raw
 DATA_OUTPUT_DIR := data
 SRC_DIR := src
 LOGS_DIR := logs
-NOTEBOOKS_DIR := notebooks
 
 ##@ Setup Commands
 
 .PHONY: install
 install: ## Install dependencies with Poetry
 	@echo -e "$(CYAN)Installing dependencies...$(RESET)"
-	poetry install
+	uv run install
 
 .PHONY: install-dev
 install-dev: ## Install development dependencies
 	@echo -e "$(CYAN)Installing development dependencies...$(RESET)"
-	poetry install --with dev
+	uv run install --with dev
 
 .PHONY: setup
 setup: install ## Complete setup (install dependencies)
@@ -40,7 +39,7 @@ setup: install ## Complete setup (install dependencies)
 process-all: ## Process all CSV files and generate PostgreSQL outputs
 	@echo -e "$(CYAN) Processing all Bills of Mortality data...$(RESET)"
 	@mkdir -p $(LOGS_DIR)
-	poetry run python process_all_data.py
+	uv run python process_all_data.py
 	@echo -e "$(GREEN) Processing complete! Check $(DATA_OUTPUT_DIR)/ for outputs$(RESET)"
 	@echo -e "$(YELLOW) Logs saved to $(LOGS_DIR)/$(RESET)"
 
@@ -48,13 +47,13 @@ process-all: ## Process all CSV files and generate PostgreSQL outputs
 test-bills: ## Test bills processor with sample data
 	@echo -e "$(CYAN) Testing bills processor...$(RESET)"
 	@mkdir -p $(LOGS_DIR)
-	poetry run python tests/test_bills_processor.py
+	uv run python tests/test_bills_processor.py
 
 .PHONY: test-schema
 test-schema: ## Test schema alignment with sample data
 	@echo -e "$(CYAN) Testing schema alignment...$(RESET)"
 	@mkdir -p $(LOGS_DIR)
-	poetry run python tests/test_schema_alignment.py
+	uv run python tests/test_schema_alignment.py
 
 ##@ Data Management
 
@@ -114,113 +113,30 @@ show-stats: ## Show statistics for generated data files
 		echo -e "$(RED)No data directory found. Run 'make process-all' first.$(RESET)"; \
 	fi
 
-.PHONY: validate-outputs
-validate-outputs: ## Validate generated CSV files
-	@echo -e "$(CYAN) Validating output files...$(RESET)"
-	@for file in parishes.csv weeks.csv years.csv all_bills.csv; do \
-		if [ -f "$(DATA_OUTPUT_DIR)/$$file" ]; then \
-			records=$$(tail -n +2 "$(DATA_OUTPUT_DIR)/$$file" | wc -l | tr -d ' '); \
-			echo -e "$$file: $$records records"; \
-		else \
-			echo -e "$$file: File not found"; \
-		fi; \
-	done
-	@echo -e "$(GREEN)Validation complete!$(RESET)"
-
-.PHONY: check-coverage
-check-coverage: ## Analyze data coverage by parish and year
-	@echo -e "$(CYAN)Analyzing data coverage...$(RESET)"
-	@if [ ! -f "$(DATA_OUTPUT_DIR)/all_bills.csv" ]; then \
-		echo -e "$(RED)Error: No processed data found. Run 'make process-all' first.$(RESET)"; \
-		exit 1; \
-	fi
-	poetry run python analyze_data_coverage.py
-	@echo -e "$(GREEN)Coverage analysis complete!$(RESET)"
-
-##@ Analysis Commands
-
-.PHONY: notebooks
-notebooks: ## Launch Jupyter Lab for data analysis
-	@echo -e "$(CYAN)Launching Jupyter Lab...$(RESET)"
-	@mkdir -p $(NOTEBOOKS_DIR)
-	poetry run jupyter lab --notebook-dir="$(PWD)/$(NOTEBOOKS_DIR)"
-
-.PHONY: notebook-run-all
-notebook-run-all: ## Execute all analysis notebooks
-	@echo -e "$(CYAN)Running all analysis notebooks...$(RESET)"
-	@for notebook in $(NOTEBOOKS_DIR)/*.ipynb; do \
-		if [ -f "$$notebook" ]; then \
-			echo -e "$(YELLOW)Running $$(basename $$notebook)...$(RESET)"; \
-			poetry run jupyter nbconvert --to notebook --execute --inplace "$$notebook" || echo -e "$(RED)Failed to run $$(basename $$notebook)$(RESET)"; \
-		fi; \
-	done
-	@echo -e "$(GREEN)All notebooks executed$(RESET)"
-
-.PHONY: notebook-convert
-notebook-convert: ## Convert notebooks to HTML reports
-	@echo -e "$(CYAN)Converting notebooks to HTML...$(RESET)"
-	@mkdir -p $(NOTEBOOKS_DIR)/reports
-	@for notebook in $(NOTEBOOKS_DIR)/*.ipynb; do \
-		if [ -f "$$notebook" ]; then \
-			echo -e "$(YELLOW)Converting $$(basename $$notebook)...$(RESET)"; \
-			poetry run jupyter nbconvert --to html "$$notebook" --output-dir=$(NOTEBOOKS_DIR)/reports; \
-		fi; \
-	done
-	@echo -e "$(GREEN)HTML reports generated in $(NOTEBOOKS_DIR)/reports/$(RESET)"
-
-.PHONY: notebook-clean
-notebook-clean: ## Clean notebook outputs and checkpoints
-	@echo -e "$(YELLOW)Cleaning notebook outputs...$(RESET)"
-	@find $(NOTEBOOKS_DIR) -name "*.ipynb" -exec jupyter nbconvert --clear-output --inplace {} \;
-	@find $(NOTEBOOKS_DIR) -name ".ipynb_checkpoints" -type d -exec rm -rf {} + 2>/dev/null || true
-	@rm -rf $(NOTEBOOKS_DIR)/reports/
-	@echo -e "$(GREEN)Notebook outputs cleaned$(RESET)"
-
-.PHONY: notebook-info
-notebook-info: ## Show information about available notebooks
-	@echo -e "$(CYAN)Available Analysis Notebooks:$(RESET)"
-	@if [ -d "$(NOTEBOOKS_DIR)" ]; then \
-		for notebook in $(NOTEBOOKS_DIR)/*.ipynb; do \
-			if [ -f "$$notebook" ]; then \
-				name=$$(basename "$$notebook" .ipynb); \
-				size=$$(du -h "$$notebook" | cut -f1); \
-				echo -e "  $$name ($$size)"; \
-				if command -v jupyter >/dev/null 2>&1; then \
-					cells=$$(poetry run jupyter nbconvert --to notebook --stdout "$$notebook" 2>/dev/null | grep -o '"cell_type":' | wc -l | tr -d ' '); \
-					if [ "$$cells" -gt 0 ]; then \
-						echo -e "      $$cells cells"; \
-					fi; \
-				fi; \
-			fi; \
-		done; \
-	else \
-		echo -e "$(RED)No notebooks directory found$(RESET)"; \
-	fi
-
 ##@ Development Commands
 
 .PHONY: lint
 lint: ## Run linting with black and isort
 	@echo -e "$(CYAN)Linting code...$(RESET)"
-	poetry run black --check $(SRC_DIR)/ *.py
-	poetry run isort --check-only $(SRC_DIR)/ *.py
+	uv run black --check $(SRC_DIR)/ *.py
+	uv run isort --check-only $(SRC_DIR)/ *.py
 
 .PHONY: format
 format: ## Format code with black and isort
 	@echo -e "$(CYAN)Formatting code...$(RESET)"
-	poetry run black $(SRC_DIR)/ *.py
-	poetry run isort $(SRC_DIR)/ *.py
+	uv run black $(SRC_DIR)/ *.py
+	uv run isort $(SRC_DIR)/ *.py
 	@echo -e "$(GREEN)Code formatted$(RESET)"
 
 .PHONY: typecheck
 typecheck: ## Run type checking with mypy
 	@echo -e "$(CYAN)Type checking...$(RESET)"
-	poetry run mypy $(SRC_DIR)/
+	uv run mypy $(SRC_DIR)/
 
 .PHONY: test
 test: ## Run tests with pytest
 	@echo -e "$(CYAN)Running tests...$(RESET)"
-	poetry run pytest tests/ -v
+	uv run pytest tests/ -v
 
 .PHONY: check
 check: lint typecheck ## Run all code quality checks
@@ -232,8 +148,8 @@ check: lint typecheck ## Run all code quality checks
 info: ## Show project information
 	@echo -e "$(CYAN)Bills of Mortality Processing Pipeline$(RESET)"
 	@echo -e "$(GREEN)Version:$(RESET) 1.0.0"
-	@echo -e "$(GREEN)Python:$(RESET) $$(poetry run python --version)"
-	@echo -e "$(GREEN)Poetry:$(RESET) $$(poetry --version)"
+	@echo -e "$(GREEN)Python:$(RESET) $$(uv run python --version)"
+	@echo -e "$(GREEN)Poetry:$(RESET) $$(uv run --version)"
 	@echo ""
 	@echo -e "$(YELLOW)Input Data:$(RESET)"
 	@if [ -d "$(DATA_RAW_DIR)" ]; then \
@@ -272,7 +188,7 @@ copy-data:
 	@echo -e "Finished copying unprocessed data."
 
 .PHONY: clean
-clean: clean-data clean-logs notebook-clean ## Clean all generated files
+clean: clean-data clean-logs ## Clean all generated files
 	@echo -e "$(YELLOW)Cleaning project...$(RESET)"
 	find . -name "*.pyc" -delete
 	find . -name "__pycache__" -type d -exec rm -rf {} + 2>/dev/null || true
@@ -298,5 +214,4 @@ help: ## Show this help message
 	@echo -e "  2. make copy-data      # Copy over raw data for processing"
 	@echo -e "  3. make process-all    # Process all data"
 	@echo -e "  4. make show-stats     # View results"
-	@echo -e "  5. make notebooks      # Launch Jupyter for analysis"
-	@echo -e "  6. make psql-commands  # Get import commands"
+	@echo -e "  5. make psql-commands  # Get import commands"
