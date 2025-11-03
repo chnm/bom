@@ -1,0 +1,163 @@
+parcode|parish|alias1|alias2|billsgroupbefore1660|billsgroupafter1660
+AHBK|Allhallows Barking|||within|within
+AHBS|Allhallows Breadstreet|||within|within
+AHGT|Allhallows Great|||within|within
+AHHL|Allhallows Honylane|||within|within
+AHLB|Allhallows Lombardstreet|Allhallows Lumbardstreet||within|within
+AHLS|Allhallows Lesse|||within|within
+AHLW|Allhallows London Wall|Allhallows the Wall||within|within
+AHSN|Allhallows Staining|||within|within
+ALBW|St Alban Woodstreet|||within|within
+ALPH|St Alphage|St Alphage near Sion-Coll||within|within
+ANNA|St Ann Aldersgate|||within|within
+ANNB|St Ann Blackfriars|St Ann Blackfryers||within|within
+ANNL|St Ann at Limehouse|St Ann in Middlesex|St Ann||outparishes
+ANTH|St Antholins Parish|St Anthony alias Antholins||within|within
+ANWS|St Ann Westminster||||westminster
+ASAP|All Saint's Poplar||||outparishes
+AUGS|St Augustin/Austins|St Austins Parish||within|within
+AWHB|St Andrew Holborn|||without|without
+AWHD|St Andrew Hubbard|||within|within
+AWUS|St Andrew Undershaft|||within|within
+AWWD|St Andrew Wardrobe|||within|within
+BENF|St Bennet Fynck|St Benedict v. Bennet Finck|St Benedict v. Bennet Fynck|within|within
+BENG|St Bennet Gracechurch|||within|within
+BENP|St Bennet Paulswharf|||within|within
+BENS|St Bennet Sherehog|||within|within
+BERM|St Magdalen Bermondsey|||outparishes|outparishes
+BOAG|St Botolph Aldgate|||without|without
+BOAR|St Botolph Aldersgate|||without|without
+BOBL|St Botolph Billingsgate|||within|within
+BOBP|St Botolph Bishopsgate|||without|without
+BRDL|Bridewel Precinct|Bridewell Precinct||without|without
+BRID|St Bridget|||without|without
+BRTG|St Bartholomew Great|||without|without
+BRTL|St Bartholomew Less|St Bartholomew Lesse||without|without
+BRTX|St Bartholomew Exchange|||within|within
+CHRC|Christs Church|||within|within
+CHRS|St Christopher|St Christophers||within|within
+CLED|St Clement Danes|||outparishes|westminster
+CLEE|St Clement Eastcheap|||within|within
+CLRK|St James Clerkenwel|St James Clerkenwell||outparishes|outparishes
+CRCH|Christs Church|Christs Church in Surry|||outparishes
+CRSF|Christs Church in Middlesex|Christs Church in Spittle Fields|||outparishes
+DIOB|St Dionis Backchurch|||within|within
+DUNE|St Dunstan East|||within|within
+DUNW|St Dunstan West|||without|without
+EDML|St Edmund Lumbardstreet|St Edmund the King|St Edmund|within|within
+ETHB|St Ethelborough|St Ethelburga|St Ethelborough's Parish|within|within
+FTHP|St Faith under St Pauls|St Faith||within|within
+GEBL|St George Bloomsbury||||outparishes
+GEEA|St George in the East|St George in Middlesex|||outparishes
+GEHS|St George in Hanover Square||||westminster
+GEOB|St George Botolphlane|||within|within
+GEOS|St George Southwark|||without|without
+GEQS|St George by Queens Square||||outparishes
+GFEN|St Gabriel Fenchurchstreet|St Gabriel Fenchurch||within|within
+GICG|St Giles Cripplegate|||without|without
+GITF|St Giles in the fields|||outparishes|outparishes
+GREP|St Gregory by St Pauls|||within|within
+HACK|St John at Hackney|Hackney Parish||other|outparishes
+HELB|St Helen near Bishopsgate|St Hellen near Bishopsgate|St Hellen|within|within
+HTMN|Trinity Minorities|||without|without
+HTRL|Trinity Less|Trinity Parish||within|within
+ISLG|St Mary at Islington|St Mary Islington||other|outparishes
+JEVW|St John Evangelist Westminster||||westminster
+JOBP|St John Baptist|St John Baptist near Dowgate||within|within
+JOCK|St John  Clerkenwell||||outparishes
+JOEL|St John Evangelist, Lambeth||||outparishes
+JOEV|St John Evangelist|||within|within
+JOHO|St John Baptist at Hoxton||||outparishes
+JOSW|St John in Southwark||||without
+JOWP|St John Wapping||||outparishes
+JOZA|St John Zachary|||within|within
+JSBM|St James, Bermondsey||||outparishes
+JSDP|St James Dukes place|||within|within
+JSFI|St James in the Fields|St James Westminster|||westminster
+JSGK|St James Garlickhithe|||within|within
+KCOL|St Katharine Coleman|||within|within
+KCRE|St Katharine Crechurch|St Katharine Creechurch||within|within
+KTOW|St Katharine near the Tower|||outparishes|outparishes
+LAMB|Lambeth Parish|St Mary Lambeth||other|outparishes
+LAWJ|St Lawrence Jewry|||within|within
+LAWP|St Lawrence Pountney|||within|within
+LEOE|St Leonard Eastcheap|||within|within
+LEOF|St Leonard Fosterlane|St Leonard in St Martins|St Leonard Fosterlane/St Leonard in St Martins|within|within
+LUMD|St Luke in Middlesex||||outparishes
+LUNO|St Luke Norwood||||outparishes
+MAAB|St Mary Abchurch|||within|within
+MAAH|St Mary Hill|St Mary Hill nr Billinsgate||within|within
+MAAL|St Mary Aldermanbury|||within|within
+MAAM|St Mary Aldermary|||within|within
+MABR|St Matthew Brixton||||outparishes
+MABW|St Mary Bothaw|St Mary Bothaw at Dowgate||within|within
+MACA|St Mary's Chapel|St Mary's|||westminster
+MACC|St Mary Colechurch|||within|within
+MAGM|St Magnus by London Bridge|St Magnus Parish||within|within
+MAHG|St Mary Haggerston||||outparishes
+MAKE|St Mark Kennington||||outparishes
+MALB|St Mary le Bow|St Mary le Bow in Cheapside||within|within
+MALS|St Mary le Strand||||westminster
+MAMW|St Mary Mounthaw|||within|within
+MASS|St Mary Sommerset|||within|within
+MAST|St Mary Staining|St Mary Stayning||within|within
+MAWC|St Mary Woolchurch|||within|within
+MAWN|St Mary Woolnoth|||within|within
+MGMS|St Mary Magd. Milkstreet|St Maudlin Milkstreet||within|within
+MGOF|St Maudlin Oldfishstreet|St. Mary Magd. Oldfishstreet||within|within
+MIBS|St Michael Bassishaw|||within|within
+MICH|St Michael Cornhil|||within|within
+MICL|St Michael Crookedlane|||within|within
+MIPR|St Michael Royal|||within|within
+MIQH|St Michael Queenhith|||within|within
+MIQN|St Michael Quern|||within|within
+MITF|St Martin in the fields|||outparishes|westminster
+MIWS|St Michael Woodstreet|||within|within
+MLBS|St Mildred Breadstreet|||within|within
+MLPT|St Mildred Poultrey|||within|within
+MRGL|St Margaret Lothbury|||within|within
+MRGM|St Margaret Moses|||within|within
+MRGN|St Margaret Newfishstreet|||within|within
+MRGP|St Margaret Pattons|||within|within
+MRGW|St Margaret Westminster|||other|westminster
+MTIL|St Martin Iremongerlane|||within|within
+MTLG|St Martin Ludgate|||within|within
+MTOG|St Martin Orgars|||within|within
+MTOW|St Martin Outwitch|||within|within
+MTVT|St Martin Vintrey|||within|within
+MWBG|St Matthew Bethnal Green||||outparishes
+MWFS|St Matthew Fridaystreet|||within|within
+NEWN|St Mary Newington|||other|outparishes
+NICA|St Nicholas Acons|||within|within
+NICC|St Nicholas Coleabby|||within|within
+NICO|St Nicholas Olave|St Nicholas Olaves||within|within
+OLHS|St Olave Hartstreet|||within|within
+OLJW|St Olave Jewry|||within|within
+OLSS|St Olave Silverstreet|||within|within
+OLSW|St Olave Southwark|||without|without
+PASL|St Pancras Soperlane|St Pancras Pancras-lane||within|within
+PASW|St Pauls Shadwel|St Pauls Shadwell|||outparishes
+PCOV|St Paul Covent Garden|||outparishes|westminster
+PECH|St Peter Cornhil|||within|within
+PEPO|St Peter Poor|St Peter Poor in Broadstreet||within|within
+PEPW|St Peter Paulswharf|||within|within
+PEST|At the Pesthouse|||without|without
+PEVI|St Peter ad Vincula||||within
+PEVN|St Peter ad Vincula||||outparishes
+PEWC|St Peter Cheap|St Peter Cheapside||within|within
+ROTH|St Mary Rothorithe|Rothorith Parish|St Mary Rothorith|other|outparishes
+SAVS|Saviour Southwark|Saviours Southwark||without|without
+SAVY|St Mary Savoy|The Precinct of the Savoy||outparishes|westminster
+SEPU|St Sepulchres Parish|St Sepulchres without Newgate||without|without
+SHOR|St Leonard Shoreditch|||outparishes|outparishes
+SOHA|South Hackney||||outparishes
+STEP|St Dunstan Stepney|Stepney Parish||other|outparishes
+STPC|St Steven Colemanstreet|||within|within
+STPW|St Steven Walbrook|||within|within
+SWTH|St Swithin|St Swithin at London-stone||within|within
+THAP|St Thomas Apostle|||within|within
+THSW|St Thomas Southwark|||without|without
+VEDF|St Foster|St Vedast alias Foster||within|within
+WEHA|West Hackney||||outparishes
+WHCL|St Mary Whitechappel|||outparishes|outparishes
+WPST|whereof at St Margaret Westminster Pesthouse|||other|westminster
