@@ -5,13 +5,13 @@ from typing import Dict, List
 
 # Paths
 PROJECT_ROOT = Path(__file__).parent.parent.parent
-DATA_RAW_DIR = PROJECT_ROOT / "data-raw"
+DATA_RAW_DIR = PROJECT_ROOT / "../../../bom-data/data-csvs"
 DATA_OUTPUT_DIR = PROJECT_ROOT / "data"
 
 # Dataset type patterns - used to identify dataset types from filenames
 DATASET_PATTERNS = {
     "wellcome_causes": r"wellcome.*causes",
-    "wellcome_parishes": r"wellcome.*parishes", 
+    "wellcome_parishes": r"wellcome.*parishes",
     "laxton_causes": r"laxton.*causes",
     "laxton_parishes": r"laxton.*parishes",
     "bodleian_causes": r"bodleian.*causes",
@@ -37,23 +37,20 @@ DATASET_PATTERNS = {
 COLUMN_NORMALIZATION = {
     # Common variations
     "Unique ID": "unique_identifier",
-    "Unique_ID": "unique_identifier", 
+    "Unique_ID": "unique_identifier",
     "unique_id": "unique_identifier",
     "UniqueID": "unique_identifier",
     "Unique Identifier": "unique_identifier",
-    
     # Date columns
     "Start Day": "start_day",
     "End Day": "end_day",
-    "Start Month": "start_month", 
+    "Start Month": "start_month",
     "End Month": "end_month",
     "Start Year": "start_year",
     "End Year": "end_year",
-    
     # Week columns
     "Week Number": "week_number",
     "Week": "week",
-    
     # Other common columns
     "Year": "year",
     "Parish Name": "parish_name",
@@ -63,10 +60,10 @@ COLUMN_NORMALIZATION = {
 # Data types for consistent processing
 COLUMN_TYPES = {
     "year": "int64",
-    "week": "str", 
+    "week": "str",
     "week_number": "str",
     "start_day": "str",
-    "end_day": "str", 
+    "end_day": "str",
     "start_month": "str",
     "end_month": "str",
     "unique_identifier": "str",
@@ -77,7 +74,7 @@ COLUMN_TYPES = {
 # Skip columns - these are typically metadata we don't need for processing
 SKIP_COLUMN_PATTERNS = [
     r"omeka.*item",
-    r"datascribe.*item", 
+    r"datascribe.*item",
     r"datascribe.*record",
     r"datascribe.*position",
     r"image.*filename",
@@ -88,7 +85,13 @@ ESSENTIAL_COLUMNS = ["year"]
 
 # Optional columns that we handle gracefully if missing
 OPTIONAL_COLUMNS = [
-    "week", "week_number", "start_day", "end_day", 
-    "start_month", "end_month", "unique_identifier", 
-    "parish_name", "count"
+    "week",
+    "week_number",
+    "start_day",
+    "end_day",
+    "start_month",
+    "end_month",
+    "unique_identifier",
+    "parish_name",
+    "count",
 ]

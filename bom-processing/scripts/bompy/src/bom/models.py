@@ -1,14 +1,16 @@
 """Data models for Bills of Mortality processing - matching PostgreSQL schema exactly."""
 
 from dataclasses import dataclass
-from typing import Optional, List, Dict, Any
 from datetime import datetime
+from typing import Any, Dict, List, Optional
+
 import pandas as pd
 
 
-@dataclass 
+@dataclass
 class FoodstuffsRecord:
     """Represents a foodstuffs record with bread prices and commodity data."""
+
     year: int
     week: Optional[int]
     unique_identifier: str
@@ -21,14 +23,14 @@ class FoodstuffsRecord:
     quality_grade: Optional[str]  # 'white', 'wheaten', 'household'
     measurement_standard: Optional[str]  # 'troy_weight', 'common_weight'
     weight_pounds: Optional[int]
-    weight_ounces: Optional[int] 
+    weight_ounces: Optional[int]
     weight_drams: Optional[int]
     price_shillings: Optional[int]
     price_pence: Optional[int]
     raw_value: str  # Original value from dataset
     source: str  # Source dataset
     column_name: str  # Original column name
-    
+
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary for DataFrame creation."""
         return {
@@ -53,9 +55,11 @@ class FoodstuffsRecord:
             "column_name": self.column_name,
         }
 
+
 @dataclass
 class BillOfMortalityRecord:
     """Represents a bill_of_mortality table record."""
+
     parish_id: Optional[int]  # Foreign key to parishes table (None for causes data)
     count_type: str  # "buried", "plague", "christened", or cause name
     count: Optional[int]
@@ -66,7 +70,7 @@ class BillOfMortalityRecord:
     illegible: Optional[bool]
     source: Optional[str]
     unique_identifier: Optional[str]
-    
+
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary for DataFrame creation."""
         return {
@@ -82,9 +86,42 @@ class BillOfMortalityRecord:
             "unique_identifier": self.unique_identifier,
         }
 
+
+@dataclass
+class SubtotalRecord:
+    """Represents a subtotal record for geographic aggregations like 'within the walls'."""
+
+    subtotal_category: str  # "Within the walls", "Without the walls", "Middlesex and Surrey", "Westminster"
+    count_type: str  # "buried", "plague", "christened"
+    count: Optional[int]
+    year: int  # Foreign key to year table
+    joinid: str  # Foreign key to week table (joinid)
+    bill_type: Optional[str]  # "weekly" or "general"
+    missing: Optional[bool]
+    illegible: Optional[bool]
+    source: Optional[str]
+    unique_identifier: Optional[str]
+
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert to dictionary for DataFrame creation."""
+        return {
+            "subtotal_category": self.subtotal_category,
+            "count_type": self.count_type,
+            "count": self.count,
+            "year": self.year,
+            "joinid": self.joinid,
+            "bill_type": self.bill_type,
+            "missing": self.missing,
+            "illegible": self.illegible,
+            "source": self.source,
+            "unique_identifier": self.unique_identifier,
+        }
+
+
 @dataclass
 class CausesOfDeathRecord:
     """Represents a causes_of_death table record."""
+
     death: str  # The cause of death
     count: Optional[int]
     year: Optional[int]  # Foreign key to year table
@@ -94,7 +131,7 @@ class CausesOfDeathRecord:
     definition: Optional[str]  # From dictionary
     definition_source: Optional[str]
     bill_type: Optional[str]  # 'weekly' or 'general'
-    
+
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary for DataFrame creation."""
         return {
@@ -109,9 +146,11 @@ class CausesOfDeathRecord:
             "bill_type": self.bill_type,
         }
 
+
 @dataclass
 class ChristeningRecord:
     """Represents a christenings table record."""
+
     christening: str  # Type of christening record
     count: Optional[int]
     week_number: Optional[int]
@@ -126,7 +165,7 @@ class ChristeningRecord:
     bill_type: Optional[str]
     joinid: Optional[str]  # Foreign key to week table
     unique_identifier: Optional[str]
-    
+
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary for DataFrame creation."""
         return {
@@ -146,24 +185,32 @@ class ChristeningRecord:
             "unique_identifier": self.unique_identifier,
         }
 
+
 @dataclass
 class ParishRecord:
     """Represents a parishes table record."""
+
     id: int  # Primary key
     parish_name: str  # Must be unique
     canonical_name: str  # Required canonical name
-    
+    bills_subunit: Optional[
+        str
+    ] = None  # Bills subunit classification (e.g., "97 parishes within the walls")
+
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary for DataFrame creation."""
         return {
             "id": self.id,
             "parish_name": self.parish_name,
             "canonical_name": self.canonical_name,
+            "bills_subunit": self.bills_subunit,
         }
+
 
 @dataclass
 class WeekRecord:
     """Represents a week table record."""
+
     joinid: str  # Primary key
     start_day: Optional[int]  # 1-31 constraint
     start_month: Optional[str]
@@ -175,7 +222,7 @@ class WeekRecord:
     unique_identifier: Optional[str]
     week_id: Optional[str]
     year_range: Optional[str]
-    
+
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary for DataFrame creation."""
         return {
@@ -192,41 +239,53 @@ class WeekRecord:
             "year_range": self.year_range,
         }
 
+
 @dataclass
 class YearRecord:
     """Represents a year table record."""
+
     year: int  # Primary key, 1400 < year < 1800 constraint
-    
+
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary for DataFrame creation."""
         return {"year": self.year}
 
+
 @dataclass
 class ProcessingResult:
     """Container for processed data results."""
+
     bills: List[BillOfMortalityRecord]
     causes: List[CausesOfDeathRecord]
     christenings: List[ChristeningRecord]
     parishes: List[ParishRecord]
     weeks: List[WeekRecord]
     years: List[YearRecord]
+    subtotals: List[SubtotalRecord]
     source_file: str
     processing_notes: List[str]
-    
+
     def to_dataframes(self) -> Dict[str, pd.DataFrame]:
         """Convert to pandas DataFrames matching PostgreSQL schema."""
         return {
             "bill_of_mortality": pd.DataFrame([bill.to_dict() for bill in self.bills]),
             "causes_of_death": pd.DataFrame([cause.to_dict() for cause in self.causes]),
-            "christenings": pd.DataFrame([christening.to_dict() for christening in self.christenings]),
+            "christenings": pd.DataFrame(
+                [christening.to_dict() for christening in self.christenings]
+            ),
             "parishes": pd.DataFrame([parish.to_dict() for parish in self.parishes]),
             "week": pd.DataFrame([week.to_dict() for week in self.weeks]),
             "year": pd.DataFrame([year.to_dict() for year in self.years]),
+            "subtotals": pd.DataFrame(
+                [subtotal.to_dict() for subtotal in self.subtotals]
+            ),
         }
+
 
 @dataclass
 class DatasetInfo:
     """Information about a loaded dataset."""
+
     file_path: str
     dataset_type: str
     original_columns: List[str]
@@ -234,10 +293,12 @@ class DatasetInfo:
     row_count: int
     processing_notes: List[str]
 
+
 # Helper classes for intermediate processing
 @dataclass
 class RawBillRecord:
     """Intermediate record before parish_id lookup."""
+
     parish_name: str  # Will be converted to parish_id
     count_type: str
     count: Optional[int]
