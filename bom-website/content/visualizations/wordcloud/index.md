@@ -3,6 +3,7 @@ title: "Causes of Death as a Cloud"
 date: 2023-06-27
 updated: 2025-06-24
 abstract: "Charting the causes of death"
+summary: "Interactive word cloud visualization displaying causes of death from the Plague Bills, with text size representing frequency of occurrence and year range filtering capabilities."
 script: visualizations/wordcloud/main.js
 styles: visualizations/wordcloud/style.css
 layout: visualizations

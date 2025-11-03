@@ -12,6 +12,9 @@ permalinks:
 
 theme: "dbn"
 
+pagination:
+  pagerSize: 10
+
 author:
   name: Roy Rosenzweig Center for History and New Media
   email: webmaster@chnm.gmu.edu

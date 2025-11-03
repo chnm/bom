@@ -11,7 +11,7 @@
       {{ with (index $taxonomy.Pages 0).Params.bio }}
       <p class="text-gray-600 mb-4">{{ . }}</p>
       {{ end }}
-      <a href="{{ "/authors/" | relURL }}{{ $name | urlize }}" class="text-dbn-green hover:text-dbn-blue">View Posts</a>
+      <a href="{{ "/authors/" | relURL }}{{ $name | urlize }}" class="text-dbn-green-600 hover:text-dbn-blue-500">View Posts</a>
     </div>
     {{ else }}
     <p>No authors found.</p>

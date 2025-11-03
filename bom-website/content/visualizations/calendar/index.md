@@ -3,6 +3,7 @@ title: "Calendar of Causes"
 date: 2024-10-04
 updated: 2024-10-04
 abstract: "Graphing the causes of death over time"
+summary: "Interactive calendar visualization showing weekly causes of death data for any selected year, allowing users to explore temporal patterns in mortality."
 script: visualizations/calendar/main.js
 styles: visualizations/calendar/style.css
 layout: visualizations

@@ -1,0 +1,97 @@
+{{/* Pagination partial */}}
+{{ $paginator := .Paginator }}
+{{ $adjacent_links := 2 }}
+{{ $max_links := (add (mul $adjacent_links 2) 1) }}
+{{ $lower_limit := (add $adjacent_links 1) }}
+{{ $upper_limit := (sub $paginator.TotalPages $adjacent_links) }}
+
+{{ if gt $paginator.TotalPages 1 }}
+<nav class="pagination max-w-2xl mx-auto p-9" role="navigation" aria-label="Pagination">
+  <ul class="inline-flex -space-x-px">
+    
+    <!-- First page -->
+    {{ if ne $paginator.PageNumber 1 }}
+    <li>
+      <a href="{{ $paginator.First.URL }}" 
+         class="bg-white border border-dbn-yellow-300 text-dbn-green-600 hover:bg-dbn-yellow-100 hover:text-dbn-green-700 ml-0 rounded-l-lg leading-tight py-2 px-3 transition-colors"
+         aria-label="Go to first page">
+        ««
+      </a>
+    </li>
+    {{ end }}
+
+    <!-- Previous page -->
+    {{ if $paginator.HasPrev }}
+    <li>
+      <a href="{{ $paginator.Prev.URL }}" 
+         class="bg-white border border-dbn-yellow-300 text-dbn-green-600 hover:bg-dbn-yellow-100 hover:text-dbn-green-700 leading-tight py-2 px-3 transition-colors"
+         aria-label="Go to previous page">
+        «
+      </a>
+    </li>
+    {{ end }}
+
+    <!-- Page numbers -->
+    {{ range $paginator.Pagers }}
+      {{ $.Scratch.Set "page_number_flag" false }}
+      
+      {{ if gt $paginator.TotalPages $max_links }}
+        {{ if le $paginator.PageNumber $lower_limit }}
+          {{ if le .PageNumber $max_links }}
+            {{ $.Scratch.Set "page_number_flag" true }}
+          {{ end }}
+        {{ else if ge $paginator.PageNumber $upper_limit }}
+          {{ if gt .PageNumber (sub $paginator.TotalPages $max_links) }}
+            {{ $.Scratch.Set "page_number_flag" true }}
+          {{ end }}
+        {{ else }}
+          {{ if and (ge .PageNumber (sub $paginator.PageNumber $adjacent_links)) (le .PageNumber (add $paginator.PageNumber $adjacent_links)) }}
+            {{ $.Scratch.Set "page_number_flag" true }}
+          {{ end }}
+        {{ end }}
+      {{ else }}
+        {{ $.Scratch.Set "page_number_flag" true }}
+      {{ end }}
+
+      {{ if eq ($.Scratch.Get "page_number_flag") true }}
+        <li>
+          {{ if eq . $paginator }}
+            <span class="bg-dbn-yellow-100 border border-dbn-yellow-400 text-dbn-green-700 leading-tight py-2 px-3 font-medium" aria-current="page">
+              {{ .PageNumber }}
+            </span>
+          {{ else }}
+            <a href="{{ .URL }}" 
+               class="bg-white border border-dbn-yellow-300 text-dbn-green-600 hover:bg-dbn-yellow-100 hover:text-dbn-green-700 leading-tight py-2 px-3 transition-colors"
+               aria-label="Go to page {{ .PageNumber }}">
+              {{ .PageNumber }}
+            </a>
+          {{ end }}
+        </li>
+      {{ end }}
+    {{ end }}
+
+    <!-- Next page -->
+    {{ if $paginator.HasNext }}
+    <li>
+      <a href="{{ $paginator.Next.URL }}" 
+         class="bg-white border border-dbn-yellow-300 text-dbn-green-600 hover:bg-dbn-yellow-100 hover:text-dbn-green-700 leading-tight py-2 px-3 transition-colors"
+         aria-label="Go to next page">
+        »
+      </a>
+    </li>
+    {{ end }}
+
+    <!-- Last page -->
+    {{ if ne $paginator.PageNumber $paginator.TotalPages }}
+    <li>
+      <a href="{{ $paginator.Last.URL }}" 
+         class="bg-white border border-dbn-yellow-300 text-dbn-green-600 hover:bg-dbn-yellow-100 hover:text-dbn-green-700 rounded-r-lg leading-tight py-2 px-3 transition-colors"
+         aria-label="Go to last page">
+        »»
+      </a>
+    </li>
+    {{ end }}
+    
+  </ul>
+</nav>
+{{ end }}

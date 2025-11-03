@@ -3,6 +3,7 @@ title: "Parish Deaths"
 date: 2025-03-24
 updated: 2025-04-30
 abstract: "Sparklines of plague and non-plague parish deaths"
+summary: "Multiple sparkline visualization showing temporal patterns of parish deaths with data normalization options (log10, normalized) and filtering by burial type (burials, plague, both) for improved visibility of smaller count variations."
 script: visualizations/sparklines/main.js
 styles: visualizations/sparklines/style.css
 layout: visualizations

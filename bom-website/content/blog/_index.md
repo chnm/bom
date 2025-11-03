@@ -1,4 +1,4 @@
 ---
-title: All Posts and Essays
+title: All Content 
 ---
 

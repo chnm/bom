@@ -13,19 +13,19 @@
       <!-- Filter Dashboard -->
       <div class="mb-8">
         <div class="flex flex-wrap justify-center gap-3 mb-6">
-          <button class="filter-btn active rounded border border-gray-200 bg-dbn-blue text-sm font-medium px-4 py-2 text-black hover:bg-dbn-blue hover:text-black focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700" data-filter="all">
+          <button class="filter-btn active rounded border border-gray-200 bg-dbn-blue-500 text-sm font-medium px-4 py-2 text-black hover:bg-dbn-blue-500 hover:text-black focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700" data-filter="all">
             All Visualizations <span class="ml-2 bg-white/30 px-2 py-1 rounded text-xs">{{ len .Pages }}</span>
           </button>
-          <button class="filter-btn rounded border border-gray-200 bg-white text-sm font-medium px-4 py-2 text-gray-900 hover:bg-dbn-blue hover:text-black focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700" data-filter="temporal">
+          <button class="filter-btn rounded border border-gray-200 bg-white text-sm font-medium px-4 py-2 text-gray-900 hover:bg-dbn-blue-500 hover:text-black focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700" data-filter="temporal">
             Temporal Analysis <span class="ml-2 bg-gray-100 px-2 py-1 rounded text-xs">6</span>
           </button>
-          <button class="filter-btn rounded border border-gray-200 bg-white text-sm font-medium px-4 py-2 text-gray-900 hover:bg-dbn-blue hover:text-black focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700" data-filter="geographic-mapping">
+          <button class="filter-btn rounded border border-gray-200 bg-white text-sm font-medium px-4 py-2 text-gray-900 hover:bg-dbn-blue-500 hover:text-black focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700" data-filter="geographic-mapping">
             Geographic Mapping <span class="ml-2 bg-gray-100 px-2 py-1 rounded text-xs">3</span>
           </button>
-          <button class="filter-btn rounded border border-gray-200 bg-white text-sm font-medium px-4 py-2 text-gray-900 hover:bg-dbn-blue hover:text-black focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700" data-filter="cause-analysis">
+          <button class="filter-btn rounded border border-gray-200 bg-white text-sm font-medium px-4 py-2 text-gray-900 hover:bg-dbn-blue-500 hover:text-black focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700" data-filter="cause-analysis">
             Cause Analysis <span class="ml-2 bg-gray-100 px-2 py-1 rounded text-xs">2</span>
           </button>
-          <button class="filter-btn rounded border border-gray-200 bg-white text-sm font-medium px-4 py-2 text-gray-900 hover:bg-dbn-blue hover:text-black focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700" data-filter="project-data">
+          <button class="filter-btn rounded border border-gray-200 bg-white text-sm font-medium px-4 py-2 text-gray-900 hover:bg-dbn-blue-500 hover:text-black focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700" data-filter="project-data">
             Project Data <span class="ml-2 bg-gray-100 px-2 py-1 rounded text-xs">2</span>
           </button>
         </div>
@@ -47,7 +47,7 @@
           </div>
           <div class="p-6 flex flex-col flex-grow">
             <h3 class="text-xl mb-3 leading-tight line-clamp-2">
-              <a href="{{.Permalink}}" class="text-black hover:text-dbn-blue transition-colors duration-200">{{.Title}}</a>
+              <a href="{{.Permalink}}" class="text-black hover:text-dbn-blue-500transition-colors duration-200">{{.Title}}</a>
             </h3>
             <p class="text-gray-600 mb-4 text-sm leading-relaxed line-clamp-3 flex-grow">{{.Params.abstract}}</p>
             <div class="mt-auto">
@@ -66,7 +66,7 @@
               <div class="mb-4"></div>
               {{ end }}
               <div class="pt-2 border-t border-gray-100">
-                <a href="{{.Permalink}}" class="inline-flex items-center text-dbn-blue font-medium text-sm hover:underline">
+                <a href="{{.Permalink}}" class="inline-flex items-center text-dbn-blue-500 font-medium text-sm hover:underline">
                   Explore
                   <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
@@ -93,10 +93,10 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Update active button
             filterBtns.forEach(b => {
-                b.classList.remove('active', 'bg-dbn-blue', 'text-black');
+                b.classList.remove('active', 'bg-dbn-blue-500', 'text-black');
                 b.classList.add('bg-white', 'text-gray-900');
             });
-            this.classList.add('active', 'bg-dbn-blue', 'text-black');
+            this.classList.add('active', 'bg-dbn-blue-500', 'text-black');
             this.classList.remove('bg-white', 'text-gray-900');
             
             // Filter cards

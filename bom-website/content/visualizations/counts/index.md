@@ -3,6 +3,7 @@ title: "Counting the Transcribed Bills"
 date: 2023-03-27
 updated: 2025-06-24
 abstract: "Charting the completeness of our transcriptions"
+summary: "Dashboard visualization showing transcription progress with bar charts indicating total weeks versus transcribed weeks by year, updating regularly as new bills are added to the database."
 script: visualizations/counts/main.js
 styles: visualizations/counts/style.css
 layout: visualizations

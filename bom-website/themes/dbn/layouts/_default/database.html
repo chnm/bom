@@ -48,7 +48,7 @@
                 <button
                   class="py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200"
                   :class="{ 
-                    'border-dbn-red text-dbn-red': getPrimaryTab() === 'annual', 
+                    'border-dbn-red-500 text-dbn-red-500': getPrimaryTab() === 'annual', 
                     'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': getPrimaryTab() !== 'annual' 
                   }"
                   @click="setPrimaryTab('annual')"
@@ -59,7 +59,7 @@
                 <button
                   class="py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200"
                   :class="{ 
-                    'border-dbn-red text-dbn-red': getPrimaryTab() === 'yearly', 
+                    'border-dbn-red-500 text-dbn-red-500': getPrimaryTab() === 'yearly', 
                     'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': getPrimaryTab() !== 'yearly' 
                   }"
                   @click="setPrimaryTab('yearly')"
@@ -72,7 +72,7 @@
                 <button
                   class="py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200"
                   :class="{ 
-                    'border-dbn-red text-dbn-red': getPrimaryTab() === 'bread-death', 
+                    'border-dbn-red-500 text-dbn-red-500': getPrimaryTab() === 'bread-death', 
                     'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': getPrimaryTab() !== 'bread-death' 
                   }"
                   @click="setPrimaryTab('bread-death')"
@@ -112,7 +112,7 @@
               <button
                 class="px-4 py-2 text-xs font-bold uppercase rounded-lg transition-colors duration-200"
                 :class="{ 
-                  'bg-dbn-red bg-opacity-20 text-dbn-red': getSecondaryTab() === 'parishes', 
+                  'bg-dbn-red-500 bg-opacity-20 text-dbn-red-500': getSecondaryTab() === 'parishes', 
                   'bg-gray-100 text-gray-600 hover:bg-gray-200': getSecondaryTab() !== 'parishes' 
                 }"
                 @click="setSecondaryTab('parishes')"
@@ -123,7 +123,7 @@
               <button
                 class="px-4 py-2 text-xs font-bold uppercase rounded-lg transition-colors duration-200"
                 :class="{ 
-                  'bg-dbn-red bg-opacity-20 text-dbn-red': getSecondaryTab() === 'deaths', 
+                  'bg-dbn-red-500 bg-opacity-20 text-dbn-red-500': getSecondaryTab() === 'deaths', 
                   'bg-gray-100 text-gray-600 hover:bg-gray-200': getSecondaryTab() !== 'deaths' 
                 }"
                 @click="setSecondaryTab('deaths')"
@@ -134,7 +134,7 @@
               <button
                 class="px-4 py-2 text-xs font-bold uppercase rounded-lg transition-colors duration-200"
                 :class="{ 
-                  'bg-dbn-red bg-opacity-20 text-dbn-red': getSecondaryTab() === 'christenings', 
+                  'bg-dbn-red-500 bg-opacity-20 text-dbn-red-500': getSecondaryTab() === 'christenings', 
                   'bg-gray-100 text-gray-600 hover:bg-gray-200': getSecondaryTab() !== 'christenings' 
                 }"
                 @click="setSecondaryTab('christenings')"
@@ -145,7 +145,7 @@
             </nav>
             <button 
               @click="filtersOpen = true"
-              class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-700 focus:ring-2 focus:ring-dbn-red focus:border-dbn-red transition-colors duration-200"
+              class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-700 focus:ring-2 focus:ring-dbn-red-500 focus:border-dbn-red-500 transition-colors duration-200"
               type="button">
               <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.707A1 1 0 013 7V4z"/>
@@ -162,7 +162,7 @@
               <button
                 class="px-4 py-2 text-xs font-bold uppercase rounded-lg transition-colors duration-200"
                 :class="{ 
-                  'bg-dbn-red bg-opacity-20 text-dbn-red': getSecondaryTab() === 'parishes', 
+                  'bg-dbn-red-500 bg-opacity-20 text-dbn-red-500': getSecondaryTab() === 'parishes', 
                   'bg-gray-100 text-gray-600 hover:bg-gray-200': getSecondaryTab() !== 'parishes' 
                 }"
                 @click="setSecondaryTab('parishes')"
@@ -173,7 +173,7 @@
               <button
                 class="px-4 py-2 text-xs font-bold uppercase rounded-lg transition-colors duration-200"
                 :class="{ 
-                  'bg-dbn-red bg-opacity-20 text-dbn-red': getSecondaryTab() === 'deaths', 
+                  'bg-dbn-red-500 bg-opacity-20 text-dbn-red-500': getSecondaryTab() === 'deaths', 
                   'bg-gray-100 text-gray-600 hover:bg-gray-200': getSecondaryTab() !== 'deaths' 
                 }"
                 @click="setSecondaryTab('deaths')"
@@ -184,7 +184,7 @@
               <button
                 class="px-4 py-2 text-xs font-bold uppercase rounded-lg transition-colors duration-200"
                 :class="{ 
-                  'bg-dbn-red bg-opacity-20 text-dbn-red': getSecondaryTab() === 'christenings', 
+                  'bg-dbn-red-500 bg-opacity-20 text-dbn-red-500': getSecondaryTab() === 'christenings', 
                   'bg-gray-100 text-gray-600 hover:bg-gray-200': getSecondaryTab() !== 'christenings' 
                 }"
                 @click="setSecondaryTab('christenings')"
@@ -197,7 +197,7 @@
               @click="filtersOpen = true"
               :disabled="getSecondaryTab() === 'deaths'"
               :class="{
-                'inline-flex items-center px-3 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-700 focus:ring-2 focus:ring-dbn-red focus:border-dbn-red transition-colors duration-200': getSecondaryTab() !== 'deaths',
+                'inline-flex items-center px-3 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-700 focus:ring-2 focus:ring-dbn-red-500 focus:border-dbn-red-500 transition-colors duration-200': getSecondaryTab() !== 'deaths',
                 'inline-flex items-center px-3 py-2 text-sm font-medium text-gray-400 bg-gray-50 border border-gray-300 rounded-lg cursor-not-allowed': getSecondaryTab() === 'deaths'
               }"
               type="button">
@@ -216,7 +216,7 @@
               <button
                 class="px-4 py-2 text-xs font-bold uppercase rounded-lg transition-colors duration-200"
                 :class="{ 
-                  'bg-dbn-red bg-opacity-20 text-dbn-red': getSecondaryTab() === 'foodstuffs', 
+                  'bg-dbn-red-500 bg-opacity-20 text-dbn-red-500': getSecondaryTab() === 'foodstuffs', 
                   'bg-gray-100 text-gray-600 hover:bg-gray-200': getSecondaryTab() !== 'foodstuffs' 
                 }"
                 @click="setSecondaryTab('foodstuffs')"
@@ -227,7 +227,7 @@
               <button
                 class="px-4 py-2 text-xs font-bold uppercase rounded-lg transition-colors duration-200"
                 :class="{ 
-                  'bg-dbn-red bg-opacity-20 text-dbn-red': getSecondaryTab() === 'ages', 
+                  'bg-dbn-red-500 bg-opacity-20 text-dbn-red-500': getSecondaryTab() === 'ages', 
                   'bg-gray-100 text-gray-600 hover:bg-gray-200': getSecondaryTab() !== 'ages' 
                 }"
                 @click="setSecondaryTab('ages')"
@@ -238,7 +238,7 @@
             </nav>
             <button 
               @click="filtersOpen = true"
-              class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-700 focus:ring-2 focus:ring-dbn-red focus:border-dbn-red transition-colors duration-200"
+              class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-700 focus:ring-2 focus:ring-dbn-red-500 focus:border-dbn-red-500 transition-colors duration-200"
               type="button">
               <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.707A1 1 0 013 7V4z"/>
@@ -264,11 +264,11 @@
             {{ partial "tables/general.html" }}
           </div>
           <div x-show="getPrimaryTab() === 'yearly' && getSecondaryTab() === 'deaths' && initialized">
-            <div class="border border-dbn-blue rounded-lg p-6 text-center">
+            <div class="border border-dbn-blue-400 rounded-lg p-6 text-center">
               <div class="mb-4">
                 <img src="/images/missing.png" alt="Data unavailable" class="w-12 h-12 mx-auto rounded-full">
               </div>
-              <h3 class="text-lg font-medium text-dbn-red mb-2">Data Currently Unavailable</h3>
+              <h3 class="text-lg font-medium text-dbn-red-500 mb-2">Data Currently Unavailable</h3>
               <p class="mb-4">
                 Yearly data broken down by cause of death is not currently part of our dataset. We are working to include this information in future updates.
               </p>

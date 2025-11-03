@@ -3,6 +3,7 @@ title: "Causes Histograms"
 date: 2024-10-04
 updated: 2024-10-04
 abstract: "Graphing the causes of death per week"
+summary: "Histogram visualization displaying weekly mortality data by specific causes of death, with interactive controls to filter by year and individual causes."
 script: visualizations/causes-histogram/main.js
 styles: visualizations/causes-histogram/style.css
 layout: visualizations

@@ -3,6 +3,7 @@ title: "Counting the Causes of Death"
 date: 2023-06-06
 updated: 2024-10-03
 abstract: "Charting the causes of death"
+summary: "Heat map visualization showing causes of death over time, with darker red shades indicating higher death counts for each cause by year, updating regularly as new transcriptions are added."
 script: visualizations/plague-deaths/main.js
 styles: visualizations/plague-deaths/style.css
 layout: visualizations

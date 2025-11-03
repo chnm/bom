@@ -11,6 +11,7 @@ thumbdesc: "A calendar heatmap showing data quality patterns over time."
 author:
 - Jason Heppler
 category: "project-data"
+summary: "This visualization shows the data quality patterns for Bills of Mortality records by parish and week. You can examine either illegible records (difficult to read or transcribe) or missing records (incomplete data) to understand temporal and geographic patterns in data quality issues."
 ---
 
 This visualization shows the data quality patterns for Bills of Mortality records by parish and week. You can examine either illegible records (difficult to read or transcribe) or missing records (incomplete data) to understand temporal and geographic patterns in data quality issues.

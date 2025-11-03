@@ -3,6 +3,7 @@ title: "Infant and Maternal Mortality in the London Monarchical Bills 1665-1669"
 date: 2023-10-25
 updated: 2025-06-17
 abstract: "Visualizing infant and maternal mortality in the monarchical bills."
+summary: "Interactive analysis of infant and maternal mortality data from 1665-1669 using three visualizations: a pie chart showing death distribution, a grouped bar chart revealing infant vulnerability patterns, and a bar chart mapping maternal mortality by parish."
 script: visualizations/infant-mortality/main.js
 styles: visualizations/infant-mortality/style.css
 layout: visualizations

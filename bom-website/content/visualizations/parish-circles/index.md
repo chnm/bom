@@ -3,6 +3,7 @@ title: "The Monarchical Bills of Mortality, 1665-1669"
 date: 2023-11-07
 updated: 2025-06-17
 abstract: "Visualizing the causes of death by parish in the monarchical bills."
+summary: "Interactive circle visualization showing causes of death by parish from monarchical bills (1665-1669), with circle sizes representing death counts and filtering capabilities by year."
 script: visualizations/parish-circles/main.js
 styles: visualizations/parish-circles/style.css
 layout: visualizations

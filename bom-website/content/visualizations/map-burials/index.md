@@ -3,6 +3,7 @@ title: "Mapping Burials and Plague"
 date: 2025-02-27
 updated: 2025-02-27
 abstract: "Mapping plague and non-plague deaths"
+summary: "Interactive choropleth map of London showing burial and plague death patterns across parishes, with controls to filter by year range and count type for geographical mortality analysis."
 script: visualizations/map-burials/main.js
 styles: visualizations/map-burials/style.css
 layout: visualizations

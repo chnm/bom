@@ -1,231 +1,173 @@
 {{ define "main" }}
-<main>
-  <div
-    class="flex min-h-screen bg-white pt-7 items-start mx-auto w-full lg:max-w-screen-lg sm:max-w-screen-sm md:max-w-screen-md">
-    <div class="container mx-auto px-4">
-      <h2 class="text-4xl font-medium pb-4">{{ .Title }}</h2>
-      <div class="flex flex-col mb-8 animated fadeIn sm:flex-row">
-        <div class="flex mb-8 sm:w-2/3">
-          <div class="flex flex-wrap w-3/4 prose prose-lg">
-            {{ range where (.Paginator 4).Pages "Params.categories" "intersect" (slice "analysis") }}
-            <section class="flex prose">
-              <div class="flex-1 max-w-3xl mx-auto text-left">
-                <div class="section-content">
-                  <h2 class="mb-4 text-xl font-semibold text-gray-600"><a href="{{.Permalink}}">{{ .Title }}</a></h2>
-                  <div class="flex justify-between">
-                    <div class="inline-block mb-2 text-xs font-semibold uppercase">
-                      by
-                      {{ range $i, $e := .Params.author }}{{ if $i }}, {{ end }}{{ $e }}{{ end }}
-                    </div>
-                    <span class="mb-2 text-xs">{{.Date.Format "2006-01-02"}}</span>
-                  </div>
-                  <div class="flex flex-wrap mb-4">
-                    <a href="{{.Permalink}}" class="flex mb-2 mr-2 text-sm md:mb-0 items-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                        class="w-4 h-4 mr-1 bi bi-folder" viewBox="0 0 16 16">
-                        <path
-                          d="M.54 3.87.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.826a2 2 0 0 1-1.991-1.819l-.637-7a1.99 1.99 0 0 1 .342-1.31zM2.19 4a1 1 0 0 0-.996 1.09l.637 7a1 1 0 0 0 .995.91h10.348a1 1 0 0 0 .995-.91l.637-7A1 1 0 0 0 13.81 4H2.19zm4.69-1.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981l.006.139C1.72 3.042 1.95 3 2.19 3h5.396l-.707-.707z" />
-                      </svg>
-                      {{ range .Params.categories }}
-                      <a class="prose-sm" href="/categories/{{ . | urlize }}">{{ . }}</a>
+
+<main class="min-h-screen bg-white pt-7">
+  <div class="container mx-auto px-4 max-w-6xl">
+    <header class="mb-8">
+      <h1 class="text-4xl font-medium text-dbn-green-700">{{ .Title }}</h1>
+      {{ if .Content }}
+        <div class="prose prose-lg mt-4">{{ .Content }}</div>
+      {{ end }}
+    </header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- Main content -->
+      <section class="lg:col-span-2" aria-label="Analysis posts">
+        {{ $analysisPosts := where .Site.RegularPages "Params.categories" "intersect" (slice "analysis") }}
+        {{ $paginator := .Paginate $analysisPosts }}
+        {{ if $paginator.Pages }}
+          {{ range $paginator.Pages }}
+            <article class="mb-8 pb-8 border-b border-gray-200 last:border-b-0">
+              <header class="mb-4">
+                <h2 class="text-xl font-semibold mb-2">
+                  <a href="{{ .Permalink }}" class="text-dbn-green-700 hover:text-dbn-red-500 transition-colors">
+                    {{ .Title }}
+                  </a>
+                </h2>
+                
+                <div class="flex flex-wrap items-center gap-4 text-sm text-dbn-yellow-700">
+                  {{ if .Params.author }}
+                    <div class="flex items-center">
+                      <span class="text-xs uppercase font-semibold mr-1">By</span>
+                      {{ range $i, $author := .Params.author }}
+                        {{ if $i }}, {{ end }}{{ $author }}
                       {{ end }}
-                    </a>
-                  </div>
-                  <p class="mb-4 text-sm text-black">
-                    {{.Summary }}
-                    {{ if .Truncated }}
-                  <div>
-                    <a href="{{ .Permalink }}">Read More...</a>
-                  </div>
+                    </div>
                   {{ end }}
-                  </p>
+                  
+                  {{ if .Date }}
+                    <time datetime="{{ .Date.Format "2006-01-02" }}" class="text-xs">
+                      {{ .Date.Format "January 2, 2006" }}
+                    </time>
+                  {{ end }}
+                </div>
+                
+                {{ if .Params.categories }}
+                  <div class="flex flex-wrap gap-2 mt-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" 
+                         class="w-4 h-4 text-dbn-yellow-500" viewBox="0 0 16 16" aria-hidden="true">
+                      <path d="M.54 3.87.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.826a2 2 0 0 1-1.991-1.819l-.637-7a1.99 1.99 0 0 1 .342-1.31zM2.19 4a1 1 0 0 0-.996 1.09l.637 7a1 1 0 0 0 .995.91h10.348a1 1 0 0 0 .995-.91l.637-7A1 1 0 0 0 13.81 4H2.19zm4.69-1.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981l.006.139C1.72 3.042 1.95 3 2.19 3h5.396l-.707-.707z"/>
+                    </svg>
+                    {{ range .Params.categories }}
+                      <a href="/categories/{{ . | urlize }}" class="text-sm text-dbn-blue-500 hover:text-dbn-purple-500 transition-colors">
+                        {{ . }}
+                      </a>
+                    {{ end }}
+                  </div>
+                {{ end }}
+              </header>
+              
+              <div class="prose max-w-none">
+                <p class="text-dbn-green-700 leading-relaxed">
+                  {{ .Summary }}
+                </p>
+                <div class="mt-3">
+                  <a href="{{ .Permalink }}" class="text-dbn-red-500 hover:text-dbn-orange-400 font-medium transition-colors">
+                    Read more →
+                  </a>
                 </div>
               </div>
-            </section>
-            <hr class="w-48 h-0.5 mx-auto my-4 bg-gray-700 border-0 rounded md:my-10">
-            {{ end }}
-          </div>
-        </div>
-        <div class="flex flex-col sm:w-1/3 sm:pr-16 p-3 m-3 rounded-lg">
-          <div class="container tagcloud">
-            <div class="mb-10">
-              {{ .Content }}
+            </article>
+          {{ end }}
+        {{ else }}
+          <p class="text-dbn-yellow-700">No analysis posts available.</p>
+        {{ end }}
+      </section>
+
+      <!-- Sidebar -->
+      <aside class="lg:col-span-1 space-y-8" aria-label="Analysis sidebar">
+        <!-- Recent Posts -->
+        <section class="bg-dbn-green-50 rounded-lg p-6">
+          <h2 class="text-xl font-semibold text-dbn-green-700 mb-4">Recent Analysis Posts</h2>
+          {{ $recentAnalysisPosts := first 5 (where .Site.RegularPages "Params.categories" "intersect" (slice "analysis")) }}
+          {{ if $recentAnalysisPosts }}
+            <div class="space-y-4">
+              {{ range $recentAnalysisPosts }}
+                <article class="border-b border-gray-200 pb-3 last:border-b-0 last:pb-0">
+                  <h3 class="text-base font-medium mb-1">
+                    <a href="{{ .Permalink }}" class="text-dbn-green-700 hover:text-dbn-red-500 transition-colors line-clamp-2">
+                      {{ .Title }}
+                    </a>
+                  </h3>
+                  <div class="text-sm text-dbn-yellow-700">
+                    {{ if .Params.author }}
+                      {{ range $i, $author := .Params.author }}{{ if $i }}, {{ end }}{{ $author }}{{ end }}
+                      {{ if .Date }} • {{ end }}
+                    {{ end }}
+                    {{ if .Date }}
+                      <time datetime="{{ .Date.Format "2006-01-02" }}">
+                        {{ .Date.Format "Jan 2, 2006" }}
+                      </time>
+                    {{ end }}
+                  </div>
+                </article>
+              {{ end }}
             </div>
+          {{ else }}
+            <p class="text-dbn-yellow-700">No recent analysis posts available.</p>
+          {{ end }}
+        </section>
 
-            <h2 class="text-xl text-gray-600 text-center">{{ .Title }} Tags</h2>
-            {{ if ne (len $.Site.Taxonomies.tags) 0 }}
-            {{ $largestFontSize := 1.3 }}
-            {{ $smallestFontSize := 0.7 }}
-            {{ $fontSpread := sub $largestFontSize $smallestFontSize }}
-            {{ $max := 0 }}
-            {{ $min := 1000000 }}
-            {{ $filteredTags := dict }}
-      
-            {{ range $name, $taxonomy := $.Site.Taxonomies.tags }}
-            {{ $filteredPages := where $taxonomy.Pages "Params.categories" "intersect" (slice "analysis") }}
-            {{ $tagCount := len $filteredPages }}
-            {{ if gt $tagCount 0 }}
-            {{ $filteredTags = merge $filteredTags (dict $name $filteredPages) }}
-            {{ if gt $tagCount $max }}
-            {{ $max = $tagCount }}
+        <!-- Analysis Tags -->
+        {{ $analysisTags := dict }}
+        {{ range $name, $taxonomy := .Site.Taxonomies.tags }}
+          {{ $filteredPages := where $taxonomy.Pages "Params.categories" "intersect" (slice "analysis") }}
+          {{ if gt (len $filteredPages) 0 }}
+            {{ $analysisTags = merge $analysisTags (dict $name $filteredPages) }}
+          {{ end }}
+        {{ end }}
+        
+        {{ if $analysisTags }}
+          <section class="bg-dbn-yellow-50 rounded-lg p-6">
+            <h2 class="text-xl font-semibold text-dbn-green-700 mb-4">Analysis Tags</h2>
+            {{ $maxCount := 1 }}
+            {{ $minCount := 1000 }}
+            
+            {{/* Calculate min/max for sizing */}}
+            {{ range $name, $pages := $analysisTags }}
+              {{ $count := len $pages }}
+              {{ if gt $count $maxCount }}{{ $maxCount = $count }}{{ end }}
+              {{ if lt $count $minCount }}{{ $minCount = $count }}{{ end }}
             {{ end }}
-            {{ if lt $tagCount $min }}
-            {{ $min = $tagCount }}
-            {{ end }}
-            {{ end }}
-            {{ end }}
-      
-            {{ $spread := sub $max $min }}
-            {{ $fontStep := div $fontSpread (cond (eq $spread 0) 1 $spread) }}
-      
-            {{ range $name, $pages := $filteredTags }}
-            {{ $tagCount := len $pages }}
-            {{ $currentFontSize := (add $smallestFontSize (mul (sub $tagCount $min) $fontStep) ) }}
-            {{ $weight := div (sub (math.Log $tagCount) (math.Log $min)) (sub (math.Log $max) (math.Log $min)) }}
-            {{ $currentFontSize := (add $smallestFontSize (mul (sub $largestFontSize $smallestFontSize) $weight)) }}
-            <a class="prose" href="{{ "/tags/" | relURL }}{{ $name | urlize }}" class="tagcloud-item"
-              style="font-size: {{ $currentFontSize }}rem;" aria-label="Tag: {{ $name }} with {{ $tagCount }} items">
-              {{ $name }} <span>({{ $tagCount }})</span>
-            </a>
-            {{ end }}
-            {{ else }}
-            <p>No tags found.</p>
-            {{ end }}
-          </div>
-        </div>
-      </div>
-    </div>
-    </div>
-
-    <!-- pagination numbers -->
-    {{ $paginator := .Paginator }}
-
-    <!-- Number of links either side of the current page. -->
-    {{ $adjacent_links := 2 }}
-
-    <!-- $max_links = ($adjacent_links * 2) + 1 -->
-    {{ $max_links := (add (mul $adjacent_links 2) 1) }}
-
-    <!-- $lower_limit = $adjacent_links + 1 -->
-    {{ $lower_limit := (add $adjacent_links 1) }}
-
-    <!-- $upper_limit = $paginator.TotalPages - $adjacent_links -->
-    {{ $upper_limit := (sub $paginator.TotalPages $adjacent_links) }}
-
-    <div class="max-w-2xl mx-auto p-9">
-
-      <!-- If there's more than one page. -->
-      {{ if gt $paginator.TotalPages 1 }}
-
-      <ul class="inline-flex -space-x-px">
-
-
-        <!-- First page. -->
-        {{ if ne $paginator.PageNumber 1 }}
-        <li class="pagination__item pagination__item--first">
-          <a class="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 ml-0 rounded-l-lg leading-tight py-2 px-3 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-            href="{{ $paginator.First.URL }}">
-            ««
-          </a>
-        </li>
+            
+            <div class="flex flex-wrap gap-2">
+              {{ range $name, $pages := $analysisTags }}
+                {{ $count := len $pages }}
+                {{ $weight := div (sub $count $minCount) (sub $maxCount $minCount) }}
+                {{ $size := add 0.75 (mul $weight 0.5) }}
+                <a href="{{ "/tags/" | relURL }}{{ $name | urlize }}" 
+                   class="inline-block px-3 py-1 bg-white rounded-full text-sm hover:bg-dbn-yellow-100 hover:text-dbn-green-700 transition-colors border border-dbn-yellow-300"
+                   style="font-size: {{ $size }}rem;">
+                  {{ $name }}
+                  <span class="text-xs text-dbn-yellow-700">({{ $count }})</span>
+                </a>
+              {{ end }}
+            </div>
+          </section>
         {{ end }}
 
-        <!-- Previous page. -->
-        {{ if $paginator.HasPrev }}
-        <li class="pagination__item pagination__item--previous">
-          <a href="{{ $paginator.Prev.URL }}"
-            class="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 leading-tight py-2 px-3 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-            «
-          </a>
-        </li>
+        <!-- Related Categories -->
+        {{ if .Site.Taxonomies.categories }}
+          <section class="bg-dbn-blue-50 rounded-lg p-6">
+            <h2 class="text-xl font-semibold text-dbn-green-700 mb-4">Related Categories</h2>
+            <div class="space-y-2">
+              {{ range $name, $taxonomy := .Site.Taxonomies.categories }}
+                <a href="{{ "/categories/" | relURL }}{{ $name | urlize }}" 
+                   class="flex justify-between items-center py-2 px-3 rounded hover:bg-white hover:bg-opacity-70 transition-colors group">
+                  <span class="text-dbn-green-600 group-hover:text-dbn-red-500">{{ $name }}</span>
+                  <span class="text-sm text-dbn-yellow-700 bg-dbn-yellow-100 px-2 py-1 rounded-full group-hover:bg-dbn-yellow-200">
+                    {{ len $taxonomy.Pages }}
+                  </span>
+                </a>
+              {{ end }}
+            </div>
+          </section>
         {{ end }}
-
-        <!-- Page numbers. -->
-        {{ range $paginator.Pagers }}
-
-        {{ $.Scratch.Set "page_number_flag" false }}
-
-
-        <!-- Advanced page numbers. -->
-        {{ if gt $paginator.TotalPages $max_links }}
-
-
-        <!-- Lower limit pages. -->
-        <!-- If the user is on a page which is in the lower limit.  -->
-        {{ if le $paginator.PageNumber $lower_limit }}
-
-        <!-- If the current loop page is less than max_links. -->
-        {{ if le .PageNumber $max_links }}
-        {{ $.Scratch.Set "page_number_flag" true }}
-        {{ end }}
-
-
-        <!-- Upper limit pages. -->
-        <!-- If the user is on a page which is in the upper limit. -->
-        {{ else if ge $paginator.PageNumber $upper_limit }}
-
-        <!-- If the current loop page is greater than total pages minus $max_links -->
-        {{ if gt .PageNumber (sub $paginator.TotalPages $max_links) }}
-        {{ $.Scratch.Set "page_number_flag" true }}
-        {{ end }}
-
-
-        <!-- Middle pages. -->
-        {{ else }}
-
-        {{ if and ( ge .PageNumber (sub $paginator.PageNumber $adjacent_links) ) ( le .PageNumber (add
-        $paginator.PageNumber $adjacent_links) ) }}
-        {{ $.Scratch.Set "page_number_flag" true }}
-        {{ end }}
-
-        {{ end }}
-
-
-        <!-- Simple page numbers. -->
-        {{ else }}
-
-        {{ $.Scratch.Set "page_number_flag" true }}
-
-        {{ end }}
-
-        <!-- Output page numbers. -->
-        {{ if eq ($.Scratch.Get "page_number_flag") true }}
-        <li class="pagination__item{{ if eq . $paginator }} pagination__item--current{{ end }}">
-          <a href="{{ .URL }}"
-            class="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 leading-tight py-2 px-3 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-            {{ .PageNumber }}
-          </a>
-        </li>
-        {{ end }}
-
-        {{ end }}
-
-        <!-- Next page. -->
-        {{ if $paginator.HasNext }}
-        <li class="pagination__item pagination__item--next">
-          <a href="{{ $paginator.Next.URL }}"
-            class="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 leading-tight py-2 px-3 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-            »
-          </a>
-        </li>
-        {{ end }}
-
-        <!-- Last page. -->
-        {{ if ne $paginator.PageNumber $paginator.TotalPages }}
-        <li class="pagination__item pagination__item--last">
-          <a class="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 rounded-r-lg leading-tight py-2 px-3 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-            href="{{ $paginator.Last.URL }}">
-            »»
-          </a>
-        </li>
-        {{ end }}
-
-      </ul><!-- .pagination -->
-      {{ end }}
+      </aside>
     </div>
 
+    <!-- Pagination -->
+    {{ partial "pagination.html" . }}
 
-  </div>
   </div>
 </main>
 {{ end }}

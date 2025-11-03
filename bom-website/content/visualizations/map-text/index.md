@@ -3,6 +3,7 @@ title: "Mapping Suicides, Drownings, and Killings in the Bills of Mortality"
 date: 2025-04-22
 updated: 2025-06-06
 abstract: "Mapping text analysis on suicides, drownings, and killings in the Bills of Mortality."
+summary: "Interactive choropleth map analyzing geographical patterns of suicides, drownings, and killings in London parishes, with filtering options by cause and year range based on text analysis research."
 script: visualizations/map-text/main.js
 styles: visualizations/map-text/style.css
 layout: visualizations

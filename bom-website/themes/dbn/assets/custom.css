@@ -1,5 +1,5 @@
 body {
-  @apply bg-dbn-green;
+  @apply bg-dbn-green-50;
 }
 
 body,
@@ -27,7 +27,7 @@ h6 {
 
 @layer base {
   a {
-    @apply text-dbn-red;
+    @apply text-dbn-red-500;
   }
   a:hover {
     @apply no-underline;
