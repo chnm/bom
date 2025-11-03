@@ -39,7 +39,7 @@ setup: install ## Complete setup (install dependencies)
 process-all: ## Process all CSV files and generate PostgreSQL outputs
 	@echo -e "$(CYAN) Processing all Bills of Mortality data...$(RESET)"
 	@mkdir -p $(LOGS_DIR)
-	uv run python process_all_data.py
+	uv run process_all_data.py
 	@echo -e "$(GREEN) Processing complete! Check $(DATA_OUTPUT_DIR)/ for outputs$(RESET)"
 	@echo -e "$(YELLOW) Logs saved to $(LOGS_DIR)/$(RESET)"
 
@@ -47,13 +47,13 @@ process-all: ## Process all CSV files and generate PostgreSQL outputs
 test-bills: ## Test bills processor with sample data
 	@echo -e "$(CYAN) Testing bills processor...$(RESET)"
 	@mkdir -p $(LOGS_DIR)
-	uv run python tests/test_bills_processor.py
+	uv run tests/test_bills_processor.py
 
 .PHONY: test-schema
 test-schema: ## Test schema alignment with sample data
 	@echo -e "$(CYAN) Testing schema alignment...$(RESET)"
 	@mkdir -p $(LOGS_DIR)
-	uv run python tests/test_schema_alignment.py
+	uv run tests/test_schema_alignment.py
 
 ##@ Data Management
 
@@ -148,7 +148,7 @@ check: lint typecheck ## Run all code quality checks
 info: ## Show project information
 	@echo -e "$(CYAN)Bills of Mortality Processing Pipeline$(RESET)"
 	@echo -e "$(GREEN)Version:$(RESET) 1.0.0"
-	@echo -e "$(GREEN)Python:$(RESET) $$(uv run python --version)"
+	@echo -e "$(GREEN)Python:$(RESET) $$(uv run --version)"
 	@echo -e "$(GREEN)Poetry:$(RESET) $$(uv run --version)"
 	@echo ""
 	@echo -e "$(YELLOW)Input Data:$(RESET)"
