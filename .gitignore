@@ -21,6 +21,8 @@ __pycache__/
 dbupdate
 bom-processing/scripts/bomr/.Rapp.history
 bom-processing/db/updater/bin
+bom-processing/scripts/bompy/data-qc
+bom-processing/scripts/bompy/notebooks
 
 .RData
 .Rhistory
