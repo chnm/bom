@@ -1,7 +1,7 @@
 """Bills processor for converting parish data to BillOfMortalityRecord objects."""
 
 import re
-from typing import Dict, List, Optional, Set, Tuple
+from typing import Dict, List, Optional, Tuple
 
 import pandas as pd
 from loguru import logger
@@ -94,7 +94,6 @@ class BillsProcessor:
             "spotted fever": "spotted fever",
             "still born": "stillborn",
             "swine pox": "swine-pox",
-            "french pox": "syphilis",
         }
 
         for old, new in replacements.items():
@@ -150,7 +149,7 @@ class BillsProcessor:
                 or "parishes and liberties" in col_lower
             ):
                 return True
-            # It's NOT a subtotal if it follows individual parish pattern like "Westminster - Buried"
+            # It's NOT a subtotal if it follows individual parish pattern like "Westminster - Buried" or "Westminster - Plague"
             elif " - " in column_name or (
                 "_buried" in col_lower and "parishes" not in col_lower
             ):
@@ -989,7 +988,8 @@ class BillsProcessor:
                             f"Found week match with {day_offset} day offset: {test_joinid}"
                         )
                         return test_joinid
-                except:
+                except Exception as e:
+                    logger.warning(f"Failed to find week match: {e}")
                     continue
 
         # Strategy 2: Try variations with different start days (±1, ±2 days)
@@ -1005,7 +1005,8 @@ class BillsProcessor:
                             f"Found week match with {day_offset} start day offset: {test_joinid}"
                         )
                         return test_joinid
-                except:
+                except Exception as e:
+                    logger.warning(f"Failed to find week match: {e}")
                     continue
 
         # Strategy 3: Match by month and approximate date range

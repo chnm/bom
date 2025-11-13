@@ -1,6 +1,6 @@
 """Week extraction and unique week ID generation."""
 
-from typing import Dict, List, Optional, Set
+from typing import List, Optional, Set
 
 import pandas as pd
 from loguru import logger
@@ -90,9 +90,9 @@ class WeekExtractor:
             return f"{year}-{year}-{week_pad}"
         # Historical year handling - weeks > 15 span previous year
         elif week_number > 15:
-            return f"{year-1}-{year}-{week_pad}"
+            return f"{year - 1}-{year}-{week_pad}"
         else:
-            return f"{year}-{year+1}-{week_pad}"
+            return f"{year}-{year + 1}-{week_pad}"
 
     def create_split_year(self, year: int, week_number: Optional[int]) -> str:
         """Create split year string."""
@@ -103,7 +103,7 @@ class WeekExtractor:
         if week_number == 90:
             return str(year)
         elif week_number > 15:
-            return f"{year-1}/{year}"
+            return f"{year - 1}/{year}"
         else:
             return str(year)
 
@@ -155,7 +155,6 @@ class WeekExtractor:
 
     def _find_week_columns(self, df: pd.DataFrame) -> List[str]:
         """Find columns needed for week extraction."""
-        required = ["year"]
         optional = [
             "week_number",
             "week",
@@ -214,7 +213,13 @@ class WeekExtractor:
 
         # Detect general bills and set week_number = 90
         if self._is_general_bill(
-            unique_identifier, start_month, end_month, start_day, end_day
+            unique_identifier,
+            start_year,
+            end_year,
+            start_month,
+            end_month,
+            start_day,
+            end_day,
         ):
             week_number = 90
             logger.debug(
@@ -250,6 +255,8 @@ class WeekExtractor:
     def _is_general_bill(
         self,
         unique_identifier: Optional[str],
+        start_year: Optional[int],
+        end_year: Optional[int],
         start_month: Optional[str],
         end_month: Optional[str],
         start_day: Optional[int],
@@ -260,7 +267,7 @@ class WeekExtractor:
 
         General bills typically:
         1. Have 'GeneralBill' in unique_identifier
-        2. Span close to a full year (e.g., December to December)
+        2. Span close to a full year (e.g., December to December across different years)
         3. Have large date spans indicating annual summaries
         """
         if not unique_identifier:
@@ -275,13 +282,23 @@ class WeekExtractor:
             return True
 
         # Check date span patterns that suggest annual coverage
-        if start_month and end_month:
+        if (
+            start_month
+            and end_month
+            and start_year is not None
+            and end_year is not None
+        ):
             start_month_lower = start_month.lower()
             end_month_lower = end_month.lower()
 
-            # December to December pattern (common for general bills)
+            # December to December pattern - ONLY if spanning across years (general bills)
+            # NOT if both dates are in December of the same year (weekly bills in December)
             if "december" in start_month_lower and "december" in end_month_lower:
-                return True
+                if start_year != end_year:  # Different years = general bill
+                    return True
+                else:
+                    # Same year December = weekly bill within December (e.g., Dec 17-24)
+                    return False
 
             # Large month spans that suggest annual coverage
             start_month_num = int(self.month_to_number(start_month))
@@ -289,7 +306,8 @@ class WeekExtractor:
 
             # Handle year-spanning ranges
             if start_month_num == 12 and end_month_num == 12:  # Dec to Dec
-                return True
+                if start_year != end_year:  # Only general if different years
+                    return True
             elif start_month_num > end_month_num:  # Year-spanning range
                 month_span = (12 - start_month_num) + end_month_num
                 if month_span >= 10:  # Spans 10+ months
