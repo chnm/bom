@@ -1,5 +1,7 @@
 # bomr
 
+**ARCHIVED/DEPRECATED**
+
 This directory contains R scripts for transforming raw data exports from [DataScribe](https://github.com/chnm/Datascribe-module) into CSV files used for importing into a PostgreSQL database. 
 
 ## 01-dataclean.R
