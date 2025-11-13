@@ -14,7 +14,7 @@ The London Bills of Mortality represent one of the earliest systematic attempts 
 
 ## Repository Structure
 
-### 📊 [bom-data/](./bom-data/)
+### [bom-data/](./bom-data/)
 **Historical datasets and geographic data**
 - **CSV datasets** from transcribed Bills of Mortality
 - **Death dictionary** with cause-of-death definitions
@@ -112,7 +112,7 @@ RESTful API serving processed data:
 ### For Researchers
 1. **Explore the data**: Visit [deathbynumbers.org/database](https://deathbynumbers.org/database)
 2. **Download datasets**: Use the [downloads page](https://deathbynumbers.org/downloads)
-3. **Access the API**: See [API documentation](https://deathbynumbers.org/api-docs)
+3. **Access the API**: See [API documentation](https://deathbynumbers.org/api/)
 
 ### For Website Contributors
 ```bash
