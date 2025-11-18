@@ -4,7 +4,6 @@
 import sys
 import time
 from pathlib import Path
-from typing import Any, Dict, List
 
 import pandas as pd
 from loguru import logger
@@ -118,10 +117,13 @@ def main():
     logger.info(f"✓ Extracted {len(parish_records)} unique parishes")
 
     # Extract weeks
+    # Prioritize -parishes files (cleanest data) by processing them first
+    # The extractor won't duplicate weeks, so first-seen records are kept
+    dataframes_for_weeks = [(df, name) for df, name, _ in all_dataframes]
+    dataframes_for_weeks.sort(key=lambda x: (not x[1].endswith("-parishes"), x[1]))
+
     week_extractor = WeekExtractor()
-    week_records = week_extractor.extract_weeks_from_dataframes(
-        [(df, name) for df, name, _ in all_dataframes]
-    )
+    week_records = week_extractor.extract_weeks_from_dataframes(dataframes_for_weeks)
     valid_weeks = week_extractor.validate_weeks(week_records)
     logger.info(f"✓ Extracted {len(valid_weeks)} valid weeks")
 
@@ -335,7 +337,7 @@ def main():
         valid_bills = deduplicated_bills
         post_dedup_count = len(valid_bills)
 
-        logger.info(f"Source-aware deduplication results:")
+        logger.info("Source-aware deduplication results:")
         logger.info(f"  • Removed {same_source_removed} same-source duplicate records")
         logger.info(f"  • Preserved {cross_source_kept} cross-source records")
         logger.info(f"  • Total records: {pre_dedup_count} → {post_dedup_count}")
@@ -416,7 +418,7 @@ def main():
         valid_causes = deduplicated_causes
         post_dedup_count = len(valid_causes)
 
-        logger.info(f"Source-aware cause deduplication results:")
+        logger.info("Source-aware cause deduplication results:")
         logger.info(f"  • Removed {same_source_removed} same-source duplicate records")
         logger.info(f"  • Preserved {cross_source_kept} cross-source records")
         logger.info(f"  • Total records: {pre_dedup_count} → {post_dedup_count}")
