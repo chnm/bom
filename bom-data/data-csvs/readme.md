@@ -10,6 +10,7 @@ weekly bills held at the British Library in London
 General bills are annual summaries of the previous year's worth of weekly bills.
 "Parish" are the parish-by-parish listing of total deaths and plague deaths for each week or year.
 "Causes" are the breakdown of total citywide deaths by cause of death.
+"DIRTYDATA" are bills that have been transcribed but not yet reviewed by a second team member and are likely to have a higher error rate than other datasets
 
 The datasets currently available are:
 
