@@ -6,7 +6,13 @@ from typing import Dict, List, Optional, Set, Tuple
 import pandas as pd
 from loguru import logger
 
-from ..models import BillOfMortalityRecord, ParishRecord, WeekRecord, YearRecord
+from ..models import (
+    BillOfMortalityRecord,
+    ParishRecord,
+    SubtotalRecord,
+    WeekRecord,
+    YearRecord,
+)
 from ..utils.validation import SchemaValidator
 
 
@@ -24,12 +30,13 @@ class GeneralBillsProcessor:
         self.validator = SchemaValidator()
 
         # Patterns to identify aggregate vs individual parish columns
+        # Support both space and underscore versions (columns get normalized)
         self.aggregate_patterns = [
-            r"christened in the.*parishes",
-            r"buried in the.*parishes",
-            r"plague in the.*parishes",
-            r"parishes clear of",
-            r"parishes infected",
+            r"christened[_ ]in[_ ]the.*parishes",
+            r"buried[_ ]in[_ ]the.*parishes",
+            r"plague[_ ]in[_ ]the.*parishes",
+            r"parishes[_ ]clear[_ ]of",
+            r"parishes[_ ]infected",
         ]
 
         # Common London parish name patterns for individual parishes
@@ -128,6 +135,43 @@ class GeneralBillsProcessor:
             # Individual parish columns in General Bills default to burial counts
             return "buried"
 
+    def extract_subtotal_category(self, column_name: str) -> str:
+        """
+        Extract the subtotal category name from an aggregate column.
+
+        Returns a standardized subtotal category name like:
+        - "Within the walls"
+        - "Without the walls"
+        - "Middlesex and Surrey"
+        - "Westminster"
+        """
+        col_lower = column_name.lower()
+
+        # Check for within walls patterns (handle both space and underscore)
+        if "within_the_walls" in col_lower or "within the walls" in col_lower:
+            return "Within the walls"
+        # Check for without walls patterns
+        elif "without_the_walls" in col_lower or "without the walls" in col_lower:
+            return "Without the walls"
+        # Check for Middlesex and Surrey patterns
+        elif "middlesex_and_surrey" in col_lower or "middlesex and surrey" in col_lower:
+            return "Middlesex and Surrey"
+        # Check for Westminster/City and Liberties patterns
+        elif (
+            "westminster" in col_lower
+            or "city_and_liberties" in col_lower
+            or "city and liberties" in col_lower
+        ):
+            return "Westminster"
+        # Check for "parishes clear of" or "parishes infected" patterns
+        elif "parishes_clear" in col_lower or "parishes clear" in col_lower:
+            return "Parishes clear of plague"
+        elif "parishes_infected" in col_lower or "parishes infected" in col_lower:
+            return "Parishes infected"
+
+        # Fallback - return cleaned column name
+        return column_name.replace("_", " ").title()
+
     def find_parish_columns(
         self, df: pd.DataFrame, source_name: str
     ) -> Tuple[List[str], List[str]]:
@@ -205,9 +249,13 @@ class GeneralBillsProcessor:
         return None
 
     def extract_year_from_row(self, row: pd.Series) -> Optional[int]:
-        """Extract year from General Bills row."""
-        # General Bills use start_year and end_year columns
-        for col in ["start_year", "end_year", "year"]:
+        """Extract year from General Bills row.
+
+        General bills span December to December (e.g., 1694-1695 = Dec 1694 to Dec 1695).
+        We attribute them to the end_year since that's when the bill was published.
+        """
+        # Check end_year first for split-year bills
+        for col in ["end_year", "start_year", "year"]:
             if col in row.index and pd.notna(row.get(col)):
                 try:
                     return int(row[col])
@@ -321,8 +369,13 @@ class GeneralBillsProcessor:
         source_name: str,
         parish_records: List[ParishRecord],
         week_records: List[WeekRecord],
-    ) -> Tuple[List[BillOfMortalityRecord], List[WeekRecord], List[YearRecord]]:
-        """Process a General Bills DataFrame into BillOfMortalityRecord objects."""
+    ) -> Tuple[
+        List[BillOfMortalityRecord],
+        List[WeekRecord],
+        List[YearRecord],
+        List[SubtotalRecord],
+    ]:
+        """Process a General Bills DataFrame into BillOfMortalityRecord and SubtotalRecord objects."""
 
         parish_mapping = self.create_parish_id_mapping(parish_records)
         week_mapping = self.create_week_id_mapping(week_records)
@@ -330,21 +383,20 @@ class GeneralBillsProcessor:
         new_year_records = []
         seen_years = set()
 
-        # Find parish columns
+        # Find parish columns - separate individual from aggregate
         individual_columns, aggregate_columns = self.find_parish_columns(
             df, source_name
         )
-        all_parish_columns = individual_columns + aggregate_columns
 
-        if not all_parish_columns:
+        if not individual_columns and not aggregate_columns:
             logger.warning(
                 f"No parish columns found in General Bills dataset: {source_name}"
             )
-            return []
+            return [], [], [], []
 
-        # Create parish×count_type combinations
+        # Create parish×count_type combinations for individual parish columns only
         parish_count_combinations = []
-        for col in all_parish_columns:
+        for col in individual_columns:
             parish_name = self.extract_parish_name(col)
             parish_id = self.find_parish_id(parish_name, parish_mapping)
             count_type = self.determine_count_type(col)
@@ -356,11 +408,22 @@ class GeneralBillsProcessor:
                     f"Could not find parish ID for '{parish_name}' from column '{col}'"
                 )
 
+        # Create subtotal combinations for aggregate columns
+        subtotal_combinations = []
+        for col in aggregate_columns:
+            subtotal_category = self.extract_subtotal_category(col)
+            count_type = self.determine_count_type(col)
+            subtotal_combinations.append((subtotal_category, count_type, col))
+
         logger.info(
             f"Found {len(parish_count_combinations)} parish×count_type combinations"
         )
+        logger.info(
+            f"Found {len(subtotal_combinations)} subtotal×count_type combinations"
+        )
 
         records = []
+        subtotal_records = []
 
         # Process each row
         for idx, row in df.iterrows():
@@ -375,7 +438,7 @@ class GeneralBillsProcessor:
                 unique_identifier = row.get("unique_identifier", "")
                 bill_type = "general"  # Always general for this processor
 
-                # Create records for all parish×count_type combinations
+                # Create records for individual parish columns
                 for parish_id, count_type, col in parish_count_combinations:
                     count_value = row[col]
 
@@ -407,11 +470,43 @@ class GeneralBillsProcessor:
 
                     records.append(record)
 
+                # Create subtotal records for aggregate columns
+                for subtotal_category, count_type, col in subtotal_combinations:
+                    count_value = row[col]
+
+                    # Handle missing/empty counts
+                    if pd.isna(count_value) or count_value == "":
+                        count = 0
+                        is_missing = True
+                    else:
+                        try:
+                            count = int(count_value)
+                            is_missing = False
+                        except (ValueError, TypeError):
+                            count = 0
+                            is_missing = True
+
+                    # Create subtotal record
+                    subtotal_record = SubtotalRecord(
+                        subtotal_category=subtotal_category,
+                        count_type=count_type,
+                        count=count,
+                        year=year,
+                        joinid=week_id,
+                        bill_type=bill_type,
+                        missing=is_missing,
+                        illegible=False,
+                        source=source_name,
+                        unique_identifier=unique_identifier,
+                    )
+
+                    subtotal_records.append(subtotal_record)
+
             except Exception as e:
                 logger.warning(f"Failed to process row {idx} in {source_name}: {e}")
                 continue
 
-        # Deduplicate records
+        # Deduplicate bill records
         seen_keys = {}
         for record in records:
             key = (record.parish_id, record.count_type, record.year, record.joinid)
@@ -427,11 +522,38 @@ class GeneralBillsProcessor:
 
         if len(records) != len(deduplicated):
             logger.info(
-                f"Deduplicated {len(records) - len(deduplicated)} duplicate records"
+                f"Deduplicated {len(records) - len(deduplicated)} duplicate bill records"
+            )
+
+        # Deduplicate subtotal records
+        subtotal_seen_keys = {}
+        for subtotal_rec in subtotal_records:
+            key = (
+                subtotal_rec.subtotal_category,
+                subtotal_rec.count_type,
+                subtotal_rec.year,
+                subtotal_rec.joinid,
+            )
+            if key not in subtotal_seen_keys:
+                subtotal_seen_keys[key] = subtotal_rec
+            else:
+                # Keep record with higher count
+                existing = subtotal_seen_keys[key]
+                if (subtotal_rec.count or 0) > (existing.count or 0):
+                    subtotal_seen_keys[key] = subtotal_rec
+
+        deduplicated_subtotals = list(subtotal_seen_keys.values())
+
+        if len(subtotal_records) != len(deduplicated_subtotals):
+            logger.info(
+                f"Deduplicated {len(subtotal_records) - len(deduplicated_subtotals)} duplicate subtotal records"
             )
 
         logger.info(
             f"Generated {len(deduplicated)} General Bills records from {source_name}"
+        )
+        logger.info(
+            f"Generated {len(deduplicated_subtotals)} General Bills subtotal records from {source_name}"
         )
         logger.info(
             f"Created {len(new_week_records)} new week records for General Bills"
@@ -439,4 +561,4 @@ class GeneralBillsProcessor:
         logger.info(
             f"Created {len(new_year_records)} new year records for General Bills"
         )
-        return deduplicated, new_week_records, new_year_records
+        return deduplicated, new_week_records, new_year_records, deduplicated_subtotals

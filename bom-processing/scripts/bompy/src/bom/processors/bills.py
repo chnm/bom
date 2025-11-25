@@ -326,14 +326,19 @@ class BillsProcessor:
                         records,
                         new_week_records,
                         new_year_records,
+                        general_subtotals,
                     ) = self.general_bills_processor.process_general_bills_dataframe(
                         df, source_name, parish_records, week_records
                     )
                     bill_records.extend(records)
                     all_new_week_records.extend(new_week_records)
                     all_new_year_records.extend(new_year_records)
+                    subtotal_records.extend(general_subtotals)
                     logger.info(
                         f"Generated {len(records)} General Bills records from {source_name}"
+                    )
+                    logger.info(
+                        f"Generated {len(general_subtotals)} General Bills subtotal records from {source_name}"
                     )
                     logger.info(
                         f"Created {len(new_week_records)} new week records from {source_name}"
