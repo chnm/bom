@@ -13,7 +13,8 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 pt-6">
       <!-- Main content -->
       <section class="lg:col-span-2" aria-label="Blog posts">
-        {{ $paginator := .Paginate .Site.RegularPages }}
+        {{ $filteredPages := where .Site.RegularPages "Section" "in" (slice "blog" "analysis" "context" "methodologies") }}
+        {{ $paginator := .Paginate $filteredPages }}
         {{ if $paginator.Pages }}
           {{ range $paginator.Pages }}
             <article class="mb-8 pb-8 border-b border-gray-200 last:border-b-0">
