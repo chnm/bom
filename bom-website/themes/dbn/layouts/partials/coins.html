@@ -1,0 +1,76 @@
+{{- /*
+  COinS (ContextObjects in Spans) partial for Zotero integration
+
+  This generates an invisible span element containing OpenURL metadata
+  that citation managers like Zotero can detect and import.
+
+  Maps Hugo sections to appropriate Zotero/Dublin Core types:
+  - analysis, context, methodologies, teaching -> blogPost
+  - blog -> blogPost
+  - Default pages -> webpage
+*/ -}}
+
+{{- $coins := dict -}}
+
+{{- /* Version and format */ -}}
+{{- $coins = merge $coins (dict "ctx_ver" "Z39.88-2004") -}}
+{{- $coins = merge $coins (dict "rft_val_fmt" "info:ofi/fmt:kev:mtx:dc") -}}
+
+{{- /* Determine the appropriate type based on content section */ -}}
+{{- $rftType := "blogPost" -}}
+{{- if eq .Section "blog" -}}
+  {{- $rftType = "blogPost" -}}
+{{- else if or (eq .Section "analysis") (eq .Section "context") (eq .Section "methodologies") (eq .Section "teaching") -}}
+  {{- $rftType = "blogPost" -}}
+{{- else -}}
+  {{- $rftType = "webpage" -}}
+{{- end -}}
+{{- $coins = merge $coins (dict "rft.type" $rftType) -}}
+
+{{- /* Title */ -}}
+{{- $coins = merge $coins (dict "rft.title" .Title) -}}
+
+{{- /* Authors - handle multiple authors */ -}}
+{{- if .Params.author -}}
+  {{- range $index, $author := .Params.author -}}
+    {{- if eq $index 0 -}}
+      {{- $coins = merge $coins (dict "rft.creator" $author) -}}
+    {{- else -}}
+      {{- $coins = merge $coins (dict (printf "rft.au%d" $index) $author) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* Date - use publication date */ -}}
+{{- if .Date -}}
+  {{- $coins = merge $coins (dict "rft.date" (.Date.Format "2006-01-02")) -}}
+{{- end -}}
+
+{{- /* Source - the website/publication name */ -}}
+{{- $coins = merge $coins (dict "rft.source" .Site.Title) -}}
+
+{{- /* Publisher - the organization */ -}}
+{{- $coins = merge $coins (dict "rft.publisher" "Roy Rosenzweig Center for History and New Media") -}}
+
+{{- /* Identifier - canonical URL */ -}}
+{{- $coins = merge $coins (dict "rft.identifier" .Permalink) -}}
+
+{{- /* Language */ -}}
+{{- $coins = merge $coins (dict "rft.language" "en") -}}
+
+{{- /* Description - use summary if available */ -}}
+{{- if .Summary -}}
+  {{- $coins = merge $coins (dict "rft.description" (.Summary | plainify | truncate 500)) -}}
+{{- end -}}
+
+{{- /* Subject/Keywords - use tags if available */ -}}
+{{- if .Params.tags -}}
+  {{- $tags := delimit .Params.tags "; " -}}
+  {{- $coins = merge $coins (dict "rft.subject" $tags) -}}
+{{- end -}}
+
+{{- /* Generate the COinS span with OpenURL query string */ -}}
+<span class="Z3988" title="{{- range $key, $value := $coins -}}
+  {{- if ne $key "ctx_ver" -}}&amp;{{- end -}}
+  {{- $key -}}={{- $value | urlquery -}}
+{{- end -}}"></span>

@@ -66,6 +66,7 @@
       "-space-x-px",
       "-translate-x-1/2",
       "2xl:max-w-2xl",
+      "Z3988",
       "absolute",
       "active",
       "active:scale-90",
