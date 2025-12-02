@@ -7,6 +7,20 @@ We provide multiple ways to use and interact with the data generated through thi
 
 The raw data exports are available [on our Github repository](https://github.com/chnm/bom/tree/main/bom-data/data-csvs). The README in the repostitory describes the contents of the datasets. These datasets are arranged as wide tables and are direct exports from [DataScribe](https://datascribe.tech). You may also consult the [data API's documentation](/api/) if you'd like to use the data directly. The data has been rearranged into a long format and returns JSON objects across weekly and general bills, christenings, causes of death, and foodstuffs.
 
+Please feel free to contact us if you have questions about downloading or using these datasets.
+
+<details class="rsr-toc">
+  <summary>Table of contents</summary>
+  <aside class="prose">
+    <ul>
+    <li><a href="#data-transcriptions">Data Transcriptions</a></li>
+    <li><a href="#article-data">Article Data</a></li>
+    </ul>
+  </aside>
+</details>
+
+## Data Transcriptions
+
 <table class="data-table">
     <thead>
         <tr class="table-header">
@@ -84,4 +98,10 @@ The raw data exports are available [on our Github repository](https://github.com
     </tbody>
 </table>
 
-Please feel free to contact us if you have questions about downloading or using these datasets.
+## Article Data 
+
+| File | Article | Download |
+| ---- | ----------- | -------- |
+| Monarch bills transcription | Jessica M. Otis, Katherine Kania, "[The Monarchs' Bills of Mortality: A Geographical Analysis of Death in Seventeenth-Century London](https://doi.org/10.1080/03058034.2025.2572138)," *The London Journal* (forthcoming) | [Download](/data/2024-10-06-monarchs-bill-transcriptions-cleaned.csv) |
+| Monarch bills catalog | Jessica M. Otis, Katherine Kania, "[The Monarchs' Bills of Mortality: A Geographical Analysis of Death in Seventeenth-Century London](https://doi.org/10.1080/03058034.2025.2572138)," *The London Journal* (forthcoming) | [Download](/data/2024-10-06-monarchs-bill-catalog.csv) |
+
