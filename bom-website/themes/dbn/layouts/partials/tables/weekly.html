@@ -132,17 +132,17 @@
       class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-40" aria-hidden="true"></div>
       
     <!-- Modal content -->
-    <div x-cloak x-show="modalOpen" 
+    <div x-cloak x-show="modalOpen"
       x-transition:enter="transition ease-out duration-300 transform"
       x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
       x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
       x-transition:leave="transition ease-in duration-200 transform"
       x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
       x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-      class="inline-block w-full max-w-xl p-8 my-20 overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl 2xl:max-w-2xl">
-      
+      class="inline-block w-full max-w-5xl p-8 my-20 overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl">
+
       <!-- Modal header -->
-      <div class="flex items-center justify-between space-x-4">
+      <div class="flex items-center justify-between space-x-4 mb-6">
         <h3 class="text-lg font-medium leading-6 text-gray-900" id="modal-title" x-text="modalBill.name"></h3>
         <button @click="modalOpen = false" class="text-gray-600 focus:outline-none hover:text-gray-700">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
@@ -152,30 +152,61 @@
           </svg>
         </button>
       </div>
-      
-      <!-- Modal content with bill information -->
-      <p class="mt-2 text-sm text-gray-500">Data for the week of <span x-text="modalBill.start_month"></span> <span
-          x-text="modalBill.start_day"></span> to <span x-text="modalBill.end_month"></span> <span
-          x-text="modalBill.end_day"></span>, <span x-text="modalBill.year"></span> (<span
-          x-text="modalBill.split_year"></span>)</p>
-          
-      <!-- Bill details -->
-      <p class="mt-2 text-sm text-gray-800"><strong>Count Type</strong>: <span x-text="modalBill.count_type"></span></p>
-      <p class="mt-2 text-sm text-gray-800"><strong>Count</strong>: <span x-text="modalBill.count ? modalBill.count : 'No count available.'"></span>
-        <span x-show="modalBill.missing === true" class="ml-2 px-2 py-0.5 bg-amber-100 text-amber-800 text-xs rounded-full">The data for this record is marked as missing</span>
-        <span x-show="modalBill.illegible === true" class="ml-2 px-2 py-0.5 bg-amber-100 text-amber-800 text-xs rounded-full">The data for this record is marked as illegible</span>
-      </p>
-      <p class="mt-2 text-sm text-gray-800"><strong>Week Number</strong>: <span x-text="modalBill.week_number"></span></p>
-      
-      <!-- Chart section -->
-      <div class="mt-4">
-        <h4 class="text-sm font-medium text-gray-700">Historical Trend</h4>
-            <p class="text-sm text-gray-500">Click a legend to toggle data on and off.</p>
-        <div class="mt-2 parish-chart-modal">
-          <div id="modal-chart-container" class="chart-container w-full"></div>
-          <div id="modal-loading-indicator" class="loading-indicator text-center text-xs text-gray-500 py-2">Loading chart data...</div>
-          <div id="modal-error-message" class="error-message hidden text-center text-xs text-red-500 py-2"></div>
+
+      <!-- Two-column layout: Data on left, Visualizations on right -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+        <!-- Left Column: Parish and Bill Information -->
+        <div class="space-y-4">
+          <!-- Week Information -->
+          <div class="pb-4 border-b border-gray-200">
+            <h4 class="text-sm font-semibold text-gray-700 mb-2">Week Information</h4>
+            <p class="text-sm text-gray-600">
+              <span x-text="modalBill.start_month"></span> <span x-text="modalBill.start_day"></span> to
+              <span x-text="modalBill.end_month"></span> <span x-text="modalBill.end_day"></span>,
+              <span x-text="modalBill.year"></span> (<span x-text="modalBill.split_year"></span>)
+            </p>
+            <p class="mt-1 text-sm text-gray-600">
+              <strong>Week Number:</strong> <span x-text="modalBill.week_number"></span>
+            </p>
+          </div>
+
+          <!-- Bill Details -->
+          <div class="pb-4 border-b border-gray-200">
+            <h4 class="text-sm font-semibold text-gray-700 mb-2">Bill Details</h4>
+            <p class="text-sm text-gray-600">
+              <strong>Count Type:</strong> <span x-text="modalBill.count_type"></span>
+            </p>
+            <p class="mt-1 text-sm text-gray-600">
+              <strong>Count:</strong> <span x-text="modalBill.count ? modalBill.count : 'No count available.'"></span>
+              <span x-show="modalBill.missing === true" class="ml-2 px-2 py-0.5 bg-amber-100 text-amber-800 text-xs rounded-full">Missing</span>
+              <span x-show="modalBill.illegible === true" class="ml-2 px-2 py-0.5 bg-amber-100 text-amber-800 text-xs rounded-full">Illegible</span>
+            </p>
+          </div>
+
+          <!-- Parish Metadata -->
+          <div>
+            <h4 class="text-sm font-semibold text-gray-700 mb-2">Parish Information</h4>
+            <div class="mt-2 text-sm text-gray-600">
+              <p><strong>Bills Subunit:</strong> <span x-text="modalBill.parish.bills_subunit ? modalBill.parish.bills_subnit : 'No subunit recorded'"></span></p>
+              <p><strong>Foundation Year:</strong> <span x-text="modalBill.parish.foundation_year ? modalBill.parish.foundation_year : 'No foundation year recorded'"></span></p>
+              <p><strong>Notes:</strong> <span x-text="modalBill.parish.notes ? modalBill.parish.notes : 'No parish notes recorded'"></span></p>
+            </div>
+          </div>
         </div>
+
+        <!-- Right Column: Visualizations -->
+        <div class="space-y-4">
+          <div>
+            <h4 class="text-sm font-semibold text-gray-700 mb-2">Historical Trend</h4>
+            <div class="parish-chart-modal">
+              <div id="modal-chart-container" class="chart-container w-full"></div>
+              <div id="modal-loading-indicator" class="loading-indicator text-center text-xs text-gray-500 py-2">Loading chart data...</div>
+              <div id="modal-error-message" class="error-message hidden text-center text-xs text-red-500 py-2"></div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
