@@ -1,7 +1,8 @@
 """Parish extraction for the parishes table."""
 
 import re
-from typing import Any, Dict, List, Optional, Set
+from pathlib import Path
+from typing import Dict, List, Optional, Set
 
 import pandas as pd
 from loguru import logger
@@ -31,10 +32,15 @@ class ParishExtractor:
         authority_mapping = {}
 
         try:
+            # Use Path(__file__) to get absolute path regardless of working directory
+            # From src/bom/extractors/parishes.py -> bompy/data/
             authority_file = (
-                "../../../bom-data/data-csvs/London Parish Authority File.csv"
+                Path(__file__).parent.parent.parent.parent
+                / "data"
+                / "London Parish Authority File.csv"
             )
-            df = pd.read_csv(authority_file)
+            logger.debug(f"Loading authority file from: {authority_file}")
+            df = pd.read_csv(str(authority_file))
 
             for _, row in df.iterrows():
                 canonical_name = row["Canonical DBN Name"]
@@ -47,6 +53,24 @@ class ParishExtractor:
                     if pd.notna(row.get("Bills Subunit", ""))
                     else ""
                 )
+                foundation_year = (
+                    row.get("Foundation Year per Internet Searches?", "")
+                    if pd.notna(row.get("Foundation Year per Internet Searches?", ""))
+                    else ""
+                )
+                notes = (
+                    row.get(
+                        "Notes From Wikipedia and https://www.londonparishclerks.com/Parishes-Churches/Parish-List",
+                        "",
+                    )
+                    if pd.notna(
+                        row.get(
+                            "Notes From Wikipedia and https://www.londonparishclerks.com/Parishes-Churches/Parish-List",
+                            "",
+                        )
+                    )
+                    else ""
+                )
 
                 parish_info = {
                     "canonical_name": str(canonical_name).strip()
@@ -55,6 +79,10 @@ class ParishExtractor:
                     "bills_subunit": str(bills_subunit).strip()
                     if bills_subunit
                     else None,
+                    "foundation_year": str(foundation_year).strip()
+                    if foundation_year
+                    else None,
+                    "notes": str(notes).strip() if notes else None,
                 }
 
                 # Map Omeka name to parish info
@@ -153,9 +181,14 @@ class ParishExtractor:
         return True
 
     def get_parish_info(self, parish_name: str) -> Dict[str, Optional[str]]:
-        """Get parish info (canonical name and bills subunit) from authority file mapping."""
+        """Get parish info (canonical name, bills subunit, foundation year, and notes) from authority file mapping."""
         if not parish_name:
-            return {"canonical_name": "", "bills_subunit": None}
+            return {
+                "canonical_name": "",
+                "bills_subunit": None,
+                "foundation_year": None,
+                "notes": None,
+            }
 
         cleaned_name = self.clean_parish_name(parish_name)
 
@@ -168,9 +201,14 @@ class ParishExtractor:
             if authority_name.lower() == cleaned_name.lower():
                 return parish_info
 
-        # If no match found, use the cleaned name as canonical with no bills subunit
+        # If no match found, use the cleaned name as canonical with no additional data
         logger.warning(f"No authority mapping found for parish: '{cleaned_name}'")
-        return {"canonical_name": cleaned_name, "bills_subunit": None}
+        return {
+            "canonical_name": cleaned_name,
+            "bills_subunit": None,
+            "foundation_year": None,
+            "notes": None,
+        }
 
     def create_canonical_name(self, parish_name: str) -> str:
         """Create canonical name from parish name using authority file mapping."""
@@ -242,10 +280,6 @@ class ParishExtractor:
                     f"Found {len(general_bill_parish_cols)} general bill parish columns in {source_name}"
                 )
 
-            all_parish_cols = (
-                parish_cols + potential_parish_cols + general_bill_parish_cols
-            )
-
             if parish_cols:
                 logger.info(f"Found parish columns in {source_name}: {parish_cols}")
 
@@ -306,12 +340,16 @@ class ParishExtractor:
             parish_info = self.get_parish_info(parish_name)
             canonical_name = parish_info["canonical_name"]
             bills_subunit = parish_info["bills_subunit"]
+            foundation_year = parish_info["foundation_year"]
+            notes = parish_info["notes"]
 
             record = ParishRecord(
                 id=i,
                 parish_name=parish_name,
                 canonical_name=canonical_name,
                 bills_subunit=bills_subunit,
+                foundation_year=foundation_year,
+                notes=notes,
             )
             parish_records.append(record)
 
