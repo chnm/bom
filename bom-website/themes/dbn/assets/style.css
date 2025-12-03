@@ -5,7 +5,10 @@ body {
 
 body,
 p {
-  font-family: "Work Sans", sans-serif;
+  font-family: "Alegreya", serif;
+  font-size: 1.125rem;
+  /* 18px */
+  line-height: 1.75;
 }
 
 h1,
@@ -14,15 +17,16 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Libre Baskerville", sans-serif;
+  font-family: "Alegreya", serif;
 }
 
 #site-title {
   font-size: 1.5rem;
-  font-family: "Libre Baskerville", serif;
+  font-family: "Alegreya", serif;
 }
 
-.nav-item {
+nav button,
+nav a {
   font-family: "Work Sans", sans-serif;
 }
 
@@ -2580,6 +2584,10 @@ a:hover {
   visibility: visible;
 }
 
+.invisible {
+  visibility: hidden;
+}
+
 .collapse {
   visibility: collapse;
 }
@@ -2866,6 +2874,10 @@ a:hover {
 
 .max-h-\[32rem\] {
   max-height: 32rem;
+}
+
+.max-h-96 {
+  max-height: 24rem;
 }
 
 .max-h-\[70vh\] {
@@ -3170,6 +3182,12 @@ a:hover {
   margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));
 }
 
+.space-y-3 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.75rem * var(--tw-space-y-reverse));
+}
+
 .-space-x-px > :not([hidden]) ~ :not([hidden]) {
   --tw-space-x-reverse: 0;
   margin-right: calc(-1px * var(--tw-space-x-reverse));
@@ -3180,12 +3198,6 @@ a:hover {
   --tw-space-x-reverse: 0;
   margin-right: calc(0.25rem * var(--tw-space-x-reverse));
   margin-left: calc(0.25rem * calc(1 - var(--tw-space-x-reverse)));
-}
-
-.space-y-3 > :not([hidden]) ~ :not([hidden]) {
-  --tw-space-y-reverse: 0;
-  margin-top: calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));
-  margin-bottom: calc(0.75rem * var(--tw-space-y-reverse));
 }
 
 .space-y-6 > :not([hidden]) ~ :not([hidden]) {
@@ -3452,9 +3464,9 @@ a:hover {
   background-color: rgb(107 157 194 / var(--tw-bg-opacity));
 }
 
-.bg-orange-100 {
+.bg-orange-50 {
   --tw-bg-opacity: 1;
-  background-color: rgb(255 237 213 / var(--tw-bg-opacity));
+  background-color: rgb(255 247 237 / var(--tw-bg-opacity));
 }
 
 .bg-white\/30 {
@@ -3684,6 +3696,10 @@ a:hover {
 
 .pt-6 {
   padding-top: 1.5rem;
+}
+
+.pb-2 {
+  padding-bottom: 0.5rem;
 }
 
 .pt-8 {
