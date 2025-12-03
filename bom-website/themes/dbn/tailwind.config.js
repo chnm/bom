@@ -3,7 +3,7 @@ module.exports = {
   content: ["content/**/*.md", "layouts/**/*.html"],
   theme: {
     fontFamily: {
-      serif: "Libre Baskerville, Playfair Display, serif",
+      serif: "Alegreya, serif",
       sans: "Work Sans, sans-serif",
     },
     container: {

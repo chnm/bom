@@ -1,3 +1,6 @@
-<div class="bg-orange-100 border-l-4 border-dbn-orange-400 text-dbn-orange-400 p-4 text-base" role="alert">
+<div class="bg-orange-50 border-l-4 border-dbn-orange-400 text-dbn-orange-400 p-4 text-base" role="alert">
 <p>Content Warning: This post contains subject matter that some may find sensitive or disturbing, be advised. If uncomfortable with this topic, you may support Death By Numbers in other posts.</p>
+{{- with .Get "text" }}
+<p class="mt-2">{{ . }}</p>
+{{- end }}
 </div>

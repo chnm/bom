@@ -1,0 +1,19 @@
+{{ define "main" }}
+<div class="container mx-auto px-4 py-8 max-w-4xl">
+  <h1 class="text-4xl font-bold mb-8 text-dbn-green-900">{{ .Title }}</h1>
+
+  <div id="search"></div>
+
+  <link href="/pagefind/pagefind-ui.css" rel="stylesheet">
+  <script src="/pagefind/pagefind-ui.js"></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+      new PagefindUI({
+        element: "#search",
+        showSubResults: true,
+        excerptLength: 20
+      });
+    });
+  </script>
+</div>
+{{ end }}
