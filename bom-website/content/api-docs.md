@@ -32,6 +32,13 @@ The `bills` data returns the following information:
 - Start Day and End Day / Start Month and End Month: This is the date range for a given period.
 - Year: This is the year for a given bill.
 - Split Year: This is to account for the calendar change and indicates where split years are necessary.
+- Parish: A nested object containing detailed parish metadata:
+  - Parish ID: Unique identifier for the parish
+  - Parish name: Name as recorded in primary sources
+  - Canonical name: Standardized parish name
+  - Subunit: Bills of Mortality administrative classification (e.g., "97 parishes within the walls")
+  - Foundation year: Year the parish was founded (may be null)
+  - Notes: Information about the parish, including events like the Great Fire of 1666, rebuilding, mergers, etc. (may be null)
 
 The second endpoint is `/causes`, which powers the _Total Deaths_ tab of the web application. The endpoint requires a year range to return data. You can optionally return a specific cause of death to see values for a specific cause. Currently, this endpoint returns the following:
 
@@ -121,11 +128,30 @@ Response JSON (indexed by parish ID):
     {
         "id": 1,
         "name": "Alhallows Barking",
-        "canonical_name": "All Hallows Barking"
-        . . .
+        "canonical_name": "All Hallows Barking",
+        "subunit": "97 parishes within the walls",
+        "foundation_year": null,
+        "notes": null
     },
+    {
+        "id": 2,
+        "name": "Alhallows Breadstreet",
+        "canonical_name": "All Hallows Bread Street",
+        "subunit": "97 parishes within the walls",
+        "foundation_year": null,
+        "notes": "destroyed 1666, rebuilt"
+    },
+    . . .
 ]
 ```
+
+The parish data includes:
+- `id`: Unique identifier for the parish
+- `name`: Parish name as recorded in the primary sources
+- `canonical_name`: Standardized parish name determined by the BOM team
+- `subunit`: Bills of Mortality administrative subunit (e.g., "97 parishes within the walls")
+- `foundation_year`: Year the parish was founded (may be null)
+- `notes`: Historical notes about the parish including information about fires, rebuilding, mergers, etc. (may be null)
 
 #### Bills
 
@@ -144,7 +170,7 @@ Parameters:
 - limit (optional): Limit the number of records.
 - offset (optional): Offset the number of records.
 
-The `start-year` and `end-year` parameters are required and return the range of rows in the database that fall between the two years. You must also set the `bill-type` parameter to Weekly or General.
+The `start-year` and `end-year` parameters are required and return the range of rows in the database that fall between the two years. You must also set the `bill-type` parameter to Weekly or General. Each bill record includes a nested `parish` object with detailed parish metadata including the bills subunit, foundation year, and historical notes.
 
 <https://data.chnm.org/bom/bills?start-year=1669&end-year=1754&bill-type=Weekly>
 
@@ -164,7 +190,15 @@ Response JSON:
 	    "year":1669,
 	    "split_year":"1668/1669",
 	    "week_no":1,
-	    "week_id":"1669-1670-01"
+	    "week_id":"1669-1670-01",
+	    "parish": {
+	        "id": 1,
+	        "name": "Alhallows Barking",
+	        "canonical_name": "All Hallows Barking",
+	        "subunit": "97 parishes within the walls",
+	        "foundation_year": null,
+	        "notes": null
+	    }
     }
     . . .
 ]
@@ -188,7 +222,15 @@ Optionally, you can provide the `/bills` endpoint with the `parishes` parameter,
 		"year":1669,
 		"split_year":"1668/1669",
 		"week_no":1,
-		"week_id":"1669-1670-01"
+		"week_id":"1669-1670-01",
+		"parish": {
+			"id": 1,
+			"name": "Alhallows Barking",
+			"canonical_name": "All Hallows Barking",
+			"subunit": "97 parishes within the walls",
+			"foundation_year": null,
+			"notes": null
+		}
 	},
 	...
 	{
@@ -203,7 +245,15 @@ Optionally, you can provide the `/bills` endpoint with the `parishes` parameter,
 		"year":1669,
 		"split_year":"1668/1669",
 		"week_no":1,
-		"week_id":"1669-1670-01"
+		"week_id":"1669-1670-01",
+		"parish": {
+			"id": 28,
+			"name": "St Mary Rotherhithe",
+			"canonical_name": "St Mary Rotherhithe",
+			"subunit": "Out Parishes in Surrey and Kent",
+			"foundation_year": null,
+			"notes": null
+		}
 	},
 	...
 	{
@@ -218,11 +268,19 @@ Optionally, you can provide the `/bills` endpoint with the `parishes` parameter,
 		"year":1669,
 		"split_year":"1668/1669",
 		"week_no":2,
-		"week_id":"1669-1670-02"
-		},
-		{
-			...
+		"week_id":"1669-1670-02",
+		"parish": {
+			"id": 3,
+			"name": "Alhallows Great",
+			"canonical_name": "All Hallows the Great",
+			"subunit": "97 parishes within the walls",
+			"foundation_year": null,
+			"notes": "destroyed 1666, rebuilt"
 		}
+	},
+	{
+		...
+	}
 	...
 ]
 ```
@@ -247,7 +305,15 @@ To return the entire dataset with both Weekly and General bills, simply leave of
 	    "year":1669,
 	    "split_year":"1668/1669",
 	    "week_no":1,
-	    "week_id":"1669-1670-01"
+	    "week_id":"1669-1670-01",
+	    "parish": {
+	        "id": 1,
+	        "name": "Alhallows Barking",
+	        "canonical_name": "All Hallows Barking",
+	        "subunit": "97 parishes within the walls",
+	        "foundation_year": null,
+	        "notes": null
+	    }
     }
     . . .
 ]
