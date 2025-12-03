@@ -6,6 +6,7 @@ date: "2023-12-04"
 tags:
   - adasme
   - 1636-plague
+  - plague
   - time-to-event analysis
 categories:
   - "analysis"

@@ -5,6 +5,7 @@ author:
 date: "2024-08-28"
 tags:
   - adasme
+  - plague
 categories:
   - "analysis"
 ---

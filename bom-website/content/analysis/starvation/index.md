@@ -8,6 +8,7 @@ tags:
   - food
   - starvation
   - 1665-plague
+  - plague
 categories:
   - analysis
 ---
