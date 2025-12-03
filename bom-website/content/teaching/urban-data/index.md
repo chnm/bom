@@ -8,6 +8,7 @@ categories:
   - teaching
 tags: 
   - lesson plan
+  - geography
 summary: "Use Death By Number's 'Mapping Burials and Plague' visualization to explore the spread of plague in the city of London.  Look at parish level data for various years and compare how plague deaths versus other burials in each parish change over time.  Ask students what they notice about the smaller parishes packed into the dense population center versus the outlying parishes."
 ---
 

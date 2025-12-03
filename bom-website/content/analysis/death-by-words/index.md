@@ -5,6 +5,7 @@ author:
 date: "2024-09-26"
 tags:
   - adasme
+  - geography
 categories:
   - "analysis"
 ---

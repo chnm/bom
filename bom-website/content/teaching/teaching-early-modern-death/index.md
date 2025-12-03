@@ -9,7 +9,7 @@ tags:
   - kania
   - pedagogy
 categories:
-  - "context"
+  - "teaching"
 ---
 
 {{< figure src="teaching-poster.png" caption="A poster on Early Modern Death in the 21st Century Classroom presented at AAHM." alt="Poster on teaching early modern death in the 21st century classroom." >}}
