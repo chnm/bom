@@ -4,7 +4,9 @@ body {
 
 body,
 p {
-  font-family: "Work Sans", sans-serif;
+  font-family: "Alegreya", serif;
+  font-size: 1.125rem; /* 18px */
+  line-height: 1.75;
 }
 
 h1,
@@ -13,15 +15,16 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Libre Baskerville", sans-serif;
+  font-family: "Alegreya", serif;
 }
 
 #site-title {
   font-size: 1.5rem;
-  font-family: "Libre Baskerville", serif;
+  font-family: "Alegreya", serif;
 }
 
-.nav-item {
+nav button,
+nav a {
   font-family: "Work Sans", sans-serif;
 }
 

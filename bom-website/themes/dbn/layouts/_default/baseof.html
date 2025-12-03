@@ -12,7 +12,21 @@
         </div>
         {{- partial "footer.html" . -}}
         <script src="https://unpkg.com/littlefoot/dist/littlefoot.js"></script>
-        <script>littlefoot.littlefoot()</script>
+        <style>
+            .littlefoot__button {
+                display: inline-flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+            }
+            .littlefoot__button i {
+                line-height: 1 !important;
+            }
+        </style>
+        <script>
+            littlefoot.littlefoot({
+                buttonTemplate: '<button aria-expanded="false" aria-label="Footnote <% number %>" class="littlefoot__button" id="<% reference %>" title="See Footnote <% number %>"><i class="fa-solid fa-asterisk fa-lg"></i></button>'
+            })
+        </script>
     </body>
 </html>
 
