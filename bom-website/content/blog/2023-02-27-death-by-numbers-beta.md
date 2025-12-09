@@ -36,12 +36,12 @@ sustainability) which has all our old posts accessible via chronological
 scrolling or tags in the sidebar of this page. Some great posts to get
 started on include:
 
--   [Confusion of Calendars](https://deathbynumbers.org/2022/02/14/confusion-of-calendars/)
--   [Parishes and Extra-Parochial Places](https://deathbynumbers.org/2022/02/28/parishes-and-extra-parochial-places/)
--   [A Parish by Any Other Name](https://deathbynumbers.org/2022/03/28/a-parish-by-any-other-name/)
--   [Why Is There Bread in the Bills?](https://deathbynumbers.org/2022/09/12/why-is-there-bread-in-the-bills/)
--   [Old Age and Aged Deaths](https://deathbynumbers.org/2022/07/18/old-age-and-aged-deaths/)
--   [Chimneys and the Great Storm of 1703](https://deathbynumbers.org/2022/08/16/chimneys-and-the-great-storm-of-1703/)
+-   [Confusion of Calendars](/context/confusion-of-calendars/)
+-   [Parishes and Extra-Parochial Places](/context/parishes-and-extra-parochial-places/)
+-   [A Parish by Any Other Name](/context/a-parish-by-any-other-name/)
+-   [Why Is There Bread in the Bills?](/context/why-is-there-bread-in-the-bills/)
+-   [Old Age and Aged Deaths](/analysis/old-age-and-aged-deaths/)
+-   [Chimneys and the Great Storm of 1703](/analysis/chimneys-and-the-great-storm-of-1703/)
 
 ## Got Feedback?
 

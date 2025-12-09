@@ -5,11 +5,15 @@ preview :
 build :
 	@echo "\nBuilding the dev site with Hugo ..."
 	hugo --cleanDestinationDir --buildDrafts --buildFuture --baseURL http://dev.deathbynumbers.org/
+	@echo "Building search index with Pagefind ..."
+	npx -y pagefind --site public
 	@echo "Website finished building."
 
 build-prod :
 	@echo "\nBuilding the prod site with Hugo ..."
 	hugo --cleanDestinationDir --minify --baseURL https://deathbynumbers.org/
+	@echo "Building search index with Pagefind ..."
+	npx -y pagefind --site public
 	@echo "Website finished building."
 
 tailwind :
