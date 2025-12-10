@@ -35,10 +35,10 @@ document.addEventListener("alpine:init", () => {
       selectedParishes: [],
       selectedBillType: "weekly",
       selectedCountType: "",
-      selectedStartYear: 1636,
+      selectedStartYear: 1629,
       selectedEndYear: 1754,
       selectedStartWeek: 1,
-      selectedEndWeek: 52,
+      selectedEndWeek: 56,
       selectedCausesOfDeath: [],
       selectedChristenings: [],
       showIllegibleOnly: false,
@@ -1080,10 +1080,10 @@ document.addEventListener("alpine:init", () => {
      */
     resetFilters() {
       // Restore defaults
-      this.filters.selectedStartYear = 1636;
+      this.filters.selectedStartYear = 1629;
       this.filters.selectedEndYear = 1754;
       this.filters.selectedStartWeek = 1;
-      this.filters.selectedEndWeek = 52;
+      this.filters.selectedEndWeek = 56;
       this.filters.selectedCountType = "";
       this.filters.selectedBillType = "weekly";
       this.filters.selectedParishes = [];
@@ -1147,9 +1147,9 @@ document.addEventListener("alpine:init", () => {
       // Validate input
       const year = parseInt(this.filters.selectedStartYear);
       if (isNaN(year)) {
-        this.filters.selectedStartYear = 1636;
-      } else if (year < 1636) {
-        this.filters.selectedStartYear = 1636;
+        this.filters.selectedStartYear = 1629;
+      } else if (year < 1629) {
+        this.filters.selectedStartYear = 1629;
       } else if (year > 1754) {
         this.filters.selectedStartYear = 1754;
       }
@@ -1171,8 +1171,8 @@ document.addEventListener("alpine:init", () => {
       const year = parseInt(this.filters.selectedEndYear);
       if (isNaN(year)) {
         this.filters.selectedEndYear = 1754;
-      } else if (year < 1636) {
-        this.filters.selectedEndYear = 1636;
+      } else if (year < 1629) {
+        this.filters.selectedEndYear = 1629;
       } else if (year > 1754) {
         this.filters.selectedEndYear = 1754;
       }
@@ -1287,7 +1287,7 @@ document.addEventListener("alpine:init", () => {
       if (this.filters.selectedStartWeek !== 1) {
         params.set("start-week", this.filters.selectedStartWeek);
       }
-      if (this.filters.selectedEndWeek !== 52) {
+      if (this.filters.selectedEndWeek !== 56) {
         params.set("end-week", this.filters.selectedEndWeek);
       }
       if (this.filters.selectedCountType && this.filters.selectedCountType !== "all") {
@@ -1436,7 +1436,7 @@ document.addEventListener("alpine:init", () => {
     generateMockChartData(identifier, dataType) {
       return new Promise((resolve) => {
         // Generate sample data for demonstration
-        const startYear = 1636;
+        const startYear = 1629;
         const endYear = 1754;
         const data = [];
         
@@ -1486,8 +1486,8 @@ document.addEventListener("alpine:init", () => {
       const startYear = parseInt(this.filters.selectedStartYear);
       const endYear = parseInt(this.filters.selectedEndYear);
 
-      if (isNaN(startYear) || startYear < 1636) {
-        this.filters.selectedStartYear = 1636;
+      if (isNaN(startYear) || startYear < 1629) {
+        this.filters.selectedStartYear = 1629;
       }
 
       if (isNaN(endYear) || endYear > 1754) {
@@ -1534,7 +1534,7 @@ document.addEventListener("alpine:init", () => {
         const position = (clientX - rect.left) / rect.width;
 
         // Convert position to year value
-        const minYear = 1636;
+        const minYear = 1629;
         const maxYear = 1754;
         const range = maxYear - minYear;
 
@@ -1610,9 +1610,9 @@ document.addEventListener("alpine:init", () => {
         const rect = track.getBoundingClientRect();
         const position = (clientX - rect.left) / rect.width;
 
-        // Convert position to week value (1-52)
+        // Convert position to week value (1-56)
         const minWeek = 1;
-        const maxWeek = 52;
+        const maxWeek = 56;
         const range = maxWeek - minWeek;
 
         // Calculate the new week based on position
@@ -1668,8 +1668,8 @@ document.addEventListener("alpine:init", () => {
      */
     validateWeekInput() {
       // Ensure weeks are within valid range
-      this.filters.selectedStartWeek = Math.max(1, Math.min(52, this.filters.selectedStartWeek || 1));
-      this.filters.selectedEndWeek = Math.max(1, Math.min(52, this.filters.selectedEndWeek || 52));
+      this.filters.selectedStartWeek = Math.max(1, Math.min(56, this.filters.selectedStartWeek || 1));
+      this.filters.selectedEndWeek = Math.max(1, Math.min(56, this.filters.selectedEndWeek || 56));
 
       // Ensure start week doesn't exceed end week
       if (this.filters.selectedStartWeek > this.filters.selectedEndWeek) {
