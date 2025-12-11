@@ -1,7 +1,6 @@
 """Data models for Bills of Mortality processing - matching PostgreSQL schema exactly."""
 
 from dataclasses import dataclass
-from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 import pandas as pd
@@ -193,9 +192,11 @@ class ParishRecord:
     id: int  # Primary key
     parish_name: str  # Must be unique
     canonical_name: str  # Required canonical name
-    bills_subunit: Optional[
-        str
-    ] = None  # Bills subunit classification (e.g., "97 parishes within the walls")
+    bills_subunit: Optional[str] = (
+        None  # Bills subunit classification (e.g., "97 parishes within the walls")
+    )
+    foundation_year: Optional[str] = None  # Year the parish was founded
+    notes: Optional[str] = None  # Notes from Wikipedia and other sources
 
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary for DataFrame creation."""
@@ -204,6 +205,8 @@ class ParishRecord:
             "parish_name": self.parish_name,
             "canonical_name": self.canonical_name,
             "bills_subunit": self.bills_subunit,
+            "foundation_year": self.foundation_year,
+            "notes": self.notes,
         }
 
 

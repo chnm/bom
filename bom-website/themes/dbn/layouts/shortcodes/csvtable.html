@@ -19,8 +19,6 @@
 {{ if not $data }}
     <p class="text-danger">Error: Could not read CSV file {{ $file }}</p>
 {{ else }}
-<div class="mb-12 shadow-md rounded-lg border border-gray-200">
-    <div class="overflow-x-auto overflow-y-auto max-h-[70vh] scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100" style="scrollbar-width: thin; scrollbar-color: #94a3b8 #f1f5f9;">
         <table class="{{ $class }} min-w-full divide-y divide-gray-200">
             {{ if $hasHeaders }}
                 <thead class="bg-gray-100 sticky top-0 z-10">
@@ -54,7 +52,5 @@
                 {{ end }}
             </tbody>
         </table>
-    </div>
-</div>
 {{ end }}
 

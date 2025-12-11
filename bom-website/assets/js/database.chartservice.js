@@ -168,7 +168,7 @@ const ChartService = {
 
     // Create faceted chart layout
     const chartsContainer = document.createElement("div");
-    chartsContainer.className = "grid grid-cols-1 lg:grid-cols-2 gap-6";
+    chartsContainer.className = "flex flex-col gap-6";
 
     // Create individual chart containers
     const buriedContainer = document.createElement("div");
@@ -231,7 +231,7 @@ const ChartService = {
     chartContainer.className = "chart-content";
     container.appendChild(chartContainer);
 
-    // Prepare data based on facet type - include ALL years in range, even with zero values
+    // Prepare data based on facet type - include all years in range, even with zero values
     let chartData, color, yField, label;
     
     // Create full year range array
@@ -326,14 +326,14 @@ const ChartService = {
     let allData, noDataMessage, color, yField, labelSingular, labelPlural;
     
     if (dataType === 'death') {
-      allData = data.filter(d => d.total_deaths > 0).sort((a, b) => a.year - b.year);
+      allData = data.sort((a, b) => a.year - b.year);
       noDataMessage = 'No death data available for this cause';
       color = "#DC2626";
       yField = "total_deaths";
       labelSingular = "death";
       labelPlural = "deaths";
     } else if (dataType === 'christening') {
-      allData = data.filter(d => d.total_christenings > 0).sort((a, b) => a.year - b.year);
+      allData = data.sort((a, b) => a.year - b.year);
       noDataMessage = 'No christening data available for this type';
       color = "#059669";
       yField = "total_christenings";
@@ -346,8 +346,27 @@ const ChartService = {
       return;
     }
 
-    const years = allData.map(d => d.year);
-    const maxValue = Math.max(...allData.map(d => d[yField])) * 1.1;
+    // Get full year range
+    const yearsWithData = allData.map(d => d.year);
+    const minYear = Math.min(...yearsWithData);
+    const maxYear = Math.max(...yearsWithData);
+    
+    // Create full year range array
+    const fullYearRange = [];
+    for (let year = minYear; year <= maxYear; year++) {
+      fullYearRange.push(year);
+    }
+    
+    // Map data to full year range, filling in zeros for missing years
+    const chartData = fullYearRange.map(year => {
+      const dataPoint = allData.find(d => d.year === year);
+      return {
+        year: year,
+        value: dataPoint ? Math.max(0, dataPoint[yField] || 0) : 0
+      };
+    });
+    
+    const maxValue = Math.max(...chartData.map(d => d.value)) * 1.1;
 
     const chart = window.Plot.plot({
       width: container.clientWidth || 400,
@@ -358,7 +377,7 @@ const ChartService = {
       marginLeft: 60,
       x: {
         type: "band",
-        domain: years,
+        domain: fullYearRange,
         padding: 0.1,
         label: "Year",
         tickRotate: -45,
@@ -371,19 +390,19 @@ const ChartService = {
         tickFormat: d => d.toLocaleString()
       },
       marks: [
-        window.Plot.barY(allData, {
+        window.Plot.barY(chartData.filter(d => d.value > 0), {
           x: "year",
-          y: yField,
+          y: "value",
           fill: color,
-          title: (d) => `${d.year}: ${d[yField].toLocaleString()} ${d[yField] === 1 ? labelSingular : labelPlural}`
+          title: (d) => `${d.year}: ${d.value.toLocaleString()} ${d.value === 1 ? labelSingular : labelPlural}`
         }),
         window.Plot.ruleY([0]),
         window.Plot.tip(
-          allData,
+          chartData.filter(d => d.value > 0),
           window.Plot.pointerX({
             x: "year",
-            y: yField,
-            title: (d) => `${d.year}: ${d[yField].toLocaleString()} ${d[yField] === 1 ? labelSingular : labelPlural}`
+            y: "value",
+            title: (d) => `${d.year}: ${d.value.toLocaleString()} ${d.value === 1 ? labelSingular : labelPlural}`
           })
         )
       ]

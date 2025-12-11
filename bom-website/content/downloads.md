@@ -5,7 +5,7 @@ slug: /downloads/
 
 We provide multiple ways to use and interact with the data generated through this project. If you prefer to access the data from our online database directly through the data API, please consult the [data API's documentation](/api/). The data has been rearranged into a long format and returns JSON objects across weekly and general bills, christenings, causes of death, and foodstuffs. 
 
-Data can be downloaded as comma-separated value (CSV) documents, which are available [on our Github repository](https://github.com/chnm/bom/tree/main/bom-data/). 
+Data can be downloaded as comma-separated value (CSV) documents, which are available [on our Github repository](https://github.com/chnm/bom/tree/main/bom-data/).
 
 The primary downloadable datasets are as follows
 - data transcribed from the [bills of mortality](https://github.com/chnm/bom/tree/main/bom-data/data-csvs), whose filenames can be generally translated as follows:
@@ -123,5 +123,12 @@ The supporting data for our article publications can be found below:
     </tbody>
 </table>
  -->
+
+## Article Data 
+
+| File | Article | Download |
+| ---- | ----------- | -------- |
+| Monarch bills transcription | Jessica M. Otis, Katherine Kania, "[The Monarchs' Bills of Mortality: A Geographical Analysis of Death in Seventeenth-Century London](https://doi.org/10.1080/03058034.2025.2572138)," *The London Journal* (forthcoming) | [Download](/data/2024-10-06-monarchs-bill-transcriptions-cleaned.csv) |
+| Monarch bills catalog | Jessica M. Otis, Katherine Kania, "[The Monarchs' Bills of Mortality: A Geographical Analysis of Death in Seventeenth-Century London](https://doi.org/10.1080/03058034.2025.2572138)," *The London Journal* (forthcoming) | [Download](/data/2024-10-06-monarchs-bill-catalog.csv) |
 
 Please feel free to contact us if you have questions about downloading or using these datasets.

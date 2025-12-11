@@ -109,44 +109,46 @@
                     <!-- Selected range highlight -->
                     <div 
                       class="absolute h-full bg-blue-500 rounded-md" 
-                      :style="`left: ${((filters.selectedStartYear - 1636) / (1754 - 1636)) * 100}%; right: ${100 - ((filters.selectedEndYear - 1636) / (1754 - 1636)) * 100}%`"
+                      :style="`left: ${((filters.selectedStartYear - 1629) / (1754 - 1629)) * 100}%; right: ${100 - ((filters.selectedEndYear - 1629) / (1754 - 1629)) * 100}%`"
                     ></div>
                     
                     <!-- Min handle -->
                     <div 
                       class="absolute w-5 h-5 bg-white border-2 border-blue-500 rounded-full -mt-1.5 transform -translate-x-1/2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-                      :style="`left: ${((filters.selectedStartYear - 1636) / (1754 - 1636)) * 100}%`"
+                      :style="`left: ${((filters.selectedStartYear - 1629) / (1754 - 1629)) * 100}%`"
                       @mousedown="startDrag($event, 'start')"
                       @touchstart="startDrag($event, 'start')"
                       tabindex="0"
                       role="slider"
                       :aria-valuenow="filters.selectedStartYear"
-                      aria-valuemin="1636"
+                      aria-valuemin="1629"
                       aria-valuemax="1754"
                     ></div>
                     
                     <!-- Max handle -->
                     <div 
                       class="absolute w-5 h-5 bg-white border-2 border-blue-500 rounded-full -mt-1.5 transform -translate-x-1/2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-                      :style="`left: ${((filters.selectedEndYear - 1636) / (1754 - 1636)) * 100}%`"
+                      :style="`left: ${((filters.selectedEndYear - 1629) / (1754 - 1629)) * 100}%`"
                       @mousedown="startDrag($event, 'end')"
                       @touchstart="startDrag($event, 'end')"
                       tabindex="0"
                       role="slider"
                       :aria-valuenow="filters.selectedEndYear"
-                      aria-valuemin="1636"
+                      aria-valuemin="1629"
                       aria-valuemax="1754"
                     ></div>
                   </div>
                   
                   <!-- Year ticks -->
-                  <div class="flex justify-between w-full mt-1">
-                    <span class="text-xs text-gray-400">1636</span>
-                    <span class="text-xs text-gray-400">1660</span>
-                    <span class="text-xs text-gray-400">1684</span>
-                    <span class="text-xs text-gray-400">1708</span>
-                    <span class="text-xs text-gray-400">1732</span>
-                    <span class="text-xs text-gray-400">1754</span>
+                  <div class="relative w-full mt-1">
+                    <span class="absolute text-xs text-gray-400 transform -translate-x-1/2" style="left: 0%">1629</span>
+                    <span class="absolute text-xs text-gray-400 transform -translate-x-1/2" style="left: 8.8%">1640</span>
+                    <span class="absolute text-xs text-gray-400 transform -translate-x-1/2" style="left: 24.8%">1660</span>
+                    <span class="absolute text-xs text-gray-400 transform -translate-x-1/2" style="left: 40.8%">1680</span>
+                    <span class="absolute text-xs text-gray-400 transform -translate-x-1/2" style="left: 56.8%">1700</span>
+                    <span class="absolute text-xs text-gray-400 transform -translate-x-1/2" style="left: 72.8%">1720</span>
+                    <span class="absolute text-xs text-gray-400 transform -translate-x-1/2" style="left: 88.8%">1740</span>
+                    <span class="absolute text-xs text-gray-400 transform -translate-x-1/2" style="left: 100%">1754</span>
                   </div>
                 </div>
 
@@ -170,53 +172,55 @@
                       </div>
                       <div class="text-center">
                         <div class="text-xs text-gray-500 mb-1">To Week</div>
-                        <div class="text-sm font-medium text-gray-700" x-text="filters.selectedEndWeek || 52"></div>
+                        <div class="text-sm font-medium text-gray-700" x-text="filters.selectedEndWeek || 56"></div>
                       </div>
                     </div>
-                    
+
                     <!-- Week slider track -->
                     <div class="relative pb-4">
                       <div class="w-full h-2 bg-gray-200 rounded-md relative">
                         <!-- Selected week range highlight -->
-                        <div 
-                          class="absolute h-full bg-green-500 rounded-md" 
-                          :style="`left: ${(((filters.selectedStartWeek || 1) - 1) / 51) * 100}%; right: ${100 - (((filters.selectedEndWeek || 52) - 1) / 51) * 100}%`"
+                        <div
+                          class="absolute h-full bg-green-500 rounded-md"
+                          :style="`left: ${(((filters.selectedStartWeek || 1) - 1) / 55) * 100}%; right: ${100 - (((filters.selectedEndWeek || 56) - 1) / 55) * 100}%`"
                         ></div>
-                        
+
                         <!-- Min week handle -->
-                        <div 
+                        <div
                           class="absolute w-5 h-5 bg-white border-2 border-green-500 rounded-full -mt-1.5 transform -translate-x-1/2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
-                          :style="`left: ${(((filters.selectedStartWeek || 1) - 1) / 51) * 100}%`"
+                          :style="`left: ${(((filters.selectedStartWeek || 1) - 1) / 55) * 100}%`"
                           @mousedown="startWeekDrag($event, 'start')"
                           @touchstart="startWeekDrag($event, 'start')"
                           tabindex="0"
                           role="slider"
                           :aria-valuenow="filters.selectedStartWeek || 1"
                           aria-valuemin="1"
-                          aria-valuemax="52"
+                          aria-valuemax="56"
                         ></div>
-                        
+
                         <!-- Max week handle -->
-                        <div 
+                        <div
                           class="absolute w-5 h-5 bg-white border-2 border-green-500 rounded-full -mt-1.5 transform -translate-x-1/2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
-                          :style="`left: ${(((filters.selectedEndWeek || 52) - 1) / 51) * 100}%`"
+                          :style="`left: ${(((filters.selectedEndWeek || 56) - 1) / 55) * 100}%`"
                           @mousedown="startWeekDrag($event, 'end')"
                           @touchstart="startWeekDrag($event, 'end')"
                           tabindex="0"
                           role="slider"
-                          :aria-valuenow="filters.selectedEndWeek || 52"
+                          :aria-valuenow="filters.selectedEndWeek || 56"
                           aria-valuemin="1"
-                          aria-valuemax="52"
+                          aria-valuemax="56"
                         ></div>
                       </div>
                       
                       <!-- Week ticks -->
-                      <div class="flex justify-between w-full mt-1">
-                        <span class="text-xs text-gray-400">1</span>
-                        <span class="text-xs text-gray-400">13</span>
-                        <span class="text-xs text-gray-400">26</span>
-                        <span class="text-xs text-gray-400">39</span>
-                        <span class="text-xs text-gray-400">52</span>
+                      <div class="relative w-full mt-1">
+                        <span class="absolute text-xs text-gray-400 transform -translate-x-1/2" style="left: 0%">1</span>
+                        <span class="absolute text-xs text-gray-400 transform -translate-x-1/2" style="left: 16.4%">10</span>
+                        <span class="absolute text-xs text-gray-400 transform -translate-x-1/2" style="left: 34.5%">20</span>
+                        <span class="absolute text-xs text-gray-400 transform -translate-x-1/2" style="left: 52.7%">30</span>
+                        <span class="absolute text-xs text-gray-400 transform -translate-x-1/2" style="left: 70.9%">40</span>
+                        <span class="absolute text-xs text-gray-400 transform -translate-x-1/2" style="left: 89.1%">50</span>
+                        <span class="absolute text-xs text-gray-400 transform -translate-x-1/2" style="left: 100%">56</span>
                       </div>
                     </div>
                   </div>

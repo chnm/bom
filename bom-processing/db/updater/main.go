@@ -172,7 +172,10 @@ func createTempTables(ctx context.Context, tx pgx.Tx) error {
 		CREATE TEMPORARY TABLE temp_parish (
 			parish_name text NOT NULL,
 			canonical_name text NOT NULL,
-			id integer
+			id integer,
+			bills_subunit text,
+			foundation_year text,
+			notes text
 		);
 
 		CREATE TEMPORARY TABLE temp_christening (
@@ -404,21 +407,27 @@ func updateTables(ctx context.Context, tx pgx.Tx) error {
 		SELECT COUNT(*) INTO rows_before FROM bom.parishes;
 
     UPDATE bom.parishes p
-		SET 
+		SET
 			parish_name = tp.parish_name,
-			canonical_name = tp.canonical_name
+			canonical_name = tp.canonical_name,
+			bills_subunit = tp.bills_subunit,
+			foundation_year = tp.foundation_year,
+			notes = tp.notes
 		FROM temp_parish tp
 		WHERE p.id = tp.id
 		AND (p.canonical_name IS DISTINCT FROM tp.canonical_name
-			OR p.parish_name IS DISTINCT FROM tp.parish_name);
-			
+			OR p.parish_name IS DISTINCT FROM tp.parish_name
+			OR p.bills_subunit IS DISTINCT FROM tp.bills_subunit
+			OR p.foundation_year IS DISTINCT FROM tp.foundation_year
+			OR p.notes IS DISTINCT FROM tp.notes);
+
 		-- Then insert new parishes that don't exist yet
-		INSERT INTO bom.parishes (id, parish_name, canonical_name)
-		SELECT DISTINCT id, parish_name, canonical_name 
+		INSERT INTO bom.parishes (id, parish_name, canonical_name, bills_subunit, foundation_year, notes)
+		SELECT DISTINCT id, parish_name, canonical_name, bills_subunit, foundation_year, notes
 		FROM temp_parish tp
 		WHERE id IS NOT NULL
 		AND NOT EXISTS (
-			SELECT 1 FROM bom.parishes p 
+			SELECT 1 FROM bom.parishes p
 			WHERE p.parish_name = tp.parish_name
 		)
 		ON CONFLICT (parish_name) DO NOTHING;
