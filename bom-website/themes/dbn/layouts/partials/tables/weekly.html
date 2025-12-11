@@ -160,8 +160,9 @@
         <div class="space-y-4">
           <!-- Week Information -->
           <div class="pb-4 border-b border-gray-200">
-            <h4 class="text-sm font-semibold text-gray-700 mb-2">Week Information</h4>
+            <h4 class="text-sm font-semibold text-gray-700 mb-2">Date Information</h4>
             <p class="text-sm text-gray-600">
+                  <strong>Date span:</strong>
               <span x-text="modalBill.start_month"></span> <span x-text="modalBill.start_day"></span> to
               <span x-text="modalBill.end_month"></span> <span x-text="modalBill.end_day"></span>,
               <span x-text="modalBill.year"></span> (<span x-text="modalBill.split_year"></span>)
@@ -188,9 +189,9 @@
           <div>
             <h4 class="text-sm font-semibold text-gray-700 mb-2">Parish Information</h4>
             <div class="mt-2 text-sm text-gray-600">
-              <p><strong>Bills Subunit:</strong> <span x-text="modalBill.parish.bills_subunit ? modalBill.parish.bills_subnit : 'No subunit recorded'"></span></p>
-              <p><strong>Foundation Year:</strong> <span x-text="modalBill.parish.foundation_year ? modalBill.parish.foundation_year : 'No foundation year recorded'"></span></p>
-              <p><strong>Notes:</strong> <span x-text="modalBill.parish.notes ? modalBill.parish.notes : 'No parish notes recorded'"></span></p>
+              <p class="text-sm"><strong>Bills Subunit:</strong> <span x-text="modalBill.parish.bills_subunit ? modalBill.parish.bills_subnit : 'No subunit recorded'"></span></p>
+              <p class="text-sm"><strong>Foundation Year:</strong> <span x-text="modalBill.parish.foundation_year ? modalBill.parish.foundation_year : 'No foundation year recorded'"></span></p>
+              <p class="text-sm"><strong>Notes:</strong> <span x-text="modalBill.parish.notes ? modalBill.parish.notes : 'No parish notes recorded'"></span></p>
             </div>
           </div>
         </div>
