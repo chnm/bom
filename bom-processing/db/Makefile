@@ -1,5 +1,24 @@
-# Note: This makefile depends on golang-migrate 
-# https://github.com/golang-migrate/migrate
+# This Makefile manages database migrations, data imports, and build tasks
+# for the Bills of Mortality project.
+#
+# Prerequisites:
+#   - golang-migrate (https://github.com/golang-migrate/migrate)
+#   - PostgreSQL client tools (psql)
+#   - Go toolchain (1.19+)
+#   - PostGIS-enabled PostgreSQL database
+#
+# Configuration:
+#   Create a .env file (see .env.example) with:
+#   - DB_CONN_STR: PostgreSQL connection string
+#   - DATA_DIR: Directory containing data files
+#
+# Common Usage:
+#   make help              - Show all available commands
+#   make db-up             - Apply database migrations
+#   make db-update         - Import data updates
+#   make build             - Build the importer binary
+#
+# ============================================================================
 
 BINARY_NAME=bom-importer
 MAIN_PACKAGE=./updater
@@ -31,6 +50,8 @@ help:
 	@echo "  db-update    - Insert a data update"
 	@echo "  db-up        - Run database migrations up"
 	@echo "  db-down      - Run database migrations down"
+	@echo "  db-clear-mortality - Clear all data from bill_of_mortality table"
+	@echo "  db-version   - Show current migration version"
 
 # Create the bin directory if it doesn't exist
 $(BINARY_DIR):
@@ -89,5 +110,9 @@ db-down: check
 	@echo "Reverting database migrations..."
 	migrate -path ./migrations -database ${DB_CONN_STR} down
 
+db-version:
+	@echo "Current migration version:"
+	@migrate -path ./migrations -database ${DB_CONN_STR} version
 
-.PHONY : all build fmt vet check dry-run db-update db-up db-down
+
+.PHONY : all build fmt vet check dry-run db-update db-up db-down db-version
