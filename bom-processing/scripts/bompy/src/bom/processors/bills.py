@@ -691,13 +691,170 @@ class BillsProcessor:
 
         return deduplicated, deduplicated_subtotals
 
+    def _is_general_bills_causes_format(self, df: pd.DataFrame) -> bool:
+        """
+        Detect if this DataFrame uses the general bills causes format.
+
+        General bills causes have repeating Cause/Number column headers,
+        with actual cause names in data cells rather than column headers.
+        """
+        # Look for the telltale sign: multiple columns named 'Cause' and 'Number'
+        # After column normalization, these become 'cause', 'cause_1', 'cause_2', etc.
+        # (pandas auto-renames duplicates to 'cause.1', then normalization converts dots to underscores)
+        columns_lower = [col.lower() for col in df.columns]
+
+        # Check for 'number' with numeric suffixes (dots or underscores) indicating pandas renaming + normalization
+        import re
+
+        number_pattern_count = sum(
+            1
+            for col in columns_lower
+            if col == "number"
+            or re.match(r"number[._]\d+", col)
+            or col.startswith("number_")
+        )
+
+        cause_pattern_count = sum(
+            1
+            for col in columns_lower
+            if col == "cause"
+            or re.match(r"cause[._]\d+", col)
+            or col.startswith("cause_")
+        )
+
+        # If we have multiple 'Cause' and 'Number' columns, it's general bills causes format
+        return number_pattern_count >= 2 and cause_pattern_count >= 2
+
+    def _transform_general_bills_causes(self, df: pd.DataFrame) -> pd.DataFrame:
+        """
+        Transform general bills causes from long format to wide format.
+
+        Input format (repeating columns):
+            Year | Cause | is_missing | is_illegible | Number | is_missing | is_illegible | Cause | ...
+            1657 | Aged  |            |              | 869    |            |              | Fever | ...
+
+        Output format (causes as columns):
+            Year | Aged | Fever | Consumption | ...
+            1657 | 869  | 44    | 57          | ...
+        """
+        logger.info("Transforming general bills causes from long to wide format")
+
+        # Find metadata columns to preserve
+        metadata_cols = []
+        for col in df.columns:
+            col_lower = col.lower()
+            if any(
+                meta in col_lower
+                for meta in [
+                    "omeka",
+                    "datascribe",
+                    "year",
+                    "unique_identifier",
+                    "start_day",
+                    "start_month",
+                    "end_day",
+                    "end_month",
+                    "start_year",
+                    "end_year",
+                    "image_filename",
+                ]
+            ):
+                metadata_cols.append(col)
+
+        # Process each row to extract cause/number pairs
+        transformed_rows = []
+
+        for idx, row in df.iterrows():
+            # Start with metadata
+            new_row = {col: row[col] for col in metadata_cols}
+
+            # Extract cause/number pairs from the repeating pattern
+            # Columns alternate: Cause, is_missing, is_illegible, Number, is_missing, is_illegible, ...
+            col_list = list(df.columns)
+            i = 0
+
+            while i < len(col_list):
+                col_name = col_list[i]
+                col_lower = col_name.lower()
+
+                # Look for a 'Cause' column (handles 'cause', 'cause_1', 'cause.1', etc.)
+                import re
+
+                is_cause_col = (
+                    col_lower == "cause"
+                    or re.match(r"cause[._]\d+", col_lower)
+                    or col_lower.startswith("cause_")
+                )
+
+                if is_cause_col:
+                    cause_value = row[col_name]
+
+                    # Skip if cause is empty/null
+                    if pd.isna(cause_value) or str(cause_value).strip() == "":
+                        # Skip ahead to find next Cause column
+                        i += 1
+                        continue
+
+                    # Find the corresponding Number column (should be ~3 columns ahead)
+                    # Pattern: Cause, is_missing, is_illegible, Number
+                    number_value = None
+                    for offset in range(1, 6):  # Look ahead up to 5 columns
+                        if i + offset < len(col_list):
+                            next_col = col_list[i + offset]
+                            next_col_lower = next_col.lower()
+                            is_number_col = (
+                                next_col_lower == "number"
+                                or re.match(r"number[._]\d+", next_col_lower)
+                                or next_col_lower.startswith("number_")
+                            )
+                            if is_number_col:
+                                number_value = row[next_col]
+                                break
+
+                    # Add this cause/number pair to the row
+                    cause_name = str(cause_value).strip()
+                    if cause_name and cause_name.lower() not in ["nan", "none"]:
+                        # Convert number to int if possible, otherwise None
+                        count = None
+                        if pd.notna(number_value) and str(number_value).strip() != "":
+                            try:
+                                count = int(float(number_value))
+                            except (ValueError, TypeError):
+                                count = None
+
+                        new_row[cause_name] = count
+
+                i += 1
+
+            transformed_rows.append(new_row)
+
+        # Create new DataFrame
+        transformed_df = pd.DataFrame(transformed_rows)
+
+        logger.info(f"Transformed {len(df)} rows with repeating Cause/Number columns")
+        logger.info(
+            f"Extracted {len(transformed_df.columns) - len(metadata_cols)} unique causes"
+        )
+
+        return transformed_df
+
     def _process_causes_dataframe(
         self, df: pd.DataFrame, source_name: str, week_mapping: Dict[str, str]
     ) -> List[CausesOfDeathRecord]:
         """
         Process causes data structure.
         Creates CausesOfDeathRecord objects for each cause.
+
+        Handles two formats:
+        1. Weekly bills: causes as column headers
+        2. General bills: repeating Cause/Number columns with cause names in data cells
         """
+        # Check if this is general bills causes format and transform if needed
+        if self._is_general_bills_causes_format(df):
+            logger.info(f"Detected general bills causes format in {source_name}")
+            df = self._transform_general_bills_causes(df)
+
+        # Now proceed with standard causes processing
         # Find cause columns (exclude metadata columns and descriptive text)
         exclude_cols = {
             "omeka_item",
@@ -712,6 +869,8 @@ class BillsProcessor:
             "start_month",
             "end_day",
             "end_month",
+            "start_year",
+            "end_year",
             "joinid",
             "week_id",
             "year_range",
@@ -719,14 +878,24 @@ class BillsProcessor:
             "christened_male",
             "christened_female",
             "christened_in_all",
+            "christened (male)",  # General bills format
+            "christened (female)",  # General bills format
+            "christened (in all)",  # General bills format
             "buried_male",
             "buried_female",
             "buried_all",
+            "buried (male)",  # General bills format
+            "buried (female)",  # General bills format
+            "buried (all)",  # General bills format
             "plague_deaths",
             "increase_decrease_in_burials",
             "increase_decrease_in_plague_deaths",
+            "increase/decrease in burials",  # General bills format
+            "increase/decrease in plague",  # General bills format
             "parishes_clear_of_the_plague",
             "parishes_infected_with_plague",
+            "parishes clear of the plague",  # General bills format
+            "parishes infected",  # General bills format
             "ounces_in_penny_wheaten_loaf",
             "ounces_in_three_half_penny_white_loaf",
         }
