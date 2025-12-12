@@ -1,10 +1,10 @@
 {{ define "main" }}
 
+<!-- Text content in centered, readable container -->
 <div class="relative w-full px-6 py-12 bg-white md:max-w-3xl md:mx-auto lg:max-w-4xl lg:pt-16 lg:pb-28">
   <div class="mx-auto">
     <div class="flex font-light text-lg">
         <p><span class="font-bold text-dbn-orange-400">|</span> {{ .Params.abstract }} &middot; Published: {{ .Params.date | dateFormat "January 2, 2006" }}</p>
-
     </div>
     <h2 class="text-4xl font-medium">{{ .Title }}</h2>
     <div class="prose prose-lg">{{ .Content }}</div>

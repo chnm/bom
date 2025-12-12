@@ -2588,10 +2588,6 @@ a:hover {
   visibility: hidden;
 }
 
-.invisible {
-  visibility: hidden;
-}
-
 .collapse {
   visibility: collapse;
 }
@@ -2884,10 +2880,6 @@ a:hover {
   max-height: 24rem;
 }
 
-.max-h-\[70vh\] {
-  max-height: 70vh;
-}
-
 .max-h-64 {
   max-height: 16rem;
 }
@@ -2975,6 +2967,10 @@ a:hover {
 
 .max-w-3xl {
   max-width: 48rem;
+}
+
+.max-w-4xl {
+  max-width: 56rem;
 }
 
 .max-w-none {
@@ -3200,12 +3196,6 @@ a:hover {
   margin-bottom: calc(0.75rem * var(--tw-space-y-reverse));
 }
 
-.space-y-3 > :not([hidden]) ~ :not([hidden]) {
-  --tw-space-y-reverse: 0;
-  margin-top: calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));
-  margin-bottom: calc(0.75rem * var(--tw-space-y-reverse));
-}
-
 .-space-x-px > :not([hidden]) ~ :not([hidden]) {
   --tw-space-x-reverse: 0;
   margin-right: calc(-1px * var(--tw-space-x-reverse));
@@ -3348,11 +3338,6 @@ a:hover {
   border-color: rgb(209 213 219 / var(--tw-border-opacity));
 }
 
-.border-dbn-blue-400 {
-  --tw-border-opacity: 1;
-  border-color: rgb(123 167 199 / var(--tw-border-opacity));
-}
-
 .border-dbn-yellow-300 {
   --tw-border-opacity: 1;
   border-color: rgb(223 212 159 / var(--tw-border-opacity));
@@ -3481,10 +3466,6 @@ a:hover {
 .bg-orange-50 {
   --tw-bg-opacity: 1;
   background-color: rgb(255 247 237 / var(--tw-bg-opacity));
-}
-
-.bg-white\/30 {
-  background-color: rgb(255 255 255 / 0.3);
 }
 
 .bg-amber-100 {
@@ -3716,10 +3697,6 @@ a:hover {
   padding-bottom: 0.5rem;
 }
 
-.pb-2 {
-  padding-bottom: 0.5rem;
-}
-
 .pt-8 {
   padding-top: 2rem;
 }
@@ -3910,6 +3887,11 @@ a:hover {
 .text-gray-900 {
   --tw-text-opacity: 1;
   color: rgb(17 24 39 / var(--tw-text-opacity));
+}
+
+.text-dbn-green-900 {
+  --tw-text-opacity: 1;
+  color: rgb(62 62 50 / var(--tw-text-opacity));
 }
 
 .text-dbn-green-700 {
