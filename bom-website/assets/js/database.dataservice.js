@@ -446,6 +446,42 @@ const DataService = {
   },
 
   /**
+   * Fetches yearly trend data for a specific cause of death
+   * @param {string} causeName - Name of the cause of death
+   * @param {string} billType - Type of bill ('weekly' or 'general')
+   * @returns {Promise<Array>} - Yearly aggregated data for the cause
+   */
+  async fetchDeathCauseYearly(causeName, billType = 'weekly') {
+    const params = {
+      "death": causeName,
+      "bill-type": billType,
+      "start-year": 1629,
+      "end-year": 1754,
+      "limit": 10000 // High limit to get all records for aggregation
+    };
+
+    // Fetch all records for this cause and aggregate by year on the client side
+    const data = await this.fetchData("causes", params);
+
+    // Aggregate by year
+    const yearlyData = {};
+    data.forEach(record => {
+      const year = record.year;
+      if (!yearlyData[year]) {
+        yearlyData[year] = {
+          year: year,
+          total_deaths: 0,
+          cause: causeName
+        };
+      }
+      yearlyData[year].total_deaths += (record.count || 0);
+    });
+
+    // Convert to array and sort by year
+    return Object.values(yearlyData).sort((a, b) => a.year - b.year);
+  },
+
+  /**
    * Fetches yearly data for multiple parishes
    * @param {Array} parishes - List of parish names
    * @returns {Promise<Object>} - Object mapping parish names to their yearly data
@@ -458,6 +494,42 @@ const DataService = {
     }
 
     return results;
+  },
+
+  /**
+   * Fetches yearly trend data for a specific christening type
+   * @param {string} christeningId - ID of the christening parish
+   * @param {string} billType - Type of bill ('weekly' or 'general')
+   * @returns {Promise<Array>} - Yearly aggregated data for the christening
+   */
+  async fetchChristeningYearly(christeningId, billType = 'weekly') {
+    const params = {
+      "id": christeningId,
+      "bill-type": billType,
+      "start-year": 1629,
+      "end-year": 1754,
+      "limit": 10000 // High limit to get all records for aggregation
+    };
+
+    // Fetch all records for this christening and aggregate by year on the client side
+    const data = await this.fetchData("christenings", params);
+
+    // Aggregate by year
+    const yearlyData = {};
+    data.forEach(record => {
+      const year = record.year;
+      if (!yearlyData[year]) {
+        yearlyData[year] = {
+          year: year,
+          total_christenings: 0,
+          type: christeningId
+        };
+      }
+      yearlyData[year].total_christenings += (record.count || 0);
+    });
+
+    // Convert to array and sort by year
+    return Object.values(yearlyData).sort((a, b) => a.year - b.year);
   },
 };
 

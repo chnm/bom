@@ -11,6 +11,8 @@ document.addEventListener("alpine:init", () => {
     all_causes: [],
     all_christenings: [],
     parishYearlyData: {},
+    deathYearlyData: {},
+    christeningYearlyData: {},
 
     // Tab state - Two-tiered system
     primaryTab: "annual", // annual, yearly, bread-death
@@ -1348,13 +1350,13 @@ document.addEventListener("alpine:init", () => {
         return;
       }
 
-      // Get container IDs based on data type
+      // Get container IDs based on data type and bill type
       const suffixes = {
-        'parish': '',
-        'death': '-deaths', 
+        'parish': this.filters.selectedBillType === 'general' ? '-general' : '',
+        'death': this.filters.selectedBillType === 'general' ? '-deaths-general' : '-deaths',
         'christening': '-christenings'
       };
-      
+
       const suffix = suffixes[dataType] || '';
       const chartContainer = document.getElementById(`modal-chart-container${suffix}`);
       const loadingIndicator = document.getElementById(`modal-loading-indicator${suffix}`);
@@ -1392,11 +1394,31 @@ document.addEventListener("alpine:init", () => {
                 );
               }
             } else if (dataType === 'death') {
-              // For now, use a placeholder until backend API is ready
-              dataPromise = this.generateMockChartData(identifier, 'death');
+              // Fetch real death cause yearly data from API
+              if (this.deathYearlyData[identifier]) {
+                dataPromise = Promise.resolve(this.deathYearlyData[identifier]);
+              } else {
+                const billType = this.filters.selectedBillType || 'weekly';
+                dataPromise = window.DataService.fetchDeathCauseYearly(identifier, billType).then(
+                  (data) => {
+                    this.deathYearlyData[identifier] = data;
+                    return data;
+                  }
+                );
+              }
             } else if (dataType === 'christening') {
-              // For now, use a placeholder until backend API is ready
-              dataPromise = this.generateMockChartData(identifier, 'christening');
+              // Fetch real christening yearly data from API
+              if (this.christeningYearlyData[identifier]) {
+                dataPromise = Promise.resolve(this.christeningYearlyData[identifier]);
+              } else {
+                const billType = this.filters.selectedBillType || 'weekly';
+                dataPromise = window.DataService.fetchChristeningYearly(identifier, billType).then(
+                  (data) => {
+                    this.christeningYearlyData[identifier] = data;
+                    return data;
+                  }
+                );
+              }
             } else {
               dataPromise = Promise.reject(new Error(`Unknown data type: ${dataType}`));
             }
