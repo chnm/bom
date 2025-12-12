@@ -18,6 +18,9 @@ export default class CalendarChart extends Visualization {
   render() {
     const data = this.data;
 
+    // Remove week_number 90 
+    const filteredData = data.filter(d => d.week_number !== 90);
+
     const plot = Plot.plot({
       padding: 0,
       width: this.dim.width,
@@ -32,14 +35,14 @@ export default class CalendarChart extends Visualization {
         tickSize: 6,
         tickPadding: 3,
         tickValues: d3.range(
-          d3.min(data, (d) => d.week_number),
-          d3.max(data, (d) => d.week_number) + 1,
+          d3.min(filteredData, (d) => d.week_number),
+          d3.max(filteredData, (d) => d.week_number) + 1,
         ),
       },
       y: { label: "Cause of Death" },
       color: { type: "linear", scheme: "Reds" },
       marks: [
-        Plot.cell(data, {
+        Plot.cell(filteredData, {
           x: "week_number",
           y: "death",
           fill: "count",
@@ -53,8 +56,8 @@ export default class CalendarChart extends Visualization {
           tickSize: 6,
           tickPadding: 3,
           tickValues: d3.range(
-            d3.min(data, (d) => d.week_number),
-            d3.max(data, (d) => d.week_number) + 1,
+            d3.min(filteredData, (d) => d.week_number),
+            d3.max(filteredData, (d) => d.week_number) + 1,
           ),
           anchor: "bottom",
         }),
@@ -78,7 +81,7 @@ export default class CalendarChart extends Visualization {
 
     this.svg
       .selectAll("rect")
-      .data(data)
+      .data(filteredData)
       .on("mouseover", (event, d) => {
         tooltip
           .style("visibility", "visible")

@@ -264,18 +264,7 @@
             {{ partial "tables/general.html" }}
           </div>
           <div x-show="getPrimaryTab() === 'yearly' && getSecondaryTab() === 'deaths' && initialized">
-            <div class="border border-dbn-blue-400 rounded-lg p-6 text-center">
-              <div class="mb-4">
-                <img src="/images/missing.png" alt="Data unavailable" class="w-12 h-12 mx-auto rounded-full">
-              </div>
-              <h3 class="text-lg font-medium text-dbn-red-500 mb-2">Data Currently Unavailable</h3>
-              <p class="mb-4">
-                Yearly data broken down by cause of death is not currently part of our dataset. We are working to include this information in future updates.
-              </p>
-              <p class="text-sm">
-                Please check back in the future or explore our other data categories in the meantime.
-              </p>
-            </div>
+            {{ partial "tables/deaths-general.html" }}
           </div>
           <div x-show="getPrimaryTab() === 'yearly' && getSecondaryTab() === 'christenings' && initialized">
             {{ partial "tables/christenings.html" }}

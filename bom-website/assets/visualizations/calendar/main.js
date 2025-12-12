@@ -4,28 +4,28 @@ import CalendarChart from "./calendar";
 // Function to populate the year dropdown with available years
 function populateYearDropdown() {
   const url = `https://data.chnm.org/bom/causes`;
-  
+
   d3.json(url)
     .then((data) => {
       // Extract unique years and sort them
-      const years = [...new Set(data.map(d => d.year))].sort((a, b) => a - b);
-      
+      const years = [...new Set(data.map((d) => d.year))].sort((a, b) => a - b);
+
       const yearSelect = document.getElementById("year");
       if (!yearSelect) {
         console.error("Year select element not found!");
         return;
       }
-      
+
       yearSelect.innerHTML = ""; // Clear loading option
-      
+
       // Add years as options
-      years.forEach(year => {
+      years.forEach((year) => {
         const option = document.createElement("option");
         option.value = year;
         option.textContent = year;
         yearSelect.appendChild(option);
       });
-      
+
       // Set the first available year as default and render chart
       if (years.length > 0) {
         yearSelect.value = years[0];
@@ -44,16 +44,17 @@ function populateYearDropdown() {
 // Function to fetch data and render the histogram
 function fetchDataAndRender(year) {
   if (!year) return;
-  
-  const url = `https://data.chnm.org/bom/causes?start-year=${year}&end-year=${year}`;
-  
+
+  const url = `https://data.chnm.org/bom/causes?bill-type=weekly&start-year=${year}&end-year=${year}`;
+
   d3.json(url)
     .then((data) => {
       d3.select("#chart").selectAll("*").remove();
 
       if (data.length === 0) {
         // Display a message if no data is available
-        d3.select("#chart").append("text")
+        d3.select("#chart")
+          .append("text")
           .attr("x", 480) // Center the text horizontally
           .attr("y", 300) // Center the text vertically
           .attr("text-anchor", "middle")
@@ -61,11 +62,10 @@ function fetchDataAndRender(year) {
           .style("fill", "red")
           .text("No data available for this year.");
       } else {
-        const calendar = new CalendarChart(
-          "#chart",
-          data,
-          { width: 960, height: 2000 }
-        );
+        const calendar = new CalendarChart("#chart", data, {
+          width: 960,
+          height: 2000,
+        });
         calendar.selectedYear = year; // Set the selected year
         calendar.render();
       }

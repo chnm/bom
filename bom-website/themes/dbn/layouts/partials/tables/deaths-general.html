@@ -1,0 +1,186 @@
+{{/* This is the Causes of Death table for General Bills (Annual/Yearly data). */}}
+
+<div class="mt-4">
+      <div id="control" class="mb-2">
+        <div class="flex items-center justify-between">
+          <p class="text-sm text-gray-700 py-1" x-html="getSummary"></p>
+          <div class="flex items-center space-x-1">
+            <button
+              class="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 rounded-l-lg leading-tight py-2 px-3 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+              :class="{'disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none': page === 1}"
+              @click="changePage(1)" :disabled="page === 1">First</button>
+            <button
+              class="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 leading-tight py-2 px-3 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+              :class="{'disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none': page === 1}"
+              @click="changePage(page - 1)" :disabled="page === 1">Previous</button>
+            <button
+              class="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 rounded-r-lg leading-tight py-2 px-3 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+              :class="{'disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none': page === pagination.lastPage}"
+              @click="changePage(page + 1)" :disabled="page === pagination.lastPage">Next</button>
+          </div>
+        </div>
+      </div>
+  </div>
+
+
+      {{/* begin: deaths-general table */}}
+    <div id="table-causes-general">
+      <table class="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-700">
+        <thead class="bg-gray-100 dark:bg-gray-700">
+          <tr>
+<th scope="col"
+              class="py-3 px-6 text-xs font-medium tracking-wider text-center text-gray-700 uppercase dark:text-gray-400"
+              width="5%">Details</th>
+
+            <th scope="col"
+              class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
+              width="50%" @click="sort('death')">Cause</th>
+            <th scope="col"
+              class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
+              width="25%" @click="sort('count')">Count</th>
+            <th scope="col"
+              class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
+              width="20%" @click="sort('year')">Year</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
+          <!-- Loading state -->
+          <template x-if="meta.loading">
+            <tr>
+              <td colspan="4" class="py-12 text-center">
+                <div class="flex flex-col items-center justify-center space-y-3">
+                  <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-600"></div>
+                  <div class="text-sm text-gray-600">
+                    <span x-show="!meta.slowConnection">Loading data...</span>
+                    <span x-show="meta.slowConnection" class="text-amber-600">Taking longer than expected...</span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </template>
+
+          <!-- Error state -->
+          <template x-if="meta.error && !meta.loading">
+            <tr>
+              <td colspan="4" class="py-12 text-center">
+                <div class="flex flex-col items-center justify-center space-y-3">
+                  <div class="text-red-500">
+                    <svg class="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L4.732 15.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                    </svg>
+                  </div>
+                  <div class="text-sm text-gray-600">
+                    <div class="font-medium text-red-600 mb-2">Unable to load data</div>
+                    <div>Your connection may be too slow or unstable.</div>
+                    <div class="mt-2">
+                      <button @click="applyFilters()" class="text-blue-600 hover:text-blue-800 underline">try again</button>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </template>
+
+          <!-- Data rows -->
+          <template x-if="!meta.loading && !meta.error">
+            <template x-for="cause in causes" :key="cause.id">
+              <tr class="hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                @click="openModal(cause)">
+                <td class="py-4 px-6 text-sm font-medium text-center text-gray-900 whitespace-nowrap dark:text-white font-mono">
+                  <i class="fa-solid fa-expand cursor-pointer transition-all duration-300 ease-in-out hover:scale-125 hover:text-blue-500 active:scale-90"></i>
+                </td>
+                <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  x-text="cause.death"></td>
+                <td class="py-4 px-6 text-sm font-medium text-center text-gray-900 whitespace-nowrap dark:text-white font-mono">
+                  <span x-show="cause.count && !cause.illegible" x-text="cause.count"></span>
+                  <span x-show="cause.count && cause.illegible" class="px-2 py-1 bg-amber-100 text-amber-800 rounded" x-text="cause.count"></span>
+                  <span x-show="!cause.count && cause.illegible" class="px-2 py-1 bg-amber-100 text-amber-800 rounded">-</span>
+                  <span x-show="!cause.count && !cause.illegible">-</span>
+                </td>
+                <td class="py-4 px-6 text-sm font-medium text-center text-gray-900 whitespace-nowrap dark:text-white font-mono"
+                  x-text="cause.year"></td>
+              </tr>
+            </template>
+          </template>
+        </tbody>
+      </table>
+    </div>
+      {{/* end: deaths-general table */}}
+
+      <div id="control" class="mt-4">
+        <div class="flex items-center justify-between">
+          <p class="text-sm text-gray-700 py-1" x-html="getSummary"></p>
+          <div class="flex items-center space-x-1">
+            <button
+              class="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 rounded-l-lg leading-tight py-2 px-3 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+              :class="{'disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none': page === 1}"
+              @click="changePage(1)" :disabled="page === 1">First</button>
+            <button
+              class="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 leading-tight py-2 px-3 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+              :class="{'disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none': page === 1}"
+              @click="changePage(page - 1)" :disabled="page === 1">Previous</button>
+            <button
+              class="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 rounded-r-lg leading-tight py-2 px-3 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+              :class="{'disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none': page === pagination.lastPage}"
+              @click="changePage(page + 1)" :disabled="page === pagination.lastPage">Next</button>
+          </div>
+        </div>
+      </div>
+
+<modal x-show="modalOpen" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" id="deaths-general-modal" role="dialog" aria-modal="true">
+  <div class="flex items-end justify-center min-h-screen px-4 text-center md:items-center sm:block sm:p-0">
+    <!-- Backdrop overlay -->
+    <div x-cloak @click="modalOpen = false" x-show="modalOpen"
+      x-transition:enter="transition ease-out duration-300 transform"
+      x-transition:enter-start="opacity-0"
+      x-transition:enter-end="opacity-100"
+      x-transition:leave="transition ease-in duration-200 transform"
+      x-transition:leave-start="opacity-100"
+      x-transition:leave-end="opacity-0"
+      class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-40" aria-hidden="true"></div>
+
+    <!-- Modal content -->
+    <div x-cloak x-show="modalOpen"
+      x-transition:enter="transition ease-out duration-300 transform"
+      x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+      x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+      x-transition:leave="transition ease-in duration-200 transform"
+      x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+      x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+      class="inline-block w-full max-w-xl p-8 my-20 overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl 2xl:max-w-2xl">
+
+      <!-- Modal header -->
+      <div class="flex items-center justify-between space-x-4">
+        <h3 class="text-lg font-medium leading-6 text-gray-900" id="modal-title" x-text="modalBill.death"></h3>
+        <button @click="modalOpen = false" class="text-gray-600 focus:outline-none hover:text-gray-700">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Modal content with death information -->
+      <p class="mt-2 text-sm text-gray-500">Cause of death data for <span x-text="modalBill.year"></span></p>
+
+      <!-- Death details -->
+      <p class="mt-2 text-sm text-gray-800"><strong>Cause of Death</strong>: <span x-text="modalBill.death"></span></p>
+      <p class="mt-2 text-sm text-gray-800"><strong>Count</strong>: <span x-text="modalBill.count ? modalBill.count : 'No count available.'"></span>
+        <span x-show="modalBill.missing === true" class="ml-2 px-2 py-0.5 bg-amber-100 text-amber-800 text-xs rounded-full">The data for this record is marked as missing</span>
+        <span x-show="modalBill.illegible === true" class="ml-2 px-2 py-0.5 bg-amber-100 text-amber-800 text-xs rounded-full">The data for this record is marked as illegible</span>
+      </p>
+      <p class="mt-2 text-sm text-gray-800"><strong>Year</strong>: <span x-text="modalBill.year"></span></p>
+
+      <!-- Chart section -->
+      <div class="mt-4">
+        <h4 class="text-sm font-medium text-gray-700">Historical Trend</h4>
+        <div class="mt-2 parish-chart-modal">
+          <div id="modal-chart-container-deaths-general" class="chart-container w-full"></div>
+          <div id="modal-loading-indicator-deaths-general" class="loading-indicator text-center text-xs text-gray-500 py-2">Loading chart data...</div>
+          <div id="modal-error-message-deaths-general" class="error-message hidden text-center text-xs text-red-500 py-2"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</modal>

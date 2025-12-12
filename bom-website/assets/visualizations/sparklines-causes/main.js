@@ -3,9 +3,9 @@ import * as Plot from '@observablehq/plot';
 
 //original fetch
 fetchDataAndRender("original")
-//fetches data and renders the sparklines graphs
+//fetches data and renders the sparklines graphs - Weekly bills only
 function fetchDataAndRender(dataFormat) {
-    d3.json("https://data.chnm.org/bom/causes?start-year=1648&end-year=1754")
+    d3.json("https://data.chnm.org/bom/causes?start-year=1648&end-year=1754&bill-type=weekly")
       .then((data) => {
         //format data into tidy format for facetting
         const tidy = tidyFormat(data)

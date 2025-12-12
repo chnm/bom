@@ -226,8 +226,9 @@ function populateCountTypeDropdown() {
 // Initial fetch and render - but only after map is initialized
 document.addEventListener("DOMContentLoaded", function () {
   // Give a little time for map to initialize
+  // Use a wide year range initially to get all available years in the dropdown
   setTimeout(() => {
-    fetchDataAndRender(1622, 1685, "plague");
+    fetchDataAndRender(1600, 1800, "plague");
   }, 500);
 });
 
@@ -400,6 +401,47 @@ function renderDirectGeoJSON(geojsonData, startYr, endYr, countType) {
   // Set title text based on count type
   const titleText = countType === "plague" ? "Plague Deaths" : "Burials";
 
+  // Helper function to calculate polygon area (approximate)
+  function calculateArea(geometry) {
+    if (!geometry || !geometry.coordinates) return 0;
+
+    try {
+      // Handle different geometry types
+      if (geometry.type === "Polygon") {
+        return getPolygonArea(geometry.coordinates[0]);
+      } else if (geometry.type === "MultiPolygon") {
+        return geometry.coordinates.reduce((sum, polygon) => {
+          return sum + getPolygonArea(polygon[0]);
+        }, 0);
+      }
+    } catch (e) {
+      return 0;
+    }
+    return 0;
+  }
+
+  // Calculate area using Shoelace formula (approximate for lat/lng)
+  function getPolygonArea(coords) {
+    if (!coords || coords.length < 3) return 0;
+
+    let area = 0;
+    for (let i = 0; i < coords.length - 1; i++) {
+      const [x1, y1] = coords[i];
+      const [x2, y2] = coords[i + 1];
+      area += (x2 - x1) * (y2 + y1);
+    }
+    return Math.abs(area / 2);
+  }
+
+  // Sort features by area (largest first) so smaller features render on top
+  if (geojsonData.features && geojsonData.features.length > 0) {
+    geojsonData.features.sort((a, b) => {
+      const areaA = calculateArea(a.geometry);
+      const areaB = calculateArea(b.geometry);
+      return areaB - areaA; // Largest first
+    });
+  }
+
   // Create GeoJSON layer
   try {
     let districts = L.geoJson(geojsonData, {
@@ -432,7 +474,8 @@ function renderDirectGeoJSON(geojsonData, startYr, endYr, countType) {
     // Add layer to map
     districts.addTo(map);
 
-    map.setView([51.505, -0.09], 12);
+    // Keep zoom focused on central London
+    map.setView([51.515, -0.1], 14);
   } catch (e) {
     showError("Error creating map: " + e.message);
     return;

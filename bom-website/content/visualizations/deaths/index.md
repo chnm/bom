@@ -1,9 +1,9 @@
 ---
-title: "Counting the Causes of Death"
+title: "Counting the Causes of Death (Weekly Bills)"
 date: 2023-06-06
 updated: 2024-10-03
-abstract: "Charting the causes of death"
-summary: "Heat map visualization showing causes of death over time, with darker red shades indicating higher death counts for each cause by year, updating regularly as new transcriptions are added."
+abstract: "Charting the causes of death from weekly bills"
+summary: "Heat map visualization showing causes of death over time from weekly bills, with darker red shades indicating higher death counts for each cause by year, updating regularly as new transcriptions are added."
 script: visualizations/plague-deaths/main.js
 styles: visualizations/plague-deaths/style.css
 layout: visualizations
@@ -14,10 +14,12 @@ author:
 category: "temporal"
 ---
 
-This visualization illustrates the causes of death over time. The darker the shade of red indicates a higher number of deaths for a particular cause. Each column corresponds to a year in the database (listed on the x-axis label at the bottom of the graphic) and it's corresponding cause (on the y-axis). This graphic updates regularly as new bills are added to the database.
+This visualization illustrates the causes of death over time from the weekly bills of mortality. The darker the shade of red indicates a higher number of deaths for a particular cause. Each column corresponds to a year in the database (listed on the x-axis label at the bottom of the graphic) and it's corresponding cause (on the y-axis). This graphic updates regularly as new bills are added to the database.
+
+For causes of death from the annual general bills, see the [General Bills visualization](/visualizations/deaths-general/).
 
 <div id="row">
-    <h3>Causes of Death by Year</h3>
+    <h3>Causes of Death by Year (Weekly Bills)</h3>
     <div class="loading_chart">Loading data...</div>
     <p class="text-gray-600 mb-2 italic"><small>Hover over cells to see detailed information</small></p>
     <svg id="chart"></svg>

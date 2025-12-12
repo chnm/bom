@@ -11,6 +11,7 @@ export default class DeathsChart extends Visualization {
       left: 10,
     };
     super(id, data, dim, margin);
+    this.dim = dim;
   }
 
   // Draw the plot
@@ -33,8 +34,8 @@ export default class DeathsChart extends Visualization {
 
     const plot = Plot.plot({
       padding: 0,
-      width: 1200, // Reduce width to fit in div
-      height: 4000,
+      width: this.dim.width,
+      height: this.dim.height,
       marginLeft: 180,
       marginTop: 60,
       marginBottom: 80,
