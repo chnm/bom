@@ -21,7 +21,11 @@ from .general_bills import GeneralBillsProcessor
 class BillsProcessor:
     """Processes parish datasets into individual BillOfMortalityRecord objects."""
 
-    def __init__(self, dictionary_path: Optional[str] = None):
+    def __init__(
+        self,
+        dictionary_path: Optional[str] = None,
+        edited_causes_path: Optional[str] = None,
+    ):
         self.validator = SchemaValidator()
 
         # Initialize specialized General Bills processor
@@ -37,6 +41,9 @@ class BillsProcessor:
 
         # Load dictionary for cause definitions
         self.cause_definitions = self._load_dictionary(dictionary_path)
+
+        # Load edited causes controlled vocabulary
+        self.edited_causes_lookup = self._load_edited_causes(edited_causes_path)
 
     def _load_dictionary(
         self, dictionary_path: Optional[str]
@@ -73,6 +80,74 @@ class BillsProcessor:
         except Exception as e:
             logger.error(f"Failed to load dictionary from {dictionary_path}: {e}")
             return {}
+
+    def _load_edited_causes(
+        self, edited_causes_path: Optional[str]
+    ) -> Dict[Tuple[int, str], str]:
+        """Load edited causes controlled vocabulary from CSV file.
+
+        Returns:
+            Dictionary mapping (year, normalized_original_cause) -> edited_cause
+        """
+        if not edited_causes_path:
+            logger.info(
+                "No edited causes path provided, controlled vocabulary will be empty"
+            )
+            return {}
+
+        try:
+            import os
+
+            if not os.path.exists(edited_causes_path):
+                logger.warning(f"Edited causes file not found at {edited_causes_path}")
+                return {}
+
+            edited_df = pd.read_csv(edited_causes_path)
+            logger.info(
+                f"Loaded {len(edited_df)} edited causes mappings from {edited_causes_path}"
+            )
+
+            # Create mapping from (year, normalized original cause) to edited cause
+            lookup = {}
+            for _, row in edited_df.iterrows():
+                try:
+                    year = int(row.get("Year", 0))
+                    original_cause = str(row.get("original_cause", "")).lower().strip()
+                    edited_cause = str(row.get("edited_cause", "")).strip()
+
+                    if year and original_cause and edited_cause:
+                        lookup[(year, original_cause)] = edited_cause
+                except (ValueError, TypeError):
+                    continue
+
+            logger.info(f"Created lookup with {len(lookup)} cause mappings")
+            return lookup
+        except Exception as e:
+            logger.error(f"Failed to load edited causes from {edited_causes_path}: {e}")
+            return {}
+
+    def _lookup_edited_cause(self, death: str, year: Optional[int]) -> Optional[str]:
+        """Look up the edited cause for a given death cause and year.
+
+        Args:
+            death: The original cause of death (from data)
+            year: The year of the record
+
+        Returns:
+            The edited cause if found, None otherwise
+        """
+        if not year or not self.edited_causes_lookup:
+            return None
+
+        # Normalize the death cause for lookup (lowercase and strip)
+        normalized_death = death.lower().strip()
+
+        # Try direct lookup
+        key = (year, normalized_death)
+        if key in self.edited_causes_lookup:
+            return self.edited_causes_lookup[key]
+
+        return None
 
     def _normalize_cause_name(self, cause_name: str) -> str:
         """Normalize cause name for dictionary lookup."""
@@ -965,6 +1040,9 @@ class BillsProcessor:
                     # Replace underscores with spaces and keep original capitalization
                     readable_cause_name = cause_col.replace("_", " ")
 
+                    # Look up edited cause from controlled vocabulary
+                    edited_cause = self._lookup_edited_cause(readable_cause_name, year)
+
                     # Create causes of death record
                     record = CausesOfDeathRecord(
                         death=readable_cause_name,
@@ -976,6 +1054,7 @@ class BillsProcessor:
                         definition=definition_info.get("definition"),
                         definition_source=definition_info.get("source"),
                         bill_type=bill_type,
+                        edited_cause=edited_cause,
                     )
 
                     # Always add the record (preserve empty records for completeness)

@@ -130,6 +130,7 @@ class CausesOfDeathRecord:
     definition: Optional[str]  # From dictionary
     definition_source: Optional[str]
     bill_type: Optional[str]  # 'weekly' or 'general'
+    edited_cause: Optional[str]  # Controlled vocabulary from edited_causes.csv
 
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary for DataFrame creation."""
@@ -143,6 +144,7 @@ class CausesOfDeathRecord:
             "definition": self.definition,
             "definition_source": self.definition_source,
             "bill_type": self.bill_type,
+            "edited_cause": self.edited_cause,
         }
 
 

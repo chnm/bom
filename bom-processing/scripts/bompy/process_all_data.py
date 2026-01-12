@@ -137,8 +137,12 @@ def main():
     # Process bills
     logger.info("\n=== Processing Bills of Mortality ===")
     dictionary_path = output_dir / "dictionary.csv"
+    edited_causes_path = Path(__file__).parent / "data-raw" / "edited_causes.csv"
     bills_processor = BillsProcessor(
-        dictionary_path=str(dictionary_path) if dictionary_path.exists() else None
+        dictionary_path=str(dictionary_path) if dictionary_path.exists() else None,
+        edited_causes_path=str(edited_causes_path)
+        if edited_causes_path.exists()
+        else None,
     )
 
     # Filter to parish and causes datasets for bills processing
