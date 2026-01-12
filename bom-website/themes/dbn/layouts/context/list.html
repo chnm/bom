@@ -4,49 +4,78 @@
   <div class="container mx-auto px-4 max-w-6xl">
     <header class="mb-8">
       <h1 class="text-4xl font-medium text-dbn-green-700">{{ .Title }}</h1>
+      {{ if .Content }}
+        <div class="prose prose-lg mt-4">{{ .Content }}</div>
+      {{ end }}
     </header>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-      <!-- Main Content (Static) -->
-      <section class="lg:col-span-2" aria-label="Context information">
-        <div class="prose prose-lg max-w-none">
-          {{ .Content }}
-        </div>
-
-        <!-- All Context Posts -->
-        <section class="bg-dbn-yellow-50 rounded-lg p-6">
-          <h2 class="text-xl font-semibold text-dbn-green-700 mb-4">All Context Posts</h2>
-          {{ $allContextPosts := where .Site.RegularPages "Params.categories" "intersect" (slice "context") }}
-          {{ if $allContextPosts }}
-            <div class="space-y-3 max-h-96 overflow-y-auto">
-              {{ range $allContextPosts }}
-                <article class="border-b border-gray-200 pb-2 last:border-b-0 last:pb-0">
-                  <h4 class="text-sm font-medium mb-1">
-                    <a href="{{ .Permalink }}" class="text-dbn-green-700 hover:text-dbn-red-500 transition-colors">
-                      {{ .Title }}
-                    </a>
-                  </h4>
-                  <div class="text-xs text-dbn-yellow-700">
-                    {{ if .Date }}
-                      <time datetime="{{ .Date.Format "2006-01-02" }}">
-                        {{ .Date.Format "Jan 2006" }}
-                      </time>
+      <!-- Main content -->
+      <section class="lg:col-span-2" aria-label="Context posts">
+        {{ $contextPosts := where .Site.RegularPages "Params.categories" "intersect" (slice "context") }}
+        {{ $paginator := .Paginate $contextPosts }}
+        {{ if $paginator.Pages }}
+          {{ range $paginator.Pages }}
+            <article class="mb-8 pb-8 border-b border-gray-200 last:border-b-0">
+              <header class="mb-4">
+                <h2 class="text-xl font-semibold mb-2">
+                  <a href="{{ .Permalink }}" class="text-dbn-green-700 hover:text-dbn-red-500 transition-colors">
+                    {{ .Title }}
+                  </a>
+                </h2>
+                
+                <div class="flex flex-wrap items-center gap-4 text-sm text-dbn-yellow-700">
+                  {{ if .Params.author }}
+                    <div class="flex items-center">
+                      <span class="text-xs uppercase font-semibold mr-1">By</span>
+                      {{ range $i, $author := .Params.author }}
+                        {{ if $i }}, {{ end }}{{ $author }}
+                      {{ end }}
+                    </div>
+                  {{ end }}
+                  
+                  {{ if .Date }}
+                    <time datetime="{{ .Date.Format "2006-01-02" }}" class="text-xs">
+                      {{ .Date.Format "January 2, 2006" }}
+                    </time>
+                  {{ end }}
+                </div>
+                
+                {{ if .Params.categories }}
+                  <div class="flex flex-wrap gap-2 mt-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" 
+                         class="w-4 h-4 text-dbn-yellow-500" viewBox="0 0 16 16" aria-hidden="true">
+                      <path d="M.54 3.87.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.826a2 2 0 0 1-1.991-1.819l-.637-7a1.99 1.99 0 0 1 .342-1.31zM2.19 4a1 1 0 0 0-.996 1.09l.637 7a1 1 0 0 0 .995.91h10.348a1 1 0 0 0 .995-.91l.637-7A1 1 0 0 0 13.81 4H2.19zm4.69-1.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981l.006.139C1.72 3.042 1.95 3 2.19 3h5.396l-.707-.707z"/>
+                    </svg>
+                    {{ range .Params.categories }}
+                      <a href="/categories/{{ . | urlize }}" class="text-sm text-dbn-blue-500 hover:text-dbn-purple-500 transition-colors">
+                        {{ . }}
+                      </a>
                     {{ end }}
                   </div>
-                </article>
-              {{ end }}
-            </div>
-          {{ else }}
-            <p class="text-dbn-yellow-700">No context posts available.</p>
+                {{ end }}
+              </header>
+              
+              <div class="prose max-w-none">
+                <p class="text-dbn-green-700 leading-relaxed">
+                  {{ .Summary }}
+                </p>
+                <div class="mt-3">
+                  <a href="{{ .Permalink }}" class="text-dbn-red-500 hover:text-dbn-orange-400 font-medium transition-colors">
+                    Read more →
+                  </a>
+                </div>
+              </div>
+            </article>
           {{ end }}
-        </section>
-
-
+        {{ else }}
+          <p class="text-dbn-yellow-700">No context posts available.</p>
+        {{ end }}
       </section>
 
-      <!-- Sidebar with Context Posts -->
-      <aside class="lg:col-span-1 space-y-8" aria-label="Context posts sidebar">
-        <!-- Recent Context Posts -->
+      <!-- Sidebar -->
+      <aside class="lg:col-span-1 space-y-8" aria-label="Context sidebar">
+        <!-- Recent Posts -->
         <section class="bg-dbn-green-50 rounded-lg p-6">
           <h2 class="text-xl font-semibold text-dbn-green-700 mb-4">Recent Context Posts</h2>
           {{ $recentContextPosts := first 5 (where .Site.RegularPages "Params.categories" "intersect" (slice "context")) }}
@@ -70,11 +99,6 @@
                       </time>
                     {{ end }}
                   </div>
-                  <div class="mt-2">
-                    <a href="{{ .Permalink }}" class="text-dbn-red-500 hover:text-dbn-orange-400 text-sm font-medium transition-colors">
-                      Read more →
-                    </a>
-                  </div>
                 </article>
               {{ end }}
             </div>
@@ -83,7 +107,7 @@
           {{ end }}
         </section>
 
-                <!-- Context Tags -->
+        <!-- Context Tags -->
         {{ $contextTags := dict }}
         {{ range $name, $taxonomy := .Site.Taxonomies.tags }}
           {{ $filteredPages := where $taxonomy.Pages "Params.categories" "intersect" (slice "context") }}
@@ -93,7 +117,7 @@
         {{ end }}
         
         {{ if $contextTags }}
-          <section class="bg-dbn-blue-50 rounded-lg p-6">
+          <section class="bg-dbn-yellow-50 rounded-lg p-6">
             <h2 class="text-xl font-semibold text-dbn-green-700 mb-4">Context Tags</h2>
             {{ $maxCount := 1 }}
             {{ $minCount := 1000 }}
@@ -120,8 +144,29 @@
             </div>
           </section>
         {{ end }}
+
+        <!-- Related Categories -->
+        {{ if .Site.Taxonomies.categories }}
+          <section class="bg-dbn-blue-50 rounded-lg p-6">
+            <h2 class="text-xl font-semibold text-dbn-green-700 mb-4">Related Categories</h2>
+            <div class="space-y-2">
+              {{ range $name, $taxonomy := .Site.Taxonomies.categories }}
+                <a href="{{ "/categories/" | relURL }}{{ $name | urlize }}" 
+                   class="flex justify-between items-center py-2 px-3 rounded hover:bg-white hover:bg-opacity-70 transition-colors group">
+                  <span class="text-dbn-green-600 group-hover:text-dbn-red-500">{{ $name }}</span>
+                  <span class="text-sm text-dbn-yellow-700 bg-dbn-yellow-100 px-2 py-1 rounded-full group-hover:bg-dbn-yellow-200">
+                    {{ len $taxonomy.Pages }}
+                  </span>
+                </a>
+              {{ end }}
+            </div>
+          </section>
+        {{ end }}
       </aside>
     </div>
+
+    <!-- Pagination -->
+    {{ partial "pagination.html" . }}
 
   </div>
 </main>
