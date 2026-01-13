@@ -63,11 +63,13 @@ Ogle, William, “An Inquiry into the Trustworthiness of the Old Bills of Mortal
 
 Otis, Jessica and Mullen, Lincoln A., “NEH grant details: DataScribe: Enabling Structured Data Transcription in the Omeka S Web Platform,” 2019, <https://securegrants.neh.gov/publicquery/main.aspx?f=1&gn=HAA-266444-19>.
 
+Otis, Jessica, “‘Set Them To the Cyphering Schoole’: Reading, Writing and Arithmetical Education, circa 1540-1700,” *Journal of British Studies* 56, no. 3 (July 2017), doi: 10.1017/jbr.2017.59.
+
+Otis, Jessica M. and Katherine Kania, "The Monarchs' Bills of Mortality: A Geographical Analysis of Death in Seventeenth-Century London," The London Journal (December 2025), doi: 10.1080/03058034.2025.2572138
+
 Otis, Jessica Marie, *By the Numbers: Understanding the World in Early Modern England* (PhD. diss., University of Virginia, 2013), <https://doi.org/10.18130/V30R5S>.
 
 --- “‘Sportes and Pastimes, done by Number’: Mathematical Games in Early Modern England,” in *Playthings in Early Modernity: Party Games, Word Games, Mind Games*, ed. by Allison Levy (Kalamazoo, MI: Medieval Institute Publications: 2017), 131-144.
-
-Otis, Jessica, “‘Set Them To the Cyphering Schoole’: Reading, Writing and Arithmetical Education, circa 1540-1700,” *Journal of British Studies* 56, no. 3 (July 2017), doi: 10.1017/jbr.2017.59.
 
 MacKay, Ruth, *Life in an Time of Pestilence: The Great Castilian Plague of 1596-1601* (Cambridge: Cambridge University Press, 2019).
 
