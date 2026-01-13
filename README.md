@@ -18,7 +18,7 @@ The London Bills of Mortality represent one of the earliest systematic attempts 
 **Historical datasets and geographic data**
 - **CSV datasets** from transcribed Bills of Mortality
 - **Death dictionary** with cause-of-death definitions
-- **Parish shapefiles** for our historical periods
+- **Parish shapefiles and geoJSON files** for our historical periods
 - **Network data** for plague spread over time
 
 Key datasets:
