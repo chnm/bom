@@ -244,15 +244,32 @@ document.addEventListener("alpine:init", () => {
      */
     async fetchStaticData() {
       try {
-        // Fetch all static data in parallel for better performance
-        const [parishes, causes, christenings] = await Promise.all([
-          window.DataService.fetchParishes(),
-          window.DataService.fetchAllCauses(),
-          window.DataService.fetchAllChristenings(),
-        ]);
-
-        // Process parishes
+        // Fetch parishes first
+        const parishes = await window.DataService.fetchParishes();
         this.parishes = parishes;
+
+        // Fetch causes and christenings for the current bill type
+        await this.fetchCausesAndChristeningsForBillType();
+
+        console.log("Static data loaded successfully");
+      } catch (error) {
+        console.error("Error fetching static data:", error);
+        throw error; // Re-throw to be caught by initialization
+      }
+    },
+
+    /**
+     * Fetch causes and christenings filtered by current bill type
+     */
+    async fetchCausesAndChristeningsForBillType() {
+      try {
+        const billType = this.filters.selectedBillType;
+
+        // Fetch causes and christenings in parallel for the current bill type
+        const [causes, christenings] = await Promise.all([
+          window.DataService.fetchAllCauses(billType),
+          window.DataService.fetchAllChristenings(billType),
+        ]);
 
         // Process causes with IDs
         this.all_causes = causes;
@@ -263,10 +280,20 @@ document.addEventListener("alpine:init", () => {
         // Process christenings
         this.all_christenings = christenings;
 
-        console.log("Static data loaded successfully");
+        // Clear selected filters if they're no longer valid for this bill type
+        const validCauseNames = new Set(causes.map(c => c.name));
+        this.filters.selectedCausesOfDeath = this.filters.selectedCausesOfDeath.filter(
+          name => validCauseNames.has(name)
+        );
+
+        const validChristeningIds = new Set(christenings.map(c => c.id));
+        this.filters.selectedChristenings = this.filters.selectedChristenings.filter(
+          id => validChristeningIds.has(id)
+        );
+
+        console.log(`Loaded ${causes.length} causes and ${christenings.length} christenings for bill type: ${billType}`);
       } catch (error) {
-        console.error("Error fetching static data:", error);
-        throw error; // Re-throw to be caught by initialization
+        console.error("Error fetching causes and christenings:", error);
       }
     },
 
@@ -343,28 +370,49 @@ document.addEventListener("alpine:init", () => {
       this.christenings = [];
 
       const combo = `${this.primaryTab}-${this.secondaryTab}`;
+      const previousBillType = this.filters.selectedBillType;
 
       switch (combo) {
         case "annual-parishes":
           this.filters.selectedBillType = "weekly";
+          if (previousBillType !== "weekly") {
+            this.fetchCausesAndChristeningsForBillType();
+          }
           this.fetchData("weekly");
           break;
         case "annual-deaths":
           this.filters.selectedBillType = "weekly";
+          if (previousBillType !== "weekly") {
+            this.fetchCausesAndChristeningsForBillType();
+          }
           this.fetchDeaths();
           break;
         case "annual-christenings":
+          this.filters.selectedBillType = "weekly";
+          if (previousBillType !== "weekly") {
+            this.fetchCausesAndChristeningsForBillType();
+          }
           this.fetchChristenings();
           break;
         case "yearly-parishes":
           this.filters.selectedBillType = "general";
+          if (previousBillType !== "general") {
+            this.fetchCausesAndChristeningsForBillType();
+          }
           this.fetchData("general");
           break;
         case "yearly-deaths":
           this.filters.selectedBillType = "general";
+          if (previousBillType !== "general") {
+            this.fetchCausesAndChristeningsForBillType();
+          }
           this.fetchDeaths();
           break;
         case "yearly-christenings":
+          this.filters.selectedBillType = "general";
+          if (previousBillType !== "general") {
+            this.fetchCausesAndChristeningsForBillType();
+          }
           this.fetchChristenings();
           break;
         case "bread-death-foodstuffs":
@@ -396,6 +444,8 @@ document.addEventListener("alpine:init", () => {
         }
       }
 
+      const previousBillType = this.filters.selectedBillType;
+
       // Load appropriate data based on tab
       if (tabIndex === 1) {
         // Clear other arrays first to avoid display issues
@@ -404,7 +454,12 @@ document.addEventListener("alpine:init", () => {
 
         // Set filter state for weekly tab
         this.filters.selectedBillType = "weekly";
-        
+
+        // Refetch filter lists if bill type changed
+        if (previousBillType !== "weekly") {
+          this.fetchCausesAndChristeningsForBillType();
+        }
+
         // weekly tab - fetch weekly data
         this.fetchData("weekly");
       } else if (tabIndex === 2) {
@@ -414,7 +469,12 @@ document.addEventListener("alpine:init", () => {
 
         // Set filter state for general tab
         this.filters.selectedBillType = "general";
-        
+
+        // Refetch filter lists if bill type changed
+        if (previousBillType !== "general") {
+          this.fetchCausesAndChristeningsForBillType();
+        }
+
         // general tab - fetch general data
         this.fetchData("general");
       } else if (tabIndex === 3) {

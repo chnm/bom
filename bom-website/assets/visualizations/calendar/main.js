@@ -3,7 +3,7 @@ import CalendarChart from "./calendar";
 
 // Function to populate the year dropdown with available years
 function populateYearDropdown() {
-  const url = `https://data.chnm.org/bom/causes`;
+  const url = `https://data.chnm.org/bom/causes?bill-type=weekly`;
 
   d3.json(url)
     .then((data) => {

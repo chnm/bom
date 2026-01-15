@@ -8,7 +8,7 @@ function populateYearDropdown() {
   // Clear existing options
   yearDropdown.selectAll("option").remove();
 
-  // Add years from 1648 to 1754
+  // Add years from 1636 to 1754
   for (let year = 1636; year <= 1754; year++) {
     yearDropdown.append("option").attr("value", year).text(year);
   }

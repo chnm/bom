@@ -35,7 +35,7 @@ The supporting data for our article publications can be found below:
     </thead>
     <tbody>
         <tr class="table-row">
-            <td class="table-cell description-cell">Jessica M. Otis and Katherine Kania, "<a href="https://www.tandfonline.com/eprint/CEY8KQIIISAAYRQNEP9T/full?target=10.1080/03058034.2025.2572138">The Monarchs' Bills of Mortality: A Geographical Analysis of Death in Seventeenth-Century London</a>," <i>The London Journal</i> (forthcoming).</td>
+            <td class="table-cell description-cell">Jessica M. Otis and Katherine Kania, "<a href="https://www.tandfonline.com/eprint/CEY8KQIIISAAYRQNEP9T/full?target=10.1080/03058034.2025.2572138">The Monarchs' Bills of Mortality: A Geographical Analysis of Death in Seventeenth-Century London</a>," <i>The London Journal</i> (Dec. 2025).</td>
             <td class="table-cell download-cell"><a href="https://github.com/chnm/bom/tree/main/bom-data/monarchical-bills" class="download-link">Download</a></td>
         </tr>
         <tr class="table-row">

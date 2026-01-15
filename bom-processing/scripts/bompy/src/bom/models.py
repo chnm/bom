@@ -121,7 +121,7 @@ class SubtotalRecord:
 class CausesOfDeathRecord:
     """Represents a causes_of_death table record."""
 
-    death: str  # The cause of death
+    original_name: str  # The original cause of death as recorded in historical bills
     count: Optional[int]
     year: Optional[int]  # Foreign key to year table
     joinid: str  # Foreign key to week table (joinid)
@@ -130,12 +130,16 @@ class CausesOfDeathRecord:
     definition: Optional[str]  # From dictionary
     definition_source: Optional[str]
     bill_type: Optional[str]  # 'weekly' or 'general'
-    edited_cause: Optional[str]  # Controlled vocabulary from edited_causes.csv
+    name: Optional[str]  # Canonical/normalized name from edited_causes.csv
 
     def to_dict(self) -> Dict[str, Any]:
-        """Convert to dictionary for DataFrame creation."""
+        """Convert to dictionary for DataFrame creation.
+
+        Note: Uses legacy column names (death, edited_cause) for CSV output
+        to maintain compatibility with Go ETL updater temporary tables.
+        """
         return {
-            "death": self.death,
+            "death": self.original_name,  # Maps to temp table column
             "count": self.count,
             "year": self.year,
             "joinid": self.joinid,
@@ -144,7 +148,7 @@ class CausesOfDeathRecord:
             "definition": self.definition,
             "definition_source": self.definition_source,
             "bill_type": self.bill_type,
-            "edited_cause": self.edited_cause,
+            "edited_cause": self.name,  # Maps to temp table column
         }
 
 

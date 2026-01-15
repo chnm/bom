@@ -49,8 +49,8 @@ class ParishExtractor:
                     row["Variant Names"] if pd.notna(row["Variant Names"]) else ""
                 )
                 bills_subunit = (
-                    row.get("Bills Subunit", "")
-                    if pd.notna(row.get("Bills Subunit", ""))
+                    row.get("Primary Bills Subunit", "")
+                    if pd.notna(row.get("Primary Bills Subunit", ""))
                     else ""
                 )
                 foundation_year = (
@@ -131,13 +131,10 @@ class ParishExtractor:
             word_lower = word.lower()
             if word_lower in ["st", "s"]:
                 standardized_words.append(word_lower.title())  # 'St', 'S'
-            elif word_lower.startswith("st"):
-                # Handle cases like 'stbotolphs' -> 'St Botolphs'
-                if len(word) > 2 and word[2:].isalpha():
-                    standardized_words.append("St " + word[2:].title())
-                else:
-                    standardized_words.append(word.title())
             else:
+                # Just apply title case - don't try to split words starting with 'st'
+                # This avoids incorrectly converting "Stayning" -> "St Ayning"
+                # and "Stephen" -> "St Ephen"
                 standardized_words.append(word.title())
 
         parish_name = " ".join(standardized_words)

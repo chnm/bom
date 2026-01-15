@@ -314,13 +314,10 @@ class BillsProcessor:
             word_lower = word.lower()
             if word_lower in ["st", "s"]:
                 standardized_words.append(word_lower.title())  # 'St', 'S'
-            elif word_lower.startswith("st"):
-                # Handle cases like 'stbotolphs' -> 'St Botolphs'
-                if len(word) > 2 and word[2:].isalpha():
-                    standardized_words.append("St " + word[2:].title())
-                else:
-                    standardized_words.append(word.title())
             else:
+                # Just apply title case - don't try to split words starting with 'st'
+                # This avoids incorrectly converting "Stayning" -> "St Ayning"
+                # and "Stephen" -> "St Ephen"
                 standardized_words.append(word.title())
 
         parish_name = " ".join(standardized_words)
@@ -1041,11 +1038,20 @@ class BillsProcessor:
                     readable_cause_name = cause_col.replace("_", " ")
 
                     # Look up edited cause from controlled vocabulary
-                    edited_cause = self._lookup_edited_cause(readable_cause_name, year)
+                    canonical_name = self._lookup_edited_cause(
+                        readable_cause_name, year
+                    )
+
+                    # If no mapping found, use the original name as canonical
+                    if not canonical_name:
+                        canonical_name = readable_cause_name
+
+                    # Lowercase the canonical name for consistent querying
+                    canonical_name = canonical_name.lower()
 
                     # Create causes of death record
                     record = CausesOfDeathRecord(
-                        death=readable_cause_name,
+                        original_name=readable_cause_name,
                         count=count,
                         year=year,
                         joinid=week_id,
@@ -1054,7 +1060,7 @@ class BillsProcessor:
                         definition=definition_info.get("definition"),
                         definition_source=definition_info.get("source"),
                         bill_type=bill_type,
-                        edited_cause=edited_cause,
+                        name=canonical_name,
                     )
 
                     # Always add the record (preserve empty records for completeness)
@@ -1069,7 +1075,7 @@ class BillsProcessor:
         seen_keys = {}
 
         for record in records:
-            key = (record.death, record.year, record.joinid)
+            key = (record.original_name, record.year, record.joinid)
             if key not in seen_keys:
                 seen_keys[key] = record
             else:

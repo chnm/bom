@@ -44,18 +44,18 @@ function populateDropdowns() {
   const yrRangeSelect = document.getElementById("year-range");
 
   const yrRange1 = document.createElement("option");
-  yrRange1.value = "1636-1649";
-  yrRange1.text = "1636-1649";
+  yrRange1.value = "1636-1680";
+  yrRange1.text = "1636-1680";
   yrRangeSelect.appendChild(yrRange1);
 
   const yrRange2 = document.createElement("option");
-  yrRange2.value = "1649-1659";
-  yrRange2.text = "1649-1659";
+  yrRange2.value = "1680-1720";
+  yrRange2.text = "1680-1720";
   yrRangeSelect.appendChild(yrRange2);
 
   const yrRange3 = document.createElement("option");
-  yrRange3.value = "1659-1677";
-  yrRange3.text = "1659-1677";
+  yrRange3.value = "1720-1750";
+  yrRange3.text = "1720-1750";
   yrRangeSelect.appendChild(yrRange3);
 }
 
@@ -93,12 +93,12 @@ function filterData(data) {
   } else if (cause === "Suicide") {
     data = data.filter((d) => d.cause === "suicide");
   }
-  if (yrRange === "1636-1649") {
-    data = data.filter((d) => d.yrRange === "1636-1649");
-  } else if (yrRange === "1649-1659") {
-    data = data.filter((d) => d.yrRange === "1649-1659");
-  } else if (yrRange === "1659-1677") {
-    data = data.filter((d) => d.yrRange === "1659-1677");
+  if (yrRange === "1636-1680") {
+    data = data.filter((d) => d.yrRange === "1636-1680");
+  } else if (yrRange === "1680-1720") {
+    data = data.filter((d) => d.yrRange === "1680-1720");
+  } else if (yrRange === "1720-1750") {
+    data = data.filter((d) => d.yrRange === "1720-1750");
   }
   return data;
 }

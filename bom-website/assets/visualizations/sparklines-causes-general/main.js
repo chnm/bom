@@ -6,7 +6,7 @@ fetchDataAndRender("original");
 //fetches data and renders the sparklines graphs - General bills only
 function fetchDataAndRender(dataFormat) {
   d3.json(
-    "https://data.chnm.org/bom/causes?start-year=1648&end-year=1754&bill-type=general",
+    "https://data.chnm.org/bom/causes?start-year=1629&end-year=1754&bill-type=general",
   ).then((data) => {
     //format data into tidy format for facetting
     const tidy = tidyFormat(data);

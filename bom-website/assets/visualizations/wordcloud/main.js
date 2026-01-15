@@ -3,8 +3,8 @@ import WordCloudChart from "./wordcloud";
 
 // Function to fetch data and render the word cloud
 function fetchDataAndRender(startYear, endYear) {
-  const url = `https://data.chnm.org/bom/causes?start-year=${startYear}&end-year=${endYear}`;
-  
+  const url = `https://data.chnm.org/bom/causes?start-year=${startYear}&end-year=${endYear}&bill-type=weekly`;
+
   d3.json(url)
     .then((data) => {
       // Extract unique years from the data
@@ -53,7 +53,7 @@ function populateYearDropdowns(years) {
 }
 
 // Initial fetch and render
-fetchDataAndRender(1648, 1754);
+fetchDataAndRender(1629, 1754);
 
 // Add event listener to the update button
 document.getElementById("update-button").addEventListener("click", () => {
@@ -65,8 +65,8 @@ document.getElementById("update-button").addEventListener("click", () => {
 // Add event listener to the reset button
 document.getElementById("reset-button").addEventListener("click", () => {
   // Reset the dropdowns to the original values
-  document.getElementById("start-year").value = 1648;
+  document.getElementById("start-year").value = 1629;
   document.getElementById("end-year").value = 1754;
   // Fetch and render the original data
-  fetchDataAndRender(1648, 1754);
+  fetchDataAndRender(1629, 1754);
 });

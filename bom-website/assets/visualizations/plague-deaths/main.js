@@ -3,7 +3,7 @@ import DeathsChart from "visualizations/plague-deaths/deaths-bar-chart";
 
 // Load data - Weekly bills only
 const urls = [
-  "https://data.chnm.org/bom/causes?start-year=1648&end-year=1754&bill-type=weekly",
+  "https://data.chnm.org/bom/causes?start-year=1636&end-year=1754&bill-type=weekly",
 ];
 
 // Once the data is loaded, initialize the visualization.

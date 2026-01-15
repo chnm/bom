@@ -3,7 +3,7 @@ import DeathsChart from "visualizations/plague-deaths/deaths-bar-chart";
 
 // Load data - General bills
 const urls = [
-  "https://data.chnm.org/bom/causes?start-year=1648&end-year=1754&bill-type=general",
+  "https://data.chnm.org/bom/causes?start-year=1636&end-year=1754&bill-type=general",
 ];
 
 // Once the data is loaded, initialize the visualization.
