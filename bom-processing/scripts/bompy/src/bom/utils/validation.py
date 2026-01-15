@@ -1,6 +1,6 @@
 """Data validation utilities for PostgreSQL schema compliance."""
 
-from typing import Any, List, Optional
+from typing import List, Optional
 
 import pandas as pd
 from loguru import logger
@@ -66,8 +66,8 @@ class SchemaValidator:
         errors = []
 
         # Required fields
-        if not record.death:
-            errors.append("death is required")
+        if not record.original_name:
+            errors.append("original_name is required")
         if not record.joinid:
             errors.append("joinid is required")
 
@@ -162,8 +162,8 @@ class SchemaValidator:
                     )
 
         elif table_name == "causes_of_death":
-            # Unique constraint: (death, year, joinid)
-            key_cols = ["death", "year", "joinid"]
+            # Unique constraint: (original_name, year, joinid)
+            key_cols = ["original_name", "year", "joinid"]
             if all(col in df.columns for col in key_cols):
                 duplicates = df.duplicated(subset=key_cols)
                 if duplicates.any():
@@ -199,7 +199,7 @@ class SchemaValidator:
         # Check for NULL values in required fields
         required_fields = {
             "bill_of_mortality": ["parish_id", "count_type", "year", "joinid"],
-            "causes_of_death": ["death", "joinid"],
+            "causes_of_death": ["original_name", "joinid"],
             "christenings": ["christening"],
             "parishes": ["parish_name", "canonical_name"],
             "week": ["joinid"],

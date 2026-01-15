@@ -372,10 +372,10 @@ def main():
         logger.info("Performing source-aware deduplication on causes...")
         pre_dedup_count = len(valid_causes)
 
-        # Group records by (death, year, joinid)
+        # Group records by (original_name, year, joinid)
         groups = {}
         for record in valid_causes:
-            key = (record.death, record.year, record.joinid)
+            key = (record.original_name, record.year, record.joinid)
             if key not in groups:
                 groups[key] = []
             groups[key].append(record)

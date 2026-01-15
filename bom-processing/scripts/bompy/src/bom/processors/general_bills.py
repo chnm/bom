@@ -40,16 +40,19 @@ class GeneralBillsProcessor:
         ]
 
         # Common London parish name patterns for individual parishes
+        # Use [_\s]+ to match both underscores (normalized) and spaces (original)
         self.parish_name_patterns = [
-            r"^st\s+\w+",  # "St Mary", "St John", etc.
-            r"^saint\s+\w+",  # "Saint Mary"
-            r"^alhallows?\s+\w+",  # "Alhallows Barking", "Allhallows Great"
-            r"^christ\s+church",  # "Christ Church"
-            r"^trinity",  # "Trinity Parish"
-            r"^s\s+\w+",  # "S Sepulchres Parish"
-            r"parish$",  # Ends with "Parish"
-            r"church$",  # Ends with "Church"
-            r"precinct$",  # Ends with "Precinct"
+            r"^st[_\s]+\w+",  # "St Mary", "St John", "st_mary", "st_john", etc.
+            r"^saint[_\s]+\w+",  # "Saint Mary", "saint_mary"
+            r"^alhallows?[_\s]+\w+",  # "Alhallows Barking", "alhallows_barking", "Allhallows Great"
+            r"^christ[_\s]+church",  # "Christ Church", "christ_church"
+            r"^trinity",  # "Trinity Parish", "trinity_parish"
+            r"^s[_\s]+\w+",  # "S Sepulchres Parish", "s_sepulchres"
+            r"^pesthouse",  # Pesthouses (e.g., "Pesthouse without the walls")
+            r"^saviours?",  # Saviour's Southwark
+            r"parish$",  # Ends with "Parish" or "parish"
+            r"church$",  # Ends with "Church" or "church"
+            r"precinct$",  # Ends with "Precinct" or "precinct"
         ]
 
     def is_general_bill_dataset(self, source_name: str) -> bool:
@@ -76,17 +79,48 @@ class GeneralBillsProcessor:
         if self.is_aggregate_column(column_name):
             return False
 
-        # Check parish name patterns
+        # Extract base parish name by removing count type suffixes
+        # This allows patterns like "parish$" to match "hackney_parish_buried"
+        base_name = self._remove_count_suffix(col_lower)
+
+        # Check parish name patterns against the base name
         return any(
-            re.search(pattern, col_lower) for pattern in self.parish_name_patterns
+            re.search(pattern, base_name) for pattern in self.parish_name_patterns
         )
+
+    def _remove_count_suffix(self, column_name: str) -> str:
+        """Remove count type suffix from column name for pattern matching.
+
+        This is a lightweight version used only for pattern detection,
+        not for final parish name extraction.
+        """
+        # Remove common count type suffixes
+        name = re.sub(
+            r"[_\s-]+(buried|plague|christened|baptized|other)$",
+            "",
+            column_name,
+            flags=re.IGNORECASE,
+        )
+        return name.strip()
 
     def extract_parish_name(self, column_name: str) -> str:
         """Extract clean parish name from column name."""
         # Remove count type suffixes if present (sometimes general bills have them)
+        # IMPORTANT: Check for hyphen format FIRST before space format
+        # because space format will partially match and leave trailing hyphens
+
+        # Handle "Parish - Buried" format (with hyphen separator) - CHECK FIRST
         parish_name = re.sub(
-            r"_(buried|plague|christened|baptized|other)$", "", column_name
+            r"\s*-\s*(buried|plague|christened|baptized|other)$",
+            "",
+            column_name,
+            flags=re.IGNORECASE,
         )
+        # Handle "Parish_Buried" format (with underscore)
+        parish_name = re.sub(
+            r"_(buried|plague|christened|baptized|other)$", "", parish_name
+        )
+        # Handle "Parish Buried" format (with space only, no hyphen)
         parish_name = re.sub(
             r"\s+(buried|plague|christened|baptized|other)$",
             "",
@@ -104,13 +138,10 @@ class GeneralBillsProcessor:
             word_lower = word.lower()
             if word_lower in ["st", "s"]:
                 standardized_words.append(word_lower.title())  # 'St', 'S'
-            elif word_lower.startswith("st"):
-                # Handle cases like 'stbotolphs' -> 'St Botolphs'
-                if len(word) > 2 and word[2:].isalpha():
-                    standardized_words.append("St " + word[2:].title())
-                else:
-                    standardized_words.append(word.title())
             else:
+                # Just apply title case - don't try to split words starting with 'st'
+                # This avoids incorrectly converting "Stayning" -> "St Ayning"
+                # and "Stephen/Steven" -> "St Ephen/St Even"
                 standardized_words.append(word.title())
 
         parish_name = " ".join(standardized_words)
