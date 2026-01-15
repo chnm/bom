@@ -208,7 +208,8 @@ func createTempTables(ctx context.Context, tx pgx.Tx) error {
 			source_name text,
       definition text,
       definition_source text,
-      bill_type text
+      bill_type text,
+      edited_cause text
 		);
 
 		CREATE TEMPORARY TABLE temp_bills (
@@ -490,20 +491,22 @@ func updateTables(ctx context.Context, tx pgx.Tx) error {
 		SELECT COUNT(*) INTO rows_before FROM bom.causes_of_death;
 
     INSERT INTO bom.causes_of_death (
-  death, count, year, week_id, source_name, definition, definition_source, bill_type
+  original_name, count, year, week_id, source_name, definition, definition_source, bill_type, name
   )
-  SELECT DISTINCT 
-    death, count, year, joinid, source_name, definition, definition_source, bill_type
+  SELECT DISTINCT ON (death, year, joinid, source_name, bill_type)
+    death, count, year, joinid, source_name, definition, definition_source, bill_type, edited_cause
   FROM temp_causes_of_death c
   WHERE death IS NOT NULL
   AND EXISTS (SELECT 1 FROM bom.week w WHERE w.joinid = c.joinid)
-  ON CONFLICT (death, year, week_id, source_name, bill_type) 
+  ORDER BY death, year, joinid, source_name, bill_type, count DESC NULLS LAST
+  ON CONFLICT (original_name, year, week_id, source_name, bill_type)
   DO UPDATE
-  SET 
+  SET
     count = EXCLUDED.count,
     source_name = EXCLUDED.source_name,
     definition = EXCLUDED.definition,
-    definition_source = EXCLUDED.definition_source;
+    definition_source = EXCLUDED.definition_source,
+    name = EXCLUDED.name;
 			
 		GET DIAGNOSTICS rows_processed = ROW_COUNT;
 		end_time := clock_timestamp();
