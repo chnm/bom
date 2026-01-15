@@ -2,8 +2,8 @@ import * as d3 from "d3";
 import HistogramChart from "./causes-histogram";
 
 // Function to fetch the list of causes and populate the dropdown
-function populateCausesDropdown() {
-  const url = `https://data.chnm.org/bom/list-deaths`;
+function populateCausesDropdown(billType = 'weekly') {
+  const url = `https://data.chnm.org/bom/list-deaths?bill-type=${billType}`;
 
   d3.json(url)
     .then((data) => {
@@ -27,8 +27,8 @@ function populateCausesDropdown() {
 }
 
 // Function to fetch available years and populate the year dropdown
-function populateYearsDropdown() {
-  const url = `https://data.chnm.org/bom/causes?start-year=1636&end-year=1754&bill-type=weekly&id=aged`;
+function populateYearsDropdown(billType = 'weekly') {
+  const url = `https://data.chnm.org/bom/causes?bill-type=${billType}&start-year=1636&end-year=1754&id=aged`;
 
   d3.json(url)
     .then((data) => {
@@ -55,8 +55,8 @@ function populateYearsDropdown() {
 }
 
 // Function to fetch data and render the histogram
-function fetchDataAndRender(year, cause) {
-  const url = `https://data.chnm.org/bom/causes?start-year=${year}&end-year=${year}&bill-type=weekly&limit=9000`;
+function fetchDataAndRender(year, cause, billType = 'weekly') {
+  const url = `https://data.chnm.org/bom/causes?bill-type=${billType}&start-year=${year}&end-year=${year}&limit=9000`;
 
   d3.json(url)
     .then((data) => {
