@@ -529,9 +529,10 @@ func updateTables(ctx context.Context, tx pgx.Tx) error {
 			parish_id, count_type, count, year, joinid, bill_type,
 			missing, illegible, source, unique_identifier
 		FROM temp_bills b
-		WHERE parish_id IS NOT NULL 
+		WHERE parish_id IS NOT NULL
 		AND joinid IS NOT NULL
 		AND year IS NOT NULL
+		AND EXISTS (SELECT 1 FROM bom.parishes p WHERE p.id = b.parish_id)
 		AND EXISTS (SELECT 1 FROM bom.week w WHERE w.joinid = b.joinid)
 		ORDER BY parish_id, count_type, year, joinid, count DESC
 	)
