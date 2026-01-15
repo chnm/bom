@@ -398,10 +398,15 @@ const DataService = {
 
   /**
    * Fetches all causes of death for the filter dropdown
+   * @param {string} billType - Type of bill ('weekly' or 'general')
    * @returns {Promise<Array>} - List of all causes of death
    */
-  async fetchAllCauses() {
-    return this.fetchData("list-deaths");
+  async fetchAllCauses(billType = null) {
+    const params = {};
+    if (billType) {
+      params["bill-type"] = billType;
+    }
+    return this.fetchData("list-deaths", params);
   },
 
   /**
@@ -425,10 +430,15 @@ const DataService = {
 
   /**
    * Fetches all christenings for the filter dropdown
+   * @param {string} billType - Type of bill ('weekly' or 'general')
    * @returns {Promise<Array>} - List of all christenings
    */
-  async fetchAllChristenings() {
-    return this.fetchData("list-christenings");
+  async fetchAllChristenings(billType = null) {
+    const params = {};
+    if (billType) {
+      params["bill-type"] = billType;
+    }
+    return this.fetchData("list-christenings", params);
   },
 
   /**
