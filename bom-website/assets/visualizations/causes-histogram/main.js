@@ -28,7 +28,7 @@ function populateCausesDropdown() {
 
 // Function to fetch available years and populate the year dropdown
 function populateYearsDropdown() {
-  const url = `https://data.chnm.org/bom/causes?start-year=1648&end-year=1754&id=aged`;
+  const url = `https://data.chnm.org/bom/causes?start-year=1636&end-year=1754&bill-type=weekly&id=aged`;
 
   d3.json(url)
     .then((data) => {
@@ -56,7 +56,7 @@ function populateYearsDropdown() {
 
 // Function to fetch data and render the histogram
 function fetchDataAndRender(year, cause) {
-  const url = `https://data.chnm.org/bom/causes?start-year=${year}&end-year=${year}&limit=9000`;
+  const url = `https://data.chnm.org/bom/causes?start-year=${year}&end-year=${year}&bill-type=weekly&limit=9000`;
 
   d3.json(url)
     .then((data) => {

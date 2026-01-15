@@ -106,7 +106,7 @@ function fetchDataAndRender(startYear, endYear, countType) {
 
         // Use default range if no years found
         if (yearSet.size === 0) {
-          for (let year = 1640; year <= 1750; year++) {
+          for (let year = 1640; year <= 1754; year++) {
             years.push(year);
           }
         } else {

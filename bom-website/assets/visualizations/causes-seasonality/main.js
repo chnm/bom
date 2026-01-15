@@ -75,7 +75,7 @@ function populateYearDropdown() {
 
 // Function to fetch data and render the seasonality chart
 function fetchDataAndRender(year, cause1, cause2) {
-  const url = `https://data.chnm.org/bom/causes?start-year=${year}&end-year=${parseInt(year) + 1}&limit=50000`;
+  const url = `https://data.chnm.org/bom/causes?start-year=${year}&end-year=${parseInt(year) + 1}&bill-type=weekly&limit=50000`;
 
   d3.json(url)
     .then((data) => {
