@@ -107,13 +107,13 @@
                 <div class="relative pb-4">
                   <div class="w-full h-2 bg-gray-200 rounded-md relative">
                     <!-- Selected range highlight -->
-                    <div 
-                      class="absolute h-full bg-blue-500 rounded-md" 
+                    <div
+                      class="absolute h-full bg-blue-500 rounded-md"
                       :style="`left: ${((filters.selectedStartYear - 1629) / (1754 - 1629)) * 100}%; right: ${100 - ((filters.selectedEndYear - 1629) / (1754 - 1629)) * 100}%`"
                     ></div>
-                    
+
                     <!-- Min handle -->
-                    <div 
+                    <div
                       class="absolute w-5 h-5 bg-white border-2 border-blue-500 rounded-full -mt-1.5 transform -translate-x-1/2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
                       :style="`left: ${((filters.selectedStartYear - 1629) / (1754 - 1629)) * 100}%`"
                       @mousedown="startDrag($event, 'start')"
@@ -124,9 +124,9 @@
                       aria-valuemin="1629"
                       aria-valuemax="1754"
                     ></div>
-                    
+
                     <!-- Max handle -->
-                    <div 
+                    <div
                       class="absolute w-5 h-5 bg-white border-2 border-blue-500 rounded-full -mt-1.5 transform -translate-x-1/2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
                       :style="`left: ${((filters.selectedEndYear - 1629) / (1754 - 1629)) * 100}%`"
                       @mousedown="startDrag($event, 'end')"
