@@ -49,8 +49,8 @@ class ParishExtractor:
                     row["Variant Names"] if pd.notna(row["Variant Names"]) else ""
                 )
                 bills_subunit = (
-                    row.get("Bills Subunit", "")
-                    if pd.notna(row.get("Bills Subunit", ""))
+                    row.get("Primary Bills Subunit", "")
+                    if pd.notna(row.get("Primary Bills Subunit", ""))
                     else ""
                 )
                 foundation_year = (

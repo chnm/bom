@@ -1042,6 +1042,13 @@ class BillsProcessor:
                         readable_cause_name, year
                     )
 
+                    # If no mapping found, use the original name as canonical
+                    if not canonical_name:
+                        canonical_name = readable_cause_name
+
+                    # Lowercase the canonical name for consistent querying
+                    canonical_name = canonical_name.lower()
+
                     # Create causes of death record
                     record = CausesOfDeathRecord(
                         original_name=readable_cause_name,
