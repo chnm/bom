@@ -2,8 +2,8 @@ import * as d3 from "d3";
 import SeasonalityChart from "./causes-seasonality";
 
 // Function to fetch the list of causes and populate the dropdowns
-function populateCausesDropdowns() {
-  const url = `https://data.chnm.org/bom/list-deaths`;
+function populateCausesDropdowns(billType = 'weekly') {
+  const url = `https://data.chnm.org/bom/list-deaths?bill-type=${billType}`;
 
   d3.json(url)
     .then((data) => {
@@ -74,8 +74,8 @@ function populateYearDropdown() {
 }
 
 // Function to fetch data and render the seasonality chart
-function fetchDataAndRender(year, cause1, cause2) {
-  const url = `https://data.chnm.org/bom/causes?start-year=${year}&end-year=${parseInt(year) + 1}&bill-type=weekly&limit=50000`;
+function fetchDataAndRender(year, cause1, cause2, billType = 'weekly') {
+  const url = `https://data.chnm.org/bom/causes?bill-type=${billType}&start-year=${year}&end-year=${parseInt(year) + 1}&limit=50000`;
 
   d3.json(url)
     .then((data) => {

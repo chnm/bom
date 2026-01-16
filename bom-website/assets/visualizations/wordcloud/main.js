@@ -2,8 +2,8 @@ import * as d3 from "d3";
 import WordCloudChart from "./wordcloud";
 
 // Function to fetch data and render the word cloud
-function fetchDataAndRender(startYear, endYear) {
-  const url = `https://data.chnm.org/bom/causes?start-year=${startYear}&end-year=${endYear}&bill-type=weekly`;
+function fetchDataAndRender(startYear, endYear, billType = 'weekly') {
+  const url = `https://data.chnm.org/bom/causes?bill-type=${billType}&start-year=${startYear}&end-year=${endYear}`;
 
   d3.json(url)
     .then((data) => {
