@@ -13,7 +13,8 @@ RUN apk add --no-cache \
     wget \
     ca-certificates \
     gcompat \
-    libstdc++ && \
+    libstdc++ \
+    npm && \
     ARCH=$(uname -m) && \
     case ${ARCH} in \
         x86_64) HUGO_ARCH="Linux-64bit" ;; \
@@ -35,9 +36,9 @@ WORKDIR /app
 
 ADD . .
 
+RUN npm install -y
 RUN hugo ${HUGO_BUILD_ARGS}
 
 FROM nginx:1.23-alpine
 
 COPY --from=build-stage /app/public/ /usr/share/nginx/html
-
