@@ -13,13 +13,13 @@ function fetchDataAndRender(dataFormat) {
 
     //sort data alphabetically
     let sortedResult = [...tidy].sort((a, b) => {
-      return a.death.localeCompare(b.death);
+      return a.name.localeCompare(b.name);
     });
 
     //check if "remove plague" is checked; if so remove plague from tidy and sorted data
     //make the graphs
     let checkbox = document.getElementById("plague");
-    let noPlague = sortedResult.filter((d) => d.death != "plague");
+    let noPlague = sortedResult.filter((d) => d.name != "plague");
     d3.select("#facets").selectAll("*").remove();
     if (checkbox.checked) {
       makeGraphs(dataFormat, checkbox, noPlague);
@@ -68,12 +68,12 @@ function tidyFormat(data) {
 
   // Accumulate totals using Map with composite key
   for (const item of data) {
-    const key = `${item.year}-${item.death}`;
+    const key = `${item.year}-${item.name}`;
 
     if (!resultMap.has(key)) {
       resultMap.set(key, {
         year: item.year,
-        death: item.death,
+        name: item.name,
         count: 0,
       });
     }
@@ -90,7 +90,7 @@ function makeGraphs(dataFormat, countType, data) {
   const plot = Plot.plot(
     (() => {
       const n = 5; // number of facet columns
-      const keys = Array.from(d3.union(data.map((d) => d.death)));
+      const keys = Array.from(d3.union(data.map((d) => d.name)));
       const index = new Map(keys.map((key, i) => [key, i]));
       const fx = (key) => index.get(key) % n;
       const fy = (key) => Math.floor(index.get(key) / n);
@@ -119,8 +119,8 @@ function makeGraphs(dataFormat, countType, data) {
                 Plot.normalizeY("mean", {
                   x: "year",
                   y: "count",
-                  fx: (d) => fx(d.death),
-                  fy: (d) => fy(d.death),
+                  fx: (d) => fx(d.name),
+                  fy: (d) => fy(d.name),
                   fill: "red",
                   stroke: "red",
                   tip: {
@@ -136,8 +136,8 @@ function makeGraphs(dataFormat, countType, data) {
               ? Plot.barY(data, {
                   x: "year",
                   y: (d) => Math.log10(d.count + 1),
-                  fx: (d) => fx(d.death),
-                  fy: (d) => fy(d.death),
+                  fx: (d) => fx(d.name),
+                  fy: (d) => fy(d.name),
                   fill: "red",
                   stroke: "red",
                   tip: {
@@ -151,8 +151,8 @@ function makeGraphs(dataFormat, countType, data) {
               : Plot.barY(data, {
                   x: "year",
                   y: "count",
-                  fx: (d) => fx(d.death),
-                  fy: (d) => fy(d.death),
+                  fx: (d) => fx(d.name),
+                  fy: (d) => fy(d.name),
                   fill: "red",
                   stroke: "red",
                   tip: {
