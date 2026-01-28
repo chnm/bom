@@ -8,7 +8,7 @@ from the historical Bills of Mortality datasets.
 
 import re
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional
 
 import pandas as pd
 from loguru import logger
@@ -100,6 +100,10 @@ class FoodstuffsProcessor:
 
         for col in columns:
             normalized_col = normalize_column_name(col).lower()
+
+            # Skip unnamed columns from dirty data
+            if normalized_col.startswith("unnamed"):
+                continue
 
             # Check for bread patterns
             for bread_pattern in self.bread_types.values():

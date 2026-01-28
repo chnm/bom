@@ -142,10 +142,50 @@ class BillsProcessor:
         # Normalize the death cause for lookup (lowercase and strip)
         normalized_death = death.lower().strip()
 
-        # Try direct lookup
+        # Try direct lookup with year
         key = (year, normalized_death)
         if key in self.edited_causes_lookup:
             return self.edited_causes_lookup[key]
+
+        # Try fuzzy matching with common spelling variations
+        # This handles cases where edited_causes.csv doesn't have all variants
+        def normalize_variants(text: str) -> str:
+            """Normalize common spelling variations"""
+            text = text.lower().strip()
+            # Normalize separators
+            text = text.replace(" and ", " & ")
+            text = text.replace(",", " &")
+            # Normalize hyphens and spaces
+            text = text.replace("-", "")
+            # Normalize common spelling variants
+            text = text.replace("stilborn", "stillborn")
+            text = text.replace("stillborne", "stillborn")
+            text = text.replace("bloodyflux", "bloody flux")
+            text = text.replace("flox", "flux")
+            # Normalize double spaces
+            while "  " in text:
+                text = text.replace("  ", " ")
+            return text.strip()
+
+        fuzzy_normalized = normalize_variants(normalized_death)
+
+        # Try to find a matching normalized form for this year
+        for (
+            lookup_year,
+            lookup_cause,
+        ), edited_cause in self.edited_causes_lookup.items():
+            if lookup_year == year:
+                if normalize_variants(lookup_cause) == fuzzy_normalized:
+                    return edited_cause
+
+        # If still no match, try without year constraint
+        # This helps when a cause appears in new years not in edited_causes.csv
+        for (
+            lookup_year,
+            lookup_cause,
+        ), edited_cause in self.edited_causes_lookup.items():
+            if normalize_variants(lookup_cause) == fuzzy_normalized:
+                return edited_cause
 
         return None
 
@@ -470,6 +510,9 @@ class BillsProcessor:
             if col_lower.startswith(
                 ("omeka", "datascribe", "image_", "is_missing", "is_illegible")
             ):
+                continue
+            # Skip unnamed columns from dirty data
+            if col_lower.startswith("unnamed"):
                 continue
 
             # Check if this is a subtotal column first
@@ -984,6 +1027,9 @@ class BillsProcessor:
                 continue
             # Skip descriptive text fields like "drowned_descriptive_text"
             if col_lower.endswith("_descriptive_text"):
+                continue
+            # Skip unnamed columns from dirty data (e.g., "unnamed 0", "unnamed 1")
+            if col_lower.startswith("unnamed"):
                 continue
             # This is a valid cause column
             cause_columns.append(col)

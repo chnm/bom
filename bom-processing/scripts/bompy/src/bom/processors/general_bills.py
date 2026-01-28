@@ -75,6 +75,10 @@ class GeneralBillsProcessor:
         ):
             return False
 
+        # Skip unnamed columns from dirty data
+        if col_lower.startswith("unnamed"):
+            return False
+
         # Skip aggregate columns
         if self.is_aggregate_column(column_name):
             return False
