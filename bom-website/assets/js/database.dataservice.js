@@ -463,7 +463,7 @@ const DataService = {
    */
   async fetchDeathCauseYearly(causeName, billType = 'weekly') {
     const params = {
-      "death": causeName,
+      "name": causeName,
       "bill-type": billType,
       "start-year": 1629,
       "end-year": 1754,
@@ -471,7 +471,10 @@ const DataService = {
     };
 
     // Fetch all records for this cause and aggregate by year on the client side
-    const data = await this.fetchData("causes", params);
+    const response = await this.fetchData("causes", params);
+
+    // Handle paginated response format
+    const data = response.data || response;
 
     // Aggregate by year
     const yearlyData = {};
@@ -522,7 +525,10 @@ const DataService = {
     };
 
     // Fetch all records for this christening and aggregate by year on the client side
-    const data = await this.fetchData("christenings", params);
+    const response = await this.fetchData("christenings", params);
+
+    // Handle paginated response format
+    const data = response.data || response;
 
     // Aggregate by year
     const yearlyData = {};

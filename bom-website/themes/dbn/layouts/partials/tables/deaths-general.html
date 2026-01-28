@@ -34,7 +34,7 @@
 
             <th scope="col"
               class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
-              width="50%" @click="sort('death')">Cause</th>
+              width="50%" @click="sort('name')">Cause</th>
             <th scope="col"
               class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
               width="25%" @click="sort('count')">Count</th>
@@ -90,7 +90,7 @@
                   <i class="fa-solid fa-expand cursor-pointer transition-all duration-300 ease-in-out hover:scale-125 hover:text-blue-500 active:scale-90"></i>
                 </td>
                 <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                  x-text="cause.death"></td>
+                  x-text="cause.name"></td>
                 <td class="py-4 px-6 text-sm font-medium text-center text-gray-900 whitespace-nowrap dark:text-white font-mono">
                   <span x-show="cause.count && !cause.illegible" x-text="cause.count"></span>
                   <span x-show="cause.count && cause.illegible" class="px-2 py-1 bg-amber-100 text-amber-800 rounded" x-text="cause.count"></span>
@@ -151,7 +151,7 @@
 
       <!-- Modal header -->
       <div class="flex items-center justify-between space-x-4">
-        <h3 class="text-lg font-medium leading-6 text-gray-900" id="modal-title" x-text="modalBill.death"></h3>
+        <h3 class="text-lg font-medium leading-6 text-gray-900" id="modal-title" x-text="modalBill.name"></h3>
         <button @click="modalOpen = false" class="text-gray-600 focus:outline-none hover:text-gray-700">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
             stroke="currentColor">
@@ -165,7 +165,8 @@
       <p class="mt-2 text-sm text-gray-500">Cause of death data for <span x-text="modalBill.year"></span></p>
 
       <!-- Death details -->
-      <p class="mt-2 text-sm text-gray-800"><strong>Cause of Death</strong>: <span x-text="modalBill.death"></span></p>
+      <p class="mt-2 text-sm text-gray-800"><strong>Cause of Death</strong>: <span x-text="modalBill.name"></span></p>
+      <p class="mt-2 text-sm text-gray-600" x-show="modalBill.death"><strong>Original transcription</strong>: <span x-text="modalBill.death" class="font-mono"></span></p>
       <p class="mt-2 text-sm text-gray-800"><strong>Count</strong>: <span x-text="modalBill.count ? modalBill.count : 'No count available.'"></span>
         <span x-show="modalBill.missing === true" class="ml-2 px-2 py-0.5 bg-amber-100 text-amber-800 text-xs rounded-full">The data for this record is marked as missing</span>
         <span x-show="modalBill.illegible === true" class="ml-2 px-2 py-0.5 bg-amber-100 text-amber-800 text-xs rounded-full">The data for this record is marked as illegible</span>

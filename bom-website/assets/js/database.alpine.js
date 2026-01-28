@@ -1388,15 +1388,17 @@ document.addEventListener("alpine:init", () => {
 
       // Initialize chart only after modal is open and we have data
       this.$nextTick(() => {
-        if (item && item.name) {
-          // Parish data
-          this.initModalChart(item.name, 'parish');
-        } else if (item && item.death) {
-          // Death data
-          this.initModalChart(item.death, 'death');
-        } else if (item && item.christening) {
+        // Check for christening first (has 'christening' field)
+        if (item && item.christening) {
           // Christening data
           this.initModalChart(item.christening, 'christening');
+        } else if (item && item.death !== undefined) {
+          // Death data (has 'death' field for original transcription, even if null)
+          // Use 'name' field for the identifier since that's the standardized cause name
+          this.initModalChart(item.name, 'death');
+        } else if (item && item.name) {
+          // Parish data (only has 'name', no 'death' field)
+          this.initModalChart(item.name, 'parish');
         }
       });
     },

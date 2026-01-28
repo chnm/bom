@@ -21,10 +21,10 @@ export default class DeathsChart extends Visualization {
         this.data.causes,
         (v) => d3.sum(v, (d) => d.count), // Sum the count for each (year, death) combination
         (d) => d.year,
-        (d) => d.death,
+        (d) => d.name,
       ),
       ([year, deaths]) =>
-        Array.from(deaths, ([death, count]) => ({ year, death, count })),
+        Array.from(deaths, ([name, count]) => ({ year, name, count })),
     ).flat();
 
     const colorThreshold = d3
@@ -32,11 +32,18 @@ export default class DeathsChart extends Visualization {
       .domain([5000])
       .range(["black", "white"]);
 
+    // Calculate tick values for every 5 years
+    const minYear = d3.min(aggregatedData, (d) => d.year);
+    const maxYear = d3.max(aggregatedData, (d) => d.year);
+    const startYear = Math.floor(minYear / 5) * 5;
+    const yearTicks = d3.range(startYear, maxYear + 1, 5);
+    console.log("Year ticks:", yearTicks);
+
     const plot = Plot.plot({
       padding: 0,
       width: this.dim.width,
       height: this.dim.height,
-      marginLeft: 180,
+      marginLeft: 260,
       marginTop: 60,
       marginBottom: 80,
       marginRight: 20,
@@ -69,13 +76,9 @@ export default class DeathsChart extends Visualization {
         labelAnchor: "right",
         labelOffset: 80,
         tickFormat: d3.format("d"), // remove commas
-        ticks: 10,
         tickSize: 8,
         tickPadding: 12,
-        tickValues: d3.range(
-          d3.min(aggregatedData, (d) => d.year),
-          d3.max(aggregatedData, (d) => d.year) + 1,
-        ),
+        ticks: yearTicks,
         tickRotate: 90,
       },
       y: {
@@ -90,7 +93,7 @@ export default class DeathsChart extends Visualization {
       marks: [
         Plot.cell(aggregatedData, {
           x: "year",
-          y: "death",
+          y: "name",
           fill: "count",
           stroke: "#444",
           strokeOpacity: 0,
@@ -100,9 +103,9 @@ export default class DeathsChart extends Visualization {
           aggregatedData,
           Plot.pointer({
             x: "year",
-            y: "death",
+            y: "name",
             title: (d) =>
-              `Year: ${d.year}\nCause: ${d.death}\nDeaths: ${d.count.toLocaleString()}`,
+              `Year: ${d.year}\nCause: ${d.name}\nDeaths: ${d.count.toLocaleString()}`,
           }),
         ),
         Plot.axisX({
@@ -110,13 +113,9 @@ export default class DeathsChart extends Visualization {
           labelAnchor: "right",
           labelOffset: 80,
           tickFormat: d3.format("d"),
-          ticks: 10,
           tickSize: 8,
           tickPadding: 12,
-          tickValues: d3.range(
-            d3.min(aggregatedData, (d) => d.year),
-            d3.max(aggregatedData, (d) => d.year) + 1,
-          ),
+          ticks: yearTicks,
           anchor: "bottom",
           tickRotate: 90,
         }),
@@ -126,10 +125,59 @@ export default class DeathsChart extends Visualization {
     d3.select(".loading_chart").remove();
     this.svg.node().append(plot);
 
-    // Set cursor to pointer on cells
+    // Set cursor to pointer on cells and handle label truncation
     setTimeout(() => {
       const cells = d3.selectAll("rect.plot-cell");
       cells.style("cursor", "pointer");
+
+      // Create tooltip div for labels
+      let labelTooltip = d3.select("body").select(".label-tooltip");
+      if (labelTooltip.empty()) {
+        labelTooltip = d3.select("body").append("div")
+          .attr("class", "label-tooltip")
+          .style("position", "absolute")
+          .style("background", "rgba(0, 0, 0, 0.9)")
+          .style("color", "white")
+          .style("padding", "8px 12px")
+          .style("border-radius", "4px")
+          .style("font-size", "14px")
+          .style("pointer-events", "none")
+          .style("opacity", 0)
+          .style("z-index", 1000)
+          .style("max-width", "300px")
+          .style("word-wrap", "break-word");
+      }
+
+      // Truncate y-axis labels and add custom tooltips
+      const maxLabelLength = 25; // Maximum characters before truncation
+      d3.selectAll('g[aria-label="y-axis tick label"] text').each(function() {
+        const textElement = d3.select(this);
+        const fullText = textElement.text();
+
+        // Truncate if too long
+        if (fullText.length > maxLabelLength) {
+          textElement.text(fullText.substring(0, maxLabelLength) + "...");
+
+          // Add hover events for custom tooltip
+          textElement
+            .style("cursor", "help")
+            .on("mouseover", function(event) {
+              labelTooltip
+                .html(fullText)
+                .style("opacity", 1)
+                .style("left", (event.pageX + 10) + "px")
+                .style("top", (event.pageY - 10) + "px");
+            })
+            .on("mousemove", function(event) {
+              labelTooltip
+                .style("left", (event.pageX + 10) + "px")
+                .style("top", (event.pageY - 10) + "px");
+            })
+            .on("mouseout", function() {
+              labelTooltip.style("opacity", 0);
+            });
+        }
+      });
     }, 100);
   }
 }
