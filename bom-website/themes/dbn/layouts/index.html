@@ -14,12 +14,12 @@
       <div class="flex flex-col justify-center sm:w-1/2 md:w-1/2 sm:pr-16 bg-slate-100 p-3 m-3 rounded-lg">
         <h3 class="font-medium pb-4 prose-2xl">Latest Writings</h3>
         {{ range first 3 (where .Site.RegularPages "Section" "ne" "visualizations") }}
-          <div id="title" class="flex flex-wrap p-5 prose">
+          <div class="flex flex-wrap p-5 prose">
             <p class="font-medium pb-4"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time> &middot; <a href="{{ .Permalink }}">{{ .Title }}</a></p>
             </div>
             {{ end }}
         <p class="text-center">Explore our post categories:</p>
-        <p class="text-center"><a class="hover:underline" href="/analysis/">Analysis</a> | <a class="hover:underline" href="/context/">Context</a> | <a class="hover:underline" href="/methodologies/">Methodologies</a></p>
+        <p class="text-center"><a class="text-dbn-blue-700 hover:underline" href="/analysis/">Analysis</a> | <a class="text-dbn-blue-700 hover:underline" href="/context/">Context</a> | <a class="text-dbn-blue-700 hover:underline" href="/methodologies/">Methodologies</a></p>
       </div>
 
   </div>
@@ -31,7 +31,7 @@
                 <img class="rounded-lg shadow-xl object-cover h-48 w-96" src="/images/bodleian-1642-09-recto.png" alt="">
             </div>
             <div class="flex flex-col justify-center mt-5 mb-8 md:mt-0 sm:w-1/2 md:w-7/12 sm:pr-16">
-                <p class="mb-2 text-sm font-semibold leading-none text-left text-dbn-red-500 uppercase">viewing the data</p>
+                <p class="mb-2 text-sm font-semibold leading-none text-left text-dbn-red-700 uppercase">viewing the data</p>
                 <h3 class="mt-2 text-2xl sm:text-left md:text-4xl"><a class="text-dbn-green-600 underline" href="/database/">The Plague Database</a></h3>
                 <p class="mt-5 text-lg text-gray-700 text md:text-left">Explore the full plague bills database.</p>
             </div>
@@ -41,7 +41,7 @@
               <img class="rounded-lg shadow-xl object-cover h-48 w-96" src="/images/preview_viz.png" alt="">
           </div>
           <div class="flex flex-col justify-center mt-5 mb-8 md:mt-0 sm:w-1/2 md:w-7/12 sm:pr-16">
-              <p class="mb-2 text-sm font-semibold leading-none text-left text-dbn-red-500 uppercase">knowing the data</p>
+              <p class="mb-2 text-sm font-semibold leading-none text-left text-dbn-red-700 uppercase">knowing the data</p>
               <h3 class="mt-2 text-2xl sm:text-left md:text-4xl"><a class="text-dbn-green-600 underline" href="/visualizations/">Visualizing the Plague</a></h3>
               <p class="mt-5 text-lg text-gray-700 text md:text-left">Transcribing the plague bills means new approaches for data visualization and exploring patterns in the data.</p>
           </div>
@@ -51,7 +51,7 @@
                 <img class="rounded-lg shadow-xl object-cover h-48 w-96" src="/images/IMG_4187.jpeg" alt="">
             </div>
             <div class="flex flex-col justify-center mt-5 mb-8 md:mt-0 sm:w-1/2 md:w-7/12 sm:pr-16">
-                <p class="mb-2 text-sm font-semibold leading-none text-left text-dbn-red-500 uppercase">read about our research</p>
+                <p class="mb-2 text-sm font-semibold leading-none text-left text-dbn-red-700 uppercase">read about our research</p>
                 <h3 class="mt-2 text-2xl sm:text-left md:text-4xl"><a class="text-dbn-green-600 underline" href="/analysis/">Analyzing the Plague</a></h3>
                 <p class="mt-5 text-lg text-gray-700 text md:text-left">Read our ongoing research into the London plague bills.</p>
             </div>

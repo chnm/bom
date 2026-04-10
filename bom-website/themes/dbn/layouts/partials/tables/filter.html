@@ -238,8 +238,9 @@
         <h3 class="text-sm font-medium text-gray-700">Count Type</h3>
         <div class="bg-gray-50 rounded-lg border border-gray-200 p-4">
           <select
+            aria-label="Count type"
             class="w-full bg-white border border-gray-200 text-gray-700 rounded-lg py-2 px-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
-            @change="setCountType()" 
+            @change="setCountType()"
             x-model="filters.selectedCountType"
             x-html="getCountTypeOptions()">
           </select>

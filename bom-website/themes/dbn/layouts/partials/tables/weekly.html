@@ -1,6 +1,6 @@
 {{/* This is the Weekly Bills table. */}}
 <div>
-      <div id="control" class="mb-2">
+      <div id="control-weekly" class="mb-2">
         <div class="flex items-center justify-between">
           <p class="text-sm text-gray-700 py-1" x-html="getSummary"></p>
           <div class="flex items-center space-x-1">
@@ -118,7 +118,7 @@
         </tbody>
       </table>
 
-  <modal x-show="modalOpen" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" id="weekly-modal" role="dialog"
+  <modal x-show="modalOpen" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title-weekly" id="weekly-modal" role="dialog"
   aria-modal="true">
   <div class="flex items-end justify-center min-h-screen px-4 text-center md:items-center sm:block sm:p-0">
     <!-- Backdrop overlay -->
@@ -143,8 +143,8 @@
 
       <!-- Modal header -->
       <div class="flex items-center justify-between space-x-4 mb-6">
-        <h3 class="text-lg font-medium leading-6 text-gray-900" id="modal-title" x-text="modalBill.name"></h3>
-        <button @click="modalOpen = false" class="text-gray-600 focus:outline-none hover:text-gray-700">
+        <h3 class="text-lg font-medium leading-6 text-gray-900" id="modal-title-weekly" x-text="modalBill.name"></h3>
+        <button @click="modalOpen = false" aria-label="Close" class="text-gray-600 focus:outline-none hover:text-gray-700">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
             stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -213,7 +213,7 @@
   </div>
 </modal>
               
-      <div id="control" class="mt-4">
+      <div id="control-weekly" class="mt-4">
         <div class="flex items-center justify-between">
           <p class="text-sm text-gray-700 py-1" x-html="getSummary"></p>
           <div class="flex items-center space-x-1">

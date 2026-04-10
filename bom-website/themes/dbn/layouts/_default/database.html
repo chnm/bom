@@ -48,7 +48,7 @@
                 <button
                   class="py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200"
                   :class="{ 
-                    'border-dbn-red-500 text-dbn-red-500': getPrimaryTab() === 'annual', 
+                    'border-dbn-red-500 text-dbn-red-700': getPrimaryTab() === 'annual', 
                     'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': getPrimaryTab() !== 'annual' 
                   }"
                   @click="setPrimaryTab('annual')"
@@ -59,7 +59,7 @@
                 <button
                   class="py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200"
                   :class="{ 
-                    'border-dbn-red-500 text-dbn-red-500': getPrimaryTab() === 'yearly', 
+                    'border-dbn-red-500 text-dbn-red-700': getPrimaryTab() === 'yearly', 
                     'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': getPrimaryTab() !== 'yearly' 
                   }"
                   @click="setPrimaryTab('yearly')"
@@ -72,7 +72,7 @@
                 <button
                   class="py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200"
                   :class="{ 
-                    'border-dbn-red-500 text-dbn-red-500': getPrimaryTab() === 'bread-death', 
+                    'border-dbn-red-500 text-dbn-red-700': getPrimaryTab() === 'bread-death', 
                     'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': getPrimaryTab() !== 'bread-death' 
                   }"
                   @click="setPrimaryTab('bread-death')"
@@ -95,12 +95,12 @@
           <div class="mb-6">
             <div x-show="getPrimaryTab() === 'annual'">
               <p class="text-sm text-gray-700">
-                These are weekly bills of mortality published throughout the year, providing detailed week-by-week records. <a href="https://deathbynumbers.org/context/the-london-bills-of-mortality/">Learn more about the bills</a>.
+                These are weekly bills of mortality published throughout the year, providing detailed week-by-week records. <a class="text-dbn-blue-700 underline" href="https://deathbynumbers.org/context/the-london-bills-of-mortality/">Learn more about the bills</a>.
               </p>
             </div>
             <div x-show="getPrimaryTab() === 'yearly'">
               <p class="text-sm text-gray-700">
-                These are general bills of mortality published annually, summarizing yearly totals and providing broader statistical overviews. <a href="https://deathbynumbers.org/context/the-london-bills-of-mortality/">Learn more about the bills</a>.
+                These are general bills of mortality published annually, summarizing yearly totals and providing broader statistical overviews. <a class="text-dbn-blue-700 underline" href="https://deathbynumbers.org/context/the-london-bills-of-mortality/">Learn more about the bills</a>.
               </p>
             </div>
           </div>
@@ -112,7 +112,7 @@
               <button
                 class="px-4 py-2 text-xs font-bold uppercase rounded-lg transition-colors duration-200"
                 :class="{ 
-                  'bg-dbn-red-500 bg-opacity-20 text-dbn-red-500': getSecondaryTab() === 'parishes', 
+                  'bg-dbn-red-500 bg-opacity-20 text-dbn-red-700': getSecondaryTab() === 'parishes', 
                   'bg-gray-100 text-gray-600 hover:bg-gray-200': getSecondaryTab() !== 'parishes' 
                 }"
                 @click="setSecondaryTab('parishes')"
@@ -123,7 +123,7 @@
               <button
                 class="px-4 py-2 text-xs font-bold uppercase rounded-lg transition-colors duration-200"
                 :class="{ 
-                  'bg-dbn-red-500 bg-opacity-20 text-dbn-red-500': getSecondaryTab() === 'deaths', 
+                  'bg-dbn-red-500 bg-opacity-20 text-dbn-red-700': getSecondaryTab() === 'deaths', 
                   'bg-gray-100 text-gray-600 hover:bg-gray-200': getSecondaryTab() !== 'deaths' 
                 }"
                 @click="setSecondaryTab('deaths')"
@@ -134,7 +134,7 @@
               <button
                 class="px-4 py-2 text-xs font-bold uppercase rounded-lg transition-colors duration-200"
                 :class="{ 
-                  'bg-dbn-red-500 bg-opacity-20 text-dbn-red-500': getSecondaryTab() === 'christenings', 
+                  'bg-dbn-red-500 bg-opacity-20 text-dbn-red-700': getSecondaryTab() === 'christenings', 
                   'bg-gray-100 text-gray-600 hover:bg-gray-200': getSecondaryTab() !== 'christenings' 
                 }"
                 @click="setSecondaryTab('christenings')"
@@ -162,7 +162,7 @@
               <button
                 class="px-4 py-2 text-xs font-bold uppercase rounded-lg transition-colors duration-200"
                 :class="{ 
-                  'bg-dbn-red-500 bg-opacity-20 text-dbn-red-500': getSecondaryTab() === 'parishes', 
+                  'bg-dbn-red-500 bg-opacity-20 text-dbn-red-700': getSecondaryTab() === 'parishes', 
                   'bg-gray-100 text-gray-600 hover:bg-gray-200': getSecondaryTab() !== 'parishes' 
                 }"
                 @click="setSecondaryTab('parishes')"
@@ -173,7 +173,7 @@
               <button
                 class="px-4 py-2 text-xs font-bold uppercase rounded-lg transition-colors duration-200"
                 :class="{ 
-                  'bg-dbn-red-500 bg-opacity-20 text-dbn-red-500': getSecondaryTab() === 'deaths', 
+                  'bg-dbn-red-500 bg-opacity-20 text-dbn-red-700': getSecondaryTab() === 'deaths', 
                   'bg-gray-100 text-gray-600 hover:bg-gray-200': getSecondaryTab() !== 'deaths' 
                 }"
                 @click="setSecondaryTab('deaths')"
@@ -184,7 +184,7 @@
               <button
                 class="px-4 py-2 text-xs font-bold uppercase rounded-lg transition-colors duration-200"
                 :class="{ 
-                  'bg-dbn-red-500 bg-opacity-20 text-dbn-red-500': getSecondaryTab() === 'christenings', 
+                  'bg-dbn-red-500 bg-opacity-20 text-dbn-red-700': getSecondaryTab() === 'christenings', 
                   'bg-gray-100 text-gray-600 hover:bg-gray-200': getSecondaryTab() !== 'christenings' 
                 }"
                 @click="setSecondaryTab('christenings')"
@@ -212,7 +212,7 @@
               <button
                 class="px-4 py-2 text-xs font-bold uppercase rounded-lg transition-colors duration-200"
                 :class="{ 
-                  'bg-dbn-red-500 bg-opacity-20 text-dbn-red-500': getSecondaryTab() === 'foodstuffs', 
+                  'bg-dbn-red-500 bg-opacity-20 text-dbn-red-700': getSecondaryTab() === 'foodstuffs', 
                   'bg-gray-100 text-gray-600 hover:bg-gray-200': getSecondaryTab() !== 'foodstuffs' 
                 }"
                 @click="setSecondaryTab('foodstuffs')"
@@ -223,7 +223,7 @@
               <button
                 class="px-4 py-2 text-xs font-bold uppercase rounded-lg transition-colors duration-200"
                 :class="{ 
-                  'bg-dbn-red-500 bg-opacity-20 text-dbn-red-500': getSecondaryTab() === 'ages', 
+                  'bg-dbn-red-500 bg-opacity-20 text-dbn-red-700': getSecondaryTab() === 'ages', 
                   'bg-gray-100 text-gray-600 hover:bg-gray-200': getSecondaryTab() !== 'ages' 
                 }"
                 @click="setSecondaryTab('ages')"
@@ -308,8 +308,9 @@
         {{/* Filter panel header */}}
         <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
           <h2 class="text-lg font-medium text-gray-900">Filters</h2>
-          <button 
+          <button
             @click="filtersOpen = false"
+            aria-label="Close filters"
             class="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100 transition-colors duration-200">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
