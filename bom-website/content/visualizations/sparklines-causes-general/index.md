@@ -34,12 +34,13 @@ summary: "Because the range of total deaths varies significantly, it can be diff
                     <label for="log10(x+1)">log<sub>10</sub>(x+1)</label>
                 </div>
                 <div>
-                    <input type="radio" id="normailzed" name="data-format" value="normalized"/>
+                    <input type="radio" id="normalized" name="data-format" value="normalized"/>
                     <label for="normalized">normalized</label>
                 </div>
             </div>
           </fieldset>
           <fieldset id="plague-format">
+            <legend class="sr-only">Plague filtering</legend>
             <div>
                 <input type="checkbox" id="plague" name="plague-format"/>
                 <label for="plague">Remove Plague Deaths</label>

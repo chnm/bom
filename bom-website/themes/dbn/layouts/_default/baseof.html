@@ -1,14 +1,17 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     {{- partial "head.html" . -}}
     <body class="bg-dbn-green-700 min-h-screen flex flex-col">
+        <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-4 focus:bg-white focus:text-dbn-green-700 focus:font-bold">Skip to main content</a>
         {{ if .IsHome }}
         {{- partial "hero.html" . -}}
         {{- else }}
         {{- partial "header.html" . -}}
         {{- end }}
         <div class="bg-white flex-grow" id="content">
+        <main id="main-content">
         {{- block "main" . }}{{- end }}
+        </main>
         </div>
         {{- partial "footer.html" . -}}
         <script src="https://unpkg.com/littlefoot/dist/littlefoot.js"></script>

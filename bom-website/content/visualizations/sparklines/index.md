@@ -32,7 +32,7 @@ category: "temporal"
                     <label for="log10(x+1)">log10(x+1)</label>
                 </div>
                 <div>
-                    <input type="radio" id="normailzed" name="data-format" value="normalized"/>
+                    <input type="radio" id="normalized" name="data-format" value="normalized"/>
                     <label for="normalized">normalized</label>
                 </div>
             </div>
