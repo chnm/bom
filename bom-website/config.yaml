@@ -28,6 +28,9 @@ markup:
   goldmark:
     renderer:
       unsafe: true
+  highlight:
+    style: xcode
+    noClasses: false
   tableOfContents:
     startLevel: 2
     endLevel: 3

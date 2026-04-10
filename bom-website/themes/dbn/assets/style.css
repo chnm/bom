@@ -79,6 +79,20 @@ nav a {
   /* Further indentation for deeper nesting */
 }
 
+/* Ensure TOC links have accessible contrast */
+
+#TableOfContents a {
+  --tw-text-opacity: 1;
+  color: rgb(74 115 160 / var(--tw-text-opacity));
+}
+
+/* Override prose dark code block background to match xcode syntax theme (white) */
+
+.prose pre {
+  background-color: #f8f8f8 !important;
+  color: #000 !important;
+}
+
 /* General styles for the select element */
 
 select {
