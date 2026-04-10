@@ -1,6 +1,6 @@
 <a name="top"></a>
 
-<nav
+<nav aria-label="Main navigation"
   class="flex items-center justify-between flex-wrap bg-dbn-green-900 px-4 mx-auto w-full lg:max-w-screen-lg sm:max-w-screen-sm md:max-w-screen-md">
   <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
     <img src="/images/death-by-numbers.jpg" alt="Death by Numbers" class="object-scale-down w-44 overflow-hidden" />
@@ -11,17 +11,17 @@
   <div class="w-full block flex-grow-0 lg:items-center lg:w-auto">
     <div class="text-sm lg:flex-grow">
       <!-- Context Menu -->
-      <div x-data="{ open: false }" class="inline-block relative">
-        <button @click="open = !open"
+      <div x-data="{ open: false }" class="inline-block relative" @keydown.escape.prevent="open = false">
+        <button @click="open = !open" :aria-expanded="open" aria-haspopup="true"
           class="inline-block px-3 py-2 items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75 ml-2">
           Context
           <svg class="w-4 h-4 ml-1 inline align-middle" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg">
+            xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
           </svg>
         </button>
         <div x-show="open" @click.away="open = false" x-cloak class="absolute bg-white text-black mt-2 rounded shadow-lg z-50 min-w-[200px]">
-          <a href="/context/overview/" class="text-dbn-green-800 block px-4 py-2 text-sm hover:bg-gray-200">Overview</a>
+          <a href="/context/overview/" aria-label="Context Overview" class="text-dbn-green-800 block px-4 py-2 text-sm hover:bg-gray-200">Overview</a>
           <hr class="border-gray-300" />
           <a href="/context/" class="text-dbn-green-800 block px-4 py-2 text-sm hover:bg-gray-200">All Context Posts</a>
           <a href="/bibliography/" class="text-dbn-green-800 block px-4 py-2 text-sm hover:bg-gray-200">Bibliography</a>
@@ -31,39 +31,39 @@
       </div>
 
       <!-- Data Menu -->
-      <div x-data="{ open: false }" class="inline-block relative">
-        <button @click="open = !open"
+      <div x-data="{ open: false }" class="inline-block relative" @keydown.escape.prevent="open = false">
+        <button @click="open = !open" :aria-expanded="open" aria-haspopup="true"
           class="inline-block px-3 py-2 items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75 ml-2">
           Data
           <svg class="w-4 h-4 ml-1 inline align-middle" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg">
+            xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
           </svg>
         </button>
         <div x-show="open" @click.away="open = false" x-cloak class="absolute bg-white text-black mt-2 rounded shadow-lg z-50 min-w-[200px]">
-          <a href="/data/" class="text-dbn-green-800 block px-4 py-2 text-sm hover:bg-gray-200">Overview</a>
+          <a href="/data/" aria-label="Data Overview" class="text-dbn-green-800 block px-4 py-2 text-sm hover:bg-gray-200">Overview</a>
           <hr class="border-gray-300" />
           <a href="/database/" class="text-dbn-green-800 block px-4 py-2 text-sm hover:bg-gray-200">Database</a>
           <a href="https://bom.chnm.org/s/bills-of-mortality/page/welcome"
             class="text-dbn-green-800 block px-4 py-2 text-sm hover:bg-gray-200">Images
-            <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i></a>
+            <i class="fa-solid fa-arrow-up-right-from-square text-xs" aria-hidden="true"></i></a>
           <a href="/downloads/" class="text-dbn-green-800 block px-4 py-2 text-sm hover:bg-gray-200">Downloads</a>
           <a href="/api/" class="text-dbn-green-800 block px-4 py-2 text-sm hover:bg-gray-200">API</a>
         </div>
       </div>
 
       <!-- Analysis Menu -->
-      <div x-data="{ open: false }" class="inline-block relative">
-        <button @click="open = !open"
+      <div x-data="{ open: false }" class="inline-block relative" @keydown.escape.prevent="open = false">
+        <button @click="open = !open" :aria-expanded="open" aria-haspopup="true"
           class="inline-block px-3 py-2 items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75 ml-2">
           Analysis
           <svg class="w-4 h-4 ml-1 inline align-middle" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg">
+            xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
           </svg>
         </button>
         <div x-show="open" @click.away="open = false" x-cloak class="absolute bg-white text-black mt-2 rounded shadow-lg z-50 min-w-[200px]">
-          <a href="/analysis/overview/" class="text-dbn-green-800 block px-4 py-2 text-sm hover:bg-gray-200">Overview</a>
+          <a href="/analysis/overview/" aria-label="Analysis Overview" class="text-dbn-green-800 block px-4 py-2 text-sm hover:bg-gray-200">Overview</a>
           <hr class="border-gray-300" />
           <a href="/analysis/" class="text-dbn-green-800 block px-4 py-2 text-sm hover:bg-gray-200">All Analysis Posts</a>
           <a href="/visualizations/" class="text-dbn-green-800 block px-4 py-2 text-sm hover:bg-gray-200">Data
@@ -71,17 +71,18 @@
         </div>
       </div>
 
-      <div x-data="{ open: false }" class="inline-block relative">
-        <button @click="open = !open"
+      <!-- Pedagogy Menu -->
+      <div x-data="{ open: false }" class="inline-block relative" @keydown.escape.prevent="open = false">
+        <button @click="open = !open" :aria-expanded="open" aria-haspopup="true"
           class="inline-block px-3 py-2 items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75 ml-2">
           Pedagogy
           <svg class="w-4 h-4 ml-1 inline align-middle" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg">
+            xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
           </svg>
         </button>
         <div x-show="open" @click.away="open = false" x-cloak class="absolute bg-white text-black mt-2 rounded shadow-lg z-50 min-w-[200px]">
-          <a href="/pedagogy/" class="text-dbn-green-800 block px-4 py-2 text-sm hover:bg-gray-200">Overview</a>
+          <a href="/pedagogy/" aria-label="Pedagogy Overview" class="text-dbn-green-800 block px-4 py-2 text-sm hover:bg-gray-200">Overview</a>
           <hr class="border-gray-300" />
           <a href="/teaching/humanities-data/" class="text-dbn-green-800 block px-4 py-2 text-sm hover:bg-gray-200">Humanities Data</a>
           <a href="/teaching/urban-data/" class="text-dbn-green-800 block px-4 py-2 text-sm hover:bg-gray-200">Urban Data</a>
@@ -89,12 +90,12 @@
       </div>
 
       <!-- About Menu -->
-      <div x-data="{ open: false }" class="inline-block relative">
-        <button @click="open = !open"
+      <div x-data="{ open: false }" class="inline-block relative" @keydown.escape.prevent="open = false">
+        <button @click="open = !open" :aria-expanded="open" aria-haspopup="true"
           class="inline-block px-3 py-2 items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75 ml-2">
           About
           <svg class="w-4 h-4 ml-1 inline align-middle" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg">
+            xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
           </svg>
         </button>

@@ -2594,6 +2594,18 @@ a:hover {
   margin-bottom: 0;
 }
 
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
 .visible {
   visibility: visible;
 }
@@ -4188,6 +4200,25 @@ a:hover {
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
+.focus\:not-sr-only:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  padding: 0;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+.focus\:absolute:focus {
+  position: absolute;
+}
+
+.focus\:z-50:focus {
+  z-index: 50;
+}
+
 .focus\:z-10:focus {
   z-index: 10;
 }
@@ -4205,6 +4236,24 @@ a:hover {
 .focus\:border-gray-500:focus {
   --tw-border-opacity: 1;
   border-color: rgb(107 114 128 / var(--tw-border-opacity));
+}
+
+.focus\:bg-white:focus {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+}
+
+.focus\:p-4:focus {
+  padding: 1rem;
+}
+
+.focus\:font-bold:focus {
+  font-weight: 700;
+}
+
+.focus\:text-dbn-green-700:focus {
+  --tw-text-opacity: 1;
+  color: rgb(61 63 53 / var(--tw-text-opacity));
 }
 
 .focus\:text-blue-700:focus {
