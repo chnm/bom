@@ -163,6 +163,8 @@ class ParishExtractor:
             "buried in the",
             "plague in the",
             "in the parishes",
+            "increase",
+            "decrease",
             "total",
             "sum",
         ]

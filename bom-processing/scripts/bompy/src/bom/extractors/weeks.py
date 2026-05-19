@@ -88,11 +88,12 @@ class WeekExtractor:
         # General bills (week 90) span full year
         if week_number == 90:
             return f"{year}-{year}-{week_pad}"
-        # Historical year handling - weeks > 15 span previous year
-        elif week_number > 15:
+        # Historical year handling - weeks 1-13 straddle two calendar years
+        # (before Lady Day, March 25, when the English new year began)
+        elif week_number <= 13:
             return f"{year - 1}-{year}-{week_pad}"
         else:
-            return f"{year}-{year + 1}-{week_pad}"
+            return f"{year}-{year}-{week_pad}"
 
     def create_split_year(self, year: int, week_number: Optional[int]) -> str:
         """Create split year string."""
@@ -102,7 +103,8 @@ class WeekExtractor:
         # General bills span full year
         if week_number == 90:
             return str(year)
-        elif week_number > 15:
+        # Weeks 1-13 fall before Lady Day (March 25) and straddle two calendar years
+        elif week_number <= 13:
             return f"{year - 1}/{year}"
         else:
             return str(year)
