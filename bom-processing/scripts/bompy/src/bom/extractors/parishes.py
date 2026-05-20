@@ -92,8 +92,9 @@ class ParishExtractor:
                         authority_mapping[omeka_clean] = parish_info
 
                 # Map variant names to parish info
+                # Authority file uses semicolons as delimiters within the Variant Names field
                 if variant_names and pd.notna(canonical_name):
-                    for variant in str(variant_names).split(","):
+                    for variant in str(variant_names).split(";"):
                         variant = variant.strip()
                         if variant and parish_info["canonical_name"]:
                             authority_mapping[variant] = parish_info
@@ -333,22 +334,41 @@ class ParishExtractor:
         # Remove empty names
         parish_names = {name for name in parish_names if name}
 
-        # Convert to ParishRecord objects
-        parish_records = []
-        for i, parish_name in enumerate(sorted(parish_names), 1):
+        # Deduplicate by canonical name: when multiple parish_name variants
+        # map to the same canonical name, prefer the one with authority file
+        # metadata (non-empty bills_subunit), falling back to the Omeka name.
+        canonical_groups: Dict[str, List[tuple[str, Dict[str, Optional[str]]]]] = {}
+        for parish_name in parish_names:
             parish_info = self.get_parish_info(parish_name)
             canonical_name = parish_info["canonical_name"]
-            bills_subunit = parish_info["bills_subunit"]
-            foundation_year = parish_info["foundation_year"]
-            notes = parish_info["notes"]
+            if canonical_name not in canonical_groups:
+                canonical_groups[canonical_name] = []
+            canonical_groups[canonical_name].append((parish_name, parish_info))
+
+        # Convert to ParishRecord objects, one per canonical name
+        parish_records = []
+        for i, canonical_name in enumerate(sorted(canonical_groups.keys()), 1):
+            variants = canonical_groups[canonical_name]
+
+            if len(variants) > 1:
+                logger.info(
+                    f"Deduplicating {len(variants)} variants for '{canonical_name}': "
+                    f"{[v[0] for v in variants]}"
+                )
+
+            # Pick the best variant: prefer one with authority file metadata
+            best_name, best_info = variants[0]
+            for name, info in variants:
+                if info.get("bills_subunit") and not best_info.get("bills_subunit"):
+                    best_name, best_info = name, info
 
             record = ParishRecord(
                 id=i,
-                parish_name=parish_name,
-                canonical_name=canonical_name,
-                bills_subunit=bills_subunit,
-                foundation_year=foundation_year,
-                notes=notes,
+                parish_name=best_name,
+                canonical_name=best_info["canonical_name"],
+                bills_subunit=best_info["bills_subunit"],
+                foundation_year=best_info["foundation_year"],
+                notes=best_info["notes"],
             )
             parish_records.append(record)
 
