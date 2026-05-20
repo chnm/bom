@@ -370,13 +370,27 @@ class BillsProcessor:
     def create_parish_id_mapping(
         self, parish_records: List[ParishRecord]
     ) -> Dict[str, int]:
-        """Create mapping from parish name to parish ID."""
+        """Create mapping from parish name to parish ID.
+
+        Maps parish_name, canonical_name, and all known authority file
+        variant names to the same ID so that spelling variants in the
+        raw CSV columns resolve correctly after canonical deduplication.
+        """
+        from ..extractors.parishes import ParishExtractor
+
         mapping = {}
 
         for parish in parish_records:
             # Map both original and canonical names to the same ID
             mapping[parish.parish_name.lower().strip()] = parish.id
             mapping[parish.canonical_name.lower().strip()] = parish.id
+
+        # Also map all authority file variant/Omeka names to the correct ID
+        extractor = ParishExtractor()
+        for variant_name, info in extractor.authority_mapping.items():
+            canonical = info["canonical_name"].lower().strip()
+            if canonical in mapping:
+                mapping[variant_name.lower().strip()] = mapping[canonical]
 
         return mapping
 
