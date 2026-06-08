@@ -1457,26 +1457,28 @@ document.addEventListener("alpine:init", () => {
               }
             } else if (dataType === 'death') {
               // Fetch real death cause yearly data from API
-              if (this.deathYearlyData[identifier]) {
-                dataPromise = Promise.resolve(this.deathYearlyData[identifier]);
+              const billType = this.filters.selectedBillType || 'weekly';
+              const deathCacheKey = `${identifier}::${billType}`;
+              if (this.deathYearlyData[deathCacheKey]) {
+                dataPromise = Promise.resolve(this.deathYearlyData[deathCacheKey]);
               } else {
-                const billType = this.filters.selectedBillType || 'weekly';
                 dataPromise = window.DataService.fetchDeathCauseYearly(identifier, billType).then(
                   (data) => {
-                    this.deathYearlyData[identifier] = data;
+                    this.deathYearlyData[deathCacheKey] = data;
                     return data;
                   }
                 );
               }
             } else if (dataType === 'christening') {
               // Fetch real christening yearly data from API
-              if (this.christeningYearlyData[identifier]) {
-                dataPromise = Promise.resolve(this.christeningYearlyData[identifier]);
+              const chBillType = this.filters.selectedBillType || 'weekly';
+              const chCacheKey = `${identifier}::${chBillType}`;
+              if (this.christeningYearlyData[chCacheKey]) {
+                dataPromise = Promise.resolve(this.christeningYearlyData[chCacheKey]);
               } else {
-                const billType = this.filters.selectedBillType || 'weekly';
-                dataPromise = window.DataService.fetchChristeningYearly(identifier, billType).then(
+                dataPromise = window.DataService.fetchChristeningYearly(identifier, chBillType).then(
                   (data) => {
-                    this.christeningYearlyData[identifier] = data;
+                    this.christeningYearlyData[chCacheKey] = data;
                     return data;
                   }
                 );

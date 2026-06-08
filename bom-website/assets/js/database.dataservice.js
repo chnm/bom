@@ -463,7 +463,7 @@ const DataService = {
    */
   async fetchDeathCauseYearly(causeName, billType = 'weekly') {
     const params = {
-      "name": causeName,
+      "id": causeName,
       "bill-type": billType,
       "start-year": 1629,
       "end-year": 1754,
