@@ -61,6 +61,53 @@ document.addEventListener("alpine:init", () => {
       this.pivotedBills = Object.values(grouped);
     },
 
+    /**
+     * Render tiny sparkline bar charts for each cause in the deaths table.
+     * Groups the current page's cause records by cause name and year,
+     * then draws a mini bar chart showing the count per year.
+     */
+    renderCauseSparklines() {
+      if (!this.causes.length) return;
+
+      // Group all records by cause name → {year: totalCount}
+      const byCause = {};
+      for (const c of this.causes) {
+        const name = c.name || c.death;
+        if (!byCause[name]) byCause[name] = {};
+        const year = c.year;
+        byCause[name][year] = (byCause[name][year] || 0) + (c.count || 0);
+      }
+
+      // Render a sparkline into each .cause-sparkline element
+      document.querySelectorAll('.cause-sparkline').forEach(el => {
+        const cause = el.dataset.cause;
+        const yearCounts = byCause[cause];
+        if (!yearCounts) return;
+
+        const data = Object.entries(yearCounts)
+          .map(([year, count]) => ({ year: +year, count }))
+          .sort((a, b) => a.year - b.year);
+
+        if (!data.length) return;
+
+        const maxVal = Math.max(...data.map(d => d.count));
+        if (maxVal === 0) return;
+
+        // Tiny SVG bar chart
+        const w = 120, h = 24, gap = 1;
+        const barW = Math.max(1, (w - gap * (data.length - 1)) / data.length);
+
+        const bars = data.map((d, i) => {
+          const barH = Math.max(1, (d.count / maxVal) * h);
+          const x = i * (barW + gap);
+          const y = h - barH;
+          return `<rect x="${x}" y="${y}" width="${barW}" height="${barH}" fill="#9a3324" opacity="0.7"/>`;
+        }).join('');
+
+        el.innerHTML = `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">${bars}</svg>`;
+      });
+    },
+
     // Tab state - Two-tiered system
     primaryTab: "annual", // annual, yearly, bread-death
     secondaryTab: "parishes", // parishes, deaths, christenings, foodstuffs, ages
@@ -851,6 +898,9 @@ document.addEventListener("alpine:init", () => {
 
         // Update state
         this.causes = data;
+
+        // Build sparklines for causes after render
+        this.$nextTick(() => this.renderCauseSparklines());
 
         // Update pagination
         if (data.length > 0 && data[0].totalrecords) {

@@ -103,7 +103,7 @@
                   <span x-show="row.plague_missing" class="text-xs text-amber-700">data missing from record</span>
                   <span x-show="row.plague_illegible && !row.plague_missing" class="text-orange-700" x-text="row.plague"></span>
                   <span x-show="row.plague_illegible && !row.plague_missing" class="ml-1 text-xs text-orange-500">illegible</span>
-                  <span x-show="!row.plague_missing && !row.plague_illegible && (row.plague !== null && row.plague !== undefined)" :class="row.plague > 0 ? 'text-red-700 dark:text-red-400' : 'text-gray-400'" x-text="row.plague"></span>
+                  <span x-show="!row.plague_missing && !row.plague_illegible && (row.plague !== null && row.plague !== undefined)" :class="row.plague > 0 ? 'text-red-700 dark:text-red-400' : 'text-gray-900 dark:text-white'" x-text="row.plague"></span>
                   <span x-show="!row.plague_missing && !row.plague_illegible && (row.plague === null || row.plague === undefined)" class="text-gray-300">—</span>
                 </td>
                 <td class="py-3 px-6 text-sm text-center text-gray-900 whitespace-nowrap dark:text-white font-mono"
