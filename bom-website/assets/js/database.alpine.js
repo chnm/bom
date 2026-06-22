@@ -45,9 +45,9 @@ document.addEventListener("alpine:init", () => {
           };
         }
         const row = grouped[key];
-        // Only treat as truly missing if count is null/undefined (not 0).
-        // The API incorrectly flags count=0 as missing, but 0 is a real value.
-        const isTrulyMissing = bill.missing === true && (bill.count === null || bill.count === undefined);
+        // Missing if count is null/undefined — regardless of the missing flag.
+        // A count of 0 is real data, not missing.
+        const isTrulyMissing = (bill.count === null || bill.count === undefined);
         if (bill.count_type === 'buried') {
           row.buried = bill.count;
           row.buried_missing = isTrulyMissing;

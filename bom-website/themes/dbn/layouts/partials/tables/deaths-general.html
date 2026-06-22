@@ -83,12 +83,11 @@
                 <td class="py-3 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
                   <a :href="'/causes/detail/?name=' + encodeURIComponent(cause.name) + '&bill_type=general'" class="text-dbn-blue-700 hover:text-dbn-blue-900 hover:underline" x-text="cause.name"></a></td>
                 <td class="py-3 px-6 text-sm text-center whitespace-nowrap font-mono"
-                    :class="(cause.missing && cause.count == null) ? 'bg-amber-50' : (cause.illegible ? 'bg-orange-50' : '')">
-                  <span x-show="cause.missing && cause.count == null" class="text-xs text-amber-700">data missing from record</span>
-                  <span x-show="cause.illegible && !(cause.missing && cause.count == null)" class="text-orange-700" x-text="cause.count"></span>
-                  <span x-show="cause.illegible && !(cause.missing && cause.count == null)" class="ml-1 text-xs text-orange-500">illegible</span>
-                  <span x-show="!(cause.missing && cause.count == null) && !cause.illegible && cause.count != null" class="text-gray-900 dark:text-white" x-text="cause.count"></span>
-                  <span x-show="!(cause.missing && cause.count == null) && !cause.illegible && cause.count == null" class="text-gray-300">—</span>
+                    :class="(cause.count == null) ? 'bg-amber-50' : (cause.illegible ? 'bg-orange-50' : '')">
+                  <span x-show="cause.count == null" class="text-xs text-amber-700">data missing from record</span>
+                  <span x-show="cause.illegible && cause.count != null" class="text-orange-700" x-text="cause.count"></span>
+                  <span x-show="cause.illegible && cause.count != null" class="ml-1 text-xs text-orange-500">illegible</span>
+                  <span x-show="cause.count != null && !cause.illegible && cause.count != null" class="text-gray-900 dark:text-white" x-text="cause.count"></span>
                 </td>
                 <td class="py-3 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400"
                   x-text="cause.death !== cause.name ? cause.death : ''"></td>

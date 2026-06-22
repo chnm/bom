@@ -83,12 +83,11 @@
                 <td class="py-3 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
                   x-text="christening.christening"></td>
                 <td class="py-3 px-6 text-sm text-center whitespace-nowrap font-mono"
-                    :class="(christening.missing && christening.count == null) ? 'bg-amber-50' : (christening.illegible ? 'bg-orange-50' : '')">
-                  <span x-show="christening.missing && christening.count == null" class="text-xs text-amber-700">data missing from record</span>
-                  <span x-show="christening.illegible && !(christening.missing && christening.count == null)" class="text-orange-700" x-text="christening.count"></span>
-                  <span x-show="christening.illegible && !(christening.missing && christening.count == null)" class="ml-1 text-xs text-orange-500">illegible</span>
-                  <span x-show="!(christening.missing && christening.count == null) && !christening.illegible && christening.count != null" class="text-gray-900 dark:text-white" x-text="christening.count"></span>
-                  <span x-show="!(christening.missing && christening.count == null) && !christening.illegible && christening.count == null" class="text-gray-300">—</span>
+                    :class="(christening.count == null) ? 'bg-amber-50' : (christening.illegible ? 'bg-orange-50' : '')">
+                  <span x-show="christening.count == null" class="text-xs text-amber-700">data missing from record</span>
+                  <span x-show="christening.illegible && christening.count != null" class="text-orange-700" x-text="christening.count"></span>
+                  <span x-show="christening.illegible && christening.count != null" class="ml-1 text-xs text-orange-500">illegible</span>
+                  <span x-show="christening.count != null && !christening.illegible && christening.count != null" class="text-gray-900 dark:text-white" x-text="christening.count"></span>
                 </td>
                 <td class="py-3 px-6 text-sm text-center text-gray-900 whitespace-nowrap dark:text-white font-mono"
                   x-text="christening.week_number"></td>
