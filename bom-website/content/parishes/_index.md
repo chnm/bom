@@ -1,6 +1,5 @@
 ---
-title: Parish Names Authority File 
-slug: /parishes/
+title: Parish Names Authority File
 layout: wide
 ---
 

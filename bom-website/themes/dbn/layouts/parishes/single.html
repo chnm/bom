@@ -1,0 +1,293 @@
+{{ define "main" }}
+<div class="relative px-6 py-12 bg-white mx-auto w-full max-w-screen-xl">
+  <div class="mx-auto" x-data="parishDetailData">
+    <!-- Back link -->
+    <a href="/database/" class="text-sm text-gray-500 hover:text-gray-700">&larr; Back to database</a>
+
+    <!-- Loading state -->
+    <div x-show="loading" class="text-center py-16">
+      <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-3"></div>
+      <p class="text-gray-500">Loading parish data...</p>
+    </div>
+
+    <!-- Error state -->
+    <div x-show="error && !loading" class="text-center py-16">
+      <p class="text-red-600" x-text="error"></p>
+    </div>
+
+    <!-- Content -->
+    <div x-show="!loading && !error" x-cloak>
+      <h2 class="text-4xl font-medium mt-4 mb-1" x-text="parishName"></h2>
+      <p x-show="parishInfo && parishInfo.name !== parishInfo.canonical_name"
+         class="text-gray-500 mb-1">
+        Also known as: <span x-text="parishInfo?.name"></span>
+      </p>
+      <div class="flex flex-wrap items-center gap-3 text-sm text-gray-500 mb-6">
+        <span x-show="parishInfo?.subunit" x-text="parishInfo?.subunit"></span>
+        <span x-show="parishInfo?.subunit && parishInfo?.notes" class="text-gray-300">&middot;</span>
+        <span x-show="parishInfo?.notes" x-text="parishInfo?.notes"></span>
+      </div>
+
+      <!-- Summary cards -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div class="border border-gray-200 rounded-lg p-4">
+          <div class="text-xs text-gray-500 uppercase tracking-wide">Total Buried</div>
+          <div class="text-2xl font-mono font-semibold mt-1" x-text="totalBuried.toLocaleString()"></div>
+        </div>
+        <div class="border border-gray-200 rounded-lg p-4">
+          <div class="text-xs text-gray-500 uppercase tracking-wide">Total Plague</div>
+          <div class="text-2xl font-mono font-semibold mt-1 text-red-700" x-text="totalPlague.toLocaleString()"></div>
+        </div>
+        <div class="border border-gray-200 rounded-lg p-4">
+          <div class="text-xs text-gray-500 uppercase tracking-wide">Years of Data</div>
+          <div class="text-2xl font-mono font-semibold mt-1" x-text="yearData.length"></div>
+        </div>
+        <div class="border border-gray-200 rounded-lg p-4" x-show="parishInfo?.foundation_year">
+          <div class="text-xs text-gray-500 uppercase tracking-wide">First Extant Bill</div>
+          <div class="text-2xl font-mono font-semibold mt-1" x-text="parishInfo?.foundation_year"></div>
+        </div>
+      </div>
+
+      <!-- Charts -->
+      <div class="border border-gray-200 rounded-lg p-6 mb-6">
+        <h3 class="text-lg font-semibold mb-2">Burials by Year</h3>
+        <div id="burialChart"></div>
+      </div>
+      <div class="border border-gray-200 rounded-lg p-6 mb-6" x-show="totalPlague > 0">
+        <h3 class="text-lg font-semibold mb-2">Plague Deaths by Year</h3>
+        <div id="plagueChart"></div>
+      </div>
+      <div x-show="totalPlague === 0" class="border border-gray-200 rounded-lg p-6 mb-6">
+        <h3 class="text-lg font-semibold mb-2">Plague Deaths by Year</h3>
+        <p class="text-gray-400 text-sm py-4">No plague deaths recorded for this parish.</p>
+      </div>
+
+      <!-- Year-by-year table + sources -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+      <div class="lg:col-span-2 border border-gray-200 rounded-lg overflow-hidden">
+        <div class="px-4 py-3 border-b border-gray-200 bg-gray-50">
+          <h3 class="font-semibold">Year-by-Year Breakdown</h3>
+        </div>
+        <div class="overflow-y-auto" style="max-height: 500px;">
+          <table class="w-full text-sm">
+            <thead class="sticky top-0 bg-white">
+              <tr class="border-b text-gray-600">
+                <th class="px-4 py-2 text-left font-medium">Year</th>
+                <th class="px-4 py-2 text-right font-medium">Buried</th>
+                <th class="px-4 py-2 text-right font-medium">Plague</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              <template x-for="y in yearData" :key="y.year">
+                <tr class="hover:bg-gray-50">
+                  <td class="px-4 py-1.5 font-mono" x-text="y.year"></td>
+                  <td class="px-4 py-1.5 text-right font-mono" x-text="y.total_buried.toLocaleString()"></td>
+                  <td class="px-4 py-1.5 text-right font-mono"
+                      :class="y.total_plague > 0 ? 'text-red-700' : 'text-gray-300'"
+                      x-text="y.total_plague ? y.total_plague.toLocaleString() : '0'"></td>
+                </tr>
+              </template>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Sources -->
+      <div class="border border-gray-200 rounded-lg overflow-hidden">
+        <div class="px-4 py-3 border-b border-gray-200 bg-gray-50">
+          <h3 class="font-semibold">Data Sources</h3>
+        </div>
+        <div x-show="sources.length === 0" class="px-4 py-6 text-center text-gray-400 text-sm">Loading sources...</div>
+        <div x-show="sources.length > 0" class="overflow-y-auto" style="max-height: 500px;">
+          <table class="w-full text-sm">
+            <thead class="sticky top-0 bg-white">
+              <tr class="border-b text-gray-600">
+                <th class="px-4 py-2 text-left font-medium">Source</th>
+                <th class="px-4 py-2 text-right font-medium">Records</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              <template x-for="s in sources" :key="s.file">
+                <tr>
+                  <td class="px-4 py-1.5">
+                    <span class="text-xs bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded" x-text="s.collection"></span>
+                    <div class="mt-0.5">
+                      <a :href="'https://github.com/chnm/bom/blob/main/bom-data/data-csvs/' + s.file"
+                         class="text-xs text-dbn-blue-700 hover:text-dbn-blue-900 hover:underline"
+                         target="_blank" rel="noopener" x-text="s.file"></a>
+                    </div>
+                  </td>
+                  <td class="px-4 py-1.5 text-right font-mono text-gray-700" x-text="s.count.toLocaleString()"></td>
+                </tr>
+              </template>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      </div><!-- end grid -->
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6"></script>
+<style>
+  [class*="plot-"] text, svg[class^="plot-"] text {
+    font-family: 'Work Sans', system-ui, sans-serif !important;
+  }
+</style>
+
+<script>
+document.addEventListener('alpine:init', () => {
+  Alpine.data('parishDetailData', () => ({
+    parishName: '',
+    parishInfo: null,
+    yearData: [],
+    sources: [],
+    totalBuried: 0,
+    totalPlague: 0,
+    loading: true,
+    error: null,
+
+    async init() {
+      const params = new URLSearchParams(window.location.search);
+      this.parishName = params.get('name') || '';
+
+      if (!this.parishName) {
+        this.error = 'No parish specified.';
+        this.loading = false;
+        return;
+      }
+
+      // Update page title
+      document.title = `${this.parishName} - {{ .Site.Title }}`;
+
+      try {
+        // Fetch parish info and yearly data in parallel
+        const [parishesResp, yearlyResp] = await Promise.all([
+          fetch('https://data.chnm.org/bom/parishes'),
+          fetch(`https://data.chnm.org/bom/statistics?type=parish-yearly&parish=${encodeURIComponent(this.parishName)}`),
+        ]);
+
+        const parishes = await parishesResp.json();
+        this.parishInfo = parishes.find(p =>
+          p.canonical_name.toLowerCase() === this.parishName.toLowerCase()
+        );
+
+        this.yearData = await yearlyResp.json();
+
+        // Calculate totals
+        this.totalBuried = this.yearData.reduce((sum, y) => sum + (y.total_buried || 0), 0);
+        this.totalPlague = this.yearData.reduce((sum, y) => sum + (y.total_plague || 0), 0);
+
+        // Render charts after data loads
+        this.$nextTick(() => this.renderCharts());
+
+        // Fetch sources in the background (non-blocking)
+        this.fetchSources();
+      } catch (e) {
+        console.error('Error loading parish data:', e);
+        this.error = 'Failed to load parish data. Please try again.';
+      } finally {
+        this.loading = false;
+      }
+    },
+
+    collectionName(filename) {
+      if (!filename) return 'Other';
+      const f = filename.toLowerCase();
+      if (f.includes('laxton')) return 'Laxton';
+      if (f.includes('blv') || f.includes('bl1877')) return 'British Library';
+      if (f.includes('bodleian')) return 'Bodleian';
+      if (f.includes('wellcome')) return 'Wellcome';
+      if (f.includes('millar')) return 'Millar';
+      if (f.includes('guildhall')) return 'Guildhall';
+      if (f.includes('qc')) return "Queen's College";
+      if (f.includes('heh')) return 'Huntington';
+      return 'Other';
+    },
+
+    async fetchSources() {
+      try {
+        const parishId = this.parishInfo?.id;
+        if (!parishId) return;
+
+        const resp = await fetch(
+          `https://data.chnm.org/bom/bills?parish=${parishId}&start-year=1600&end-year=1800&limit=50000`
+        );
+        const result = await resp.json();
+        const data = result.data || result;
+
+        // Count records per source
+        const counts = {};
+        for (const bill of data) {
+          const src = bill.source || 'Unknown';
+          counts[src] = (counts[src] || 0) + 1;
+        }
+
+        // Build sources array sorted by count descending
+        this.sources = Object.entries(counts)
+          .map(([file, count]) => ({
+            file,
+            collection: this.collectionName(file),
+            count,
+          }))
+          .sort((a, b) => b.count - a.count);
+      } catch (e) {
+        console.error('Error fetching sources:', e);
+      }
+    },
+
+    renderCharts() {
+      if (!this.yearData.length) return;
+
+      const ticks5 = this.yearData.map(d => d.year).filter(y => y % 5 === 0);
+      const xConfig = {
+        label: null,
+        interval: 1,
+        ticks: ticks5.length > 1 ? ticks5 : undefined,
+        tickFormat: d => String(d),
+      };
+      const tipFmt = { format: { x: d => String(d) } };
+
+      // Burials
+      const burialEl = document.getElementById('burialChart');
+      if (burialEl) {
+        burialEl.innerHTML = '';
+        burialEl.appendChild(Plot.plot({
+          width: burialEl.clientWidth,
+          height: 280,
+          marginLeft: 60,
+          x: xConfig,
+          y: { label: 'Buried', grid: true },
+          marks: [
+            Plot.barY(this.yearData, { x: 'year', y: 'total_buried', fill: '#2563eb', tip: tipFmt }),
+            Plot.crosshairX(this.yearData, { x: 'year', y: 'total_buried' }),
+            Plot.ruleY([0]),
+          ],
+        }));
+      }
+
+      // Plague
+      const plagueEl = document.getElementById('plagueChart');
+      if (plagueEl && this.totalPlague > 0) {
+        plagueEl.innerHTML = '';
+        const plagueData = this.yearData.filter(d => d.total_plague > 0);
+        plagueEl.appendChild(Plot.plot({
+          width: plagueEl.clientWidth,
+          height: 220,
+          marginLeft: 60,
+          x: xConfig,
+          y: { label: 'Plague', grid: true },
+          marks: [
+            Plot.barY(this.yearData, { x: 'year', y: d => d.total_plague || 0, fill: '#dc2626', tip: tipFmt }),
+            Plot.crosshairX(this.yearData, { x: 'year', y: d => d.total_plague || 0 }),
+            Plot.ruleY([0]),
+          ],
+        }));
+      }
+    },
+  }));
+});
+</script>
+{{ end }}

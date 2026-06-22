@@ -1,0 +1,221 @@
+{{ define "main" }}
+<div class="relative px-6 py-12 bg-white mx-auto w-full max-w-screen-xl">
+  <div class="mx-auto" x-data="causeDetailData">
+    <!-- Back link -->
+    <a href="/database/" class="text-sm text-gray-500 hover:text-gray-700">&larr; Back to database</a>
+
+    <!-- Loading state -->
+    <div x-show="loading" class="text-center py-16">
+      <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-3"></div>
+      <p class="text-gray-500">Loading cause data...</p>
+    </div>
+
+    <!-- Error state -->
+    <div x-show="error && !loading" class="text-center py-16">
+      <p class="text-red-600" x-text="error"></p>
+    </div>
+
+    <!-- Header (always visible once initialized) -->
+    <div x-show="initialized" x-cloak>
+      <h2 class="text-4xl font-medium mt-4 mb-1" x-text="causeName"></h2>
+      <div class="flex flex-wrap items-center gap-3 text-sm text-gray-500 mb-2">
+        <span x-show="originalName && originalName !== causeName">
+          Original transcription: <span class="font-mono" x-text="originalName"></span>
+        </span>
+      </div>
+      <p x-show="definition" class="text-gray-900 text-sm mb-2">
+        <strong>Definition:</strong> <span x-text="definition"></span>
+        <a href="/dictionary/" class="text-dbn-blue-700 hover:text-dbn-blue-900 hover:underline ml-1 text-xs">See full dictionary &rarr;</a>
+      </p>
+
+      <!-- Bill type toggle -->
+      <div class="flex items-center gap-2 mb-6">
+        <span class="text-sm text-gray-600">Bill type:</span>
+        <button @click="setBillType('weekly')"
+                class="px-3 py-1 text-sm rounded"
+                :class="billType === 'weekly' ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'">
+          Weekly
+        </button>
+        <button @click="setBillType('general')"
+                class="px-3 py-1 text-sm rounded"
+                :class="billType === 'general' ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'">
+          General (Annual)
+        </button>
+      </div>
+    </div>
+
+    <!-- Data content -->
+    <div x-show="!loading && !error" x-cloak>
+      <!-- Summary cards -->
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
+        <div class="border border-gray-200 rounded-lg p-4">
+          <div class="text-xs text-gray-500 uppercase tracking-wide">Total Deaths</div>
+          <div class="text-2xl font-mono font-semibold mt-1" x-text="totalCount.toLocaleString()"></div>
+        </div>
+        <div class="border border-gray-200 rounded-lg p-4">
+          <div class="text-xs text-gray-500 uppercase tracking-wide">Years of Data</div>
+          <div class="text-2xl font-mono font-semibold mt-1" x-text="yearData.length"></div>
+        </div>
+        <div class="border border-gray-200 rounded-lg p-4">
+          <div class="text-xs text-gray-500 uppercase tracking-wide">Bill Type</div>
+          <div class="text-2xl font-semibold mt-1 capitalize" x-text="billType"></div>
+        </div>
+      </div>
+
+      <!-- Chart -->
+      <div class="border border-gray-200 rounded-lg p-6 mb-6">
+        <h3 class="text-lg font-semibold mb-2">Deaths by Year</h3>
+        <div id="causeChart"></div>
+        <div x-show="yearData.length === 0" class="text-gray-400 text-sm py-4">No data available for this cause and bill type.</div>
+      </div>
+
+      <!-- Year-by-year table -->
+      <div class="border border-gray-200 rounded-lg overflow-hidden">
+        <div class="px-4 py-3 border-b border-gray-200 bg-gray-50">
+          <h3 class="font-semibold">Year-by-Year Breakdown</h3>
+        </div>
+        <div class="overflow-y-auto" style="max-height: 500px;">
+          <table class="w-full text-sm">
+            <thead class="sticky top-0 bg-white">
+              <tr class="border-b text-gray-600">
+                <th class="px-4 py-2 text-left font-medium">Year</th>
+                <th class="px-4 py-2 text-right font-medium">Count</th>
+                <th class="px-4 py-2 text-right font-medium">Weeks</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              <template x-for="y in yearData" :key="y.year">
+                <tr class="hover:bg-gray-50">
+                  <td class="px-4 py-1.5 font-mono" x-text="y.year"></td>
+                  <td class="px-4 py-1.5 text-right font-mono" x-text="y.total.toLocaleString()"></td>
+                  <td class="px-4 py-1.5 text-right font-mono text-gray-500" x-text="y.weeks"></td>
+                </tr>
+              </template>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6"></script>
+<style>
+  [class*="plot-"] text, svg[class^="plot-"] text {
+    font-family: 'Work Sans', system-ui, sans-serif !important;
+  }
+</style>
+
+<script>
+document.addEventListener('alpine:init', () => {
+  Alpine.data('causeDetailData', () => ({
+    causeName: '',
+    originalName: '',
+    definition: '',
+    billType: 'weekly',
+    yearData: [],
+    totalCount: 0,
+    loading: true,
+    initialized: false,
+    error: null,
+
+    async init() {
+      const params = new URLSearchParams(window.location.search);
+      this.causeName = params.get('name') || '';
+      this.billType = params.get('bill_type') || 'weekly';
+
+      if (!this.causeName) {
+        this.error = 'No cause specified.';
+        this.loading = false;
+        return;
+      }
+
+      document.title = `${this.causeName} - {{ .Site.Title }}`;
+      await this.fetchData();
+      this.initialized = true;
+    },
+
+    async setBillType(type) {
+      this.billType = type;
+      // Update URL
+      const params = new URLSearchParams(window.location.search);
+      params.set('bill_type', type);
+      history.replaceState({}, '', location.pathname + '?' + params.toString());
+      await this.fetchData();
+    },
+
+    async fetchData() {
+      this.loading = true;
+      this.error = null;
+
+      try {
+        const resp = await fetch(
+          `https://data.chnm.org/bom/causes?id=${encodeURIComponent(this.causeName)}&bill-type=${this.billType}&start-year=1629&end-year=1754&limit=50000`
+        );
+        const data = await resp.json();
+
+        if (!data || data.length === 0) {
+          this.yearData = [];
+          this.totalCount = 0;
+          this.loading = false;
+          return;
+        }
+
+        // Grab metadata from first record
+        this.originalName = data[0].death || '';
+        this.definition = data[0].definition || '';
+
+        // Aggregate by year
+        const byYear = {};
+        for (const record of data) {
+          const year = record.year;
+          if (!byYear[year]) {
+            byYear[year] = { year, total: 0, weeks: 0 };
+          }
+          byYear[year].total += record.count || 0;
+          byYear[year].weeks++;
+        }
+
+        this.yearData = Object.values(byYear).sort((a, b) => a.year - b.year);
+        this.totalCount = this.yearData.reduce((sum, y) => sum + y.total, 0);
+
+        this.$nextTick(() => this.renderChart());
+      } catch (e) {
+        console.error('Error loading cause data:', e);
+        this.error = 'Failed to load cause data. Please try again.';
+      } finally {
+        this.loading = false;
+      }
+    },
+
+    renderChart() {
+      const el = document.getElementById('causeChart');
+      if (!el || !this.yearData.length) return;
+
+      el.innerHTML = '';
+      const ticks5 = this.yearData.map(d => d.year).filter(y => y % 5 === 0);
+      const tipFmt = { format: { x: d => String(d) } };
+
+      el.appendChild(Plot.plot({
+        width: el.clientWidth,
+        height: 300,
+        marginLeft: 60,
+        x: {
+          label: null,
+          interval: 1,
+          ticks: ticks5.length > 1 ? ticks5 : undefined,
+          tickFormat: d => String(d),
+        },
+        y: { label: 'Deaths', grid: true },
+        marks: [
+          Plot.barY(this.yearData, { x: 'year', y: 'total', fill: '#9333ea', tip: tipFmt }),
+          Plot.crosshairX(this.yearData, { x: 'year', y: 'total' }),
+          Plot.ruleY([0]),
+        ],
+      }));
+    },
+  }));
+});
+</script>
+{{ end }}
