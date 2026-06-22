@@ -678,20 +678,20 @@ class BillsProcessor:
                         illegible_val = row[is_illegible_col]
                         explicit_illegible = self._is_flag_true(illegible_val)
 
-                    # Handle missing/empty counts (preserve them as 0 with flags)
-                    if pd.isna(count_value) or count_value == "" or count_value == 0:
-                        count = 0
-                        # Use explicit missing flag if available, otherwise infer from empty value
-                        is_missing = explicit_missing or (
-                            pd.isna(count_value) or count_value == ""
-                        )
+                    # Handle missing/empty counts
+                    # Empty cells in the CSV mean 0 (no deaths recorded), not missing data.
+                    # Only the explicit is_missing flag from DataScribe indicates truly missing data.
+                    # When explicitly flagged missing, store count as None (not 0) since
+                    # the value is unknown — 0 would imply "zero deaths were counted."
+                    if pd.isna(count_value) or count_value == "":
+                        count = None if explicit_missing else 0
+                        is_missing = explicit_missing
                     else:
                         try:
                             count = int(count_value)
-                            is_missing = explicit_missing  # Use explicit flag
+                            is_missing = explicit_missing
                         except (ValueError, TypeError):
-                            # Invalid count - preserve as 0 with missing flag
-                            count = 0
+                            count = None
                             is_missing = True
 
                     # Create record with all required fields (even if count is 0/empty)
@@ -735,20 +735,18 @@ class BillsProcessor:
                         illegible_val = row[is_illegible_col]
                         explicit_illegible = self._is_flag_true(illegible_val)
 
-                    # Handle missing/empty counts (preserve them as 0 with flags)
-                    if pd.isna(count_value) or count_value == "" or count_value == 0:
-                        count = 0
-                        # Use explicit missing flag if available, otherwise infer from empty value
-                        is_missing = explicit_missing or (
-                            pd.isna(count_value) or count_value == ""
-                        )
+                    # Handle missing/empty counts
+                    # Empty cells mean 0, not missing. Only explicit flags indicate missing.
+                    # When explicitly flagged missing, store count as None.
+                    if pd.isna(count_value) or count_value == "":
+                        count = None if explicit_missing else 0
+                        is_missing = explicit_missing
                     else:
                         try:
                             count = int(count_value)
-                            is_missing = explicit_missing  # Use explicit flag
+                            is_missing = explicit_missing
                         except (ValueError, TypeError):
-                            # Invalid count - preserve as 0 with missing flag
-                            count = 0
+                            count = None
                             is_missing = True
 
                     # Create subtotal record

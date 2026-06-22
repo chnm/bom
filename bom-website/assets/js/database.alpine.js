@@ -14,6 +14,100 @@ document.addEventListener("alpine:init", () => {
     deathYearlyData: {},
     christeningYearlyData: {},
 
+    // Pivoted bills: one row per parish/week (or parish/year for general)
+    pivotedBills: [],
+
+    /**
+     * Rebuild pivoted bills from the flat bills array.
+     * Call this after bills data is loaded.
+     */
+    buildPivotedBills() {
+      const grouped = {};
+      for (const bill of this.bills) {
+        const key = bill.name + '|' + (bill.week_number || '') + '|' + bill.year;
+        if (!grouped[key]) {
+          grouped[key] = {
+            name: bill.name,
+            week_number: bill.week_number,
+            year: bill.year,
+            split_year: bill.split_year,
+            start_month: bill.start_month,
+            start_day: bill.start_day,
+            end_month: bill.end_month,
+            end_day: bill.end_day,
+            buried: null,
+            plague: null,
+            buried_missing: false,
+            buried_illegible: false,
+            plague_missing: false,
+            plague_illegible: false,
+            parish: bill.parish,
+          };
+        }
+        const row = grouped[key];
+        // Missing if count is null/undefined — regardless of the missing flag.
+        // A count of 0 is real data, not missing.
+        const isTrulyMissing = (bill.count === null || bill.count === undefined);
+        if (bill.count_type === 'buried') {
+          row.buried = bill.count;
+          row.buried_missing = isTrulyMissing;
+          row.buried_illegible = bill.illegible === true;
+        } else if (bill.count_type === 'plague') {
+          row.plague = bill.count;
+          row.plague_missing = isTrulyMissing;
+          row.plague_illegible = bill.illegible === true;
+        }
+      }
+      this.pivotedBills = Object.values(grouped);
+    },
+
+    /**
+     * Render tiny sparkline bar charts for each cause in the deaths table.
+     * Groups the current page's cause records by cause name and year,
+     * then draws a mini bar chart showing the count per year.
+     */
+    renderCauseSparklines() {
+      if (!this.causes.length) return;
+
+      // Group all records by cause name → {year: totalCount}
+      const byCause = {};
+      for (const c of this.causes) {
+        const name = c.name || c.death;
+        if (!byCause[name]) byCause[name] = {};
+        const year = c.year;
+        byCause[name][year] = (byCause[name][year] || 0) + (c.count || 0);
+      }
+
+      // Render a sparkline into each .cause-sparkline element
+      document.querySelectorAll('.cause-sparkline').forEach(el => {
+        const cause = el.dataset.cause;
+        const yearCounts = byCause[cause];
+        if (!yearCounts) return;
+
+        const data = Object.entries(yearCounts)
+          .map(([year, count]) => ({ year: +year, count }))
+          .sort((a, b) => a.year - b.year);
+
+        if (!data.length) return;
+
+        const maxVal = Math.max(...data.map(d => d.count));
+        if (maxVal === 0) return;
+
+        // Tiny SVG bar chart
+        const w = 120, h = 24, gap = 1;
+        const barW = Math.max(1, (w - gap * (data.length - 1)) / data.length);
+
+        const bars = data.map((d, i) => {
+          const barH = Math.max(1, (d.count / maxVal) * h);
+          const x = i * (barW + gap);
+          const y = h - barH;
+          return `<rect x="${x}" y="${y}" width="${barW}" height="${barH}" fill="#9a3324" opacity="0.7"/>`;
+        }).join('');
+
+        el.innerHTML = `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">${bars}</svg>`;
+      });
+    },
+
     // Tab state - Two-tiered system
     primaryTab: "annual", // annual, yearly, bread-death
     secondaryTab: "parishes", // parishes, deaths, christenings, foodstuffs, ages
@@ -44,6 +138,7 @@ document.addEventListener("alpine:init", () => {
       selectedCausesOfDeath: [],
       selectedChristenings: [],
       showIllegibleOnly: false,
+      showMissingOnly: false,
     },
 
     // Status messages
@@ -584,6 +679,7 @@ document.addEventListener("alpine:init", () => {
 
         // Update state
         this.bills = data;
+        this.buildPivotedBills();
 
         // Update pagination state
         if (this.pagination.useCursor) {
@@ -802,6 +898,9 @@ document.addEventListener("alpine:init", () => {
 
         // Update state
         this.causes = data;
+
+        // Build sparklines for causes after render
+        this.$nextTick(() => this.renderCauseSparklines());
 
         // Update pagination
         if (data.length > 0 && data[0].totalrecords) {
@@ -1072,6 +1171,7 @@ document.addEventListener("alpine:init", () => {
       // Update the appropriate data array
       if (currentTab === 1 || currentTab === 2) {
         this.bills = sortedData;
+        this.buildPivotedBills();
       } else if (currentTab === 3) {
         this.causes = sortedData;
       } else if (currentTab === 4) {
@@ -1152,6 +1252,7 @@ document.addEventListener("alpine:init", () => {
       this.filters.selectedCausesOfDeath = [];
       this.filters.selectedChristenings = [];
       this.filters.showIllegibleOnly = false;
+      this.filters.showMissingOnly = false;
 
       // Reset pagination
       this.page = 1;
@@ -1309,15 +1410,12 @@ document.addEventListener("alpine:init", () => {
         return this.messages.loading;
       }
 
+      // Helper for formatted numbers
+      const fmt = (n) => `<span class="font-sans font-semibold tabular-nums">${Number(n).toLocaleString()}</span>`;
+
       // Handle different summary types
       if (type && type.toLowerCase() === "pages") {
-        return (
-          "Showing page <strong>" +
-          this.page +
-          "</strong> of <strong>" +
-          this.pagination.lastPage +
-          "</strong>"
-        );
+        return "Showing page " + fmt(this.page) + " of " + fmt(this.pagination.lastPage);
       }
 
       // Handle empty results
@@ -1327,13 +1425,9 @@ document.addEventListener("alpine:init", () => {
 
       // Show row count summary
       return (
-        "Showing <strong>" +
-        this.getFirstDisplayedRow() +
-        "</strong> to <strong>" +
-        this.getLastDisplayedRow() +
-        "</strong> of <strong>" +
-        this.pagination.total +
-        "</strong> records"
+        "Showing " + fmt(this.getFirstDisplayedRow()) +
+        " to " + fmt(this.getLastDisplayedRow()) +
+        " of " + fmt(this.pagination.total) + " records"
       );
     },
 

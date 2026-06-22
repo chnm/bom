@@ -1,144 +1,93 @@
 {{ define "main" }}
 
 <main class="min-h-screen bg-white pt-7">
-  <div class="container mx-auto px-4 max-w-6xl">
-    <header class="mb-8">
-      <h1 class="text-4xl font-medium text-dbn-green-700">{{ .Title }}</h1>
+  <div class="mx-auto px-6 lg:px-12 max-w-screen-xl">
+    <!-- Section header -->
+    <header class="mb-10 max-w-2xl">
+      <p class="mb-2 text-sm font-semibold tracking-widest uppercase text-dbn-red-700">Research Methods</p>
+      <h1 class="text-5xl font-display mb-4">{{ .Title }}</h1>
       {{ if .Content }}
-        <div class="prose prose-lg mt-4">{{ .Content }}</div>
+        <div class="prose prose-lg">{{ .Content }}</div>
       {{ end }}
     </header>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <hr class="border-dbn-red-700 w-24 mb-10">
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
       <!-- Main content -->
-      <section class="lg:col-span-2" aria-label="Methodologies posts">
-        {{ $methodologyPosts := where .Site.RegularPages "Params.categories" "intersect" (slice "workflows") }}
-        {{ $paginator := .Paginate $methodologyPosts }}
+      <section class="lg:col-span-2" aria-label="Analysis posts">
+        {{ $sectionPosts := where .Site.RegularPages "Params.categories" "intersect" (slice "workflows") }}
+        {{ $paginator := .Paginate $sectionPosts }}
         {{ if $paginator.Pages }}
           {{ range $paginator.Pages }}
-            <article class="mb-8 pb-8 border-b border-gray-200 last:border-b-0">
-              <header class="mb-4">
-                <h2 class="text-xl font-semibold mb-2">
-                  <a href="{{ .Permalink }}" class="text-dbn-green-700 hover:text-dbn-red-700 transition-colors">
-                    {{ .Title }}
-                  </a>
-                </h2>
-                
-                <div class="flex flex-wrap items-center gap-4 text-sm text-dbn-yellow-800">
-                  {{ if .Params.author }}
-                    <div class="flex items-center">
-                      <span class="text-xs uppercase font-semibold mr-1">By</span>
-                      {{ range $i, $author := .Params.author }}
-                        {{ if $i }}, {{ end }}{{ $author }}
-                      {{ end }}
-                    </div>
-                  {{ end }}
-                  
-                  {{ if .Date }}
-                    <time datetime="{{ .Date.Format "2006-01-02" }}" class="text-xs">
-                      {{ .Date.Format "January 2, 2006" }}
-                    </time>
-                  {{ end }}
-                </div>
-                
-                {{ if .Params.categories }}
-                  <div class="flex flex-wrap gap-2 mt-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" 
-                         class="w-4 h-4 text-dbn-yellow-500" viewBox="0 0 16 16" aria-hidden="true">
-                      <path d="M.54 3.87.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.826a2 2 0 0 1-1.991-1.819l-.637-7a1.99 1.99 0 0 1 .342-1.31zM2.19 4a1 1 0 0 0-.996 1.09l.637 7a1 1 0 0 0 .995.91h10.348a1 1 0 0 0 .995-.91l.637-7A1 1 0 0 0 13.81 4H2.19zm4.69-1.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981l.006.139C1.72 3.042 1.95 3 2.19 3h5.396l-.707-.707z"/>
-                    </svg>
-                    {{ range .Params.categories }}
-                      <a href="/categories/{{ . | urlize }}" class="text-sm text-dbn-blue-700 hover:text-dbn-purple-500 transition-colors">
-                        {{ . }}
-                      </a>
-                    {{ end }}
-                  </div>
-                {{ end }}
-              </header>
-              
+            <article class="mb-10 pb-10 border-b border-gray-200 last:border-b-0">
+              <!-- Date + category -->
+              <p class="text-xs font-mono tracking-wide uppercase text-gray-400 mb-2">
+                <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
+                {{ range .Params.categories }}&middot; {{ . }}{{ end }}
+                {{ if .Params.featured }}&middot; <span class="text-dbn-red-700">Featured</span>{{ end }}
+              </p>
+
+              <!-- Title -->
+              <h2 class="text-2xl lg:text-3xl font-display mb-2">
+                <a href="{{ .Permalink }}" class="text-ink hover:text-dbn-red-700 transition-colors no-underline">
+                  {{ .Title }}
+                </a>
+              </h2>
+
+              <!-- Author -->
+              {{ if .Params.author }}
+              <p class="text-sm text-gray-500 mb-4">
+                By {{ range $i, $author := .Params.author }}{{ if $i }} &amp; {{ end }}{{ $author }}{{ end }}
+              </p>
+              {{ end }}
+
+              <!-- Summary -->
               <div class="prose max-w-none">
-                <p class="text-dbn-green-700 leading-relaxed">
-                  {{ .Summary | plainify | truncate 300 }}
-                </p>
-                <div class="mt-3">
-                  <a href="{{ .Permalink }}" class="text-dbn-red-700 hover:text-dbn-orange-700 font-medium transition-colors">
-                    Read more →
-                  </a>
-                </div>
+                <p class="leading-relaxed">{{ .Summary | plainify | truncate 300 }}</p>
               </div>
+
+              <a href="{{ .Permalink }}" class="inline-block mt-4 text-sm font-semibold tracking-widest uppercase border-b-2 border-dbn-red-700 text-ink hover:text-dbn-red-700 pb-1 transition-colors no-underline">
+                Read more &rarr;
+              </a>
             </article>
           {{ end }}
         {{ else }}
-          <p class="text-dbn-yellow-800">No methodology posts available.</p>
+          <p class="text-gray-500">No posts available.</p>
         {{ end }}
       </section>
 
       <!-- Sidebar -->
-      <aside class="lg:col-span-1 space-y-8" aria-label="Methodologies sidebar">
-        <!-- Recent Posts -->
-        <section class="bg-dbn-green-50 rounded-lg p-6">
-          <h2 class="text-xl font-semibold text-dbn-green-700 mb-4">Recent Methodology Posts</h2>
-          {{ $recentMethodologyPosts := first 5 (where .Site.RegularPages "Params.categories" "intersect" (slice "workflows")) }}
-          {{ if $recentMethodologyPosts }}
-            <div class="space-y-4">
-              {{ range $recentMethodologyPosts }}
-                <article class="border-b border-gray-200 pb-3 last:border-b-0 last:pb-0">
-                  <h3 class="text-base font-medium mb-1">
-                    <a href="{{ .Permalink }}" class="text-dbn-green-700 hover:text-dbn-red-700 transition-colors line-clamp-2">
-                      {{ .Title }}
-                    </a>
-                  </h3>
-                  <div class="text-sm text-dbn-yellow-800">
-                    {{ if .Params.author }}
-                      {{ range $i, $author := .Params.author }}{{ if $i }}, {{ end }}{{ $author }}{{ end }}
-                      {{ if .Date }} • {{ end }}
-                    {{ end }}
-                    {{ if .Date }}
-                      <time datetime="{{ .Date.Format "2006-01-02" }}">
-                        {{ .Date.Format "Jan 2, 2006" }}
-                      </time>
-                    {{ end }}
-                  </div>
-                </article>
-              {{ end }}
-            </div>
-          {{ else }}
-            <p class="text-dbn-yellow-800">No recent methodology posts available.</p>
-          {{ end }}
-        </section>
-
-        <!-- Methodologies Tags -->
-        {{ $methodologyTags := dict }}
+      <aside class="lg:col-span-1 space-y-8" aria-label="Sidebar">
+        <!-- Tags -->
+        {{ $sectionTags := dict }}
         {{ range $name, $taxonomy := .Site.Taxonomies.tags }}
           {{ $filteredPages := where $taxonomy.Pages "Params.categories" "intersect" (slice "workflows") }}
           {{ if gt (len $filteredPages) 0 }}
-            {{ $methodologyTags = merge $methodologyTags (dict $name $filteredPages) }}
+            {{ $sectionTags = merge $sectionTags (dict $name $filteredPages) }}
           {{ end }}
         {{ end }}
-        
-        {{ if $methodologyTags }}
-          <section class="bg-dbn-yellow-50 rounded-lg p-6">
-            <h2 class="text-xl font-semibold text-dbn-green-700 mb-4">Methodology Tags</h2>
-            {{ $maxCount := 1 }}
-            {{ $minCount := 1000 }}
-            
-            {{/* Calculate min/max for sizing */}}
-            {{ range $name, $pages := $methodologyTags }}
-              {{ $count := len $pages }}
-              {{ if gt $count $maxCount }}{{ $maxCount = $count }}{{ end }}
-              {{ if lt $count $minCount }}{{ $minCount = $count }}{{ end }}
-            {{ end }}
-            
-            <div class="flex flex-wrap gap-2">
-              {{ range $name, $pages := $methodologyTags }}
+        {{ if $sectionTags }}
+          {{ $maxCount := 1 }}
+          {{ $minCount := 1000 }}
+          {{ range $name, $pages := $sectionTags }}
+            {{ $count := len $pages }}
+            {{ if gt $count $maxCount }}{{ $maxCount = $count }}{{ end }}
+            {{ if lt $count $minCount }}{{ $minCount = $count }}{{ end }}
+          {{ end }}
+          <section class="bg-gray-50 border border-gray-200 rounded-lg p-6">
+            <h2 class="text-lg font-display mb-4">Methodology Tags</h2>
+            <div class="flex flex-wrap gap-2 items-center">
+              {{ range $name, $pages := $sectionTags }}
                 {{ $count := len $pages }}
-                {{ $weight := div (sub $count $minCount) (sub $maxCount $minCount) }}
-                {{ $size := add 0.75 (mul $weight 0.5) }}
-                <a href="{{ "/tags/" | relURL }}{{ $name | urlize }}" 
-                   class="inline-block px-3 py-1 bg-white rounded-full text-sm text-dbn-green-700 hover:bg-dbn-yellow-100 hover:text-dbn-green-700 transition-colors border border-dbn-yellow-300"
+                {{ $range := sub $maxCount $minCount }}
+                {{ $weight := 0.0 }}
+                {{ if gt $range 0 }}{{ $weight = div (float (sub $count $minCount)) (float $range) }}{{ end }}
+                {{ $size := add 0.8 (mul $weight 0.8) }}
+                <a href="{{ "/tags/" | relURL }}{{ $name | urlize }}"
+                   class="inline-block px-3 py-1 border border-gray-300 rounded-full text-ink hover:border-dbn-red-700 hover:text-dbn-red-700 transition-colors no-underline"
                    style="font-size: {{ $size }}rem;">
-                  {{ $name }}
-                  <span class="text-xs text-dbn-yellow-800">({{ $count }})</span>
+                  {{ $name }} ({{ $count }})
                 </a>
               {{ end }}
             </div>
@@ -147,16 +96,14 @@
 
         <!-- Related Categories -->
         {{ if .Site.Taxonomies.categories }}
-          <section class="bg-dbn-blue-50 rounded-lg p-6">
-            <h2 class="text-xl font-semibold text-dbn-green-700 mb-4">Related Categories</h2>
-            <div class="space-y-2">
+          <section class="bg-gray-50 border border-gray-200 rounded-lg p-6">
+            <h2 class="text-lg font-display mb-4">Related Categories</h2>
+            <div class="space-y-0">
               {{ range $name, $taxonomy := .Site.Taxonomies.categories }}
-                <a href="{{ "/categories/" | relURL }}{{ $name | urlize }}" 
-                   class="flex justify-between items-center py-2 px-3 rounded hover:bg-white hover:bg-opacity-70 transition-colors group">
-                  <span class="text-dbn-green-600 group-hover:text-dbn-red-700">{{ $name }}</span>
-                  <span class="text-sm text-dbn-yellow-800 bg-dbn-yellow-100 px-2 py-1 rounded-full group-hover:bg-dbn-yellow-200">
-                    {{ len $taxonomy.Pages }}
-                  </span>
+                <a href="{{ "/categories/" | relURL }}{{ $name | urlize }}"
+                   class="flex justify-between items-center py-3 border-b border-gray-200 last:border-b-0 text-ink hover:text-dbn-red-700 transition-colors no-underline">
+                  <span>{{ $name }}</span>
+                  <span class="text-sm text-gray-400 font-mono">{{ len $taxonomy.Pages }}</span>
                 </a>
               {{ end }}
             </div>

@@ -1,66 +1,81 @@
 {{ define "main" }}
 
-<div class="flex min-h-screen items-center justify-start bg-white pt-7 mx-auto w-full lg:max-w-screen-lg sm:max-w-screen-sm md:max-w-screen-md">
-  <div class="container mx-auto px-4">
-    <h2 class="text-4xl font-medium pb-4">{{ .Title }}</h2>
-    {{ if .IsHome }}
+<div class="bg-white">
+  <div class="mx-auto w-full max-w-screen-xl px-6 lg:px-12">
 
-    <div class="flex flex-col mb-8 animated fadeIn sm:flex-row">
-      <div class="flex items-center mb-8 sm:w-1/2 md:w-1/2">
-        <div class="flex flex-wrap w-11/12 prose prose-lg">
+    {{/* ── Hero: Welcome + Latest Writings ── */}}
+    <section class="grid grid-cols-1 lg:grid-cols-5 gap-12 py-16 lg:py-24">
+      {{/* Left: intro text */}}
+      <div class="lg:col-span-3">
+        <h2 class="text-4xl lg:text-5xl font-display leading-tight mb-6">
+          Welcome to the Bills of Mortality
+        </h2>
+        <div class="prose prose-lg text-gray-600">
           {{ .Content }}
         </div>
       </div>
-      <div class="flex flex-col justify-center sm:w-1/2 md:w-1/2 sm:pr-16 bg-slate-100 p-3 m-3 rounded-lg">
-        <h3 class="font-medium pb-4 prose-2xl">Latest Writings</h3>
-        {{ range first 3 (where .Site.RegularPages "Section" "ne" "visualizations") }}
-          <div class="flex flex-wrap p-5 prose">
-            <p class="font-medium pb-4"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time> &middot; <a href="{{ .Permalink }}">{{ .Title }}</a></p>
-            </div>
-            {{ end }}
-        <p class="text-center">Explore our post categories:</p>
-        <p class="text-center"><a class="text-dbn-blue-700 hover:underline" href="/analysis/">Analysis</a> | <a class="text-dbn-blue-700 hover:underline" href="/context/">Context</a> | <a class="text-dbn-blue-700 hover:underline" href="/methodologies/">Methodologies</a></p>
-      </div>
 
-  </div>
-
-    <hr class="w-48 h-0.5 mx-auto my-4 bg-gray-700 border-0 rounded md:my-10">
-    
-          <div class="flex flex-col mb-8 animated fadeIn sm:flex-row">
-            <div class="flex items-center mb-8 sm:w-1/2 md:w-5/12 sm:order-last">
-                <img class="rounded-lg shadow-xl object-cover h-48 w-96" src="/images/bodleian-1642-09-recto.png" alt="A 1642 London Bill of Mortality from the Bodleian Library">
-            </div>
-            <div class="flex flex-col justify-center mt-5 mb-8 md:mt-0 sm:w-1/2 md:w-7/12 sm:pr-16">
-                <p class="mb-2 text-sm font-semibold leading-none text-left text-dbn-red-700 uppercase">viewing the data</p>
-                <h3 class="mt-2 text-2xl sm:text-left md:text-4xl"><a class="text-dbn-green-600 underline" href="/database/">The Plague Database</a></h3>
-                <p class="mt-5 text-lg text-gray-700 text md:text-left">Explore the full plague bills database.</p>
-            </div>
-        </div>
-        <div class="flex flex-col mb-8 animated fadeIn sm:flex-row">
-          <div class="flex items-center mb-8 sm:w-1/2 md:w-5/12 sm:order-last">
-              <img class="rounded-lg shadow-xl object-cover h-48 w-96" src="/images/preview_viz.png" alt="Preview of a data visualization showing mortality patterns">
+      {{/* Right: latest writings card */}}
+      <div class="lg:col-span-2">
+        <div class="bg-gray-50 border border-gray-200 rounded-lg p-6">
+          <h3 class="text-xl font-serif font-medium mb-4">Latest Writings</h3>
+          {{ range first 3 (where .Site.RegularPages "Section" "ne" "visualizations") }}
+          <div class="py-3 border-t border-gray-200">
+            <p class="text-xs tracking-wide uppercase text-gray-400 font-mono mb-1">
+              <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
+              {{ with .Section }}&middot; <span class="capitalize">{{ . }}</span>{{ end }}
+            </p>
+            <a href="{{ .Permalink }}" class="text-dbn-red-700 hover:text-dbn-red-900 font-medium hover:underline">{{ .Title }}</a>
           </div>
-          <div class="flex flex-col justify-center mt-5 mb-8 md:mt-0 sm:w-1/2 md:w-7/12 sm:pr-16">
-              <p class="mb-2 text-sm font-semibold leading-none text-left text-dbn-red-700 uppercase">knowing the data</p>
-              <h3 class="mt-2 text-2xl sm:text-left md:text-4xl"><a class="text-dbn-green-600 underline" href="/visualizations/">Visualizing the Plague</a></h3>
-              <p class="mt-5 text-lg text-gray-700 text md:text-left">Transcribing the plague bills means new approaches for data visualization and exploring patterns in the data.</p>
-          </div>
-      </div>
-        <div class="flex flex-col mb-8 animated fadeIn sm:flex-row">
-            <div class="flex items-center mb-8 sm:w-1/2 md:w-5/12 sm:order-last">
-                <img class="rounded-lg shadow-xl object-cover h-48 w-96" src="/images/IMG_4187.jpeg" alt="A researcher examining historical plague bills">
-            </div>
-            <div class="flex flex-col justify-center mt-5 mb-8 md:mt-0 sm:w-1/2 md:w-7/12 sm:pr-16">
-                <p class="mb-2 text-sm font-semibold leading-none text-left text-dbn-red-700 uppercase">read about our research</p>
-                <h3 class="mt-2 text-2xl sm:text-left md:text-4xl"><a class="text-dbn-green-600 underline" href="/analysis/">Analyzing the Plague</a></h3>
-                <p class="mt-5 text-lg text-gray-700 text md:text-left">Read our ongoing research into the London plague bills.</p>
-            </div>
+          {{ end }}
         </div>
-  </div>
+      </div>
+    </section>
 
-    {{ else }}
-    <div class="flex flex-wrap w-3/4 p-5 prose">{{ .Content }}</div>
-    {{ end }}
+    <hr class="border-gray-200">
+
+    {{/* ── Section: The Plague Database ── */}}
+    <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center py-16 lg:py-24">
+      <div>
+        <h3 class="text-3xl lg:text-4xl font-display mb-4">
+          <a href="/database/" class="hover:text-dbn-red-700 transition-colors">The Plague Database</a>
+        </h3>
+        <p class="text-lg text-gray-600 mb-6">Browse over a million transcribed records&thinsp;—&thinsp;by parish, by cause of death, by week&thinsp;—&thinsp;across the full run of the bills.</p>
+        <a href="/database/" class="inline-block text-sm font-semibold tracking-widest uppercase border-b-2 border-dbn-red-700 text-gray-900 hover:text-dbn-red-700 pb-1 transition-colors">Explore &rarr;</a>
+      </div>
+      <div>
+        <img class="rounded-lg shadow-lg object-cover w-full h-64 lg:h-80" src="/images/bodleian-1642-09-recto.png" alt="A 1642 London Bill of Mortality from the Bodleian Library">
+      </div>
+    </section>
+
+    {{/* ── Section: Visualizing the Plague (reversed) ── */}}
+    <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center py-16 lg:py-24">
+      <div class="lg:order-last">
+        <h3 class="text-3xl lg:text-4xl font-display mb-4">
+          <a href="/visualizations/" class="hover:text-dbn-red-700 transition-colors">Visualizing the Plague</a>
+        </h3>
+        <p class="text-lg text-gray-600 mb-6">Transcription opens new approaches for visualization&thinsp;—&thinsp;calendars of causes, parish heat maps, and weekly sparklines that reveal the shape of an epidemic.</p>
+        <a href="/visualizations/" class="inline-block text-sm font-semibold tracking-widest uppercase border-b-2 border-dbn-red-700 text-gray-900 hover:text-dbn-red-700 pb-1 transition-colors">Explore &rarr;</a>
+      </div>
+      <div>
+        <img class="rounded-lg shadow-lg object-cover w-full h-64 lg:h-80" src="/images/preview_viz.png" alt="Preview of a data visualization showing mortality patterns">
+      </div>
+    </section>
+
+    {{/* ── Section: Analyzing the Plague ── */}}
+    <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center py-16 lg:py-24">
+      <div>
+        <h3 class="text-3xl lg:text-4xl font-display mb-4">
+          <a href="/analysis/" class="hover:text-dbn-red-700 transition-colors">Analyzing the Plague</a>
+        </h3>
+        <p class="text-lg text-gray-600 mb-6">Read our ongoing research into the London plague bills.</p>
+        <a href="/analysis/" class="inline-block text-sm font-semibold tracking-widest uppercase border-b-2 border-dbn-red-700 text-gray-900 hover:text-dbn-red-700 pb-1 transition-colors">Explore &rarr;</a>
+      </div>
+      <div>
+        <img class="rounded-lg shadow-lg object-cover w-full h-64 lg:h-80" src="/images/IMG_4187.jpeg" alt="A researcher examining historical plague bills">
+      </div>
+    </section>
+
   </div>
 </div>
 

@@ -323,9 +323,14 @@ func convertValue(val, column, table string) interface{} {
 	case column == "year" || column == "id" ||
 		column == "week_number" || column == "start_day" || column == "end_day" ||
 		column == "week" || column == "count" || column == "parish_id":
+		// Try integer first, then float (handles "0.0" from pandas)
 		num, err := strconv.Atoi(val)
 		if err == nil {
 			return num
+		}
+		floatNum, err := strconv.ParseFloat(val, 64)
+		if err == nil {
+			return int(floatNum)
 		}
 		return nil
 	case column == "missing" || column == "illegible":

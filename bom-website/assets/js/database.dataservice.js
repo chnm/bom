@@ -342,6 +342,12 @@ const DataService = {
     if (filters.selectedParishes && filters.selectedParishes.length > 0) {
       params["parish"] = filters.selectedParishes;
     }
+    if (filters.showIllegibleOnly) {
+      params["illegible"] = "true";
+    }
+    if (filters.showMissingOnly) {
+      params["missing"] = "true";
+    }
 
     // Prioritize cursor-based pagination (default and preferred)
     if (pagination.cursor) {
