@@ -1,39 +1,33 @@
 {{- partial "header.html" . -}}
 
-<!-- hero -->
-<section class="flex flex-wrap items-center font-sans px-4 mx-auto w-full lg:max-w-screen-lg sm:max-w-screen-sm md:max-w-screen-md pb-20 bg-dbn-green-900">
-  <!-- first column -->
-  <div class="w-full lg:w-3/5">
-    <div class="mx-auto mb-8 max-w-lg text-center lg:mx-0 lg:max-w-md lg:text-left">
-      <h2 class="mb-4 text-1xl font-bold text-left lg:text-2xl text-white">
-        The London Bills of Mortality
-      </h2>
-      <p
-        class="visible mx-0 mt-3 mb-0 text-base leading-relaxed text-left text-white"
-      >
-      One of the most dreaded diseases in early modern London was plague. Starting in 1603, government officials published weekly plague mortality statistics in a broadside series known as the Bills of Mortality. The bills grew to include not just plague deaths but also dozens of other causes of death, ensuring their continued publication for decades after the final outbreak of plague in England.
-      </p>
-    </div>
-    <div class="text-center lg:text-left">
-      <a
-        class="block visible py-4 px-8 mb-4 text-xs font-semibold tracking-wide leading-none text-white bg-dbn-blue-700 hover:bg-dbn-blue-800 rounded cursor-pointer sm:mr-3 sm:mb-0 sm:inline-block"
-        href="/database/"
-        >Database</a
-      >
-
-      <a
-        class="block visible py-4 px-8 text-xs font-semibold leading-none bg-white hover:bg-dbn-yellow-100 rounded border border-solid cursor-pointer sm:inline-block border-dbn-yellow-300 text-dbn-green-800"
-        href="/visualizations"
-        >Visualizations</a
-      >
-    </div>
-    </div>
-
-    <!-- second column -->
-    <div class="mb-12 w-full lg:mb-0 lg:w-2/5">
-        <!-- image container -->
-      <div class="flex justify-center items-center mt-4">
-        <img class="block w-full lg:h-auto md:h-44 sm:h-44 xs:h-44 align-middle lg:max-w-lg object-none object-center drop-shadow-md rounded-lg" src="/images/004179.jpg" alt="A printed London Bill of Mortality showing weekly death counts by parish" />
+<!-- Hero -->
+<section class="bg-dbn-green-900 text-white">
+  <div class="mx-auto w-full max-w-screen-xl px-6 lg:px-12 py-16 lg:py-24">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <!-- Left: title + description + buttons -->
+      <div>
+        <h1 class="text-4xl lg:text-6xl font-display leading-tight mb-6">
+          The London Bills of Mortality
+        </h1>
+        <p class="text-lg leading-relaxed text-gray-300 mb-8">
+          For a century and a half, London counted its dead week by week. We are transcribing those broadsides into a dataset built for computation&thinsp;—&thinsp;and asking what it meant to know a city by its numbers.
+        </p>
+        <div class="flex flex-wrap gap-4">
+          <a href="/database/"
+             class="inline-block px-6 py-3 text-sm font-semibold tracking-wide text-white bg-dbn-red-700 hover:bg-dbn-red-800 rounded transition-colors">
+            Explore the database &rarr;
+          </a>
+          <a href="/visualizations/"
+             class="inline-block px-6 py-3 text-sm font-semibold tracking-wide text-gray-300 border border-gray-500 hover:border-gray-300 hover:text-white rounded transition-colors">
+            View visualizations
+          </a>
+        </div>
+      </div>
+      <!-- Right: bill facsimile image -->
+      <div class="rounded-lg shadow-2xl overflow-hidden h-72 lg:h-96">
+        <img class="w-full h-full object-cover scale-125"
+             src="/images/004179.jpg"
+             alt="A printed London Bill of Mortality showing weekly death counts by parish">
       </div>
     </div>
   </div>

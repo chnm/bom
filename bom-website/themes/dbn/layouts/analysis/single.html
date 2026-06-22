@@ -1,22 +1,44 @@
 {{ define "main" }}
 
-<div class="relative w-full px-6 py-12 bg-white md:max-w-3xl md:mx-auto lg:max-w-4xl lg:pt-16 lg:pb-28">
+<div class="relative w-full px-6 py-12 bg-white md:max-w-3xl md:mx-auto lg:max-w-4xl lg:pt-12 lg:pb-28">
   <div class="mx-auto">
-    <div class="flex font-light text-base">
-      <p><span class="font-bold text-dbn-orange-700">|</span> {{ .Params.date | dateFormat "January 2, 2006" }}</p>
+    <!-- Back link -->
+    <a href="/analysis/" class="text-sm font-semibold tracking-widest uppercase text-dbn-red-700 hover:underline mb-6 inline-block">
+      &larr; Back to Analysis
+    </a>
+
+    <!-- Date + section -->
+    <div class="flex items-center gap-2 mb-2">
+      <span class="w-1 h-5 bg-dbn-red-700 inline-block"></span>
+      <p class="text-xs font-mono tracking-wide uppercase text-gray-400">
+        {{ .Params.date | dateFormat "January 2, 2006" }} &middot;
+        {{ range .Params.categories }}{{ . }}{{ end }}
+      </p>
     </div>
-    <h2 class="text-4xl font-medium">{{ .Title }}</h2>
-    <div id="metadata" class="prose prose-lg mb-5 pb-5">
-      <span class="font-bold">By</span> {{ range $key, $value := .Params.author }}
-      {{ $value }}{{ if ne $key (sub (len $.Params.author) 1) }} and {{ else }}{{ end }}
-      {{ end }} in {{ range .Params.categories }}<a class="text-dbn-orange-700" href="/categories/{{ . | urlize }}">{{ .
-        }}</a>{{ end }}
-      tagged {{ range $i, $e := .Params.tags }}{{ if $i }}, {{ end }}<a class="text-dbn-orange-700" href="/tags/{{ $e }}">{{
-        $e
-        }}</a>{{
-      end }}
-      {{- partial "coins.html" . -}}
+
+    <!-- Title -->
+    <h2 class="text-4xl lg:text-5xl font-display mb-4">{{ .Title }}</h2>
+
+    <!-- Author + tags -->
+    <div class="flex flex-wrap items-center justify-between mb-6 pb-6 border-b border-gray-200">
+      <p class="text-base">
+        <span class="text-gray-400">By</span>
+        {{ range $key, $value := .Params.author }}
+          <span class="font-semibold">{{ $value }}</span>{{ if ne $key (sub (len $.Params.author) 1) }} &amp; {{ end }}
+        {{ end }}
+      </p>
+      {{ if .Params.tags }}
+      <div class="flex flex-wrap gap-2">
+        {{ range .Params.tags }}
+          <a href="/tags/{{ . }}" class="text-sm px-3 py-1 border border-gray-300 rounded-full text-ink hover:border-dbn-red-700 hover:text-dbn-red-700 transition-colors no-underline">{{ . }}</a>
+        {{ end }}
+      </div>
+      {{ end }}
     </div>
+
+    {{- partial "coins.html" . -}}
+
+    <!-- Content -->
     <div class="prose prose-lg">{{ .Content }}</div>
   </div>
 </div>

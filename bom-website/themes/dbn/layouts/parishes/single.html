@@ -28,8 +28,16 @@
         <span x-show="parishInfo?.notes" x-text="parishInfo?.notes"></span>
       </div>
 
-      <!-- Summary cards -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+      <!-- Summary cards + map -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+
+      <!-- Map -->
+      <div class="border border-gray-200 rounded-lg overflow-hidden h-56 lg:h-64">
+        <div id="parishMap" class="w-full h-full"></div>
+      </div>
+
+      <!-- Cards in 2x2 -->
+      <div class="grid grid-cols-2 gap-4">
         <div class="border border-gray-200 rounded-lg p-4">
           <div class="text-xs text-gray-500 uppercase tracking-wide">Total Buried</div>
           <div class="text-2xl font-mono font-semibold mt-1" x-text="totalBuried.toLocaleString()"></div>
@@ -47,6 +55,7 @@
           <div class="text-2xl font-mono font-semibold mt-1" x-text="parishInfo?.foundation_year"></div>
         </div>
       </div>
+      </div><!-- end cards + map grid -->
 
       <!-- Charts -->
       <div class="border border-gray-200 rounded-lg p-6 mb-6">
@@ -180,8 +189,9 @@ document.addEventListener('alpine:init', () => {
         this.totalBuried = this.yearData.reduce((sum, y) => sum + (y.total_buried || 0), 0);
         this.totalPlague = this.yearData.reduce((sum, y) => sum + (y.total_plague || 0), 0);
 
-        // Render charts after data loads
+        // Render charts and map after data loads
         this.$nextTick(() => this.renderCharts());
+        this.renderMap();
 
         // Fetch sources in the background (non-blocking)
         this.fetchSources();
@@ -235,6 +245,71 @@ document.addEventListener('alpine:init', () => {
           .sort((a, b) => b.count - a.count);
       } catch (e) {
         console.error('Error fetching sources:', e);
+      }
+    },
+
+    async renderMap() {
+      const el = document.getElementById('parishMap');
+      if (!el) return;
+
+      try {
+        const resp = await fetch('https://data.chnm.org/bom/shapefiles');
+        const geojson = await resp.json();
+
+        const parishName = this.parishName;
+
+        // Use D3 to render the map
+        const width = el.clientWidth;
+        const height = Math.max(200, el.clientHeight);
+
+        const svg = d3.select(el)
+          .append('svg')
+          .attr('width', width)
+          .attr('height', height)
+          .attr('viewBox', `0 0 ${width} ${height}`);
+
+        // Project — fit to bounding box
+        const projection = d3.geoMercator()
+          .fitSize([width - 8, height - 8], geojson)
+          .translate([width / 2, height / 2]);
+
+        const path = d3.geoPath().projection(projection);
+
+        // Draw all parishes in light gray
+        svg.selectAll('path.parish')
+          .data(geojson.features)
+          .enter()
+          .append('path')
+          .attr('class', 'parish')
+          .attr('d', path)
+          .attr('fill', d =>
+            d.properties.dbn_par === parishName ? '#9a3324' : '#e8e1d1'
+          )
+          .attr('stroke', d =>
+            d.properties.dbn_par === parishName ? '#7d2b1f' : '#d0c9b8'
+          )
+          .attr('stroke-width', d =>
+            d.properties.dbn_par === parishName ? 1.5 : 0.25
+          );
+
+        // If we found the parish, zoom in a bit toward it
+        const match = geojson.features.find(f => f.properties.dbn_par === parishName);
+        if (match) {
+          // Re-project to center on the parish with some context
+          const bounds = path.bounds(match);
+          const cx = (bounds[0][0] + bounds[1][0]) / 2;
+          const cy = (bounds[0][1] + bounds[1][1]) / 2;
+          const bw = bounds[1][0] - bounds[0][0];
+          const bh = bounds[1][1] - bounds[0][1];
+          const padding = Math.max(bw, bh) * 3;
+
+          // Show enough context around the parish
+          svg.attr('viewBox',
+            `${cx - padding} ${cy - padding} ${padding * 2} ${padding * 2}`
+          );
+        }
+      } catch (e) {
+        console.error('Error loading parish map:', e);
       }
     },
 
