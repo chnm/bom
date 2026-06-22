@@ -1,6 +1,5 @@
-{{/* This is the Causes of Death table for General Bills (Annual/Yearly data). */}}
-
-<div class="mt-4">
+{{/* This is the General Bills Causes of Death table. */}}
+<div>
       <div id="control-deaths-general" class="mb-2">
         <div class="flex items-center justify-between">
           <p class="text-sm text-gray-700 py-1" x-html="getSummary"></p>
@@ -20,27 +19,24 @@
           </div>
         </div>
       </div>
-  </div>
-
 
       {{/* begin: deaths-general table */}}
     <div id="table-causes-general">
       <table class="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-700">
         <thead class="bg-gray-100 dark:bg-gray-700">
           <tr>
-<th scope="col"
+            <th scope="col"
+              class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
+              width="40%" @click="sort('name')">Cause</th>
+            <th scope="col"
               class="py-3 px-6 text-xs font-medium tracking-wider text-center text-gray-700 uppercase dark:text-gray-400"
-              width="5%">Details</th>
-
+              width="20%" @click="sort('count')">Count</th>
             <th scope="col"
               class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
-              width="50%" @click="sort('name')">Cause</th>
+              width="25%">Original Transcription</th>
             <th scope="col"
-              class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
-              width="25%" @click="sort('count')">Count</th>
-            <th scope="col"
-              class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
-              width="20%" @click="sort('year')">Year</th>
+              class="py-3 px-6 text-xs font-medium tracking-wider text-center text-gray-700 uppercase dark:text-gray-400"
+              width="15%" @click="sort('year')">Year</th>
           </tr>
         </thead>
         <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
@@ -71,9 +67,8 @@
                   </div>
                   <div class="text-sm text-gray-600">
                     <div class="font-medium text-red-600 mb-2">Unable to load data</div>
-                    <div>Your connection may be too slow or unstable.</div>
                     <div class="mt-2">
-                      <button @click="applyFilters()" class="text-blue-600 hover:text-blue-800 underline">try again</button>
+                      <button @click="applyFilters()" class="text-dbn-blue-700 hover:text-dbn-blue-900 underline">Try again</button>
                     </div>
                   </div>
                 </div>
@@ -84,20 +79,20 @@
           <!-- Data rows -->
           <template x-if="!meta.loading && !meta.error">
             <template x-for="cause in causes" :key="cause.id">
-              <tr class="hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
-                @click="openModal(cause)">
-                <td class="py-4 px-6 text-sm font-medium text-center text-gray-900 whitespace-nowrap dark:text-white font-mono">
-                  <i class="fa-solid fa-expand cursor-pointer transition-all duration-300 ease-in-out hover:scale-125 hover:text-blue-500 active:scale-90"></i>
+              <tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
+                <td class="py-3 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                  <a :href="'/causes/detail/?name=' + encodeURIComponent(cause.name) + '&bill_type=general'" class="text-dbn-blue-700 hover:text-dbn-blue-900 hover:underline" x-text="cause.name"></a></td>
+                <td class="py-3 px-6 text-sm text-center whitespace-nowrap font-mono"
+                    :class="(cause.missing && cause.count == null) ? 'bg-amber-50' : (cause.illegible ? 'bg-orange-50' : '')">
+                  <span x-show="cause.missing && cause.count == null" class="text-xs text-amber-700">data missing from record</span>
+                  <span x-show="cause.illegible && !(cause.missing && cause.count == null)" class="text-orange-700" x-text="cause.count"></span>
+                  <span x-show="cause.illegible && !(cause.missing && cause.count == null)" class="ml-1 text-xs text-orange-500">illegible</span>
+                  <span x-show="!(cause.missing && cause.count == null) && !cause.illegible && cause.count != null" class="text-gray-900 dark:text-white" x-text="cause.count"></span>
+                  <span x-show="!(cause.missing && cause.count == null) && !cause.illegible && cause.count == null" class="text-gray-300">—</span>
                 </td>
-                <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                  x-text="cause.name"></td>
-                <td class="py-4 px-6 text-sm font-medium text-center text-gray-900 whitespace-nowrap dark:text-white font-mono">
-                  <span x-show="cause.count && !cause.illegible" x-text="cause.count"></span>
-                  <span x-show="cause.count && cause.illegible" class="px-2 py-1 bg-amber-100 text-amber-800 rounded" x-text="cause.count"></span>
-                  <span x-show="!cause.count && cause.illegible" class="px-2 py-1 bg-amber-100 text-amber-800 rounded">-</span>
-                  <span x-show="!cause.count && !cause.illegible">-</span>
-                </td>
-                <td class="py-4 px-6 text-sm font-medium text-center text-gray-900 whitespace-nowrap dark:text-white font-mono"
+                <td class="py-3 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400"
+                  x-text="cause.death !== cause.name ? cause.death : ''"></td>
+                <td class="py-3 px-6 text-sm text-center text-gray-900 whitespace-nowrap dark:text-white font-mono"
                   x-text="cause.year"></td>
               </tr>
             </template>
@@ -105,7 +100,6 @@
         </tbody>
       </table>
     </div>
-      {{/* end: deaths-general table */}}
 
       <div id="control-deaths-general" class="mt-4">
         <div class="flex items-center justify-between">
@@ -126,62 +120,5 @@
           </div>
         </div>
       </div>
-
-<modal x-show="modalOpen" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title-deaths-general" id="deaths-general-modal" role="dialog" aria-modal="true">
-  <div class="flex items-end justify-center min-h-screen px-4 text-center md:items-center sm:block sm:p-0">
-    <!-- Backdrop overlay -->
-    <div x-cloak @click="modalOpen = false" x-show="modalOpen"
-      x-transition:enter="transition ease-out duration-300 transform"
-      x-transition:enter-start="opacity-0"
-      x-transition:enter-end="opacity-100"
-      x-transition:leave="transition ease-in duration-200 transform"
-      x-transition:leave-start="opacity-100"
-      x-transition:leave-end="opacity-0"
-      class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-40" aria-hidden="true"></div>
-
-    <!-- Modal content -->
-    <div x-cloak x-show="modalOpen"
-      x-transition:enter="transition ease-out duration-300 transform"
-      x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-      x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
-      x-transition:leave="transition ease-in duration-200 transform"
-      x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
-      x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-      class="inline-block w-full max-w-xl p-8 my-20 overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl 2xl:max-w-2xl">
-
-      <!-- Modal header -->
-      <div class="flex items-center justify-between space-x-4">
-        <h3 class="text-lg font-medium leading-6 text-gray-900" id="modal-title-deaths-general" x-text="modalBill.name"></h3>
-        <button @click="modalOpen = false" aria-label="Close" class="text-gray-600 focus:outline-none hover:text-gray-700">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
-            stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-        </button>
-      </div>
-
-      <!-- Modal content with death information -->
-      <p class="mt-2 text-sm text-gray-500">Cause of death data for <span x-text="modalBill.year"></span></p>
-
-      <!-- Death details -->
-      <p class="mt-2 text-sm text-gray-800"><strong>Cause of Death</strong>: <span x-text="modalBill.name"></span></p>
-      <p class="mt-2 text-sm text-gray-600" x-show="modalBill.death"><strong>Original transcription</strong>: <span x-text="modalBill.death" class="font-mono"></span></p>
-      <p class="mt-2 text-sm text-gray-800"><strong>Count</strong>: <span x-text="modalBill.count ? modalBill.count : 'No count available.'"></span>
-        <span x-show="modalBill.missing === true" class="ml-2 px-2 py-0.5 bg-amber-100 text-amber-800 text-xs rounded-full">The data for this record is marked as missing</span>
-        <span x-show="modalBill.illegible === true" class="ml-2 px-2 py-0.5 bg-amber-100 text-amber-800 text-xs rounded-full">The data for this record is marked as illegible</span>
-      </p>
-      <p class="mt-2 text-sm text-gray-800"><strong>Year</strong>: <span x-text="modalBill.year"></span></p>
-
-      <!-- Chart section -->
-      <div class="mt-4">
-        <h4 class="text-sm font-medium text-gray-700">Historical Trend</h4>
-        <div class="mt-2 parish-chart-modal">
-          <div id="modal-chart-container-deaths-general" class="chart-container w-full"></div>
-          <div id="modal-loading-indicator-deaths-general" class="loading-indicator text-center text-xs text-gray-500 py-2">Loading chart data...</div>
-          <div id="modal-error-message-deaths-general" class="error-message hidden text-center text-xs text-red-500 py-2"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</modal>
+      {{/* end: deaths-general table */}}
+</div>

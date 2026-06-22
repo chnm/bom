@@ -229,45 +229,40 @@
       </div>
     </div>
 
-    {{/* Column 3: Count Type and Actions */}}
+    {{/* Column 3: Data Quality and Actions */}}
     <div class="space-y-6">
-      {{/* Count Type filter - Show only for Annual Parish data */}}
-      <div 
-        x-show="getPrimaryTab() === 'annual' && getSecondaryTab() === 'parishes'"
-        class="space-y-3">
-        <h3 class="text-sm font-medium text-gray-700">Count Type</h3>
-        <div class="bg-gray-50 rounded-lg border border-gray-200 p-4">
-          <select
-            aria-label="Count type"
-            class="w-full bg-white border border-gray-200 text-gray-700 rounded-lg py-2 px-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
-            @change="setCountType()"
-            x-model="filters.selectedCountType"
-            x-html="getCountTypeOptions()">
-          </select>
-        </div>
-      </div>
-
       {{/* Data Quality Filter - Show for all tabs */}}
       <div class="space-y-3">
         <h3 class="text-sm font-medium text-gray-700">Data Quality</h3>
-        <div class="bg-gray-50 rounded-lg border border-gray-200 p-4">
+        <div class="bg-gray-50 rounded-lg border border-gray-200 p-4 space-y-3">
           <div class="flex items-center">
-            <input 
-              type="checkbox" 
+            <input
+              type="checkbox"
+              id="missing-filter"
+              x-model="filters.showMissingOnly"
+              class="h-4 w-4 text-amber-600 border-gray-300 rounded focus:ring-amber-500"
+            >
+            <label
+              for="missing-filter"
+              class="ml-2 text-sm text-gray-600 cursor-pointer"
+            >
+              Show only missing data
+            </label>
+          </div>
+          <div class="flex items-center">
+            <input
+              type="checkbox"
               id="illegible-filter"
               x-model="filters.showIllegibleOnly"
               class="h-4 w-4 text-amber-600 border-gray-300 rounded focus:ring-amber-500"
             >
-            <label 
+            <label
               for="illegible-filter"
               class="ml-2 text-sm text-gray-600 cursor-pointer"
             >
               Show only illegible data
             </label>
           </div>
-          <p class="mt-2 text-xs text-gray-500">
-            Display only records where the original data was difficult to read
-          </p>
         </div>
       </div>
 
