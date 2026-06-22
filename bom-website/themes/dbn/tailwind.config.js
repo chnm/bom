@@ -3,14 +3,35 @@ module.exports = {
   content: ["content/**/*.md", "layouts/**/*.html"],
   theme: {
     fontFamily: {
-      serif: "Alegreya, serif",
-      sans: "Work Sans, sans-serif",
+      display: "'Libre Caslon Display', serif",
+      serif: "Spectral, serif",
+      sans: "Spectral, serif",
+      mono: "'IBM Plex Mono', monospace",
     },
     container: {
       center: true,
     },
     extend: {
       colors: {
+        paper: {
+          DEFAULT: '#f6f1e6',
+          surface: '#fbf8f1',
+          border: '#e0d8c6',
+          'border-light': '#e8e1d1',
+        },
+        ink: {
+          DEFAULT: '#24251f',
+          muted: '#4a463c',
+          body: '#56524a',
+          faint: '#8a8474',
+          caption: '#9a988a',
+        },
+        oxblood: {
+          DEFAULT: '#9a3324',
+          light: '#a8432e',
+          dark: '#7d2b1f',
+        },
+        gold: '#b89150',
         dbn: {
           green: {
             50: '#f6f7f4',
@@ -49,16 +70,16 @@ module.exports = {
             900: '#2d4563',
           },
           red: {
-            50: '#fef2f2',
-            100: '#fee2e2',
-            200: '#fecaca',
-            300: '#fca5a5',
-            400: '#f87171',
-            500: '#E63946',
-            600: '#dc2626',
-            700: '#b91c1c',
-            800: '#991b1b',
-            900: '#7f1d1d',
+            50: '#fdf5f3',
+            100: '#f9e8e4',
+            200: '#f2cec6',
+            300: '#e5a99c',
+            400: '#d47d6b',
+            500: '#be5a46',
+            600: '#a8432e',
+            700: '#9a3324',
+            800: '#7d2b1f',
+            900: '#68261e',
           },
           orange: {
             50: '#fff7ed',

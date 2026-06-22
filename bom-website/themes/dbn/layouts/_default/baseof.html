@@ -8,7 +8,7 @@
         {{- else }}
         {{- partial "header.html" . -}}
         {{- end }}
-        <div class="bg-white flex-grow" id="content">
+        <div class="bg-white flex-grow text-ink" id="content">
         <main id="main-content">
         {{- block "main" . }}{{- end }}
         </main>
@@ -20,9 +20,24 @@
                 display: inline-flex !important;
                 align-items: center !important;
                 justify-content: center !important;
+                background-color: #fbf8f1 !important;
+                border: 1px solid #e0d8c6 !important;
+                border-radius: 9999px !important;
+                padding: 0.15em 0.5em !important;
+                vertical-align: super !important;
+                font-size: 0.7em !important;
             }
             .littlefoot__button i {
                 line-height: 1 !important;
+                color: #9a3324 !important;
+                font-size: 0.75em !important;
+            }
+            .littlefoot__button:hover {
+                background-color: #9a3324 !important;
+                border-color: #9a3324 !important;
+            }
+            .littlefoot__button:hover i {
+                color: white !important;
             }
         </style>
         <script>
