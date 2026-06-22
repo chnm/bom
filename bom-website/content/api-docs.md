@@ -75,12 +75,12 @@ If you want to refer to our data or are using the API in an academic publication
 
 ## Web Application
 
-The [web application](/database/) currently has four ways of interacting with the table of data.
+The [web application](/database/) provides several ways to explore the data:
 
-- The table itself has built-in tools for interacting with the data. You can change the rows per page (to view 25, 50, or 100 rows at a time), you can page through the results, or you can filter parish names, causes of death, and christenings from the checkboxes.
-- Parishes checkboxes and causes of death checkboxes: Displayed above the table, these allow you to select or unselect specific locations or causes of death you'd like to display within the table.
-- Years slider: This adjusts the years that are displayed by the table. By default the full extent of years is selected. As you drag the nodes for start and end years, you can see the year value tooltip change. After you let up on your mouse, the new value is stored and waits to be passed to the API by clicking "Apply Filters" and new data fetched for display.
-- Count type: This allows you to filter the data based on either the number of burials or number of those infected with the plague. The options for the Weekly bills are "All" (to display all data regardless of count type), "Buried" (to display burial counts), and "Plague" (to display infection counts). The only option currently available for the General bills is "Total" (to display the aggregate data as transcribed from the bills), but will include "Buried" and "Plague" as transcriptions continue.
+- **Parish data tables**: Weekly and General bills display one row per parish per week, with separate columns for Buried and Plague counts. Parish names link to individual [parish detail pages](/parishes/detail/) with historical charts and source information.
+- **Causes of death tables**: Cause names link to individual [cause detail pages](/causes/detail/) showing trends over time, definitions, and the ability to switch between weekly and general bill data.
+- **Filters**: Click the Filters button to refine data by parish, year range, week range, and data quality (missing or illegible records). Year and week sliders let you narrow the date range.
+- **Data quality indicators**: Records where data is missing from the original bill are highlighted in amber. Illegible data (the transcriber's best guess) is highlighted in orange. A count of 0 represents a genuine zero recorded on the bill.
 
 ## Technical Specifications
 
@@ -167,10 +167,15 @@ Parameters:
 - end-year (required): A four digit number representing the end year.
 - bill-type (required): Either "Weekly" or "General" to view specific bill types.
 - count-type (optional): Either "Buried" or "Plague" to view specific count types.
+- parish (optional): Comma-separated list of parish IDs to filter by.
+- missing (optional): Set to "true" to return only records flagged as missing.
+- illegible (optional): Set to "true" to return only records flagged as illegible.
 - limit (optional): Limit the number of records.
 - offset (optional): Offset the number of records.
 
 The `start-year` and `end-year` parameters are required and return the range of rows in the database that fall between the two years. You must also set the `bill-type` parameter to Weekly or General. Each bill record includes a nested `parish` object with detailed parish metadata including the bills subunit, foundation year, and historical notes.
+
+Note on data quality fields: The `missing` field indicates data that was not present on the original bill (the `count` will be `null` for these records). The `illegible` field indicates data that was difficult to read, in which case `count` contains the transcriber's best guess. A `count` of `0` represents a genuine zero recorded on the bill — it is not missing data.
 
 <https://data.chnm.org/bom/bills?start-year=1669&end-year=1754&bill-type=Weekly>
 
@@ -353,51 +358,62 @@ Parameters:
 
 - start-year (required): A four digit number representing the start year.
 - end-year (required): A four digit number representing the end year.
-- id (optional): An ID for a specific cause of death.
+- bill-type (optional): Either "weekly" or "general" to filter by bill type.
+- id (optional): A cause name (or comma-separated list) to filter specific causes. Uses the canonical `name` field for matching.
 - limit (optional): Limit the number of records.
 - offset (optional): Offset the number of records.
 
 The `start-year` and `end-year` parameters are required and return the range of rows in the database that fall between the two years.
 
-<https://data.chnm.org/bom/causes?start-year=1648&end-year=1754>
+<https://data.chnm.org/bom/causes?start-year=1648&end-year=1754&bill-type=weekly>
 
 ```js
 [
 	{
-		"death_id":1,
 		"death":"Abortive",
+		"name":"abortive",
+		"bill_type":"weekly",
 		"count":1,
-		"week_id":"1668-1669-01",
-		"week_no":1,
+		"definition":"an aborted pregnancy; see also miscarriage and still-born",
+		"definition_source":null,
+		"week_id":"1668122216681229",
+		"week_number":1,
 		"start_day":22,
 		"start_month":"December",
 		"end_day":29,
 		"end_month":"December",
 		"year":1668,
-		"split_year":"1667/1668"
-		}
+		"split_year":"1667/1668",
+		"totalrecords":7752
+	}
 	...
 ]
 ```
 
-You can optionally include `id` to return specific causes, which can either be a single value or a comma-separated set of values. The full list of `causes` can be found in `/list-deaths` (see below).
+The `death` field contains the original transcription as it appeared on the bill, while `name` is the standardized canonical name. The `definition` field provides a historical definition of the cause when available.
 
-<https://data.chnm.org/bom/causes?start-year=1648&end-year=1754&id=Apoplexy>
+You can optionally include `id` to return specific causes, which can either be a single value or a comma-separated set of values. The `id` parameter matches against the canonical `name` field. The full list of causes can be found in `/list-deaths` (see below).
+
+<https://data.chnm.org/bom/causes?start-year=1648&end-year=1754&id=apoplexy>
 
 ```js
 [
 	{
-		"death_id":4,
 		"death":"Apoplexy",
+		"name":"apoplexy",
+		"bill_type":"weekly",
 		"count":2,
-		"week_id":"1668-1669-01",
-		"week_no":1,
+		"definition":"a sudden loss of consciousness; a stroke",
+		"definition_source":null,
+		"week_id":"1668122216681229",
+		"week_number":1,
 		"start_day":22,
 		"start_month":"December",
 		"end_day":29,
 		"end_month":"December",
 		"year":1668,
-		"split_year":"1667/1668"
+		"split_year":"1667/1668",
+		"totalrecords":120
 	}
 	...
 ]
