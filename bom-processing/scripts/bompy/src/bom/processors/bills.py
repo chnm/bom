@@ -678,19 +678,17 @@ class BillsProcessor:
                         illegible_val = row[is_illegible_col]
                         explicit_illegible = self._is_flag_true(illegible_val)
 
-                    # Handle missing/empty counts (preserve them as 0 with flags)
-                    if pd.isna(count_value) or count_value == "" or count_value == 0:
+                    # Handle missing/empty counts
+                    # Empty cells in the CSV mean 0 (no deaths recorded), not missing data.
+                    # Only the explicit is_missing flag from DataScribe indicates truly missing data.
+                    if pd.isna(count_value) or count_value == "":
                         count = 0
-                        # Use explicit missing flag if available, otherwise infer from empty value
-                        is_missing = explicit_missing or (
-                            pd.isna(count_value) or count_value == ""
-                        )
+                        is_missing = explicit_missing
                     else:
                         try:
                             count = int(count_value)
-                            is_missing = explicit_missing  # Use explicit flag
+                            is_missing = explicit_missing
                         except (ValueError, TypeError):
-                            # Invalid count - preserve as 0 with missing flag
                             count = 0
                             is_missing = True
 
@@ -735,19 +733,16 @@ class BillsProcessor:
                         illegible_val = row[is_illegible_col]
                         explicit_illegible = self._is_flag_true(illegible_val)
 
-                    # Handle missing/empty counts (preserve them as 0 with flags)
-                    if pd.isna(count_value) or count_value == "" or count_value == 0:
+                    # Handle missing/empty counts
+                    # Empty cells mean 0, not missing. Only explicit flags indicate missing.
+                    if pd.isna(count_value) or count_value == "":
                         count = 0
-                        # Use explicit missing flag if available, otherwise infer from empty value
-                        is_missing = explicit_missing or (
-                            pd.isna(count_value) or count_value == ""
-                        )
+                        is_missing = explicit_missing
                     else:
                         try:
                             count = int(count_value)
-                            is_missing = explicit_missing  # Use explicit flag
+                            is_missing = explicit_missing
                         except (ValueError, TypeError):
-                            # Invalid count - preserve as 0 with missing flag
                             count = 0
                             is_missing = True
 
