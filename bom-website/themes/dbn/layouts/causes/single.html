@@ -151,7 +151,8 @@ document.addEventListener('alpine:init', () => {
 
       try {
         const resp = await fetch(
-          `https://data.chnm.org/bom/causes?id=${encodeURIComponent(this.causeName)}&bill-type=${this.billType}&start-year=1629&end-year=1754&limit=50000`
+          `https://data.chnm.org/bom/causes?id=${encodeURIComponent(this.causeName)}&bill-type=${this.billType}&start-year=1629&end-year=1754&limit=50000`,
+          { cache: 'no-cache' }
         );
         const data = await resp.json();
 

@@ -174,8 +174,8 @@ document.addEventListener('alpine:init', () => {
       try {
         // Fetch parish info and yearly data in parallel
         const [parishesResp, yearlyResp] = await Promise.all([
-          fetch('https://data.chnm.org/bom/parishes'),
-          fetch(`https://data.chnm.org/bom/statistics?type=parish-yearly&parish=${encodeURIComponent(this.parishName)}`),
+          fetch('https://data.chnm.org/bom/parishes', { cache: 'no-cache' }),
+          fetch(`https://data.chnm.org/bom/statistics?type=parish-yearly&parish=${encodeURIComponent(this.parishName)}`, { cache: 'no-cache' }),
         ]);
 
         const parishes = await parishesResp.json();
@@ -223,7 +223,8 @@ document.addEventListener('alpine:init', () => {
         if (!parishId) return;
 
         const resp = await fetch(
-          `https://data.chnm.org/bom/bills?parish=${parishId}&start-year=1600&end-year=1800&limit=50000`
+          `https://data.chnm.org/bom/bills?parish=${parishId}&start-year=1600&end-year=1800&limit=50000`,
+          { cache: 'no-cache' }
         );
         const result = await resp.json();
         const data = result.data || result;
