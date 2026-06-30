@@ -174,8 +174,8 @@ document.addEventListener('alpine:init', () => {
       try {
         // Fetch parish info and yearly data in parallel
         const [parishesResp, yearlyResp] = await Promise.all([
-          fetch('https://data.chnm.org/bom/parishes'),
-          fetch(`https://data.chnm.org/bom/statistics?type=parish-yearly&parish=${encodeURIComponent(this.parishName)}`),
+          fetch('https://data.chnm.org/bom/parishes', { cache: 'no-cache' }),
+          fetch(`https://data.chnm.org/bom/statistics?type=parish-yearly&parish=${encodeURIComponent(this.parishName)}`, { cache: 'no-cache' }),
         ]);
 
         const parishes = await parishesResp.json();
@@ -223,7 +223,8 @@ document.addEventListener('alpine:init', () => {
         if (!parishId) return;
 
         const resp = await fetch(
-          `https://data.chnm.org/bom/bills?parish=${parishId}&start-year=1600&end-year=1800&limit=50000`
+          `https://data.chnm.org/bom/bills?parish=${parishId}&start-year=1600&end-year=1800&limit=50000`,
+          { cache: 'no-cache' }
         );
         const result = await resp.json();
         const data = result.data || result;
@@ -336,7 +337,7 @@ document.addEventListener('alpine:init', () => {
           x: xConfig,
           y: { label: 'Buried', grid: true },
           marks: [
-            Plot.barY(this.yearData, { x: 'year', y: 'total_buried', fill: '#2563eb', tip: tipFmt }),
+            Plot.barY(this.yearData, { x: 'year', y: 'total_buried', fill: '#4a73a0', tip: tipFmt }),
             Plot.crosshairX(this.yearData, { x: 'year', y: 'total_buried' }),
             Plot.ruleY([0]),
           ],
@@ -355,7 +356,7 @@ document.addEventListener('alpine:init', () => {
           x: xConfig,
           y: { label: 'Plague', grid: true },
           marks: [
-            Plot.barY(this.yearData, { x: 'year', y: d => d.total_plague || 0, fill: '#dc2626', tip: tipFmt }),
+            Plot.barY(this.yearData, { x: 'year', y: d => d.total_plague || 0, fill: '#9a3324', tip: tipFmt }),
             Plot.crosshairX(this.yearData, { x: 'year', y: d => d.total_plague || 0 }),
             Plot.ruleY([0]),
           ],
