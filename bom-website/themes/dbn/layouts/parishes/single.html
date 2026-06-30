@@ -337,7 +337,7 @@ document.addEventListener('alpine:init', () => {
           x: xConfig,
           y: { label: 'Buried', grid: true },
           marks: [
-            Plot.barY(this.yearData, { x: 'year', y: 'total_buried', fill: '#2563eb', tip: tipFmt }),
+            Plot.barY(this.yearData, { x: 'year', y: 'total_buried', fill: '#4a73a0', tip: tipFmt }),
             Plot.crosshairX(this.yearData, { x: 'year', y: 'total_buried' }),
             Plot.ruleY([0]),
           ],
@@ -356,7 +356,7 @@ document.addEventListener('alpine:init', () => {
           x: xConfig,
           y: { label: 'Plague', grid: true },
           marks: [
-            Plot.barY(this.yearData, { x: 'year', y: d => d.total_plague || 0, fill: '#dc2626', tip: tipFmt }),
+            Plot.barY(this.yearData, { x: 'year', y: d => d.total_plague || 0, fill: '#9a3324', tip: tipFmt }),
             Plot.crosshairX(this.yearData, { x: 'year', y: d => d.total_plague || 0 }),
             Plot.ruleY([0]),
           ],

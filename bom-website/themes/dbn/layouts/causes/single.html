@@ -210,7 +210,7 @@ document.addEventListener('alpine:init', () => {
         },
         y: { label: 'Deaths', grid: true },
         marks: [
-          Plot.barY(this.yearData, { x: 'year', y: 'total', fill: '#9333ea', tip: tipFmt }),
+          Plot.barY(this.yearData, { x: 'year', y: 'total', fill: '#4a73a0', tip: tipFmt }),
           Plot.crosshairX(this.yearData, { x: 'year', y: 'total' }),
           Plot.ruleY([0]),
         ],
