@@ -17,7 +17,7 @@ The primary downloadable datasets are as follows
     - causes: city-wide (including local suburbs) counts for various causes of death
     - gender: city-wide (including local suburbs) christenings and burials broken down into male and female
     - foodstuffs: city-wide data on the prices of various foodstuffs, primarily bread
-- [death dictionary](https://github.com/chnm/bom/blob/main/bom-data/2025-01-31-deathdictionary.csv)
+- [death dictionary](https://github.com/chnm/bom/blob/main/bom-data/deathdictionary.csv)
 - [geoJSON files](https://github.com/chnm/bom/tree/main/bom-data/geoJSON-files) for the parishes over time
 - [node and edge lists](https://github.com/chnm/bom/tree/main/bom-data/parish-networks) for the parish network over time
 - [shapefiles](https://github.com/chnm/bom/tree/main/bom-data/parish-shapefiles) for the parishes over time, including a [parish name authority file](https://github.com/chnm/bom/blob/main/bom-data/parish-shapefiles/2023-02-08-London-parishes-authority-file.csv)
