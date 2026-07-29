@@ -38,6 +38,7 @@ ADD . .
 
 RUN npm install -y
 RUN hugo ${HUGO_BUILD_ARGS}
+RUN npx -y pagefind --site public
 
 FROM nginx:1.23-alpine
 

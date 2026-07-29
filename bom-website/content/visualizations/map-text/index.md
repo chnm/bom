@@ -25,7 +25,7 @@ category: "geographic-mapping"
 <div id="row">
     <h3>Suicides, Drownings, and Killings in the Bills of Mortality</h3>
     <p>The following visualization is an interactive version of map visualizations first created by <a href="https://deathbynumbers.org/authors/hernan-adasme/">Hernán Adasme</a> in his post "<a href="https://deathbynumbers.org/analysis/death-by-words/">Death by Numbers</a>." </p>
-    <div class="flex flex-wrap items-center space-x-4 mb-6">
+    <div class="flex flex-wrap items-end gap-4 mb-6">
           <div class="flex flex-col space-y-2">
             <label class="block text-gray-700 text-base font-bold" for="cause">
               Cause:
@@ -38,7 +38,7 @@ category: "geographic-mapping"
             </label>
             <select class="shadow appearance-none border rounded w-full py-2 px-5 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="year-range"></select>
           </div>
-          <div class="flex space-x-2 ml-auto mt-5">
+          <div class="flex">
           <button id="update-button" type="button" class="rounded border border-gray-200 bg-white text-base font-medium px-4 py-2 text-gray-900 hover:bg-dbn-blue hover:text-black focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">Update</button>
           </div>
     </div>
