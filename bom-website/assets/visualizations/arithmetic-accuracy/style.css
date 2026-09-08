@@ -1,0 +1,389 @@
+:root {
+  --arithmetic-surface: #ffffff;
+  --arithmetic-ink: #27231f;
+  --arithmetic-muted: #6d665e;
+  --arithmetic-rule: #d8d0c4;
+  --arithmetic-positive: #c44e35;
+  --arithmetic-negative: #087e8b;
+  --arithmetic-focus: #1769aa;
+}
+
+/* Let the explorer spill past the reading column. The prose column is
+   left-aligned inside the centered page container, so first remove its
+   65ch cap; then the container is centered and the margin trick below
+   measures from the viewport center. */
+.prose:has(#arithmetic-explorer) {
+  max-width: none;
+}
+
+#arithmetic-explorer {
+  --explorer-width: min(1440px, 100vw - 2rem);
+  width: var(--explorer-width);
+  margin: 2rem 0 2rem calc(50% - var(--explorer-width) / 2);
+  color: var(--arithmetic-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.explorer-tabs {
+  display: flex;
+  gap: 0.35rem;
+  padding: 0.3rem;
+  overflow-x: auto;
+  background: #f3f4f6;
+  border: 1px solid var(--arithmetic-rule);
+  border-radius: 0.45rem;
+}
+
+.explorer-tabs button {
+  flex: 1 0 auto;
+  padding: 0.75rem 1rem;
+  color: var(--arithmetic-muted);
+  background: transparent;
+  border: 0;
+  border-radius: 0.3rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+}
+
+.explorer-tabs button:hover {
+  color: var(--arithmetic-ink);
+  background: #ffffff;
+}
+
+.explorer-tabs button[aria-selected="true"] {
+  color: white;
+  background: var(--arithmetic-ink);
+}
+
+.explorer-tabs button:focus-visible,
+.explorer-controls select:focus-visible,
+.explorer-footer a:focus-visible,
+.data-table-disclosure summary:focus-visible {
+  outline: 3px solid var(--arithmetic-focus);
+  outline-offset: 2px;
+}
+
+.explorer-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: end;
+  margin: 1.25rem 0 0.75rem;
+}
+
+.explorer-controls label {
+  min-width: 12rem;
+}
+
+.explorer-controls label > span {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: var(--arithmetic-muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.explorer-controls select {
+  width: 100%;
+  min-height: 2.6rem;
+  padding: 0.55rem 2rem 0.55rem 0.7rem;
+  color: var(--arithmetic-ink);
+  background: var(--arithmetic-surface);
+  border: 1px solid #bdb4a7;
+  border-radius: 0.3rem;
+}
+
+.explorer-status {
+  margin: 0.5rem 0 1rem;
+  color: var(--arithmetic-muted);
+  font-size: 0.9rem;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.6rem;
+  margin: 0.75rem 0;
+}
+
+.summary-card {
+  padding: 0.6rem 0.8rem;
+  background: var(--arithmetic-surface);
+  border: 1px solid var(--arithmetic-rule);
+  border-top: 3px solid var(--arithmetic-negative);
+  border-radius: 0.3rem;
+}
+
+.summary-card > span,
+.summary-card > small {
+  display: block;
+  color: var(--arithmetic-muted);
+  line-height: 1.35;
+}
+
+.summary-card > span {
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.summary-card > strong {
+  display: block;
+  margin: 0.15rem 0;
+  color: var(--arithmetic-ink);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.5rem;
+  font-weight: 500;
+  line-height: 1.1;
+}
+
+.summary-card > small {
+  font-size: 0.78rem;
+}
+
+.chart-card {
+  margin-top: 1rem;
+  padding: clamp(0.8rem, 2vw, 1.4rem);
+  overflow: hidden;
+  background: var(--arithmetic-surface);
+  border: 1px solid var(--arithmetic-rule);
+  border-radius: 0.35rem;
+}
+
+.detail-card {
+  margin-top: 1.25rem;
+}
+
+.chart-heading {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 2rem;
+  justify-content: space-between;
+  align-items: end;
+  margin-bottom: 0.75rem;
+}
+
+.chart-heading h3 {
+  margin: 0;
+  color: var(--arithmetic-ink);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.25rem, 2.4vw, 1.8rem);
+  font-weight: 500;
+}
+
+.eyebrow {
+  margin: 0 0 0.2rem;
+  color: var(--arithmetic-positive);
+  font-size: 0.74rem;
+  font-weight: 900;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.difference-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1rem;
+  color: var(--arithmetic-muted);
+  font-size: 0.78rem;
+}
+
+.difference-legend span {
+  display: inline-flex;
+  gap: 0.35rem;
+  align-items: center;
+}
+
+.legend-swatch,
+.legend-dot {
+  display: inline-block;
+  flex: 0 0 auto;
+  width: 0.85rem;
+  height: 0.85rem;
+  border: 1px solid rgba(39, 35, 31, 0.25);
+}
+
+.legend-swatch.negative,
+.legend-dot.ordinary {
+  background: var(--arithmetic-negative);
+}
+
+.legend-swatch.positive {
+  background: var(--arithmetic-positive);
+}
+
+.legend-swatch.exact {
+  background: #f7f1e6;
+}
+
+.legend-swatch.missing {
+  background: #d9dde0;
+}
+
+.legend-dot {
+  border-radius: 999px;
+}
+
+.legend-dot.fully {
+  background: white;
+  border: 2px solid var(--arithmetic-positive);
+}
+
+.plot-container {
+  width: 100%;
+  min-height: 12rem;
+  overflow-x: auto;
+}
+
+.plot-container > svg {
+  display: block;
+  max-width: none;
+  height: auto;
+}
+
+.plot-container .plot-tip {
+  font-size: 0.84rem;
+}
+
+.chart-note {
+  max-width: 80ch;
+  margin: 0.65rem 0 0;
+  color: var(--arithmetic-muted);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.data-table-disclosure {
+  margin-top: 1rem;
+  border-top: 1px solid var(--arithmetic-rule);
+}
+
+.data-table-disclosure summary {
+  padding: 0.85rem 0;
+  color: var(--arithmetic-ink);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.table-scroll {
+  max-height: 28rem;
+  overflow: auto;
+}
+
+.table-scroll table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.table-scroll th,
+.table-scroll td {
+  padding: 0.45rem 0.65rem;
+  text-align: right;
+  border-bottom: 1px solid #e7e0d7;
+}
+
+.table-scroll th:first-child,
+.table-scroll td:first-child,
+.table-scroll th:last-child,
+.table-scroll td:last-child {
+  text-align: left;
+}
+
+.table-scroll thead {
+  position: sticky;
+  top: 0;
+  background: var(--arithmetic-surface);
+}
+
+.positive-value {
+  color: var(--arithmetic-positive);
+  font-weight: 700;
+}
+
+.negative-value {
+  color: var(--arithmetic-negative);
+  font-weight: 700;
+}
+
+.explorer-error {
+  margin: 1rem 0;
+  padding: 1rem;
+  color: #7f1d1d;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 0.3rem;
+}
+
+.explorer-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 2rem;
+  justify-content: space-between;
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  color: var(--arithmetic-muted);
+  border-top: 1px solid var(--arithmetic-rule);
+  font-size: 0.8rem;
+}
+
+.explorer-footer strong,
+.explorer-footer span {
+  display: block;
+}
+
+.explorer-footer strong {
+  color: var(--arithmetic-ink);
+}
+
+.explorer-footer nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.explorer-footer a {
+  color: #005398;
+  text-decoration: underline;
+  text-underline-offset: 0.16em;
+}
+
+.is-hidden {
+  display: none !important;
+}
+
+@media (max-width: 720px) {
+  .explorer-tabs {
+    justify-content: flex-start;
+  }
+
+  .explorer-tabs button {
+    flex: 0 0 auto;
+  }
+
+  .explorer-controls label {
+    flex: 1 1 100%;
+  }
+
+  .summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .plot-container > svg {
+    min-width: 640px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #arithmetic-explorer *,
+  #arithmetic-explorer *::before,
+  #arithmetic-explorer *::after {
+    scroll-behavior: auto !important;
+    transition: none !important;
+  }
+}
+
