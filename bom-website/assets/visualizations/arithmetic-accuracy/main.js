@@ -20,17 +20,9 @@ const errorBox = document.querySelector("#explorer-error");
 const countSelect = document.querySelector("#count-type");
 const scopeSelect = document.querySelector("#data-scope");
 const yearSelect = document.querySelector("#detail-year");
-const panels = {
-  weekly: document.querySelector("#weekly-panel"),
-  comparison: document.querySelector("#comparison-panel"),
-  legibility: document.querySelector("#legibility-panel"),
-};
 
 const query = new URLSearchParams(window.location.search);
 const state = {
-  view: ["weekly", "comparison", "legibility"].includes(query.get("view"))
-    ? query.get("view")
-    : "weekly",
   countType: ["buried", "plague"].includes(query.get("count"))
     ? query.get("count")
     : "buried",
@@ -43,11 +35,6 @@ const state = {
 let dataset;
 let resizeTimer;
 
-function formatPValue(value) {
-  if (value < 0.001) return d3.format(".2e")(value);
-  return d3.format(".3f")(value);
-}
-
 function differenceLabel(value) {
   if (value === 0) return "Exact match";
   if (value > 0) return `Printed subtotal larger by ${d3.format(",")(value)}`;
@@ -56,12 +43,9 @@ function differenceLabel(value) {
 
 function updateUrl() {
   const next = new URLSearchParams();
-  next.set("view", state.view);
-  if (state.view !== "legibility") next.set("count", state.countType);
-  if (state.view === "weekly") {
-    next.set("scope", state.scope);
-    next.set("year", state.year);
-  }
+  next.set("count", state.countType);
+  next.set("scope", state.scope);
+  next.set("year", state.year);
   window.history.replaceState({}, "", `${window.location.pathname}?${next}`);
 }
 
@@ -87,26 +71,6 @@ function setSummary(selector, cards) {
 function syncControls() {
   countSelect.value = state.countType;
   scopeSelect.value = state.scope;
-  document.querySelector("#count-control").classList.toggle(
-    "is-hidden",
-    state.view === "legibility",
-  );
-  document.querySelector("#scope-control").classList.toggle(
-    "is-hidden",
-    state.view !== "weekly",
-  );
-  document.querySelector("#year-control").classList.toggle(
-    "is-hidden",
-    state.view !== "weekly",
-  );
-  document.querySelectorAll("[role='tab']").forEach((button) => {
-    const selected = button.dataset.view === state.view;
-    button.setAttribute("aria-selected", selected ? "true" : "false");
-    button.tabIndex = selected ? 0 : -1;
-  });
-  Object.entries(panels).forEach(([name, panel]) => {
-    panel.classList.toggle("is-hidden", name !== state.view);
-  });
 }
 
 function availableYears() {
@@ -318,156 +282,15 @@ function renderWeeklyDetail() {
   }));
 }
 
-function renderComparison() {
-  const rows = dataset.annual_comparison.filter(
-    (row) => row.count_type === state.countType,
-  );
-  const stats = dataset.statistics.annual_comparison[state.countType];
-  const maximum = d3.max(rows, (row) => Math.max(
-    row.all_mean_absolute_difference,
-    row.legible_mean_absolute_difference,
-  ));
-  const reference = [{ value: 0 }, { value: maximum }];
-  const title = state.countType === "buried" ? "burial" : "plague";
-  document.querySelector("#comparison-title").textContent =
-    `Annual mean absolute ${title} differences`;
-  const plot = Plot.plot({
-    width: plotWidth("#comparison-chart"),
-    height: 620,
-    marginLeft: 78,
-    marginBottom: 66,
-    grid: true,
-    style: { fontSize: "13px", background: "transparent" },
-    x: {
-      label: "Mean absolute difference, legible weeks only",
-      domain: [0, maximum * 1.04],
-    },
-    y: {
-      label: "Mean absolute difference, all comparable weeks",
-      domain: [0, maximum * 1.04],
-    },
-    marks: [
-      Plot.line(reference, {
-        x: "value",
-        y: "value",
-        stroke: COLORS.muted,
-        strokeDasharray: "6,5",
-      }),
-      Plot.dot(rows.filter((row) => !row.fully_legible), {
-        x: "legible_mean_absolute_difference",
-        y: "all_mean_absolute_difference",
-        r: 5,
-        fill: COLORS.negative,
-        fillOpacity: 0.78,
-        title: (row) => `${row.year}\nLegible-only mean: ${d3.format(".2f")(row.legible_mean_absolute_difference)}\nAll-data mean: ${d3.format(".2f")(row.all_mean_absolute_difference)}\n${d3.format(".1f")(row.percent_legible)}% of weeks legible`,
-        tip: true,
-      }),
-      Plot.dot(rows.filter((row) => row.fully_legible), {
-        x: "legible_mean_absolute_difference",
-        y: "all_mean_absolute_difference",
-        r: 6,
-        fill: "white",
-        stroke: COLORS.positive,
-        strokeWidth: 2,
-        title: (row) => `${row.year}\nEvery observed week is legible\nMean absolute difference: ${d3.format(".2f")(row.all_mean_absolute_difference)}`,
-        tip: true,
-      }),
-    ],
-  });
-  replacePlot(
-    "#comparison-chart",
-    plot,
-    `Scatterplot comparing all-data and legible-only annual mean absolute ${title} differences`,
-  );
-  setSummary("#comparison-summary", [
-    summaryCard("Paired years", d3.format(",")(stats.n)),
-    summaryCard("Pearson correlation", d3.format(".2f")(stats.r), `p = ${formatPValue(stats.p)}`),
-    summaryCard("Fully legible years", stats.fully_legible_years, "These fall exactly on the 1:1 line"),
-  ]);
-}
-
-function renderLegibility() {
-  const rows = dataset.figure_9;
-  const fit = dataset.figure_9_fit;
-  const stats = dataset.statistics.figure_9;
-  const plot = Plot.plot({
-    width: plotWidth("#legibility-chart"),
-    height: 620,
-    marginLeft: 78,
-    marginBottom: 62,
-    grid: true,
-    style: { fontSize: "13px", background: "transparent" },
-    x: { label: "Legible weekly bills (%)", domain: [25, 102] },
-    y: { label: "Comparable weeks with an arithmetic error (%)", domain: [0, 90] },
-    marks: [
-      Plot.areaY(fit, {
-        x: "percent_legible",
-        y1: "lower",
-        y2: "upper",
-        fill: COLORS.positive,
-        fillOpacity: 0.14,
-      }),
-      Plot.line(fit, {
-        x: "percent_legible",
-        y: "fitted",
-        stroke: COLORS.positive,
-        strokeWidth: 2.5,
-      }),
-      Plot.dot(rows, {
-        x: "percent_legible",
-        y: "arithmetic_error_rate",
-        r: 5.5,
-        fill: COLORS.negative,
-        fillOpacity: 0.82,
-        stroke: "white",
-        title: (row) => `${row.year}\nLegible weeks: ${d3.format(".1f")(row.percent_legible)}%\nArithmetic-error rate: ${d3.format(".1f")(row.arithmetic_error_rate)}%\n${d3.format(",")(row.arithmetic_errors)} errors in ${d3.format(",")(row.comparable_weeks)} comparable weeks`,
-        tip: true,
-      }),
-    ],
-  });
-  replacePlot(
-    "#legibility-chart",
-    plot,
-    "Scatterplot of annual legibility percentages and burial arithmetic-error rates from 1663 to 1752",
-  );
-  setSummary("#legibility-summary", [
-    summaryCard("Annual observations", stats.n, "1663–1752"),
-    summaryCard("Pearson correlation", d3.format(".2f")(stats.r), `p = ${formatPValue(stats.p)}`),
-    summaryCard("Linear slope", d3.format(".3f")(stats.slope), "Percentage-point change in error rate per point of legibility"),
-  ]);
-}
-
 function render() {
   if (!dataset) return;
   syncControls();
   populateYears();
-  if (state.view === "weekly") {
-    renderWeeklyOverview();
-    renderWeeklyDetail();
-  } else if (state.view === "comparison") {
-    renderComparison();
-  } else {
-    renderLegibility();
-  }
+  renderWeeklyOverview();
+  renderWeeklyDetail();
   updateUrl();
   status.textContent = "Visualization ready. Hover or focus chart marks for exact values.";
 }
-
-document.querySelectorAll("[role='tab']").forEach((button) => {
-  button.addEventListener("click", () => {
-    state.view = button.dataset.view;
-    render();
-  });
-  button.addEventListener("keydown", (event) => {
-    if (!["ArrowLeft", "ArrowRight"].includes(event.key)) return;
-    const buttons = Array.from(document.querySelectorAll("[role='tab']"));
-    const direction = event.key === "ArrowRight" ? 1 : -1;
-    const index = buttons.indexOf(button);
-    const next = buttons[(index + direction + buttons.length) % buttons.length];
-    next.focus();
-    next.click();
-  });
-});
 
 countSelect.addEventListener("change", () => {
   state.countType = countSelect.value;
