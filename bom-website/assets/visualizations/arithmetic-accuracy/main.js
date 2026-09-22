@@ -20,6 +20,10 @@ const errorBox = document.querySelector("#explorer-error");
 const countSelect = document.querySelector("#count-type");
 const scopeSelect = document.querySelector("#data-scope");
 const yearSelect = document.querySelector("#detail-year");
+// The live page sets data-api to the /bom/arithmetic endpoint; the article
+// page leaves it unset and loads the archived snapshot.
+const API_URL = root.dataset.api;
+const formatDay = d3.timeFormat("%-d %b");
 
 const query = new URLSearchParams(window.location.search);
 const state = {
@@ -39,6 +43,30 @@ function differenceLabel(value) {
   if (value === 0) return "Exact match";
   if (value > 0) return `Printed subtotal larger by ${d3.format(",")(value)}`;
   return `Parish sum larger by ${d3.format(",")(Math.abs(value))}`;
+}
+
+// Live rows carry week_id (the week's joinid, YYYYMMDDYYYYMMDD), which gives
+// the bill's dates; the snapshot does not.
+function weekDates(row) {
+  const match = /^(\d{4})(\d{2})(\d{2})(\d{4})(\d{2})(\d{2})$/.exec(row.week_id || "");
+  if (!match) return "";
+  const [, y1, m1, d1, y2, m2, d2] = match.map(Number);
+  return `${formatDay(new Date(y1, m1 - 1, d1))}–${formatDay(new Date(y2, m2 - 1, d2))}`;
+}
+
+function billNotes(row) {
+  const dates = weekDates(row);
+  return `${dates ? `\nBill dated ${dates}` : ""}${row.mixed_copies ? "\nFigures drawn from more than one surviving copy" : ""}`;
+}
+
+// One heatmap cell per year and week. When different bills share a week
+// number, show the one with the larger difference so an error is not hidden.
+function byWeek(rows) {
+  return new Map(d3.groups(rows, (row) => `${row.year}-${row.week_number}`)
+    .map(([key, group]) => [key, {
+      ...d3.greatest(group, (row) => Math.abs(row.difference)),
+      bills: group.length,
+    }]));
 }
 
 function updateUrl() {
@@ -120,12 +148,8 @@ function weeklyColorScale(rows) {
 function renderWeeklyOverview() {
   const allRows = dataset.weekly.filter((row) => row.count_type === state.countType);
   const visibleRows = allRows.filter((row) => state.scope === "all" || row.legible);
-  const visibleByWeek = new Map(
-    visibleRows.map((row) => [`${row.year}-${row.week_number}`, row]),
-  );
-  const allByWeek = new Map(
-    allRows.map((row) => [`${row.year}-${row.week_number}`, row]),
-  );
+  const visibleByWeek = byWeek(visibleRows);
+  const allByWeek = byWeek(allRows);
   const grid = [];
   for (let year = dataset.metadata.year_min; year <= dataset.metadata.year_max; year += 1) {
     for (let week = 1; week <= 55; week += 1) {
@@ -141,6 +165,9 @@ function renderWeeklyOverview() {
         subtotal_sum: observation ? observation.subtotal_sum : null,
         parish_sum: observation ? observation.parish_sum : null,
         legible: observation ? observation.legible : false,
+        week_id: observation ? observation.week_id : null,
+        mixed_copies: observation ? observation.mixed_copies : false,
+        bills: observation ? observation.bills : 0,
       });
     }
   }
@@ -178,7 +205,7 @@ function renderWeeklyOverview() {
           if (!row.observation) {
             return `${row.year}, week ${row.week_number}\n${row.excluded ? "Excluded because the week contains an illegible value" : "No comparable observation"}`;
           }
-          return `${row.year}, week ${row.week_number}\nPrinted subtotal: ${d3.format(",")(row.subtotal_sum)}\nParish sum: ${d3.format(",")(row.parish_sum)}\n${differenceLabel(row.difference)}\n${row.legible ? "Entire week legible" : "Contains an illegible value"}`;
+          return `${row.year}, week ${row.week_number}\nPrinted subtotal: ${d3.format(",")(row.subtotal_sum)}\nParish sum: ${d3.format(",")(row.parish_sum)}\n${differenceLabel(row.difference)}\n${row.legible ? "Entire week legible" : "Contains an illegible value"}${billNotes(row)}${row.bills > 1 ? `\n${row.bills} different bills are numbered week ${row.week_number}; showing the larger difference` : ""}`;
         },
         tip: true,
       }),
@@ -213,11 +240,13 @@ function renderWeeklyOverview() {
   const errors = visibleRows.filter((row) => row.arithmetic_error);
   const exact = visibleRows.length - errors.length;
   const coverage = 100 * visibleRows.length / ((dataset.metadata.year_max - dataset.metadata.year_min + 1) * 55);
+  const mixed = visibleRows.filter((row) => row.mixed_copies).length;
   setSummary("#weekly-summary", [
     summaryCard("Comparable weeks", d3.format(",")(visibleRows.length)),
     summaryCard("Arithmetic errors", d3.format(",")(errors.length), `${d3.format(".1f")(100 * errors.length / visibleRows.length)}% of comparable weeks`),
     summaryCard("Exact matches", d3.format(",")(exact), `${d3.format(".1f")(100 * exact / visibleRows.length)}% of comparable weeks`),
     summaryCard("Calendar coverage", `${d3.format(".1f")(coverage)}%`, "Missing weeks remain explicit"),
+    ...(API_URL ? [summaryCard("Mixed-copy weeks", d3.format(",")(mixed), "Figures from more than one surviving copy")] : []),
   ]);
 }
 
@@ -226,7 +255,7 @@ function renderWeeklyDetail() {
     .filter((row) => row.count_type === state.countType
       && row.year === state.year
       && (state.scope === "all" || row.legible))
-    .sort((a, b) => d3.ascending(a.week_number, b.week_number));
+    .sort((a, b) => d3.ascending(a.week_number, b.week_number) || d3.ascending(a.week_id, b.week_id));
   const title = state.countType === "buried" ? "Burial" : "Plague";
   document.querySelector("#weekly-detail-title").textContent = `${title} differences in ${state.year}`;
 
@@ -264,7 +293,7 @@ function renderWeeklyDetail() {
       Plot.tip(rows, Plot.pointerX({
         x: "week_number",
         y: "difference",
-        title: (row) => `Week ${row.week_number}\n${row.difference === 0 ? `Exact match: ${d3.format(",")(row.subtotal_sum)}` : `Printed subtotal: ${d3.format(",")(row.subtotal_sum)}\nParish sum: ${d3.format(",")(row.parish_sum)}\n${differenceLabel(row.difference)}`}\n${row.legible ? "Entire week legible" : "Contains an illegible value"}`,
+        title: (row) => `Week ${row.week_number}\n${row.difference === 0 ? `Exact match: ${d3.format(",")(row.subtotal_sum)}` : `Printed subtotal: ${d3.format(",")(row.subtotal_sum)}\nParish sum: ${d3.format(",")(row.parish_sum)}\n${differenceLabel(row.difference)}`}\n${row.legible ? "Entire week legible" : "Contains an illegible value"}${billNotes(row)}`,
       })),
     ],
   });
@@ -277,7 +306,8 @@ function renderWeeklyDetail() {
   const tableBody = document.querySelector("#weekly-table-body");
   tableBody.replaceChildren(...rows.map((row) => {
     const tr = document.createElement("tr");
-    tr.innerHTML = `<td>${row.week_number}</td><td>${d3.format(",")(row.subtotal_sum)}</td><td>${d3.format(",")(row.parish_sum)}</td><td class="${row.difference > 0 ? "positive-value" : row.difference < 0 ? "negative-value" : ""}">${d3.format("+,")(row.difference)}</td><td>${row.legible ? "Yes" : "No"}</td>`;
+    const dates = weekDates(row);
+    tr.innerHTML = `<td>${row.week_number}${dates ? ` <small>(${dates})</small>` : ""}</td><td>${d3.format(",")(row.subtotal_sum)}</td><td>${d3.format(",")(row.parish_sum)}</td><td class="${row.difference > 0 ? "positive-value" : row.difference < 0 ? "negative-value" : ""}">${d3.format("+,")(row.difference)}</td><td>${row.legible ? "Yes" : "No"}</td>${API_URL ? `<td>${row.mixed_copies ? "Yes" : "No"}</td>` : ""}`;
     return tr;
   }));
 }
@@ -314,11 +344,28 @@ window.addEventListener("resize", () => {
   resizeTimer = window.setTimeout(render, 180);
 });
 
-d3.json(DATA_URL)
+function loadLive() {
+  return d3.json(API_URL).then((rows) => {
+    const [yearMin, yearMax] = d3.extent(rows, (row) => row.year);
+    return {
+      metadata: { year_min: yearMin, year_max: yearMax },
+      weekly: rows.map((row) => ({ ...row, arithmetic_error: row.difference !== 0 })),
+      label: `Retrieved ${d3.timeFormat("%-d %B %Y")(new Date())} from ${new URL(API_URL).host}`,
+    };
+  });
+}
+
+function loadSnapshot() {
+  return d3.json(DATA_URL).then((loaded) => ({
+    ...loaded,
+    label: `${loaded.metadata.dataset}; repository revision ${loaded.metadata.dataset_ref.slice(0, 12)}`,
+  }));
+}
+
+(API_URL ? loadLive() : loadSnapshot())
   .then((loaded) => {
     dataset = loaded;
-    document.querySelector("#snapshot-label").textContent =
-      `${dataset.metadata.dataset}; repository revision ${dataset.metadata.dataset_ref.slice(0, 12)}`;
+    document.querySelector("#snapshot-label").textContent = dataset.label;
     root.setAttribute("aria-busy", "false");
     render();
   })
@@ -327,6 +374,8 @@ d3.json(DATA_URL)
     root.setAttribute("aria-busy", "false");
     status.classList.add("is-hidden");
     errorBox.classList.remove("is-hidden");
-    errorBox.textContent = "The archived visualization data could not be loaded. Please try again later or use one of the CSV downloads.";
+    errorBox.textContent = API_URL
+      ? "The data could not be loaded from the Death by Numbers API. Please try again later."
+      : "The archived visualization data could not be loaded. Please try again later or use one of the CSV downloads.";
   });
 
