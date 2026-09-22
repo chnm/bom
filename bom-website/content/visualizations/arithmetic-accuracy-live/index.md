@@ -1,8 +1,8 @@
 ---
-title: "Arithmetic Accuracy (Live Data)"
+title: "Arithmetic Accuracy"
 date: 2026-09-22
 draft: true
-abstract: "Compare printed weekly subtotals with parish-summed mortality counts using the current database"
+abstract: "Compare printed weekly subtotals with parish-summed mortality counts"
 summary: "Interactive view of weekly differences between printed subtotals and parish-summed counts, drawn live from the Death by Numbers API."
 script: visualizations/arithmetic-accuracy/main.js
 styles: visualizations/arithmetic-accuracy/style.css
