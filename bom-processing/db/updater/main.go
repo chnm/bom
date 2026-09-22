@@ -39,7 +39,7 @@ func main() {
 	config := ImportConfig{
 		DBConnString: *dbConnString,
 		DataDir:      *dataDir,
-		Tables:       []string{"year", "week", "parishes", "christenings", "causes_of_death", "bills"},
+		Tables:       []string{"year", "week", "parishes", "christenings", "causes_of_death", "bills", "subtotals"},
 		DryRun:       *dryRun,
 	}
 
@@ -129,6 +129,8 @@ func getFilename(table string) string {
 		return "causes_of_death.csv"
 	case "bills":
 		return "all_bills.csv"
+	case "subtotals":
+		return "subtotals.csv"
 	}
 	return ""
 }
@@ -142,6 +144,7 @@ func createTempTables(ctx context.Context, tx pgx.Tx) error {
 		DROP TABLE IF EXISTS temp_christening CASCADE;
 		DROP TABLE IF EXISTS temp_causes_of_death CASCADE;
 		DROP TABLE IF EXISTS temp_bills CASCADE;
+		DROP TABLE IF EXISTS temp_subtotals CASCADE;
 	`)
 	if err != nil {
 		return err
@@ -214,6 +217,19 @@ func createTempTables(ctx context.Context, tx pgx.Tx) error {
 
 		CREATE TEMPORARY TABLE temp_bills (
 			parish_id integer,
+			count_type text,
+			count int,
+			year integer,
+			joinid text,
+			bill_type text,
+			missing boolean,
+			illegible boolean,
+			source text,
+			unique_identifier text
+		);
+
+		CREATE TEMPORARY TABLE temp_subtotals (
+			subtotal_category text,
 			count_type text,
 			count int,
 			year integer,
@@ -471,7 +487,7 @@ func updateTables(ctx context.Context, tx pgx.Tx) error {
       AND EXISTS (SELECT 1 FROM bom.week w WHERE w.joinid = c.joinid)
       ORDER BY
           parish_name, week, start_day, start_month,
-          end_day, end_month, year, bill_type, count DESC
+          end_day, end_month, year, bill_type, count DESC NULLS LAST
   )
   SELECT * FROM deduplicated_christenings
   ON CONFLICT (christening, week_number, start_day, start_month, end_day, end_month, year, bill_type)
@@ -525,11 +541,11 @@ func updateTables(ctx context.Context, tx pgx.Tx) error {
 		start_time := clock_timestamp();
 		SELECT COUNT(*) INTO rows_before FROM bom.bill_of_mortality;
 		
-		INSERT INTO bom.bill_of_mortality (
-			parish_id, count_type, count, year, week_id, bill_type,
-			missing, illegible, source, unique_identifier
-		)
-		WITH deduplicated_bills AS (
+		-- When several copies of a bill were transcribed, keep the largest
+		-- count for each parish, preferring a readable value over a blank one.
+		-- Ties go to the first copy alphabetically so reloads are repeatable.
+		DROP TABLE IF EXISTS temp_bills_selected;
+		CREATE TEMPORARY TABLE temp_bills_selected AS
 		SELECT DISTINCT ON (parish_id, count_type, year, joinid)
 			parish_id, count_type, count, year, joinid, bill_type,
 			missing, illegible, source, unique_identifier
@@ -539,9 +555,14 @@ func updateTables(ctx context.Context, tx pgx.Tx) error {
 		AND year IS NOT NULL
 		AND EXISTS (SELECT 1 FROM bom.parishes p WHERE p.id = b.parish_id)
 		AND EXISTS (SELECT 1 FROM bom.week w WHERE w.joinid = b.joinid)
-		ORDER BY parish_id, count_type, year, joinid, count DESC
-	)
-		SELECT * FROM deduplicated_bills
+		ORDER BY parish_id, count_type, year, joinid, count DESC NULLS LAST,
+			btrim(unique_identifier), source;
+
+		INSERT INTO bom.bill_of_mortality (
+			parish_id, count_type, count, year, week_id, bill_type,
+			missing, illegible, source, unique_identifier
+		)
+		SELECT * FROM temp_bills_selected
 		ON CONFLICT (parish_id, count_type, year, week_id, source, bill_type) 
 		DO UPDATE
 		SET 
@@ -555,6 +576,54 @@ func updateTables(ctx context.Context, tx pgx.Tx) error {
 		
 		PERFORM bom.log_operation(
 			'UPSERT', 'bom.bill_of_mortality', rows_before, rows_processed,
+			rows_before + rows_processed, true, NULL, end_time - start_time
+		);
+
+		-- The unique key includes the source file, so a reload that selects a
+		-- value from a different copy would otherwise leave both rows behind.
+		DELETE FROM bom.bill_of_mortality b
+		USING temp_bills_selected t
+		WHERE b.parish_id = t.parish_id
+		AND b.count_type = t.count_type
+		AND b.year = t.year
+		AND b.week_id = t.joinid
+		AND (b.source IS DISTINCT FROM t.source
+			OR b.bill_type IS DISTINCT FROM t.bill_type);
+
+		-- Subtotals
+		start_time := clock_timestamp();
+		SELECT COUNT(*) INTO rows_before FROM bom.subtotals;
+
+		INSERT INTO bom.subtotals (
+			subtotal_category, count_type, count, year, week_id, bill_type,
+			missing, illegible, source, unique_identifier
+		)
+		SELECT DISTINCT ON (subtotal_category, count_type, joinid, bill_type)
+			subtotal_category, count_type, count, year, joinid, bill_type,
+			missing, illegible, source, unique_identifier
+		FROM temp_subtotals s
+		WHERE subtotal_category IS NOT NULL
+		AND count_type IS NOT NULL
+		AND year IS NOT NULL
+		AND EXISTS (SELECT 1 FROM bom.week w WHERE w.joinid = s.joinid)
+		ORDER BY subtotal_category, count_type, joinid, bill_type, count DESC NULLS LAST,
+			btrim(unique_identifier), source
+		ON CONFLICT (subtotal_category, count_type, week_id, bill_type)
+		DO UPDATE
+		SET
+			count = EXCLUDED.count,
+			year = EXCLUDED.year,
+			missing = EXCLUDED.missing,
+			illegible = EXCLUDED.illegible,
+			source = EXCLUDED.source,
+			unique_identifier = EXCLUDED.unique_identifier,
+			updated_at = CURRENT_TIMESTAMP;
+
+		GET DIAGNOSTICS rows_processed = ROW_COUNT;
+		end_time := clock_timestamp();
+
+		PERFORM bom.log_operation(
+			'UPSERT', 'bom.subtotals', rows_before, rows_processed,
 			rows_before + rows_processed, true, NULL, end_time - start_time
 		);
 
@@ -584,6 +653,7 @@ func analyzeTables(ctx context.Context, db *pgxpool.Pool) error {
 		ANALYZE bom.parishes;
 		ANALYZE bom.christenings;
 		ANALYZE bom.causes_of_death;
+		ANALYZE bom.subtotals;
 
 		DO $$
 		BEGIN

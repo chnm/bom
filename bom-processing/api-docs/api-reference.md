@@ -401,3 +401,42 @@ You can retrieve the list of unique christening descriptions using the `/list-ch
 	...
 ]
 ```
+
+#### Weekly arithmetic
+
+This endpoint compares the subtotals printed on each weekly bill ("Within the walls", "Without the walls", "Middlesex and Surrey", "Westminster") with the sum of that week's parish counts. It reads from the `bom.weekly_arithmetic` database view.
+
+```js
+GET /arithmetic
+```
+
+Parameters:
+- start-year (optional): First year to include. Defaults to 1636.
+- end-year (optional): Last year to include (inclusive). Defaults to 1754.
+- count-type (optional): `buried` or `plague`.
+- legible (optional): `true` returns only weeks where no parish count or subtotal is marked illegible; `false` returns only weeks with at least one illegible value.
+
+The endpoint is not paginated; the full period is under 8,000 rows.
+
+<https://data.chnm.org/bom/arithmetic?start-year=1665&end-year=1665&count-type=buried>
+
+Response JSON:
+
+```js
+[
+    {
+        "year": 1665,
+        "week_number": 1,
+        "week_id": "1665121916651226",
+        "count_type": "buried",
+        "subtotal_sum": 330,
+        "parish_sum": 330,
+        "difference": 0,
+        "legible": false,
+        "mixed_copies": false
+    },
+    . . .
+]
+```
+
+`difference` is `subtotal_sum` minus `parish_sum`: positive values mean the printed subtotals are larger. Only weekly bills in weeks 1–55 are included, and the Westminster pesthouse is excluded from parish sums because the printed subtotals do not include it. Where more than one copy of a bill was transcribed, the database keeps the largest readable value for each parish and each subtotal. In those weeks the figures can come from different copies, which can create or hide an arithmetic difference that no single printed bill contains; `mixed_copies` is `true` for such weeks. The archived article analysis in `bom-processing/notebooks/arithmetic-accuracy/` instead adds duplicate copies together, so figures for those weeks differ.
