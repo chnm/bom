@@ -24,39 +24,6 @@
   font-variant-numeric: tabular-nums;
 }
 
-.explorer-tabs {
-  display: flex;
-  gap: 0.35rem;
-  padding: 0.3rem;
-  overflow-x: auto;
-  background: #f3f4f6;
-  border: 1px solid var(--arithmetic-rule);
-  border-radius: 0.45rem;
-}
-
-.explorer-tabs button {
-  flex: 1 0 auto;
-  padding: 0.75rem 1rem;
-  color: var(--arithmetic-muted);
-  background: transparent;
-  border: 0;
-  border-radius: 0.3rem;
-  font-weight: 700;
-  letter-spacing: 0.01em;
-  cursor: pointer;
-}
-
-.explorer-tabs button:hover {
-  color: var(--arithmetic-ink);
-  background: #ffffff;
-}
-
-.explorer-tabs button[aria-selected="true"] {
-  color: white;
-  background: var(--arithmetic-ink);
-}
-
-.explorer-tabs button:focus-visible,
 .explorer-controls select:focus-visible,
 .explorer-footer a:focus-visible,
 .data-table-disclosure summary:focus-visible {
@@ -198,8 +165,7 @@
   align-items: center;
 }
 
-.legend-swatch,
-.legend-dot {
+.legend-swatch {
   display: inline-block;
   flex: 0 0 auto;
   width: 0.85rem;
@@ -207,8 +173,7 @@
   border: 1px solid rgba(39, 35, 31, 0.25);
 }
 
-.legend-swatch.negative,
-.legend-dot.ordinary {
+.legend-swatch.negative {
   background: var(--arithmetic-negative);
 }
 
@@ -222,15 +187,6 @@
 
 .legend-swatch.missing {
   background: #d9dde0;
-}
-
-.legend-dot {
-  border-radius: 999px;
-}
-
-.legend-dot.fully {
-  background: white;
-  border: 2px solid var(--arithmetic-positive);
 }
 
 .plot-container {
@@ -357,14 +313,6 @@
 }
 
 @media (max-width: 720px) {
-  .explorer-tabs {
-    justify-content: flex-start;
-  }
-
-  .explorer-tabs button {
-    flex: 0 0 auto;
-  }
-
   .explorer-controls label {
     flex: 1 1 100%;
   }
