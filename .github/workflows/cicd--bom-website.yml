@@ -14,14 +14,11 @@ jobs:
     uses: chnm/.github/.github/workflows/hugo--build-release-deploy.yml@main
     secrets: inherit
     with:
-      runner_labels: '["self-hosted","XCP-ng"]'
-      container-registry: "ghcr.io"
-      container-image-name: "bom-website"
+
       hugo-context-root: "bom-website"
       hugo-devl-url: "https://dev.deathbynumbers.org"
       hugo-prod-url: "https://deathbynumbers.org"
       
-      build-artifact-name: "bom-website"
       release-tag-name-type: "iso"
       
       website-devl-fqdn: "dev.deathbynumbers.org"
