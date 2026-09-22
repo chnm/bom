@@ -28,6 +28,11 @@ GOPATH=$(shell go env GOPATH)
 VERSION=$(shell git describe --tags --always --dirty 2>/dev/null || echo "dev")
 LDFLAGS=-ldflags "-X main.Version=$(VERSION)"
 
+# pg_dump must be the same major version as the server or newer. Override
+# in .env when the default is older, e.g. PG_DUMP=/opt/homebrew/opt/libpq/bin/pg_dump
+PG_DUMP ?= pg_dump
+BACKUP_DIR ?= backups
+
 # Use .env to set environment variables
 # Set DB_CONN_STR and DATA_DIR
 ifneq (,$(wildcard .env))
@@ -52,6 +57,7 @@ help:
 	@echo "  db-down      - Run database migrations down"
 	@echo "  db-clear-mortality - Clear all data from bill_of_mortality table"
 	@echo "  db-version   - Show current migration version"
+	@echo "  db-backup    - Dump the bom schema to $(BACKUP_DIR)/ before migrating or importing"
 
 # Create the bin directory if it doesn't exist
 $(BINARY_DIR):
@@ -114,5 +120,11 @@ db-version:
 	@echo "Current migration version:"
 	@migrate -path ./migrations -database ${DB_CONN_STR} version
 
+db-backup: check
+	@mkdir -p $(BACKUP_DIR)
+	$(PG_DUMP) --format=custom --schema=bom --file="$(BACKUP_DIR)/bom-$$(date +%Y%m%d-%H%M%S).dump" "$(DB_CONN_STR)"
+	@echo "Saved to $(BACKUP_DIR)/. Restore with:"
+	@echo "  pg_restore --clean --if-exists --dbname=<connection string> <file>"
 
-.PHONY : all build fmt vet check dry-run db-update db-up db-down db-version
+
+.PHONY : all build fmt vet check dry-run db-update db-up db-down db-version db-backup
