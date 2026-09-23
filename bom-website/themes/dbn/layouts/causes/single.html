@@ -99,13 +99,23 @@
 
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
 <script src="https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6"></script>
-<style>
-  [class*="plot-"] text, svg[class^="plot-"] text {
-    font-family: 'Work Sans', system-ui, sans-serif !important;
-  }
-</style>
 
 <script>
+// Draw a chart once its container has a width, and again whenever that width
+// changes (the container is hidden while data loads, so it can start at 0px).
+function drawWhenSized(el, draw) {
+  if (el._sizeObserver) el._sizeObserver.disconnect();
+  let lastWidth = 0;
+  el._sizeObserver = new ResizeObserver(([entry]) => {
+    const width = Math.round(entry.contentRect.width);
+    if (width > 0 && width !== lastWidth) { lastWidth = width; draw(width); }
+  });
+  el._sizeObserver.observe(el);
+}
+
+// Chart text matches the site's other charts
+const chartStyle = { fontSize: '12px', fontFamily: 'var(--font-ui)' };
+
 document.addEventListener('alpine:init', () => {
   Alpine.data('causeDetailData', () => ({
     causeName: '',
@@ -148,11 +158,15 @@ document.addEventListener('alpine:init', () => {
       this.error = null;
 
       try {
-        const resp = await fetch(
-          `https://data.chnm.org/bom/causes?id=${encodeURIComponent(this.causeName)}&bill-type=${this.billType}&start-year=1629&end-year=1754&limit=50000`,
+        const load = async (name) => (await fetch(
+          `https://data.chnm.org/bom/causes?id=${encodeURIComponent(name)}&bill-type=${this.billType}&start-year=1629&end-year=1754&limit=50000`,
           { cache: 'no-cache' }
-        );
-        const data = await resp.json();
+        )).json();
+        let data = await load(this.causeName);
+        // Cause ids are lower case in the API; accept any casing in the URL.
+        if ((!data || data.length === 0) && this.causeName !== this.causeName.toLowerCase()) {
+          data = await load(this.causeName.toLowerCase());
+        }
 
         if (!data || data.length === 0) {
           this.yearData = [];
@@ -179,7 +193,7 @@ document.addEventListener('alpine:init', () => {
         this.yearData = Object.values(byYear).sort((a, b) => a.year - b.year);
         this.totalCount = this.yearData.reduce((sum, y) => sum + y.total, 0);
 
-        this.$nextTick(() => this.renderChart());
+        drawWhenSized(document.getElementById('causeChart'), (width) => this.renderChart(width));
       } catch (e) {
         console.error('Error loading cause data:', e);
         this.error = 'Failed to load cause data. Please try again.';
@@ -188,7 +202,7 @@ document.addEventListener('alpine:init', () => {
       }
     },
 
-    renderChart() {
+    renderChart(width) {
       const el = document.getElementById('causeChart');
       if (!el || !this.yearData.length) return;
 
@@ -197,9 +211,10 @@ document.addEventListener('alpine:init', () => {
       const tipFmt = { format: { x: d => String(d) } };
 
       el.appendChild(Plot.plot({
-        width: el.clientWidth,
+        width,
         height: 300,
         marginLeft: 60,
+        style: chartStyle,
         x: {
           label: null,
           interval: 1,
