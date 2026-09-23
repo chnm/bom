@@ -7,13 +7,17 @@
 </div>
 
 {{/* Only fingerprint in production; in development keep things verbose for debugging. */}}
-{{ $cssStyle := resources.Get .Params.styles }}
 {{ $script := resources.Get .Params.script | js.Build (dict "target" "es2020") }}
 {{ if not (hugo.Environment | eq "development") }}
-{{ $cssStyle = $cssStyle | resources.Fingerprint }}
 {{ $script = $script | resources.Fingerprint }}
 {{ end }}
+{{ with .Params.styles }}
+{{ $cssStyle := resources.Get . }}
+{{ if not (hugo.Environment | eq "development") }}
+{{ $cssStyle = $cssStyle | resources.Fingerprint }}
+{{ end }}
 <link rel="stylesheet" href="{{ $cssStyle.Permalink }}" integrity="{{ $cssStyle.Data.Integrity }}">
+{{ end }}
 <script defer type="module" src="{{ $script.Permalink }}" integrity="{{ $script.Data.Integrity }}"></script>
 
 {{ end }}
