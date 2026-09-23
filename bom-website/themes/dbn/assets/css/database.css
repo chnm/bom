@@ -170,6 +170,7 @@
    -------------------------------------------------------------------------- */
 
 .db-tabs {
+  font-family: var(--font-ui);
   margin-bottom: 1.5rem;
   border-bottom: 1px solid var(--gray-200);
 }
@@ -206,6 +207,7 @@
 }
 
 .db-help {
+  font-family: var(--font-ui);
   margin: 0.125rem;
   padding: 0.75rem 0.25rem;
   color: var(--black);
@@ -236,6 +238,7 @@
 }
 
 .db-subtabs {
+  font-family: var(--font-ui);
   margin-bottom: 1rem;
 }
 
@@ -272,6 +275,7 @@
 }
 
 .db-filter-button {
+  font-family: var(--font-ui);
   display: inline-flex;
   align-items: center;
   padding: 0.5rem 0.75rem;
@@ -311,6 +315,7 @@
    -------------------------------------------------------------------------- */
 
 .db-controls {
+  font-family: var(--font-ui);
   margin-bottom: 0.5rem;
 }
 
@@ -341,13 +346,14 @@
   text-decoration: underline;
 }
 
-/* Formatted record counts (Tailwind's font-sans resolved to Inter) */
+/* Formatted record counts */
 .db-summary .num {
-  font-family: Inter, sans-serif;
+  font-family: var(--font-ui);
   font-weight: 600;
 }
 
 .db-pager {
+  font-family: var(--font-ui);
   display: flex;
   align-items: center;
   gap: 0.25rem;
@@ -408,6 +414,7 @@
 }
 
 .db-table th {
+  font-family: var(--font-ui);
   padding: 0.75rem 1.5rem;
   color: var(--gray-700);
   font-size: 0.75rem;
@@ -455,7 +462,7 @@
 
 .alt-name {
   margin-left: 0.25rem;
-  color: var(--gray-400);
+  color: var(--faint);
   font-size: 0.75rem;
   line-height: 1rem;
 }
@@ -642,6 +649,7 @@
 }
 
 .filter-drawer {
+  font-family: var(--font-ui);
   position: fixed;
   bottom: 0;
   left: 0;
@@ -672,7 +680,7 @@
 .filter-drawer-close {
   padding: 0.5rem;
   border-radius: var(--radius-lg);
-  color: var(--gray-400);
+  color: var(--faint);
   transition: color 200ms, background-color 200ms;
 }
 
@@ -869,7 +877,7 @@
 
 .range-ticks span {
   position: absolute;
-  color: var(--gray-400);
+  color: var(--faint);
   font-size: 0.75rem;
   line-height: 1rem;
   transform: translateX(-50%);

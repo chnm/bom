@@ -12,6 +12,7 @@
 }
 
 .detail-back {
+  font-family: var(--font-ui);
   color: var(--muted);
   font-size: 0.875rem;
   line-height: 1.25rem;
@@ -110,6 +111,7 @@ p.detail-definition {
 
 /* Weekly / General toggle */
 .detail-toggle {
+  font-family: var(--font-ui);
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -162,6 +164,7 @@ p.detail-definition {
 }
 
 .stat-label {
+  font-family: var(--font-ui);
   color: var(--muted);
   font-size: 0.75rem;
   line-height: 1rem;
@@ -296,6 +299,7 @@ p.detail-definition {
 }
 
 .detail-table th {
+  font-family: var(--font-ui);
   padding: 0.5rem 1rem;
   font-weight: 500;
   text-align: left;
@@ -359,6 +363,7 @@ p.detail-definition {
 
 /* Row of form controls above a chart */
 .viz-controls {
+  font-family: var(--font-ui);
   display: flex;
   margin-bottom: 1.5rem;
 }

@@ -13,6 +13,7 @@
    ========================================================================== */
 
 .site-nav {
+  font-family: var(--font-ui);
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -35,6 +36,7 @@
 }
 
 #site-title {
+  font-family: var(--font-display);
   display: inline-block;
   margin-right: 1rem;
   padding-block: 0.5rem;
@@ -231,12 +233,14 @@
 }
 
 .site-footer h4 {
+  font-family: var(--font-ui);
   margin-bottom: 0.75rem;
   font-size: 0.75rem;
   line-height: 1rem;
 }
 
 .site-footer ul {
+  font-family: var(--font-ui);
   display: grid;
   gap: 0.5rem;
   font-size: 0.875rem;

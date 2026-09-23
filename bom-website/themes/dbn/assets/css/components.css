@@ -3,6 +3,7 @@
    ========================================================================== */
 
 .button {
+  font-family: var(--font-ui);
   display: inline-block;
   padding: 0.75rem 1.5rem;
   border-radius: var(--radius);
@@ -34,6 +35,7 @@
 
 /* "Explore →" / "Read more →" underlined caps link */
 .arrow-link {
+  font-family: var(--font-ui);
   display: inline-block;
   padding-bottom: 0.25rem;
   border-bottom: 2px solid var(--red-700);
@@ -62,6 +64,7 @@
 
 /* Rounded tag chip */
 .tag {
+  font-family: var(--font-ui);
   display: inline-block;
   padding: 0.25rem 0.75rem;
   border: 1px solid var(--gray-300);
@@ -102,6 +105,7 @@
 
 /* Rows in a panel separated by rules */
 .panel-row {
+  font-family: var(--font-ui);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -131,6 +135,7 @@
    ========================================================================== */
 
 .pagination {
+  font-family: var(--font-ui);
   max-width: 42rem;
   margin-inline: auto;
   padding: 2.25rem;
@@ -210,6 +215,7 @@
 }
 
 .csv-table th {
+  font-family: var(--font-ui);
   padding: 1rem 1.5rem;
   color: var(--gray-800);
   font-size: 0.875rem;

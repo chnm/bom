@@ -5,9 +5,10 @@
    ========================================================================== */
 
 :root {
-  --font-display: "Libre Caslon Display", serif;
-  --font-serif: "Spectral", serif;
-  --font-mono: ui-monospace, monospace; /* IBM Plex Mono is loaded but was never applied; swap it in here to use it */
+  --font-display: "Fraunces", Georgia, serif; /* headings */
+  --font-body: "Nunito Sans", system-ui, sans-serif; /* running text */
+  --font-ui: "Inter", system-ui, sans-serif; /* nav, controls, labels */
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace; /* dates, numbers, code */
 
   /* Paper and ink */
   --paper: #f6f1e6;
@@ -55,8 +56,8 @@
   --accent-dark: var(--red-800);
   --link: var(--red-500);
   --rule: var(--gray-200);
-  --muted: var(--gray-500);
-  --faint: var(--gray-400);
+  --muted: var(--gray-600); /* secondary text: 7:1 on white */
+  --faint: var(--gray-500); /* lightest text allowed: 4.6:1 on gray-50 */
 
   --radius: 0.25rem;
   --radius-lg: 0.5rem;
@@ -225,7 +226,7 @@ body {
   flex-direction: column;
   background: var(--green-700);
   color: var(--ink-body);
-  font-family: var(--font-serif);
+  font-family: var(--font-body);
   font-size: 1.125rem;
   line-height: 1.5;
 }
@@ -248,6 +249,13 @@ h6 {
 a {
   color: var(--link);
   text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: var(--font-ui);
 }
 
 select {
@@ -289,6 +297,7 @@ select:focus {
 }
 
 .skip-link {
+  font-family: var(--font-ui);
   position: absolute;
   left: -9999px;
   z-index: 50;
@@ -313,6 +322,7 @@ select:focus {
 
 /* Small uppercase label above headings and in nav columns */
 .eyebrow {
+  font-family: var(--font-ui);
   font-size: 0.875rem;
   line-height: 1.25rem;
   font-weight: 600;
@@ -328,5 +338,5 @@ select:focus {
   line-height: 1rem;
   letter-spacing: 0.025em;
   text-transform: uppercase;
-  color: var(--faint);
+  color: var(--muted);
 }

@@ -48,7 +48,7 @@
 
 .latest > h3 {
   margin-bottom: 1rem;
-  font-family: var(--font-serif);
+  font-family: var(--font-ui);
   font-size: 1.25rem;
   font-weight: 500;
   line-height: 1.75rem;
@@ -201,6 +201,7 @@
 }
 
 .article-byline {
+  font-family: var(--font-ui);
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -324,6 +325,7 @@
 }
 
 .post-author {
+  font-family: var(--font-ui);
   margin-bottom: 1rem;
 }
 
@@ -543,6 +545,7 @@ p.post-author {
 }
 
 .docs-toc #TableOfContents {
+  font-family: var(--font-ui);
   font-size: 0.875rem;
   line-height: 1.5;
 }
@@ -746,6 +749,7 @@ p.viz-card-abstract {
 }
 
 .viz-card-meta {
+  font-family: var(--font-ui);
   margin-bottom: 1rem;
   color: var(--gray-500);
   font-size: 0.75rem;
@@ -762,6 +766,7 @@ p.viz-card-abstract {
 }
 
 .viz-card-link {
+  font-family: var(--font-ui);
   display: inline-flex;
   align-items: center;
   color: var(--blue-700);
