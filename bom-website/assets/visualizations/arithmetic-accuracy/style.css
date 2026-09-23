@@ -44,12 +44,10 @@
   margin-top: 2.5rem;
 }
 
+/* Title, then the legend beneath it */
 .chart-heading {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem 2rem;
-  justify-content: space-between;
-  align-items: end;
+  display: grid;
+  gap: 0.5rem;
   margin-bottom: 0.75rem;
 }
 
