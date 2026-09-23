@@ -140,13 +140,23 @@
 
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
 <script src="https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6"></script>
-<style>
-  [class*="plot-"] text, svg[class^="plot-"] text {
-    font-family: 'Work Sans', system-ui, sans-serif !important;
-  }
-</style>
 
 <script>
+// Draw a chart once its container has a width, and again whenever that width
+// changes (the container is hidden while data loads, so it can start at 0px).
+function drawWhenSized(el, draw) {
+  if (el._sizeObserver) el._sizeObserver.disconnect();
+  let lastWidth = 0;
+  el._sizeObserver = new ResizeObserver(([entry]) => {
+    const width = Math.round(entry.contentRect.width);
+    if (width > 0 && width !== lastWidth) { lastWidth = width; draw(width); }
+  });
+  el._sizeObserver.observe(el);
+}
+
+// Chart text matches the site's other charts
+const chartStyle = { fontSize: '12px', fontFamily: 'var(--font-ui)' };
+
 document.addEventListener('alpine:init', () => {
   Alpine.data('parishDetailData', () => ({
     parishName: '',
@@ -190,7 +200,8 @@ document.addEventListener('alpine:init', () => {
         this.totalPlague = this.yearData.reduce((sum, y) => sum + (y.total_plague || 0), 0);
 
         // Render charts and map after data loads
-        this.$nextTick(() => this.renderCharts());
+        drawWhenSized(document.getElementById('burialChart'), (width) => this.renderBurials(width));
+        drawWhenSized(document.getElementById('plagueChart'), (width) => this.renderPlague(width));
         this.renderMap();
 
         // Fetch sources in the background (non-blocking)
@@ -314,54 +325,50 @@ document.addEventListener('alpine:init', () => {
       }
     },
 
-    renderCharts() {
-      if (!this.yearData.length) return;
-
+    chartX() {
       const ticks5 = this.yearData.map(d => d.year).filter(y => y % 5 === 0);
-      const xConfig = {
+      return {
         label: null,
         interval: 1,
         ticks: ticks5.length > 1 ? ticks5 : undefined,
         tickFormat: d => String(d),
       };
-      const tipFmt = { format: { x: d => String(d) } };
+    },
 
-      // Burials
-      const burialEl = document.getElementById('burialChart');
-      if (burialEl) {
-        burialEl.innerHTML = '';
-        burialEl.appendChild(Plot.plot({
-          width: burialEl.clientWidth,
-          height: 280,
-          marginLeft: 60,
-          x: xConfig,
-          y: { label: 'Buried', grid: true },
-          marks: [
-            Plot.barY(this.yearData, { x: 'year', y: 'total_buried', fill: '#4a73a0', tip: tipFmt }),
-            Plot.crosshairX(this.yearData, { x: 'year', y: 'total_buried' }),
-            Plot.ruleY([0]),
-          ],
-        }));
-      }
+    renderBurials(width) {
+      const el = document.getElementById('burialChart');
+      if (!el || !this.yearData.length) return;
+      el.replaceChildren(Plot.plot({
+        width,
+        height: 280,
+        marginLeft: 60,
+        style: chartStyle,
+        x: this.chartX(),
+        y: { label: 'Buried', grid: true },
+        marks: [
+          Plot.barY(this.yearData, { x: 'year', y: 'total_buried', fill: '#4a73a0', tip: { format: { x: d => String(d) } } }),
+          Plot.crosshairX(this.yearData, { x: 'year', y: 'total_buried' }),
+          Plot.ruleY([0]),
+        ],
+      }));
+    },
 
-      // Plague
-      const plagueEl = document.getElementById('plagueChart');
-      if (plagueEl && this.totalPlague > 0) {
-        plagueEl.innerHTML = '';
-        const plagueData = this.yearData.filter(d => d.total_plague > 0);
-        plagueEl.appendChild(Plot.plot({
-          width: plagueEl.clientWidth,
-          height: 220,
-          marginLeft: 60,
-          x: xConfig,
-          y: { label: 'Plague', grid: true },
-          marks: [
-            Plot.barY(this.yearData, { x: 'year', y: d => d.total_plague || 0, fill: '#9a3324', tip: tipFmt }),
-            Plot.crosshairX(this.yearData, { x: 'year', y: d => d.total_plague || 0 }),
-            Plot.ruleY([0]),
-          ],
-        }));
-      }
+    renderPlague(width) {
+      const el = document.getElementById('plagueChart');
+      if (!el || this.totalPlague === 0) return;
+      el.replaceChildren(Plot.plot({
+        width,
+        height: 220,
+        marginLeft: 60,
+        style: chartStyle,
+        x: this.chartX(),
+        y: { label: 'Plague', grid: true },
+        marks: [
+          Plot.barY(this.yearData, { x: 'year', y: d => d.total_plague || 0, fill: '#9a3324', tip: { format: { x: d => String(d) } } }),
+          Plot.crosshairX(this.yearData, { x: 'year', y: d => d.total_plague || 0 }),
+          Plot.ruleY([0]),
+        ],
+      }));
     },
   }));
 });
