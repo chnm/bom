@@ -65,7 +65,12 @@
                 <th scope="col">Difference</th>
                 <th scope="col">Legible</th>
                 {{- if $api }}
-                <th scope="col">Mixed copies</th>
+                <th scope="col">
+                  <span class="th-hint">Mixed copies
+                    <button type="button" class="hint-button" aria-describedby="mixed-copies-hint" onkeydown="if (event.key === 'Escape') this.blur()">?</button>
+                    <span role="tooltip" id="mixed-copies-hint" class="hint-text">More than one copy of this week's bill survives, and its figures come from different copies (the largest readable value for each parish and subtotal). A difference here may reflect disagreement between copies rather than an error on one printed bill.</span>
+                  </span>
+                </th>
                 {{- end }}
               </tr>
             </thead>

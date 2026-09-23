@@ -127,7 +127,51 @@
 .table-scroll thead {
   position: sticky;
   top: 0;
+  z-index: 1; /* keeps the header hint above the rows */
   background: var(--white);
+}
+
+/* Column hint: a "?" that shows its explanation on hover or keyboard focus */
+.th-hint {
+  position: relative;
+  display: inline-flex;
+  gap: 0.375rem;
+  align-items: center;
+}
+
+.hint-button {
+  width: 1.125rem;
+  height: 1.125rem;
+  border: 1px solid var(--gray-400);
+  border-radius: 50%;
+  background: var(--white);
+  color: var(--gray-600);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  line-height: 1;
+  cursor: help;
+}
+
+.hint-text {
+  position: absolute;
+  top: calc(100% + 0.375rem);
+  right: 0; /* last column, so open leftward and stay inside the table */
+  width: 16rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius);
+  background: var(--gray-900);
+  color: var(--white);
+  font-size: 0.8125rem;
+  font-weight: 400;
+  line-height: 1.4;
+  white-space: normal;
+  text-align: left;
+  visibility: hidden;
+}
+
+.th-hint:hover .hint-text,
+.hint-button:focus-visible + .hint-text {
+  visibility: visible;
 }
 
 .positive-value {
