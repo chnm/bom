@@ -33,7 +33,7 @@
 @media (min-width: 1536px) { .db-page { max-width: 1536px; } }
 
 .db-title {
-  padding-top: 1rem;
+  padding: 1rem 1rem 0;
   font-size: 2.25rem;
   line-height: 2.5rem;
   font-weight: 500;
@@ -46,7 +46,12 @@
 
 .db-main {
   width: 100%;
-  padding: 2rem 3rem;
+  padding: 2rem 1rem;
+}
+
+@media (min-width: 640px) {
+  .db-main { padding-inline: 3rem; }
+  .db-title { padding-inline: 3rem; }
 }
 
 .button-glyph {
@@ -244,6 +249,8 @@
 
 .db-subtabs-row {
   display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
   align-items: center;
   justify-content: space-between;
 }
@@ -390,6 +397,11 @@
 /* --------------------------------------------------------------------------
    Data tables
    -------------------------------------------------------------------------- */
+
+/* Wide tables scroll inside their box instead of widening the page */
+div:has(> .db-table) {
+  overflow-x: auto;
+}
 
 .db-table {
   min-width: 100%;
