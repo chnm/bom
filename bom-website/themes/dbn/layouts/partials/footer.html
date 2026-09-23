@@ -1,67 +1,57 @@
-<footer class="border-t-4 border-dbn-red-700 bg-white">
-  <div class="mx-auto w-full max-w-screen-xl px-6 lg:px-12 py-12">
+{{- $columns := slice
+  (dict "title" "Explore" "links" (slice
+    (dict "title" "The Database" "url" "/database/")
+    (dict "title" "Visualizations" "url" "/visualizations/")
+    (dict "title" "Data API" "url" "/api/")
+    (dict "title" "Downloads" "url" "/downloads/")
+    (dict "title" "Methodology" "url" "/methodologies/")))
+  (dict "title" "Read" "links" (slice
+    (dict "title" "Context" "url" "/context/")
+    (dict "title" "Analysis" "url" "/analysis/")
+    (dict "title" "Pedagogy" "url" "/pedagogy/")
+    (dict "title" "Death Dictionary" "url" "/dictionary/")))
+  (dict "title" "About" "links" (slice
+    (dict "title" "The Project" "url" "/about/")
+    (dict "title" "Team" "url" "/team/")
+    (dict "title" "Accessibility" "url" "https://rrchnm.org/accessibility/")))
+-}}
 
-    {{/* Top section: branding + nav columns */}}
-    <div class="grid grid-cols-1 lg:grid-cols-5 gap-10 mb-10">
-
-      {{/* Left: logo + description */}}
-      <div class="lg:col-span-2">
-        <div class="flex items-center gap-3 mb-4">
-          <span class="text-xl font-display">Death by Numbers</span>
-        </div>
-        <p class="text-sm leading-relaxed mb-4">
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-about">
+        <p class="footer-name">Death by Numbers</p>
+        <p>
           Transcribing and using the Bills of Mortality to investigate how lived experiences of plague outbreaks intersected with an emerging quantitative mentality among the people of early modern England.
         </p>
       </div>
 
-      {{/* Nav columns */}}
+      {{- range $columns }}
       <div>
-        <h4 class="text-xs font-semibold tracking-widest uppercase text-dbn-red-700 mb-3">Explore</h4>
-        <ul class="space-y-2 text-sm">
-          <li><a href="/database/" class="text-ink no-underline hover:underline">The Database</a></li>
-          <li><a href="/visualizations/" class="text-ink no-underline hover:underline">Visualizations</a></li>
-          <li><a href="/api/" class="text-ink no-underline hover:underline">Data API</a></li>
-          <li><a href="/downloads/" class="text-ink no-underline hover:underline">Downloads</a></li>
-          <li><a href="/methodologies/" class="text-ink no-underline hover:underline">Methodology</a></li>
+        <h4 class="eyebrow">{{ .title }}</h4>
+        <ul>
+          {{- range .links }}
+          <li><a href="{{ .url }}">{{ .title }}</a></li>
+          {{- end }}
         </ul>
       </div>
-
-      <div>
-        <h4 class="text-xs font-semibold tracking-widest uppercase text-dbn-red-700 mb-3">Read</h4>
-        <ul class="space-y-2 text-sm">
-          <li><a href="/context/" class="text-ink no-underline hover:underline">Context</a></li>
-          <li><a href="/analysis/" class="text-ink no-underline hover:underline">Analysis</a></li>
-          <li><a href="/pedagogy/" class="text-ink no-underline hover:underline">Pedagogy</a></li>
-          <li><a href="/dictionary/" class="text-ink no-underline hover:underline">Death Dictionary</a></li>
-        </ul>
-      </div>
-
-      <div>
-        <h4 class="text-xs font-semibold tracking-widest uppercase text-dbn-red-700 mb-3">About</h4>
-        <ul class="space-y-2 text-sm">
-          <li><a href="/about/" class="text-ink no-underline hover:underline">The Project</a></li>
-          <li><a href="/team/" class="text-ink no-underline hover:underline">Team</a></li>
-          <li><a href="https://rrchnm.org/accessibility/" class="text-ink no-underline hover:underline">Accessibility</a></li>
-        </ul>
-      </div>
+      {{- end }}
     </div>
 
-    {{/* Bottom bar: funding + logos */}}
-    <div class="border-t border-gray-200 pt-6 grid grid-cols-1 lg:grid-cols-5 gap-6 items-center">
-      <p class="text-sm lg:col-span-3">
+    <div class="footer-bottom">
+      <p>
         Bills of Mortality is generously funded by the
-        <a class="text-ink underline decoration-dbn-red-700 hover:text-dbn-red-700" href="https://www.nsf.gov/">National Science Foundation</a>
+        <a href="https://www.nsf.gov/">National Science Foundation</a>
         and developed by the
-        <a class="text-ink underline decoration-dbn-red-700 hover:text-dbn-red-700" href="https://rrchnm.org/">Roy Rosenzweig Center for History and New Media</a>
+        <a href="https://rrchnm.org/">Roy Rosenzweig Center for History and New Media</a>
         at
-        <a class="text-ink underline decoration-dbn-red-700 hover:text-dbn-red-700" href="https://www2.gmu.edu/">George Mason University</a>.
+        <a href="https://www2.gmu.edu/">George Mason University</a>.
       </p>
-      <div class="lg:col-span-2 flex items-center justify-end gap-8">
-        <a href="https://rrchnm.org/"><img class="h-10 object-contain" src="/images/rrchnm-logo.png" alt="Roy Rosenzweig Center for History and New Media"></a>
-        <a href="https://www2.gmu.edu/"><img class="h-12 object-contain" src="/images/gmu-logo.png" alt="George Mason University"></a>
-        <a href="https://www.nsf.gov/"><img class="h-12 object-contain" src="/images/nsf-logo.png" alt="National Science Foundation"></a>
+      <div class="footer-logos">
+        <a href="https://rrchnm.org/"><img class="logo-short" src="/images/rrchnm-logo.png" alt="Roy Rosenzweig Center for History and New Media"></a>
+        <a href="https://www2.gmu.edu/"><img src="/images/gmu-logo.png" alt="George Mason University"></a>
+        <a href="https://www.nsf.gov/"><img src="/images/nsf-logo.png" alt="National Science Foundation"></a>
       </div>
     </div>
-
   </div>
 </footer>

@@ -1,0 +1,306 @@
+/* ==========================================================================
+   Page shell
+   ========================================================================== */
+
+#content {
+  flex-grow: 1;
+  background: var(--white);
+  color: var(--ink);
+}
+
+/* ==========================================================================
+   Site navigation
+   ========================================================================== */
+
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: var(--page-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  background: var(--green-900);
+}
+
+.site-brand {
+  width: 100%;
+  flex-grow: 1;
+}
+
+.site-brand img {
+  width: 11rem;
+  object-fit: scale-down;
+}
+
+#site-title {
+  display: inline-block;
+  margin-right: 1rem;
+  padding-block: 0.5rem;
+  white-space: nowrap;
+  color: var(--white);
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.625;
+}
+
+#site-title span {
+  color: var(--blue-400);
+}
+
+.site-menus {
+  width: 100%;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+@media (min-width: 1024px) {
+  .site-brand {
+    display: flex;
+    align-items: center;
+    width: auto;
+  }
+
+  .site-menus {
+    width: auto;
+  }
+}
+
+.menu {
+  display: inline-block;
+  position: relative;
+}
+
+.menu-button {
+  display: inline-block;
+  margin-left: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  color: var(--white);
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.375;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+}
+
+.menu-button:hover {
+  opacity: 0.75;
+}
+
+.menu-button svg {
+  display: inline;
+  width: 1rem;
+  height: 1rem;
+  margin-left: 0.25rem;
+  vertical-align: middle;
+}
+
+.menu-panel {
+  position: absolute;
+  z-index: 50;
+  min-width: 200px;
+  margin-top: 0.5rem;
+  border-radius: var(--radius);
+  background: var(--white);
+  box-shadow: var(--shadow-lg);
+}
+
+.menu-panel a {
+  display: block;
+  padding: 0.5rem 1rem;
+  color: var(--green-800);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.menu-panel a:hover {
+  background: var(--gray-200);
+}
+
+.menu-panel i {
+  font-size: 0.75rem;
+}
+
+.menu-panel hr {
+  border-color: var(--gray-300);
+}
+
+/* ==========================================================================
+   Home hero
+   ========================================================================== */
+
+.hero {
+  background: var(--green-900);
+  color: var(--white);
+}
+
+.hero-grid {
+  display: grid;
+  gap: 3rem;
+  align-items: center;
+  padding-block: 4rem;
+}
+
+.hero h1 {
+  margin-bottom: 1.5rem;
+  font-size: 2.25rem;
+  line-height: 1.25;
+}
+
+.hero p {
+  margin-bottom: 2rem;
+  color: var(--gray-300);
+  line-height: 1.625;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.hero-image {
+  height: 18rem;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-2xl);
+}
+
+.hero-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  scale: 1.25;
+}
+
+@media (min-width: 1024px) {
+  .hero-grid {
+    grid-template-columns: 1fr 1fr;
+    padding-block: 6rem;
+  }
+
+  .hero h1 {
+    font-size: 3.75rem;
+    line-height: 1;
+  }
+
+  .hero-image {
+    height: 24rem;
+  }
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+
+.site-footer {
+  border-top: 4px solid var(--red-700);
+  background: var(--white);
+}
+
+.site-footer .wrap {
+  padding-block: 3rem;
+}
+
+.footer-top {
+  display: grid;
+  gap: 2.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.site-footer p {
+  font-size: 0.875rem;
+  line-height: 1.625;
+}
+
+.footer-about p {
+  margin-bottom: 1rem;
+}
+
+.footer-bottom p {
+  line-height: 1.25rem;
+}
+
+.site-footer .footer-name {
+  margin-bottom: 1rem;
+  color: inherit;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
+.site-footer h4 {
+  margin-bottom: 0.75rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.site-footer ul {
+  display: grid;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.site-footer ul a {
+  color: var(--ink);
+}
+
+.site-footer ul a:hover {
+  text-decoration: underline;
+}
+
+.footer-bottom {
+  display: grid;
+  gap: 1.5rem;
+  align-items: center;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--gray-200);
+}
+
+.footer-bottom a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--red-700);
+}
+
+.footer-bottom a:hover {
+  color: var(--red-700);
+}
+
+.footer-logos {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 2rem;
+}
+
+.footer-logos img {
+  height: 3rem;
+  width: auto;
+  object-fit: contain;
+}
+
+.footer-logos .logo-short {
+  height: 2.5rem;
+}
+
+@media (min-width: 1024px) {
+  .footer-top,
+  .footer-bottom {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  .footer-about {
+    grid-column: span 2;
+  }
+
+  .footer-bottom p {
+    grid-column: span 3;
+  }
+
+  .footer-logos {
+    grid-column: span 2;
+  }
+}

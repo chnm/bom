@@ -1,0 +1,84 @@
+{{- /* Paginated post list with a tag/category sidebar.
+  dict: "page", "eyebrow", "pages" (posts to list), "label" (aria label),
+  "tagsTitle", "tags" (slice of dict name/count, in display order), "note" (optional HTML). */ -}}
+{{- $page := .page -}}
+<div class="section-list wrap">
+  <header class="section-header">
+    <p class="eyebrow">{{ .eyebrow }}</p>
+    <h1>{{ $page.Title }}</h1>
+    {{ with $page.Content }}
+      <div class="prose prose-lg">{{ . }}</div>
+    {{ end }}
+    {{ with .note }}<p class="section-note">{{ . | safeHTML }}</p>{{ end }}
+  </header>
+
+  <hr class="section-rule">
+
+  <div class="section-grid">
+    <section class="post-list" aria-label="{{ .label }}">
+      {{ $paginator := $page.Paginate .pages }}
+      {{ range $paginator.Pages }}
+        <article class="post-item">
+          <p class="meta">
+            <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
+            {{ range .Params.categories }}&middot; {{ . }}{{ end }}
+            {{ if .Params.featured }}&middot; <span class="featured">Featured</span>{{ end }}
+          </p>
+
+          <h2><a href="{{ .Permalink }}">{{ .Title }}</a></h2>
+
+          {{ with .Params.author }}
+          <p class="post-author">
+            By {{ range $i, $author := . }}{{ if $i }} &amp; {{ end }}{{ $author }}{{ end }}
+          </p>
+          {{ end }}
+
+          <div class="prose prose-wide">
+            <p>{{ .Summary | plainify | truncate 300 }}</p>
+          </div>
+
+          <a href="{{ .Permalink }}" class="arrow-link">Read more &rarr;</a>
+        </article>
+      {{ else }}
+        <p class="muted">No posts available.</p>
+      {{ end }}
+    </section>
+
+    <aside class="section-sidebar" aria-label="Sidebar">
+      {{ with .tags }}
+        {{ $counts := slice }}
+        {{ range . }}{{ $counts = $counts | append .count }}{{ end }}
+        {{ $min := index (sort $counts) 0 }}
+        {{ $range := sub (index (sort $counts "value" "desc") 0) $min }}
+        <section class="panel">
+          <h2>{{ $.tagsTitle }}</h2>
+          <div class="tag-list">
+            {{ range . }}
+              {{ $weight := 0.0 }}
+              {{ if gt $range 0 }}{{ $weight = div (float (sub .count $min)) (float $range) }}{{ end }}
+              <a href="{{ "/tags/" | relURL }}{{ .name | urlize }}" class="tag" style="font-size: {{ add 0.8 (mul $weight 0.8) }}rem;">
+                {{ .name }} ({{ .count }})
+              </a>
+            {{ end }}
+          </div>
+        </section>
+      {{ end }}
+
+      {{ with site.Taxonomies.categories }}
+        <section class="panel">
+          <h2>Related Categories</h2>
+          <div>
+            {{ range $name, $taxonomy := . }}
+              <a href="{{ "/categories/" | relURL }}{{ $name | urlize }}" class="panel-row">
+                <span>{{ $name }}</span>
+                <span class="count">{{ len $taxonomy.Pages }}</span>
+              </a>
+            {{ end }}
+          </div>
+        </section>
+      {{ end }}
+    </aside>
+  </div>
+
+  {{ partial "pagination.html" $page }}
+</div>

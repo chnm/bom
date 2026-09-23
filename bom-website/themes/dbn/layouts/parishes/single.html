@@ -1,98 +1,98 @@
 {{ define "main" }}
-<div class="relative px-6 py-12 bg-white mx-auto w-full max-w-screen-xl">
-  <div class="mx-auto" x-data="parishDetailData">
+<div class="detail-page">
+  <div x-data="parishDetailData">
     <!-- Back link -->
-    <a href="/database/" class="text-sm text-gray-500 hover:text-gray-700">&larr; Back to database</a>
+    <a href="/database/" class="detail-back">&larr; Back to database</a>
 
     <!-- Loading state -->
-    <div x-show="loading" class="text-center py-16">
-      <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-3"></div>
-      <p class="text-gray-500">Loading parish data...</p>
+    <div x-show="loading" class="detail-status">
+      <div class="spinner"></div>
+      <p>Loading parish data...</p>
     </div>
 
     <!-- Error state -->
-    <div x-show="error && !loading" class="text-center py-16">
-      <p class="text-red-600" x-text="error"></p>
+    <div x-show="error && !loading" class="detail-status">
+      <p class="is-error" x-text="error"></p>
     </div>
 
     <!-- Content -->
     <div x-show="!loading && !error" x-cloak>
-      <h2 class="text-4xl font-medium mt-4 mb-1" x-text="parishName"></h2>
+      <h2 class="detail-title" x-text="parishName"></h2>
       <p x-show="parishInfo && parishInfo.name !== parishInfo.canonical_name"
-         class="text-gray-500 mb-1">
+         class="detail-alias">
         Also known as: <span x-text="parishInfo?.name"></span>
       </p>
-      <div class="flex flex-wrap items-center gap-3 text-sm text-gray-500 mb-6">
+      <div class="detail-meta">
         <span x-show="parishInfo?.subunit" x-text="parishInfo?.subunit"></span>
-        <span x-show="parishInfo?.subunit && parishInfo?.notes" class="text-gray-300">&middot;</span>
+        <span x-show="parishInfo?.subunit && parishInfo?.notes" class="sep">&middot;</span>
         <span x-show="parishInfo?.notes" x-text="parishInfo?.notes"></span>
       </div>
 
       <!-- Summary cards + map -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+      <div class="parish-overview">
 
       <!-- Map -->
-      <div class="border border-gray-200 rounded-lg overflow-hidden h-56 lg:h-64">
-        <div id="parishMap" class="w-full h-full"></div>
+      <div class="parish-map">
+        <div id="parishMap" class="parish-map-canvas"></div>
       </div>
 
       <!-- Cards in 2x2 -->
-      <div class="grid grid-cols-2 gap-4">
-        <div class="border border-gray-200 rounded-lg p-4">
-          <div class="text-xs text-gray-500 uppercase tracking-wide">Total Buried</div>
-          <div class="text-2xl font-mono font-semibold mt-1" x-text="totalBuried.toLocaleString()"></div>
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-label">Total Buried</div>
+          <div class="stat-value" x-text="totalBuried.toLocaleString()"></div>
         </div>
-        <div class="border border-gray-200 rounded-lg p-4">
-          <div class="text-xs text-gray-500 uppercase tracking-wide">Total Plague</div>
-          <div class="text-2xl font-mono font-semibold mt-1 text-red-700" x-text="totalPlague.toLocaleString()"></div>
+        <div class="stat-card">
+          <div class="stat-label">Total Plague</div>
+          <div class="stat-value is-plague" x-text="totalPlague.toLocaleString()"></div>
         </div>
-        <div class="border border-gray-200 rounded-lg p-4">
-          <div class="text-xs text-gray-500 uppercase tracking-wide">Years of Data</div>
-          <div class="text-2xl font-mono font-semibold mt-1" x-text="yearData.length"></div>
+        <div class="stat-card">
+          <div class="stat-label">Years of Data</div>
+          <div class="stat-value" x-text="yearData.length"></div>
         </div>
-        <div class="border border-gray-200 rounded-lg p-4" x-show="parishInfo?.foundation_year">
-          <div class="text-xs text-gray-500 uppercase tracking-wide">First Extant Bill</div>
-          <div class="text-2xl font-mono font-semibold mt-1" x-text="parishInfo?.foundation_year"></div>
+        <div class="stat-card" x-show="parishInfo?.foundation_year">
+          <div class="stat-label">First Extant Bill</div>
+          <div class="stat-value" x-text="parishInfo?.foundation_year"></div>
         </div>
       </div>
       </div><!-- end cards + map grid -->
 
       <!-- Charts -->
-      <div class="border border-gray-200 rounded-lg p-6 mb-6">
-        <h3 class="text-lg font-semibold mb-2">Burials by Year</h3>
+      <div class="chart-panel">
+        <h3>Burials by Year</h3>
         <div id="burialChart"></div>
       </div>
-      <div class="border border-gray-200 rounded-lg p-6 mb-6" x-show="totalPlague > 0">
-        <h3 class="text-lg font-semibold mb-2">Plague Deaths by Year</h3>
+      <div class="chart-panel" x-show="totalPlague > 0">
+        <h3>Plague Deaths by Year</h3>
         <div id="plagueChart"></div>
       </div>
-      <div x-show="totalPlague === 0" class="border border-gray-200 rounded-lg p-6 mb-6">
-        <h3 class="text-lg font-semibold mb-2">Plague Deaths by Year</h3>
-        <p class="text-gray-400 text-sm py-4">No plague deaths recorded for this parish.</p>
+      <div x-show="totalPlague === 0" class="chart-panel">
+        <h3>Plague Deaths by Year</h3>
+        <p class="empty">No plague deaths recorded for this parish.</p>
       </div>
 
       <!-- Year-by-year table + sources -->
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-      <div class="lg:col-span-2 border border-gray-200 rounded-lg overflow-hidden">
-        <div class="px-4 py-3 border-b border-gray-200 bg-gray-50">
-          <h3 class="font-semibold">Year-by-Year Breakdown</h3>
+      <div class="parish-tables">
+      <div class="table-panel">
+        <div class="table-panel-header">
+          <h3>Year-by-Year Breakdown</h3>
         </div>
-        <div class="overflow-y-auto" style="max-height: 500px;">
-          <table class="w-full text-sm">
-            <thead class="sticky top-0 bg-white">
-              <tr class="border-b text-gray-600">
-                <th class="px-4 py-2 text-left font-medium">Year</th>
-                <th class="px-4 py-2 text-right font-medium">Buried</th>
-                <th class="px-4 py-2 text-right font-medium">Plague</th>
+        <div class="table-scroll">
+          <table class="detail-table is-hoverable">
+            <thead>
+              <tr>
+                <th>Year</th>
+                <th class="num">Buried</th>
+                <th class="num">Plague</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-gray-100">
+            <tbody>
               <template x-for="y in yearData" :key="y.year">
-                <tr class="hover:bg-gray-50">
-                  <td class="px-4 py-1.5 font-mono" x-text="y.year"></td>
-                  <td class="px-4 py-1.5 text-right font-mono" x-text="y.total_buried.toLocaleString()"></td>
-                  <td class="px-4 py-1.5 text-right font-mono"
-                      :class="y.total_plague > 0 ? 'text-red-700' : 'text-gray-300'"
+                <tr>
+                  <td class="year" x-text="y.year"></td>
+                  <td class="num" x-text="y.total_buried.toLocaleString()"></td>
+                  <td class="num"
+                      :class="y.total_plague > 0 ? 'is-plague' : 'is-zero'"
                       x-text="y.total_plague ? y.total_plague.toLocaleString() : '0'"></td>
                 </tr>
               </template>
@@ -102,31 +102,31 @@
       </div>
 
       <!-- Sources -->
-      <div class="border border-gray-200 rounded-lg overflow-hidden">
-        <div class="px-4 py-3 border-b border-gray-200 bg-gray-50">
-          <h3 class="font-semibold">Data Sources</h3>
+      <div class="table-panel">
+        <div class="table-panel-header">
+          <h3>Data Sources</h3>
         </div>
-        <div x-show="sources.length === 0" class="px-4 py-6 text-center text-gray-400 text-sm">Loading sources...</div>
-        <div x-show="sources.length > 0" class="overflow-y-auto" style="max-height: 500px;">
-          <table class="w-full text-sm">
-            <thead class="sticky top-0 bg-white">
-              <tr class="border-b text-gray-600">
-                <th class="px-4 py-2 text-left font-medium">Source</th>
-                <th class="px-4 py-2 text-right font-medium">Records</th>
+        <div x-show="sources.length === 0" class="empty">Loading sources...</div>
+        <div x-show="sources.length > 0" class="table-scroll">
+          <table class="detail-table">
+            <thead>
+              <tr>
+                <th>Source</th>
+                <th class="num">Records</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-gray-100">
+            <tbody>
               <template x-for="s in sources" :key="s.file">
                 <tr>
-                  <td class="px-4 py-1.5">
-                    <span class="text-xs bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded" x-text="s.collection"></span>
-                    <div class="mt-0.5">
+                  <td>
+                    <span class="source-collection" x-text="s.collection"></span>
+                    <div class="source-file">
                       <a :href="'https://github.com/chnm/bom/blob/main/bom-data/data-csvs/' + s.file"
-                         class="text-xs text-dbn-blue-700 hover:text-dbn-blue-900 hover:underline"
+                         class="detail-link"
                          target="_blank" rel="noopener" x-text="s.file"></a>
                     </div>
                   </td>
-                  <td class="px-4 py-1.5 text-right font-mono text-gray-700" x-text="s.count.toLocaleString()"></td>
+                  <td class="num count" x-text="s.count.toLocaleString()"></td>
                 </tr>
               </template>
             </tbody>

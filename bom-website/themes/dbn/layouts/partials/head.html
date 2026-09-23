@@ -33,10 +33,16 @@
   <meta name="twitter:image" content="{{ .Site.BaseURL }}/images/death-by-numbers.jpg" />
 
 
-  {{ $style := resources.Get "style.css" }}
-  <link rel="stylesheet" href="{{ $style.Permalink }}" />
+  {{- /* Stylesheets are concatenated in this order; later files build on earlier ones. */}}
+  {{ $css := slice }}
+  {{ range slice "base" "prose" "layout" "components" "pages" "database" "detail" }}
+    {{ with resources.Get (printf "css/%s.css" .) }}{{ $css = $css | append . }}{{ end }}
+  {{ end }}
+  {{ $css = $css | resources.Concat "css/site.css" }}
+  {{ if hugo.IsProduction }}{{ $css = $css | resources.Minify | resources.Fingerprint }}{{ end }}
+  <link rel="stylesheet" href="{{ $css.RelPermalink }}"{{ with $css.Data.Integrity }} integrity="{{ . }}"{{ end }} />
   {{ $syntax := resources.Get "syntax.css" }}
-  <link rel="stylesheet" href="{{ $syntax.Permalink }}" />
+  <link rel="stylesheet" href="{{ $syntax.RelPermalink }}" />
 
   {{ if ne hugo.Environment "development" }}
   <!-- Matomo -->

@@ -19,10 +19,6 @@ author:
   name: Roy Rosenzweig Center for History and New Media
   email: webmaster@chnm.gmu.edu
 
-# We need this set for TailwindCSS
-build:
-  writeStats: true
-
 # We need this for embedding visualizations
 markup:
   goldmark:

@@ -1,0 +1,320 @@
+/* ==========================================================================
+   Buttons and links
+   ========================================================================== */
+
+.button {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.25rem;
+  letter-spacing: 0.025em;
+  transition: color 150ms, background-color 150ms, border-color 150ms;
+}
+
+.button-primary {
+  background: var(--red-700);
+  color: var(--white);
+}
+
+.button-primary:hover {
+  background: var(--red-800);
+}
+
+.button-ghost {
+  border: 1px solid var(--gray-500);
+  color: var(--gray-300);
+}
+
+.button-ghost:hover {
+  border-color: var(--gray-300);
+  color: var(--white);
+}
+
+/* "Explore →" / "Read more →" underlined caps link */
+.arrow-link {
+  display: inline-block;
+  padding-bottom: 0.25rem;
+  border-bottom: 2px solid var(--red-700);
+  color: var(--gray-900);
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.25rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: color 150ms;
+}
+
+.arrow-link:hover {
+  color: var(--red-700);
+}
+
+/* "← Back to Analysis" */
+.back-link {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+/* Rounded tag chip */
+.tag {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border: 1px solid var(--gray-300);
+  border-radius: 9999px;
+  color: var(--ink);
+  transition: color 150ms, border-color 150ms;
+}
+
+.tag:hover {
+  border-color: var(--red-700);
+  color: var(--red-700);
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* ==========================================================================
+   Panels (sidebar boxes, "Latest Writings")
+   ========================================================================== */
+
+.panel {
+  padding: 1.5rem;
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  background: var(--gray-50);
+}
+
+.panel > h2,
+.panel > h3 {
+  margin-bottom: 1rem;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+
+/* Rows in a panel separated by rules */
+.panel-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-block: 0.75rem;
+  border-bottom: 1px solid var(--gray-200);
+  color: var(--ink);
+  transition: color 150ms;
+}
+
+.panel-row:last-child {
+  border-bottom-width: 0;
+}
+
+.panel-row:hover {
+  color: var(--red-700);
+}
+
+.panel-row .count {
+  color: var(--faint);
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+/* ==========================================================================
+   Pagination
+   ========================================================================== */
+
+.pagination {
+  max-width: 42rem;
+  margin-inline: auto;
+  padding: 2.25rem;
+}
+
+.pagination ul {
+  display: inline-flex;
+}
+
+.pagination li + li {
+  margin-left: -1px;
+}
+
+.pagination :is(a, span) {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--yellow-300);
+  background: var(--white);
+  color: var(--green-600);
+  line-height: 1.25;
+  transition: color 150ms, background-color 150ms;
+}
+
+.pagination a:hover {
+  background: var(--yellow-100);
+  color: var(--green-700);
+}
+
+.pagination [aria-current="page"] {
+  border-color: var(--yellow-400);
+  background: var(--yellow-100);
+  color: var(--green-700);
+  font-weight: 500;
+}
+
+.pagination li:first-child > * {
+  border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+}
+
+.pagination li:last-child > * {
+  border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+}
+
+/* ==========================================================================
+   Shortcodes
+   ========================================================================== */
+
+.callout {
+  margin-block: 1.5rem;
+  padding: 1rem 1.5rem;
+  border-left: 4px solid var(--red-700);
+  border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+  background: var(--gray-50);
+}
+
+.content-warning {
+  padding: 1rem;
+  border-left: 4px solid var(--orange-400);
+  background: #fff7ed;
+  color: var(--orange-700);
+  font-size: 1rem;
+}
+
+.content-warning p + p {
+  margin-top: 0.5rem;
+}
+
+/* Data table rendered from a CSV file */
+.csv-table {
+  min-width: 100%;
+}
+
+.csv-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--gray-100);
+}
+
+.csv-table th {
+  padding: 1rem 1.5rem;
+  color: var(--gray-800);
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.25rem;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.csv-table td {
+  padding: 1rem 1.5rem;
+  color: var(--gray-600);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.csv-table tbody {
+  background: var(--white);
+}
+
+.csv-table tr + tr,
+.csv-table tbody {
+  border-top: 1px solid var(--gray-200);
+}
+
+.csv-table tbody tr:hover {
+  background: var(--gray-50);
+}
+
+.csv-table td.key {
+  color: var(--gray-900);
+  font-weight: 500;
+}
+
+.csv-table td.strong {
+  color: var(--gray-700);
+  font-weight: 500;
+}
+
+/* Image lightbox used by the fig shortcode */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgb(0 0 0 / 0.75);
+}
+
+.lightbox-inner {
+  position: relative;
+  max-width: 48rem;
+  margin-inline: auto;
+  padding: 1rem;
+}
+
+.lightbox-inner img {
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  color: var(--white);
+  font-size: 1.875rem;
+  font-weight: 700;
+  line-height: 2.25rem;
+}
+
+.lightbox-inner p {
+  margin-top: 0.5rem;
+  color: var(--white);
+  text-align: center;
+}
+
+/* ==========================================================================
+   Footnote buttons (littlefoot)
+   ========================================================================== */
+
+.littlefoot__button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0.15em 0.5em !important;
+  border: 1px solid var(--paper-border) !important;
+  border-radius: 9999px !important;
+  background-color: var(--paper-surface) !important;
+  font-size: 0.7em !important;
+  vertical-align: super !important;
+}
+
+.littlefoot__button i {
+  color: var(--red-700) !important;
+  font-size: 0.75em !important;
+  line-height: 1 !important;
+}
+
+.littlefoot__button:hover {
+  border-color: var(--red-700) !important;
+  background-color: var(--red-700) !important;
+}
+
+.littlefoot__button:hover i {
+  color: var(--white) !important;
+}

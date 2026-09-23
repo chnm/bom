@@ -1,13 +1,13 @@
 {{ define "main" }}
 <body>  
-    <div class="container mx-auto w-full h-full" x-data="billsData">
+    <div class="db-page" x-data="billsData">
       
       <!-- Initialization loading screen -->
-      <div x-show="!initialized" class="fixed inset-0 bg-white bg-opacity-90 z-50 flex items-center justify-center">
-        <div class="text-center">
-          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <div class="text-lg font-medium text-gray-700 mb-2">Loading Database</div>
-          <div class="text-sm text-gray-500" x-text="{
+      <div x-show="!initialized" class="db-init">
+        <div>
+          <div class="spinner spinner-lg"></div>
+          <div class="db-init-title">Loading Database</div>
+          <div class="db-init-stage" x-text="{
             'starting': 'Initializing application...',
             'parsing': 'Parsing parameters...',
             'loading_static': 'Loading configuration...',
@@ -18,50 +18,44 @@
         </div>
       </div>
       <!-- Global loading indicator -->
-      <div x-show="meta.loading" class="fixed top-4 right-4 z-50 bg-white shadow-lg rounded-lg p-3 border border-gray-200" 
-           x-transition:enter="transition ease-out duration-300" 
-           x-transition:enter-start="opacity-0 transform translate-x-full" 
-           x-transition:enter-end="opacity-100 transform translate-x-0" 
-           x-transition:leave="transition ease-in duration-200" 
-           x-transition:leave-start="opacity-100 transform translate-x-0" 
-           x-transition:leave-end="opacity-0 transform translate-x-full">
-        <div class="flex items-center space-x-3">
-          <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
-          <div class="text-sm text-gray-700">
+      <div x-show="meta.loading" class="db-toast"
+           x-transition:enter="t-enter"
+           x-transition:enter-start="t-offright"
+           x-transition:enter-end="t-shown"
+           x-transition:leave="t-leave"
+           x-transition:leave-start="t-shown"
+           x-transition:leave-end="t-offright">
+        <div class="db-toast-row">
+          <div class="spinner spinner-sm"></div>
+          <div class="db-toast-text">
             <span x-show="!meta.slowConnection">Loading data...</span>
-            <span x-show="meta.slowConnection" class="text-amber-600">Connection is slow...</span>
+            <span x-show="meta.slowConnection" class="is-slow">Connection is slow...</span>
           </div>
         </div>
       </div>
       
-      <h2 class="text-4xl font-medium pt-4">{{ .Title }}</h2>
+      <h2 class="db-title">{{ .Title }}</h2>
 
       {{ partial "tables/instructions.html" }}
 
       {{/* begin: two-tiered tab switcher */}}
-      <div class="flex flex-wrap">
-        <div class="w-full px-12 py-8">
+      <div class="db-body">
+        <div class="db-main">
           {{/* Primary tier tabs */}}
-          <div class="border-b border-gray-200 mb-6">
-            <nav class="flex justify-between items-center" aria-label="Primary tabs">
-              <div class="flex space-x-8">
+          <div class="db-tabs">
+            <nav class="db-tabs-nav" aria-label="Primary tabs">
+              <div class="db-tabs-list">
                 <button
-                  class="py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200"
-                  :class="{ 
-                    'border-dbn-red-500 text-dbn-red-700': getPrimaryTab() === 'annual', 
-                    'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': getPrimaryTab() !== 'annual' 
-                  }"
+                  class="db-tab"
+                  :aria-pressed="getPrimaryTab() === 'annual'"
                   @click="setPrimaryTab('annual')"
                   type="button"
                 >
                   Weekly Data
                 </button>
                 <button
-                  class="py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200"
-                  :class="{ 
-                    'border-dbn-red-500 text-dbn-red-700': getPrimaryTab() === 'yearly', 
-                    'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': getPrimaryTab() !== 'yearly' 
-                  }"
+                  class="db-tab"
+                  :aria-pressed="getPrimaryTab() === 'yearly'"
                   @click="setPrimaryTab('yearly')"
                   type="button"
                 >
@@ -70,11 +64,8 @@
                 <!-- Temporarily hidden: Bread and Death tab -->
                 <!--
                 <button
-                  class="py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200"
-                  :class="{ 
-                    'border-dbn-red-500 text-dbn-red-700': getPrimaryTab() === 'bread-death', 
-                    'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': getPrimaryTab() !== 'bread-death' 
-                  }"
+                  class="db-tab"
+                  :aria-pressed="getPrimaryTab() === 'bread-death'"
                   @click="setPrimaryTab('bread-death')"
                   type="button"
                 >
@@ -82,111 +73,53 @@
                 </button>
                 -->
               </div>
-              <div 
-                class="text-xs font-bold uppercase px-1 py-3 m-0.5 leading-normal text-black hover:underline cursor-pointer"
+              <button
+                type="button"
+                class="db-help"
                 @click="instructionsOpen = true"
               >
                 How to use this table
-              </div>
+              </button>
             </nav>
           </div>
 
           {{/* Primary tab descriptions */}}
-          <div class="mb-6">
+          <div class="db-intro">
             <div x-show="getPrimaryTab() === 'annual'">
-              <p class="text-sm text-gray-700">
-                These are weekly bills of mortality published throughout the year, providing detailed week-by-week records. <a class="text-dbn-blue-700 underline" href="https://deathbynumbers.org/context/the-london-bills-of-mortality/">Learn more about the bills</a>.
+              <p>
+                These are weekly bills of mortality published throughout the year, providing detailed week-by-week records. <a href="https://deathbynumbers.org/context/the-london-bills-of-mortality/">Learn more about the bills</a>.
               </p>
             </div>
             <div x-show="getPrimaryTab() === 'yearly'">
-              <p class="text-sm text-gray-700">
-                These are general bills of mortality published annually, summarizing yearly totals and providing broader statistical overviews. <a class="text-dbn-blue-700 underline" href="https://deathbynumbers.org/context/the-london-bills-of-mortality/">Learn more about the bills</a>.
+              <p>
+                These are general bills of mortality published annually, summarizing yearly totals and providing broader statistical overviews. <a href="https://deathbynumbers.org/context/the-london-bills-of-mortality/">Learn more about the bills</a>.
               </p>
             </div>
           </div>
 
           {{/* Secondary tier tabs - Annual Data */}}
-          <div x-show="getPrimaryTab() === 'annual'" class="mb-4">
-            <div class="flex items-center justify-between">
-              <nav class="flex space-x-4" aria-label="Annual data tabs">
+          <div x-show="getPrimaryTab() === 'annual'" class="db-subtabs">
+            <div class="db-subtabs-row">
+              <nav class="db-subtabs-list" aria-label="Annual data tabs">
               <button
-                class="px-4 py-2 text-xs font-bold uppercase rounded-lg transition-colors duration-200"
-                :class="{ 
-                  'bg-dbn-red-500 bg-opacity-20 text-dbn-red-700': getSecondaryTab() === 'parishes', 
-                  'bg-gray-100 text-gray-600 hover:bg-gray-200': getSecondaryTab() !== 'parishes' 
-                }"
+                class="db-subtab"
+                :aria-pressed="getSecondaryTab() === 'parishes'"
                 @click="setSecondaryTab('parishes')"
                 type="button"
               >
                 By Parish
               </button>
               <button
-                class="px-4 py-2 text-xs font-bold uppercase rounded-lg transition-colors duration-200"
-                :class="{ 
-                  'bg-dbn-red-500 bg-opacity-20 text-dbn-red-700': getSecondaryTab() === 'deaths', 
-                  'bg-gray-100 text-gray-600 hover:bg-gray-200': getSecondaryTab() !== 'deaths' 
-                }"
+                class="db-subtab"
+                :aria-pressed="getSecondaryTab() === 'deaths'"
                 @click="setSecondaryTab('deaths')"
                 type="button"
               >
                 By Cause of Death
               </button>
               <button
-                class="px-4 py-2 text-xs font-bold uppercase rounded-lg transition-colors duration-200"
-                :class="{ 
-                  'bg-dbn-red-500 bg-opacity-20 text-dbn-red-700': getSecondaryTab() === 'christenings', 
-                  'bg-gray-100 text-gray-600 hover:bg-gray-200': getSecondaryTab() !== 'christenings' 
-                }"
-                @click="setSecondaryTab('christenings')"
-                type="button"
-              >
-                By Christening
-              </button>
-            </nav>
-            <button 
-              @click="filtersOpen = true"
-              class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-700 focus:ring-2 focus:ring-dbn-red-500 focus:border-dbn-red-500 transition-colors duration-200"
-              type="button">
-              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.707A1 1 0 013 7V4z"/>
-              </svg>
-              Filters
-            </button>
-          </div>
-        </div>
-
-          {{/* Secondary tier tabs - Yearly Data */}}
-          <div x-show="getPrimaryTab() === 'yearly'" class="mb-4">
-            <div class="flex items-center justify-between">
-              <nav class="flex space-x-4" aria-label="Yearly data tabs">
-              <button
-                class="px-4 py-2 text-xs font-bold uppercase rounded-lg transition-colors duration-200"
-                :class="{ 
-                  'bg-dbn-red-500 bg-opacity-20 text-dbn-red-700': getSecondaryTab() === 'parishes', 
-                  'bg-gray-100 text-gray-600 hover:bg-gray-200': getSecondaryTab() !== 'parishes' 
-                }"
-                @click="setSecondaryTab('parishes')"
-                type="button"
-              >
-                By Parish
-              </button>
-              <button
-                class="px-4 py-2 text-xs font-bold uppercase rounded-lg transition-colors duration-200"
-                :class="{ 
-                  'bg-dbn-red-500 bg-opacity-20 text-dbn-red-700': getSecondaryTab() === 'deaths', 
-                  'bg-gray-100 text-gray-600 hover:bg-gray-200': getSecondaryTab() !== 'deaths' 
-                }"
-                @click="setSecondaryTab('deaths')"
-                type="button"
-              >
-                By Cause of Death
-              </button>
-              <button
-                class="px-4 py-2 text-xs font-bold uppercase rounded-lg transition-colors duration-200"
-                :class="{ 
-                  'bg-dbn-red-500 bg-opacity-20 text-dbn-red-700': getSecondaryTab() === 'christenings', 
-                  'bg-gray-100 text-gray-600 hover:bg-gray-200': getSecondaryTab() !== 'christenings' 
-                }"
+                class="db-subtab"
+                :aria-pressed="getSecondaryTab() === 'christenings'"
                 @click="setSecondaryTab('christenings')"
                 type="button"
               >
@@ -195,9 +128,50 @@
             </nav>
             <button
               @click="filtersOpen = true"
-              class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-700 focus:ring-2 focus:ring-dbn-red-500 focus:border-dbn-red-500 transition-colors duration-200"
+              class="db-filter-button"
               type="button">
-              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="button-glyph" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.707A1 1 0 013 7V4z"/>
+              </svg>
+              Filters
+            </button>
+          </div>
+        </div>
+
+          {{/* Secondary tier tabs - Yearly Data */}}
+          <div x-show="getPrimaryTab() === 'yearly'" class="db-subtabs">
+            <div class="db-subtabs-row">
+              <nav class="db-subtabs-list" aria-label="Yearly data tabs">
+              <button
+                class="db-subtab"
+                :aria-pressed="getSecondaryTab() === 'parishes'"
+                @click="setSecondaryTab('parishes')"
+                type="button"
+              >
+                By Parish
+              </button>
+              <button
+                class="db-subtab"
+                :aria-pressed="getSecondaryTab() === 'deaths'"
+                @click="setSecondaryTab('deaths')"
+                type="button"
+              >
+                By Cause of Death
+              </button>
+              <button
+                class="db-subtab"
+                :aria-pressed="getSecondaryTab() === 'christenings'"
+                @click="setSecondaryTab('christenings')"
+                type="button"
+              >
+                By Christening
+              </button>
+            </nav>
+            <button
+              @click="filtersOpen = true"
+              class="db-filter-button"
+              type="button">
+              <svg class="button-glyph" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.707A1 1 0 013 7V4z"/>
               </svg>
               Filters
@@ -206,37 +180,31 @@
         </div>
 
           {{/* Secondary tier tabs - Bread and Death */}}
-          <div x-show="getPrimaryTab() === 'bread-death'" class="mb-4">
-            <div class="flex items-center justify-between">
-              <nav class="flex space-x-4" aria-label="Bread and death tabs">
+          <div x-show="getPrimaryTab() === 'bread-death'" class="db-subtabs">
+            <div class="db-subtabs-row">
+              <nav class="db-subtabs-list" aria-label="Bread and death tabs">
               <button
-                class="px-4 py-2 text-xs font-bold uppercase rounded-lg transition-colors duration-200"
-                :class="{ 
-                  'bg-dbn-red-500 bg-opacity-20 text-dbn-red-700': getSecondaryTab() === 'foodstuffs', 
-                  'bg-gray-100 text-gray-600 hover:bg-gray-200': getSecondaryTab() !== 'foodstuffs' 
-                }"
+                class="db-subtab"
+                :aria-pressed="getSecondaryTab() === 'foodstuffs'"
                 @click="setSecondaryTab('foodstuffs')"
                 type="button"
               >
                 Foodstuffs
               </button>
               <button
-                class="px-4 py-2 text-xs font-bold uppercase rounded-lg transition-colors duration-200"
-                :class="{ 
-                  'bg-dbn-red-500 bg-opacity-20 text-dbn-red-700': getSecondaryTab() === 'ages', 
-                  'bg-gray-100 text-gray-600 hover:bg-gray-200': getSecondaryTab() !== 'ages' 
-                }"
+                class="db-subtab"
+                :aria-pressed="getSecondaryTab() === 'ages'"
                 @click="setSecondaryTab('ages')"
                 type="button"
               >
                 Ages
               </button>
             </nav>
-            <button 
+            <button
               @click="filtersOpen = true"
-              class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-700 focus:ring-2 focus:ring-dbn-red-500 focus:border-dbn-red-500 transition-colors duration-200"
+              class="db-filter-button"
               type="button">
-              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="button-glyph" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.707A1 1 0 013 7V4z"/>
               </svg>
               Filters
@@ -268,13 +236,13 @@
 
           {{/* Tab content - Bread and Death */}}
           <div x-show="getPrimaryTab() === 'bread-death' && getSecondaryTab() === 'foodstuffs' && initialized">
-            <div class="bg-gray-50 rounded-lg p-6 text-center">
-              <p class="text-gray-600">Foodstuffs data view - to be implemented</p>
+            <div class="db-placeholder">
+              <p>Foodstuffs data view - to be implemented</p>
             </div>
           </div>
           <div x-show="getPrimaryTab() === 'bread-death' && getSecondaryTab() === 'ages' && initialized">
-            <div class="bg-gray-50 rounded-lg p-6 text-center">
-              <p class="text-gray-600">Ages data view - to be implemented</p>
+            <div class="db-placeholder">
+              <p>Ages data view - to be implemented</p>
             </div>
           </div>
         </div>
@@ -284,35 +252,35 @@
       {{/* Slide-out filter panel */}}
       <div 
         x-show="filtersOpen"
-        x-transition:enter="transition ease-out duration-300"
-        x-transition:enter-start="opacity-0"
-        x-transition:enter-end="opacity-100"
-        x-transition:leave="transition ease-in duration-200"
-        x-transition:leave-start="opacity-100"
-        x-transition:leave-end="opacity-0"
-        class="fixed inset-0 bg-black bg-opacity-50 z-40"
+        x-transition:enter="t-enter"
+        x-transition:enter-start="t-hidden"
+        x-transition:enter-end="t-shown"
+        x-transition:leave="t-leave"
+        x-transition:leave-start="t-shown"
+        x-transition:leave-end="t-hidden"
+        class="drawer-backdrop"
         @click="filtersOpen = false">
       </div>
       
       <div 
         x-show="filtersOpen"
-        x-transition:enter="transition ease-out duration-300"
-        x-transition:enter-start="transform translate-y-full"
-        x-transition:enter-end="transform translate-y-0"
-        x-transition:leave="transition ease-in duration-200"
-        x-transition:leave-start="transform translate-y-0"
-        x-transition:leave-end="transform translate-y-full"
-        class="fixed bottom-0 left-0 right-0 max-h-[32rem] bg-white shadow-xl z-50 overflow-y-auto rounded-t-lg"
+        x-transition:enter="t-enter"
+        x-transition:enter-start="t-offbottom"
+        x-transition:enter-end="t-shown"
+        x-transition:leave="t-leave"
+        x-transition:leave-start="t-shown"
+        x-transition:leave-end="t-offbottom"
+        class="filter-drawer"
         @click.stop>
         
         {{/* Filter panel header */}}
-        <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
-          <h2 class="text-lg font-medium text-gray-900">Filters</h2>
+        <div class="filter-drawer-head">
+          <h2>Filters</h2>
           <button
             @click="filtersOpen = false"
             aria-label="Close filters"
-            class="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100 transition-colors duration-200">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            class="filter-drawer-close">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
             </svg>
           </button>

@@ -1,113 +1,57 @@
-<a name="top"></a>
+{{- /* Each menu: label, then links. A link with "rule" draws a divider after it; "external" adds an icon. */ -}}
+{{- $menus := slice
+  (dict "label" "Context" "links" (slice
+    (dict "title" "Overview" "url" "/context/overview/" "aria" "Context Overview" "rule" true)
+    (dict "title" "All Context Posts" "url" "/context/")
+    (dict "title" "Bibliography" "url" "/bibliography/")
+    (dict "title" "Death Dictionary" "url" "/dictionary/")
+    (dict "title" "Parish Authority File" "url" "/parishes/")))
+  (dict "label" "Data" "links" (slice
+    (dict "title" "Overview" "url" "/data/" "aria" "Data Overview" "rule" true)
+    (dict "title" "Database" "url" "/database/")
+    (dict "title" "Images" "url" "https://bom.chnm.org/s/bills-of-mortality/page/welcome" "external" true)
+    (dict "title" "Downloads" "url" "/downloads/")
+    (dict "title" "API" "url" "/api/")))
+  (dict "label" "Analysis" "links" (slice
+    (dict "title" "Overview" "url" "/analysis/overview/" "aria" "Analysis Overview" "rule" true)
+    (dict "title" "All Analysis Posts" "url" "/analysis/")
+    (dict "title" "Data Visualizations" "url" "/visualizations/")))
+  (dict "label" "Pedagogy" "links" (slice
+    (dict "title" "Overview" "url" "/pedagogy/" "aria" "Pedagogy Overview" "rule" true)
+    (dict "title" "Humanities Data" "url" "/teaching/humanities-data/")
+    (dict "title" "Urban Data" "url" "/teaching/urban-data/")))
+  (dict "label" "About" "links" (slice
+    (dict "title" "The Project" "url" "/about/" "rule" true)
+    (dict "title" "Project Team" "url" "/team/")
+    (dict "title" "Methodologies" "url" "/methodologies/")
+    (dict "title" "All Posts and Essays" "url" "/blog/")
+    (dict "title" "Search" "url" "/search/")))
+-}}
 
-<nav aria-label="Main navigation"
-  class="flex items-center justify-between flex-wrap bg-dbn-green-900 px-6 lg:px-12 mx-auto w-full max-w-screen-xl">
-  <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
-    <img src="/images/death-by-numbers.jpg" alt="Death by Numbers" class="object-scale-down w-44 overflow-hidden" />
-    <a id="site-title" class="font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap text-white" href="/">
-      Death by <span class="text-dbn-blue-400">Numbers</span>
-    </a>
+<nav id="top" class="site-nav" aria-label="Main navigation">
+  <div class="site-brand">
+    <img src="/images/death-by-numbers.jpg" alt="Death by Numbers" />
+    <a id="site-title" href="/">Death by <span>Numbers</span></a>
   </div>
-  <div class="w-full block flex-grow-0 lg:items-center lg:w-auto">
-    <div class="text-sm lg:flex-grow">
-      <!-- Context Menu -->
-      <div x-data="{ open: false }" class="inline-block relative" @keydown.escape.prevent="open = false">
-        <button @click="open = !open" :aria-expanded="open" aria-haspopup="true"
-          class="inline-block px-3 py-2 items-center text-sm uppercase font-semibold tracking-wide leading-snug text-white hover:opacity-75 ml-2">
-          Context
-          <svg class="w-4 h-4 ml-1 inline align-middle" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-          </svg>
-        </button>
-        <div x-show="open" @click.away="open = false" x-cloak class="absolute bg-white text-black mt-2 rounded shadow-lg z-50 min-w-[200px]">
-          <a href="/context/overview/" aria-label="Context Overview" class="text-dbn-green-800 block px-4 py-2 text-sm hover:bg-gray-200">Overview</a>
-          <hr class="border-gray-300" />
-          <a href="/context/" class="text-dbn-green-800 block px-4 py-2 text-sm hover:bg-gray-200">All Context Posts</a>
-          <a href="/bibliography/" class="text-dbn-green-800 block px-4 py-2 text-sm hover:bg-gray-200">Bibliography</a>
-          <a href="/dictionary/" class="text-dbn-green-800 block px-4 py-2 text-sm hover:bg-gray-200">Death Dictionary</a>
-          <a href="/parishes/" class="text-dbn-green-800 block px-4 py-2 text-sm hover:bg-gray-200">Parish Authority File</a>
-        </div>
-      </div>
-
-      <!-- Data Menu -->
-      <div x-data="{ open: false }" class="inline-block relative" @keydown.escape.prevent="open = false">
-        <button @click="open = !open" :aria-expanded="open" aria-haspopup="true"
-          class="inline-block px-3 py-2 items-center text-sm uppercase font-semibold tracking-wide leading-snug text-white hover:opacity-75 ml-2">
-          Data
-          <svg class="w-4 h-4 ml-1 inline align-middle" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-          </svg>
-        </button>
-        <div x-show="open" @click.away="open = false" x-cloak class="absolute bg-white text-black mt-2 rounded shadow-lg z-50 min-w-[200px]">
-          <a href="/data/" aria-label="Data Overview" class="text-dbn-green-800 block px-4 py-2 text-sm hover:bg-gray-200">Overview</a>
-          <hr class="border-gray-300" />
-          <a href="/database/" class="text-dbn-green-800 block px-4 py-2 text-sm hover:bg-gray-200">Database</a>
-          <a href="https://bom.chnm.org/s/bills-of-mortality/page/welcome"
-            class="text-dbn-green-800 block px-4 py-2 text-sm hover:bg-gray-200">Images
-            <i class="fa-solid fa-arrow-up-right-from-square text-xs" aria-hidden="true"></i></a>
-          <a href="/downloads/" class="text-dbn-green-800 block px-4 py-2 text-sm hover:bg-gray-200">Downloads</a>
-          <a href="/api/" class="text-dbn-green-800 block px-4 py-2 text-sm hover:bg-gray-200">API</a>
-        </div>
-      </div>
-
-      <!-- Analysis Menu -->
-      <div x-data="{ open: false }" class="inline-block relative" @keydown.escape.prevent="open = false">
-        <button @click="open = !open" :aria-expanded="open" aria-haspopup="true"
-          class="inline-block px-3 py-2 items-center text-sm uppercase font-semibold tracking-wide leading-snug text-white hover:opacity-75 ml-2">
-          Analysis
-          <svg class="w-4 h-4 ml-1 inline align-middle" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-          </svg>
-        </button>
-        <div x-show="open" @click.away="open = false" x-cloak class="absolute bg-white text-black mt-2 rounded shadow-lg z-50 min-w-[200px]">
-          <a href="/analysis/overview/" aria-label="Analysis Overview" class="text-dbn-green-800 block px-4 py-2 text-sm hover:bg-gray-200">Overview</a>
-          <hr class="border-gray-300" />
-          <a href="/analysis/" class="text-dbn-green-800 block px-4 py-2 text-sm hover:bg-gray-200">All Analysis Posts</a>
-          <a href="/visualizations/" class="text-dbn-green-800 block px-4 py-2 text-sm hover:bg-gray-200">Data
-            Visualizations</a>
-        </div>
-      </div>
-
-      <!-- Pedagogy Menu -->
-      <div x-data="{ open: false }" class="inline-block relative" @keydown.escape.prevent="open = false">
-        <button @click="open = !open" :aria-expanded="open" aria-haspopup="true"
-          class="inline-block px-3 py-2 items-center text-sm uppercase font-semibold tracking-wide leading-snug text-white hover:opacity-75 ml-2">
-          Pedagogy
-          <svg class="w-4 h-4 ml-1 inline align-middle" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-          </svg>
-        </button>
-        <div x-show="open" @click.away="open = false" x-cloak class="absolute bg-white text-black mt-2 rounded shadow-lg z-50 min-w-[200px]">
-          <a href="/pedagogy/" aria-label="Pedagogy Overview" class="text-dbn-green-800 block px-4 py-2 text-sm hover:bg-gray-200">Overview</a>
-          <hr class="border-gray-300" />
-          <a href="/teaching/humanities-data/" class="text-dbn-green-800 block px-4 py-2 text-sm hover:bg-gray-200">Humanities Data</a>
-          <a href="/teaching/urban-data/" class="text-dbn-green-800 block px-4 py-2 text-sm hover:bg-gray-200">Urban Data</a>
-        </div>
-      </div>
-
-      <!-- About Menu -->
-      <div x-data="{ open: false }" class="inline-block relative" @keydown.escape.prevent="open = false">
-        <button @click="open = !open" :aria-expanded="open" aria-haspopup="true"
-          class="inline-block px-3 py-2 items-center text-sm uppercase font-semibold tracking-wide leading-snug text-white hover:opacity-75 ml-2">
-          About
-          <svg class="w-4 h-4 ml-1 inline align-middle" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-          </svg>
-        </button>
-        <div x-show="open" @click.away="open = false" x-cloak class="absolute bg-white text-black mt-2 rounded shadow-lg z-50 min-w-[200px]">
-          <a href="/about/" class="text-dbn-green-800 block px-4 py-2 text-sm hover:bg-gray-200">The Project</a>
-          <hr class="border-gray-300" />
-          <a href="/team/" class="text-dbn-green-800 block px-4 py-2 text-sm hover:bg-gray-200">Project Team</a>
-          <a href="/methodologies/" class="text-dbn-green-800 block px-4 py-2 text-sm hover:bg-gray-200">Methodologies</a>
-          <a href="/blog/" class="text-dbn-green-800 block px-4 py-2 text-sm hover:bg-gray-200">All Posts and Essays</a>
-          <a href="/search/" class="text-dbn-green-800 block px-4 py-2 text-sm hover:bg-gray-200">Search</a>
-        </div>
+  <div class="site-menus">
+    {{- range $menus }}
+    <div class="menu" x-data="{ open: false }" @keydown.escape.prevent="open = false">
+      <button class="menu-button" @click="open = !open" :aria-expanded="open" aria-haspopup="true">
+        {{ .label }}
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+        </svg>
+      </button>
+      <div class="menu-panel" x-show="open" @click.away="open = false" x-cloak>
+        {{- range .links }}
+        <a href="{{ .url }}"{{ with .aria }} aria-label="{{ . }}"{{ end }}>{{ .title }}{{ if .external }}
+          <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>{{ end }}</a>
+        {{- if .rule }}
+        <hr />
+        {{- end }}
+        {{- end }}
       </div>
     </div>
+    {{- end }}
   </div>
 </nav>

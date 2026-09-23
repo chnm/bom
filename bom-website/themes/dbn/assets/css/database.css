@@ -1,0 +1,924 @@
+/* ==========================================================================
+   Database page (layouts/_default/database.html, partials/tables/*)
+   ========================================================================== */
+
+:root {
+  /* One-off colors used only by the database tables and filters */
+  --db-blue: #3b82f6;
+  --db-blue-dark: #2563eb;
+  --db-green: #22c55e;
+  --db-amber-50: #fffbeb;
+  --db-amber-100: #fef3c7;
+  --db-amber-600: #d97706;
+  --db-amber-700: #b45309;
+  --db-amber-800: #92400e;
+  --db-orange-50: #fff7ed;
+  --db-orange-500: #f97316;
+  --db-error: #ef4444;
+  --db-error-dark: #dc2626;
+  --db-plague: #b91c1c;
+}
+
+/* Page container: full width, stepping max-width at each breakpoint */
+.db-page {
+  width: 100%;
+  height: 100%;
+  margin-inline: auto;
+}
+
+@media (min-width: 640px) { .db-page { max-width: 640px; } }
+@media (min-width: 768px) { .db-page { max-width: 768px; } }
+@media (min-width: 1024px) { .db-page { max-width: 1024px; } }
+@media (min-width: 1280px) { .db-page { max-width: 1280px; } }
+@media (min-width: 1536px) { .db-page { max-width: 1536px; } }
+
+.db-title {
+  padding-top: 1rem;
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+  font-weight: 500;
+}
+
+.db-body {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.db-main {
+  width: 100%;
+  padding: 2rem 3rem;
+}
+
+.button-glyph {
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.5rem;
+}
+
+.is-slow {
+  color: var(--db-amber-600);
+}
+
+/* --------------------------------------------------------------------------
+   Alpine x-transition classes
+   -------------------------------------------------------------------------- */
+
+.t-enter,
+.t-leave,
+.t-enter-fast,
+.t-leave-fast {
+  transition-property: opacity, transform;
+}
+
+.t-enter { transition-duration: 300ms; transition-timing-function: cubic-bezier(0, 0, 0.2, 1); }
+.t-leave { transition-duration: 200ms; transition-timing-function: cubic-bezier(0.4, 0, 1, 1); }
+.t-enter-fast { transition-duration: 200ms; transition-timing-function: cubic-bezier(0, 0, 0.2, 1); }
+.t-leave-fast { transition-duration: 150ms; transition-timing-function: cubic-bezier(0.4, 0, 1, 1); }
+
+.t-shown { opacity: 1; }
+.t-hidden { opacity: 0; }
+.t-shrunk { opacity: 0; transform: scale(0.95); }
+.t-offright { opacity: 0; transform: translateX(100%); }
+.t-offbottom { transform: translateY(100%); }
+.t-dialog-hidden { opacity: 0; transform: translateY(1rem); }
+
+@media (min-width: 640px) {
+  .t-dialog-hidden { transform: scale(0.95); }
+}
+
+/* --------------------------------------------------------------------------
+   Loading indicators
+   -------------------------------------------------------------------------- */
+
+@keyframes db-spin {
+  to { transform: rotate(360deg); }
+}
+
+.spinner {
+  width: 2rem;
+  height: 2rem;
+  border-bottom: 2px solid var(--gray-600);
+  border-radius: 9999px;
+  animation: db-spin 1s linear infinite;
+}
+
+.spinner-lg,
+.spinner-sm {
+  border-color: var(--db-blue-dark);
+}
+
+.spinner-lg { width: 3rem; height: 3rem; }
+.spinner-sm { width: 1rem; height: 1rem; }
+
+/* Full-screen overlay while the app initializes */
+.db-init {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgb(255 255 255 / 0.9);
+  text-align: center;
+}
+
+.db-init .spinner {
+  margin: 0 auto 1rem;
+}
+
+.db-init-title {
+  margin-bottom: 0.5rem;
+  color: var(--gray-700);
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  font-weight: 500;
+}
+
+.db-init-stage {
+  color: var(--gray-500);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+/* Corner toast while a data request is in flight */
+.db-toast {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 50;
+  padding: 0.75rem;
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  background: var(--white);
+  box-shadow: var(--shadow-lg);
+}
+
+.db-toast-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.db-toast-text {
+  color: var(--gray-700);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+/* --------------------------------------------------------------------------
+   Tabs
+   -------------------------------------------------------------------------- */
+
+.db-tabs {
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.db-tabs-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.db-tabs-list {
+  display: flex;
+  gap: 2rem;
+}
+
+.db-tab {
+  padding: 1rem 0.25rem;
+  border-bottom: 2px solid transparent;
+  color: var(--gray-500);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  transition: color 200ms, border-color 200ms;
+}
+
+.db-tab:hover {
+  border-color: var(--gray-300);
+  color: var(--gray-700);
+}
+
+.db-tab[aria-pressed="true"] {
+  border-color: var(--red-500);
+  color: var(--red-700);
+}
+
+.db-help {
+  margin: 0.125rem;
+  padding: 0.75rem 0.25rem;
+  color: var(--black);
+  font-size: 0.75rem;
+  line-height: 1.5;
+  font-weight: 700;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.db-help:hover {
+  text-decoration: underline;
+}
+
+.db-intro {
+  margin-bottom: 1.5rem;
+}
+
+.db-intro p {
+  color: var(--gray-700);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.db-intro a {
+  color: var(--blue-700);
+  text-decoration: underline;
+}
+
+.db-subtabs {
+  margin-bottom: 1rem;
+}
+
+.db-subtabs-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.db-subtabs-list {
+  display: flex;
+  gap: 1rem;
+}
+
+.db-subtab {
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-lg);
+  background: var(--gray-100);
+  color: var(--gray-600);
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  transition: color 200ms, background-color 200ms;
+}
+
+.db-subtab:hover {
+  background: var(--gray-200);
+}
+
+.db-subtab[aria-pressed="true"] {
+  background: rgb(190 90 70 / 0.2); /* --red-500 at 20% */
+  color: var(--red-700);
+}
+
+.db-filter-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--gray-300);
+  border-radius: var(--radius-lg);
+  background: var(--white);
+  color: var(--gray-600);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  transition: color 200ms, background-color 200ms, border-color 200ms;
+}
+
+.db-filter-button:hover {
+  background: var(--gray-50);
+  color: var(--gray-700);
+}
+
+.db-filter-button:focus {
+  border-color: var(--red-500);
+  box-shadow: 0 0 0 2px var(--red-500);
+}
+
+.db-placeholder {
+  padding: 1.5rem;
+  border-radius: var(--radius-lg);
+  background: var(--gray-50);
+  text-align: center;
+}
+
+.db-placeholder p {
+  color: var(--gray-600);
+}
+
+/* --------------------------------------------------------------------------
+   Summary line + pager above and below each table
+   -------------------------------------------------------------------------- */
+
+.db-controls {
+  margin-bottom: 0.5rem;
+}
+
+.db-controls-end {
+  margin-top: 1rem;
+  margin-bottom: 0;
+}
+
+.db-table-gap {
+  margin-top: 1rem;
+}
+
+.db-controls-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.db-summary {
+  padding-block: 0.25rem;
+  color: var(--gray-700);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.db-summary a {
+  color: var(--db-blue-dark);
+  text-decoration: underline;
+}
+
+/* Formatted record counts (Tailwind's font-sans resolved to Inter) */
+.db-summary .num {
+  font-family: Inter, sans-serif;
+  font-weight: 600;
+}
+
+.db-pager {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.db-pager button {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--gray-300);
+  background: var(--white);
+  color: var(--gray-500);
+  line-height: 1.25;
+}
+
+.db-pager button:first-child {
+  border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+}
+
+.db-pager button:last-child {
+  border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+}
+
+.db-pager button:hover {
+  background: var(--gray-100);
+  color: var(--gray-700);
+}
+
+.db-pager button:disabled {
+  border-color: #e2e8f0;
+  background: #f8fafc;
+  color: #64748b;
+  box-shadow: none;
+}
+
+/* --------------------------------------------------------------------------
+   Data tables
+   -------------------------------------------------------------------------- */
+
+.db-table {
+  min-width: 100%;
+  table-layout: fixed;
+}
+
+.db-table > tbody,
+.db-table > tbody > * ~ * {
+  border-top: 1px solid var(--gray-200);
+}
+
+.db-table thead {
+  background: var(--gray-100);
+}
+
+.db-table tbody {
+  background: var(--white);
+}
+
+.db-table tbody tr:hover {
+  background: var(--gray-100);
+}
+
+.db-table th {
+  padding: 0.75rem 1.5rem;
+  color: var(--gray-700);
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.db-table th.col-text {
+  text-align: left;
+}
+
+.db-table td {
+  padding: 0.75rem 1.5rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  white-space: nowrap;
+}
+
+.db-table .col-name {
+  color: var(--gray-900);
+  font-weight: 500;
+}
+
+.db-table .col-name a {
+  color: var(--blue-700);
+}
+
+.db-table .col-name a:hover {
+  color: var(--blue-900);
+  text-decoration: underline;
+}
+
+.db-table .col-num {
+  color: var(--gray-900);
+  font-family: var(--font-mono);
+  text-align: center;
+}
+
+.db-table .col-note {
+  color: var(--gray-500);
+}
+
+.alt-name {
+  margin-left: 0.25rem;
+  color: var(--gray-400);
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+/* Count cells for missing or illegible source data */
+.db-table td.is-missing { background: var(--db-amber-50); }
+.db-table td.is-illegible { background: var(--db-orange-50); }
+
+.flag-missing,
+.flag-illegible {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.flag-missing { color: var(--db-amber-700); }
+.flag-illegible { margin-left: 0.25rem; color: var(--db-orange-500); }
+.val-illegible { color: var(--orange-700); }
+.val-empty { color: var(--gray-300); }
+.is-plague { color: var(--db-plague); }
+
+/* Loading and error rows */
+.db-table td.db-state {
+  padding-block: 3rem;
+  text-align: center;
+}
+
+.db-state-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.db-state-text {
+  color: var(--gray-600);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.db-state-icon {
+  color: var(--db-error);
+}
+
+.db-state-icon svg {
+  width: 3rem;
+  height: 3rem;
+  margin-inline: auto;
+}
+
+.db-state-title {
+  margin-bottom: 0.5rem;
+  color: var(--db-error-dark);
+  font-weight: 500;
+}
+
+.db-state-action {
+  margin-top: 0.5rem;
+}
+
+.db-retry {
+  color: var(--blue-700);
+  text-decoration: underline;
+}
+
+.db-retry:hover {
+  color: var(--blue-900);
+}
+
+/* --------------------------------------------------------------------------
+   "How to use this table" modal
+   -------------------------------------------------------------------------- */
+
+.db-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  overflow-y: auto;
+}
+
+.db-modal-center {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  min-height: 100vh;
+  padding-inline: 1rem;
+  text-align: center;
+}
+
+@media (min-width: 640px) {
+  .db-modal-center {
+    display: block;
+    padding: 0;
+  }
+}
+
+.db-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgb(107 114 128 / 0.4); /* --gray-500 at 40% */
+}
+
+.db-modal-dialog {
+  position: relative; /* paint above the fixed backdrop */
+  display: inline-block;
+  width: 100%;
+  max-width: 36rem;
+  margin-block: 5rem;
+  padding: 2rem;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--white);
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  text-align: left;
+}
+
+.db-modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.db-modal-head h3 {
+  color: var(--gray-900);
+  font-size: 1.125rem;
+  line-height: 1.5rem;
+  font-weight: 500;
+}
+
+.db-modal-close {
+  color: var(--gray-600);
+}
+
+.db-modal-close:hover {
+  color: var(--gray-700);
+}
+
+.db-modal-close:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.db-modal-close svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.db-modal-dialog p {
+  margin-top: 0.5rem;
+  color: var(--gray-800);
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+.sample-empty,
+.sample-flag {
+  background: var(--db-amber-100);
+  color: var(--db-amber-800);
+}
+
+.sample-empty {
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius);
+  font-family: var(--font-mono);
+}
+
+.sample-flag {
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+/* --------------------------------------------------------------------------
+   Filter drawer (slides up from the bottom)
+   -------------------------------------------------------------------------- */
+
+.drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: rgb(0 0 0 / 0.5);
+}
+
+.filter-drawer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  max-height: 32rem;
+  overflow-y: auto;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  background: var(--white);
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+}
+
+.filter-drawer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.filter-drawer-head h2 {
+  color: var(--gray-900);
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  font-weight: 500;
+}
+
+.filter-drawer-close {
+  padding: 0.5rem;
+  border-radius: var(--radius-lg);
+  color: var(--gray-400);
+  transition: color 200ms, background-color 200ms;
+}
+
+.filter-drawer-close:hover {
+  background: var(--gray-100);
+  color: var(--gray-600);
+}
+
+.filter-drawer-close svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.filter-body {
+  padding: 1.5rem;
+}
+
+.filter-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2rem;
+}
+
+/* Sibling margins rather than gap so x-show'd groups keep their spacing */
+.filter-col > * + *,
+.filter-group > * + * {
+  margin-top: 0.75rem;
+}
+
+.filter-col-loose > * + * {
+  margin-top: 1.5rem;
+}
+
+.filter-group h3 {
+  color: var(--gray-700);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+}
+
+.filter-box {
+  padding: 1rem;
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  background: var(--gray-50);
+}
+
+.filter-box-scroll {
+  height: 12rem;
+  overflow-y: auto;
+}
+
+.filter-box-compact {
+  padding: 0.75rem;
+}
+
+.check-list > * + * { margin-top: 0.5rem; }
+.check-list-loose > * + * { margin-top: 0.75rem; }
+
+.check {
+  display: flex;
+  align-items: center;
+}
+
+.check input {
+  width: 1rem;
+  height: 1rem;
+}
+
+.check label {
+  margin-left: 0.5rem;
+  color: var(--gray-600);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  cursor: pointer;
+}
+
+.filter-actions > * + * {
+  margin-top: 0.5rem;
+}
+
+.filter-action {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  background: var(--white);
+  color: var(--gray-700);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  transition: color 200ms, background-color 200ms, border-color 200ms;
+}
+
+.filter-action:hover {
+  background: var(--gray-50);
+}
+
+.filter-action:focus {
+  border-color: var(--db-blue);
+  box-shadow: 0 0 0 2px var(--db-blue);
+}
+
+.filter-action-secondary {
+  background: var(--gray-50);
+  color: var(--gray-500);
+}
+
+.filter-action-secondary:hover {
+  background: var(--gray-100);
+  color: var(--gray-700);
+}
+
+.filter-action-secondary:focus {
+  border-color: var(--gray-500);
+  box-shadow: 0 0 0 2px var(--gray-500);
+}
+
+/* Dual-handle range sliders (year and week) */
+.range-values {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  text-align: center;
+}
+
+.range-label {
+  margin-bottom: 0.25rem;
+  color: var(--gray-500);
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.range-value {
+  color: var(--gray-700);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+}
+
+.range {
+  --range-color: var(--db-blue);
+  --range-ring: rgb(59 130 246 / 0.5);
+  position: relative;
+  padding-bottom: 1rem;
+}
+
+.range-week {
+  --range-color: var(--db-green);
+  --range-ring: rgb(34 197 94 / 0.5);
+}
+
+.range-track {
+  position: relative;
+  width: 100%;
+  height: 0.5rem;
+  border-radius: 0.375rem;
+  background: var(--gray-200);
+}
+
+.range-fill {
+  position: absolute;
+  height: 100%;
+  border-radius: 0.375rem;
+  background: var(--range-color);
+}
+
+.range-thumb {
+  position: absolute;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-top: -0.375rem;
+  border: 2px solid var(--range-color);
+  border-radius: 9999px;
+  background: var(--white);
+  transform: translateX(-50%);
+  cursor: pointer;
+}
+
+.range-thumb:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px var(--range-ring);
+}
+
+.range-ticks {
+  position: relative;
+  width: 100%;
+  margin-top: 0.25rem;
+}
+
+.range-ticks span {
+  position: absolute;
+  color: var(--gray-400);
+  font-size: 0.75rem;
+  line-height: 1rem;
+  transform: translateX(-50%);
+}
+
+.week-range {
+  margin-top: 0.75rem;
+}
+
+.week-range-inner {
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--gray-200);
+}
+
+.week-range-title {
+  margin-bottom: 0.5rem;
+  color: var(--gray-600);
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+}
+
+/* --------------------------------------------------------------------------
+   Charts drawn by database.chartservice.js
+   -------------------------------------------------------------------------- */
+
+.chart-empty {
+  padding-block: 2rem;
+  color: var(--gray-500);
+  text-align: center;
+}
+
+.chart-error {
+  padding-block: 1rem;
+  color: var(--db-error);
+  text-align: center;
+}
+
+.chart-facets {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.facet-chart > h4 {
+  margin-bottom: 0.5rem;
+  color: var(--gray-700);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 600;
+  text-align: center;
+}

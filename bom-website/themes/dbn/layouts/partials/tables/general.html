@@ -1,22 +1,13 @@
 {{/* This is the General Bills table. */}}
 
-<div class="mt-4">
-      <div id="control-general" class="mb-2">
-        <div class="flex items-center justify-between">
-          <p class="text-sm text-gray-700 py-1" x-html="getSummary"></p>
-          <div class="flex items-center space-x-1">
-            <button
-              class="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 rounded-l-lg leading-tight py-2 px-3 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-              :class="{'disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none': page === 1}"
-              @click="changePage(1)" :disabled="page === 1">First</button>
-            <button
-              class="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 leading-tight py-2 px-3 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-              :class="{'disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none': page === 1}"
-              @click="changePage(page - 1)" :disabled="page === 1">Previous</button>
-            <button
-              class="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 rounded-r-lg leading-tight py-2 px-3 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-              :class="{'disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none': page === pagination.lastPage}"
-              @click="changePage(page + 1)" :disabled="page === pagination.lastPage">Next</button>
+<div class="db-table-gap">
+      <div id="control-general" class="db-controls">
+        <div class="db-controls-row">
+          <p class="db-summary" x-html="getSummary"></p>
+          <div class="db-pager">
+             <button @click="changePage(1)" :disabled="page === 1">First</button>
+             <button @click="changePage(page - 1)" :disabled="page === 1">Previous</button>
+             <button @click="changePage(page + 1)" :disabled="page === pagination.lastPage">Next</button>
           </div>
         </div>
       </div>
@@ -25,36 +16,28 @@
 
       {{/* begin: general bills table */}}
       <div id="table-general">
-      <table class="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-700">
-        <thead class="bg-gray-100 dark:bg-gray-700">
+      <table class="db-table">
+        <thead>
           <tr>
             <th scope="col"
-              class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
+              class="col-text"
               width="40%" @click="sort('name')">Parish</th>
-            <th scope="col"
-              class="py-3 px-6 text-xs font-medium text-center tracking-wider text-gray-700 uppercase dark:text-gray-400"
-              width="15%" @click="sort('count')">Buried</th>
-            <th scope="col"
-              class="py-3 px-6 text-xs font-medium text-center tracking-wider text-gray-700 uppercase dark:text-gray-400"
-              width="15%">Plague</th>
-            <th scope="col"
-              class="py-3 px-6 text-xs font-medium tracking-wider text-center text-gray-700 uppercase dark:text-gray-400"
-              width="15%" @click="sort('year')">Year</th>
-            <th scope="col"
-              class="py-3 px-6 text-xs font-medium tracking-wider text-center text-gray-700 uppercase dark:text-gray-400"
-              width="15%">Split Year</th>
+            <th scope="col" width="15%" @click="sort('count')">Buried</th>
+            <th scope="col" width="15%">Plague</th>
+            <th scope="col" width="15%" @click="sort('year')">Year</th>
+            <th scope="col" width="15%">Split Year</th>
           </tr>
         </thead>
-        <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
+        <tbody>
           <!-- Loading state -->
           <template x-if="meta.loading">
             <tr>
-              <td colspan="5" class="py-12 text-center">
-                <div class="flex flex-col items-center justify-center space-y-3">
-                  <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-600"></div>
-                  <div class="text-sm text-gray-600">
+              <td colspan="5" class="db-state">
+                <div class="db-state-body">
+                  <div class="spinner"></div>
+                  <div class="db-state-text">
                     <span x-show="!meta.slowConnection">Loading data...</span>
-                    <span x-show="meta.slowConnection" class="text-amber-600">Taking longer than expected...</span>
+                    <span x-show="meta.slowConnection" class="is-slow">Taking longer than expected...</span>
                   </div>
                 </div>
               </td>
@@ -64,18 +47,18 @@
           <!-- Error state -->
           <template x-if="meta.error && !meta.loading">
             <tr>
-              <td colspan="5" class="py-12 text-center">
-                <div class="flex flex-col items-center justify-center space-y-3">
-                  <div class="text-red-500">
-                    <svg class="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <td colspan="5" class="db-state">
+                <div class="db-state-body">
+                  <div class="db-state-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L4.732 15.5c-.77.833.192 2.5 1.732 2.5z"></path>
                     </svg>
                   </div>
-                  <div class="text-sm text-gray-600">
-                    <div class="font-medium text-red-600 mb-2">Unable to load data</div>
+                  <div class="db-state-text">
+                    <div class="db-state-title">Unable to load data</div>
                     <div>Your connection may be too slow or unstable.</div>
-                    <div class="mt-2">
-                      <button @click="applyFilters()" class="text-dbn-blue-700 hover:text-dbn-blue-900 underline">Try again</button>
+                    <div class="db-state-action">
+                      <button @click="applyFilters()" class="db-retry">Try again</button>
                     </div>
                   </div>
                 </div>
@@ -86,29 +69,29 @@
           <!-- Data rows (pivoted: one row per parish per year) -->
           <template x-if="!meta.loading && !meta.error">
             <template x-for="row in pivotedBills" :key="row.name + row.year">
-              <tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
-                <td class="py-3 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                  <a :href="'/parishes/detail/?name=' + encodeURIComponent(row.name)" class="text-dbn-blue-700 hover:text-dbn-blue-900 hover:underline" x-text="row.name"></a>
+              <tr>
+                <td class="col-name">
+                  <a :href="'/parishes/detail/?name=' + encodeURIComponent(row.name)" x-text="row.name"></a>
                 </td>
-                <td class="py-3 px-6 text-sm text-center whitespace-nowrap font-mono"
-                    :class="row.buried_missing ? 'bg-amber-50' : (row.buried_illegible ? 'bg-orange-50' : '')">
-                  <span x-show="row.buried_missing" class="text-xs text-amber-700">data missing from record</span>
-                  <span x-show="row.buried_illegible && !row.buried_missing" class="text-orange-700" x-text="row.buried"></span>
-                  <span x-show="row.buried_illegible && !row.buried_missing" class="ml-1 text-xs text-orange-500">illegible</span>
-                  <span x-show="!row.buried_missing && !row.buried_illegible && (row.buried !== null && row.buried !== undefined)" class="text-gray-900 dark:text-white" x-text="row.buried"></span>
-                  <span x-show="!row.buried_missing && !row.buried_illegible && (row.buried === null || row.buried === undefined)" class="text-gray-300">—</span>
+                <td class="col-num"
+                    :class="row.buried_missing ? 'is-missing' : (row.buried_illegible ? 'is-illegible' : '')">
+                  <span x-show="row.buried_missing" class="flag-missing">data missing from record</span>
+                  <span x-show="row.buried_illegible && !row.buried_missing" class="val-illegible" x-text="row.buried"></span>
+                  <span x-show="row.buried_illegible && !row.buried_missing" class="flag-illegible">illegible</span>
+                  <span x-show="!row.buried_missing && !row.buried_illegible && (row.buried !== null && row.buried !== undefined)" x-text="row.buried"></span>
+                  <span x-show="!row.buried_missing && !row.buried_illegible && (row.buried === null || row.buried === undefined)" class="val-empty">—</span>
                 </td>
-                <td class="py-3 px-6 text-sm text-center whitespace-nowrap font-mono"
-                    :class="row.plague_missing ? 'bg-amber-50' : (row.plague_illegible ? 'bg-orange-50' : '')">
-                  <span x-show="row.plague_missing" class="text-xs text-amber-700">data missing from record</span>
-                  <span x-show="row.plague_illegible && !row.plague_missing" class="text-orange-700" x-text="row.plague"></span>
-                  <span x-show="row.plague_illegible && !row.plague_missing" class="ml-1 text-xs text-orange-500">illegible</span>
-                  <span x-show="!row.plague_missing && !row.plague_illegible && (row.plague !== null && row.plague !== undefined)" :class="row.plague > 0 ? 'text-red-700 dark:text-red-400' : 'text-gray-900 dark:text-white'" x-text="row.plague"></span>
-                  <span x-show="!row.plague_missing && !row.plague_illegible && (row.plague === null || row.plague === undefined)" class="text-gray-300">—</span>
+                <td class="col-num"
+                    :class="row.plague_missing ? 'is-missing' : (row.plague_illegible ? 'is-illegible' : '')">
+                  <span x-show="row.plague_missing" class="flag-missing">data missing from record</span>
+                  <span x-show="row.plague_illegible && !row.plague_missing" class="val-illegible" x-text="row.plague"></span>
+                  <span x-show="row.plague_illegible && !row.plague_missing" class="flag-illegible">illegible</span>
+                  <span x-show="!row.plague_missing && !row.plague_illegible && (row.plague !== null && row.plague !== undefined)" :class="{ 'is-plague': row.plague > 0 }" x-text="row.plague"></span>
+                  <span x-show="!row.plague_missing && !row.plague_illegible && (row.plague === null || row.plague === undefined)" class="val-empty">—</span>
                 </td>
-                <td class="py-3 px-6 text-sm text-center text-gray-900 whitespace-nowrap dark:text-white font-mono"
+                <td class="col-num"
                   x-text="row.year"></td>
-                <td class="py-3 px-6 text-sm text-center text-gray-900 whitespace-nowrap dark:text-white font-mono"
+                <td class="col-num"
                   x-text="row.split_year"></td>
               </tr>
             </template>
@@ -116,22 +99,13 @@
         </tbody>
       </table>
 
-      <div id="control-general" class="mt-4">
-        <div class="flex items-center justify-between">
-          <p class="text-sm text-gray-700 py-1" x-html="getSummary"></p>
-          <div class="flex items-center space-x-1">
-            <button
-              class="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 rounded-l-lg leading-tight py-2 px-3 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-              :class="{'disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none': page === 1}"
-              @click="changePage(1)" :disabled="page === 1">First</button>
-            <button
-              class="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 leading-tight py-2 px-3 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-              :class="{'disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none': page === 1}"
-              @click="changePage(page - 1)" :disabled="page === 1">Previous</button>
-            <button
-              class="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 rounded-r-lg leading-tight py-2 px-3 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-              :class="{'disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none': page === pagination.lastPage}"
-              @click="changePage(page + 1)" :disabled="page === pagination.lastPage">Next</button>
+      <div id="control-general" class="db-controls db-controls-end">
+        <div class="db-controls-row">
+          <p class="db-summary" x-html="getSummary"></p>
+          <div class="db-pager">
+             <button @click="changePage(1)" :disabled="page === 1">First</button>
+             <button @click="changePage(page - 1)" :disabled="page === 1">Previous</button>
+             <button @click="changePage(page + 1)" :disabled="page === pagination.lastPage">Next</button>
           </div>
         </div>
       </div>

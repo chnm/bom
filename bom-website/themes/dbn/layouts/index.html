@@ -1,82 +1,58 @@
 {{ define "main" }}
 
-<div class="bg-white">
-  <div class="mx-auto w-full max-w-screen-xl px-6 lg:px-12">
+{{- $features := slice
+  (dict "title" "The Plague Database" "url" "/database/"
+    "text" "Browse over a million transcribed records&thinsp;—&thinsp;by parish, by cause of death, by week&thinsp;—&thinsp;across the full run of the bills."
+    "img" "/images/bodleian-1642-09-recto.png" "alt" "A 1642 London Bill of Mortality from the Bodleian Library")
+  (dict "title" "Visualizing the Plague" "url" "/visualizations/"
+    "text" "Transcription opens new approaches for visualization&thinsp;—&thinsp;calendars of causes, parish heat maps, and weekly sparklines that reveal the shape of an epidemic."
+    "img" "/images/preview_viz.png" "alt" "Preview of a data visualization showing mortality patterns")
+  (dict "title" "Analyzing the Plague" "url" "/analysis/"
+    "text" "Read our ongoing research into the London plague bills."
+    "img" "/images/IMG_4187.jpeg" "alt" "A researcher examining historical plague bills")
+-}}
 
-    {{/* ── Hero: Welcome + Latest Writings ── */}}
-    <section class="grid grid-cols-1 lg:grid-cols-5 gap-12 py-16 lg:py-24">
-      {{/* Left: intro text */}}
-      <div class="lg:col-span-3">
-        <h2 class="text-4xl lg:text-5xl font-display leading-tight mb-6">
-          Welcome to the Bills of Mortality
-        </h2>
-        <div class="prose prose-lg text-gray-600">
-          {{ .Content }}
+<div class="wrap">
+
+  <section class="home-intro">
+    <div>
+      <h2>Welcome to the Bills of Mortality</h2>
+      <div class="prose prose-lg">
+        {{ .Content }}
+      </div>
+    </div>
+
+    <div>
+      <div class="panel latest">
+        <h3>Latest Writings</h3>
+        {{ range first 3 (where .Site.RegularPages "Section" "ne" "visualizations") }}
+        <div class="latest-item">
+          <p class="meta">
+            <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
+            {{ with .Section }}&middot; <span class="section-name">{{ . }}</span>{{ end }}
+          </p>
+          <a href="{{ .Permalink }}">{{ .Title }}</a>
         </div>
+        {{ end }}
       </div>
+    </div>
+  </section>
 
-      {{/* Right: latest writings card */}}
-      <div class="lg:col-span-2">
-        <div class="bg-gray-50 border border-gray-200 rounded-lg p-6">
-          <h3 class="text-xl font-serif font-medium mb-4">Latest Writings</h3>
-          {{ range first 3 (where .Site.RegularPages "Section" "ne" "visualizations") }}
-          <div class="py-3 border-t border-gray-200">
-            <p class="text-xs tracking-wide uppercase text-gray-400 font-mono mb-1">
-              <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
-              {{ with .Section }}&middot; <span class="capitalize">{{ . }}</span>{{ end }}
-            </p>
-            <a href="{{ .Permalink }}" class="text-dbn-red-700 hover:text-dbn-red-900 font-medium hover:underline">{{ .Title }}</a>
-          </div>
-          {{ end }}
-        </div>
-      </div>
-    </section>
+  <hr>
 
-    <hr class="border-gray-200">
+  {{ range $i, $f := $features }}
+  <section class="home-feature{{ if eq (mod $i 2) 1 }} home-feature-flip{{ end }}">
+    <div>
+      <h3><a href="{{ .url }}">{{ .title }}</a></h3>
+      <p>{{ .text | safeHTML }}</p>
+      <a href="{{ .url }}" class="arrow-link">Explore &rarr;</a>
+    </div>
+    <div>
+      <img src="{{ .img }}" alt="{{ .alt }}">
+    </div>
+  </section>
+  {{ end }}
 
-    {{/* ── Section: The Plague Database ── */}}
-    <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center py-16 lg:py-24">
-      <div>
-        <h3 class="text-3xl lg:text-4xl font-display mb-4">
-          <a href="/database/" class="hover:text-dbn-red-700 transition-colors">The Plague Database</a>
-        </h3>
-        <p class="text-lg text-gray-600 mb-6">Browse over a million transcribed records&thinsp;—&thinsp;by parish, by cause of death, by week&thinsp;—&thinsp;across the full run of the bills.</p>
-        <a href="/database/" class="inline-block text-sm font-semibold tracking-widest uppercase border-b-2 border-dbn-red-700 text-gray-900 hover:text-dbn-red-700 pb-1 transition-colors">Explore &rarr;</a>
-      </div>
-      <div>
-        <img class="rounded-lg shadow-lg object-cover w-full h-64 lg:h-80" src="/images/bodleian-1642-09-recto.png" alt="A 1642 London Bill of Mortality from the Bodleian Library">
-      </div>
-    </section>
-
-    {{/* ── Section: Visualizing the Plague (reversed) ── */}}
-    <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center py-16 lg:py-24">
-      <div class="lg:order-last">
-        <h3 class="text-3xl lg:text-4xl font-display mb-4">
-          <a href="/visualizations/" class="hover:text-dbn-red-700 transition-colors">Visualizing the Plague</a>
-        </h3>
-        <p class="text-lg text-gray-600 mb-6">Transcription opens new approaches for visualization&thinsp;—&thinsp;calendars of causes, parish heat maps, and weekly sparklines that reveal the shape of an epidemic.</p>
-        <a href="/visualizations/" class="inline-block text-sm font-semibold tracking-widest uppercase border-b-2 border-dbn-red-700 text-gray-900 hover:text-dbn-red-700 pb-1 transition-colors">Explore &rarr;</a>
-      </div>
-      <div>
-        <img class="rounded-lg shadow-lg object-cover w-full h-64 lg:h-80" src="/images/preview_viz.png" alt="Preview of a data visualization showing mortality patterns">
-      </div>
-    </section>
-
-    {{/* ── Section: Analyzing the Plague ── */}}
-    <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center py-16 lg:py-24">
-      <div>
-        <h3 class="text-3xl lg:text-4xl font-display mb-4">
-          <a href="/analysis/" class="hover:text-dbn-red-700 transition-colors">Analyzing the Plague</a>
-        </h3>
-        <p class="text-lg text-gray-600 mb-6">Read our ongoing research into the London plague bills.</p>
-        <a href="/analysis/" class="inline-block text-sm font-semibold tracking-widest uppercase border-b-2 border-dbn-red-700 text-gray-900 hover:text-dbn-red-700 pb-1 transition-colors">Explore &rarr;</a>
-      </div>
-      <div>
-        <img class="rounded-lg shadow-lg object-cover w-full h-64 lg:h-80" src="/images/IMG_4187.jpeg" alt="A researcher examining historical plague bills">
-      </div>
-    </section>
-
-  </div>
 </div>
 
 {{ end }}

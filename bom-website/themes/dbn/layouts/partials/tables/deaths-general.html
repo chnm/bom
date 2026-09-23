@@ -1,54 +1,41 @@
 {{/* This is the General Bills Causes of Death table. */}}
 <div>
-      <div id="control-deaths-general" class="mb-2">
-        <div class="flex items-center justify-between">
-          <p class="text-sm text-gray-700 py-1" x-html="getSummary"></p>
-          <div class="flex items-center space-x-1">
-            <button
-              class="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 rounded-l-lg leading-tight py-2 px-3 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-              :class="{'disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none': page === 1}"
-              @click="changePage(1)" :disabled="page === 1">First</button>
-            <button
-              class="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 leading-tight py-2 px-3 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-              :class="{'disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none': page === 1}"
-              @click="changePage(page - 1)" :disabled="page === 1">Previous</button>
-            <button
-              class="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 rounded-r-lg leading-tight py-2 px-3 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-              :class="{'disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none': page === pagination.lastPage}"
-              @click="changePage(page + 1)" :disabled="page === pagination.lastPage">Next</button>
+      <div id="control-deaths-general" class="db-controls">
+        <div class="db-controls-row">
+          <p class="db-summary" x-html="getSummary"></p>
+          <div class="db-pager">
+             <button @click="changePage(1)" :disabled="page === 1">First</button>
+             <button @click="changePage(page - 1)" :disabled="page === 1">Previous</button>
+             <button @click="changePage(page + 1)" :disabled="page === pagination.lastPage">Next</button>
           </div>
         </div>
       </div>
 
       {{/* begin: deaths-general table */}}
     <div id="table-causes-general">
-      <table class="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-700">
-        <thead class="bg-gray-100 dark:bg-gray-700">
+      <table class="db-table">
+        <thead>
           <tr>
             <th scope="col"
-              class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
+              class="col-text"
               width="40%" @click="sort('name')">Cause</th>
+            <th scope="col" width="20%" @click="sort('count')">Count</th>
             <th scope="col"
-              class="py-3 px-6 text-xs font-medium tracking-wider text-center text-gray-700 uppercase dark:text-gray-400"
-              width="20%" @click="sort('count')">Count</th>
-            <th scope="col"
-              class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
+              class="col-text"
               width="25%">Original Transcription</th>
-            <th scope="col"
-              class="py-3 px-6 text-xs font-medium tracking-wider text-center text-gray-700 uppercase dark:text-gray-400"
-              width="15%" @click="sort('year')">Year</th>
+            <th scope="col" width="15%" @click="sort('year')">Year</th>
           </tr>
         </thead>
-        <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
+        <tbody>
           <!-- Loading state -->
           <template x-if="meta.loading">
             <tr>
-              <td colspan="4" class="py-12 text-center">
-                <div class="flex flex-col items-center justify-center space-y-3">
-                  <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-600"></div>
-                  <div class="text-sm text-gray-600">
+              <td colspan="4" class="db-state">
+                <div class="db-state-body">
+                  <div class="spinner"></div>
+                  <div class="db-state-text">
                     <span x-show="!meta.slowConnection">Loading data...</span>
-                    <span x-show="meta.slowConnection" class="text-amber-600">Taking longer than expected...</span>
+                    <span x-show="meta.slowConnection" class="is-slow">Taking longer than expected...</span>
                   </div>
                 </div>
               </td>
@@ -58,17 +45,17 @@
           <!-- Error state -->
           <template x-if="meta.error && !meta.loading">
             <tr>
-              <td colspan="4" class="py-12 text-center">
-                <div class="flex flex-col items-center justify-center space-y-3">
-                  <div class="text-red-500">
-                    <svg class="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <td colspan="4" class="db-state">
+                <div class="db-state-body">
+                  <div class="db-state-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L4.732 15.5c-.77.833.192 2.5 1.732 2.5z"></path>
                     </svg>
                   </div>
-                  <div class="text-sm text-gray-600">
-                    <div class="font-medium text-red-600 mb-2">Unable to load data</div>
-                    <div class="mt-2">
-                      <button @click="applyFilters()" class="text-dbn-blue-700 hover:text-dbn-blue-900 underline">Try again</button>
+                  <div class="db-state-text">
+                    <div class="db-state-title">Unable to load data</div>
+                    <div class="db-state-action">
+                      <button @click="applyFilters()" class="db-retry">Try again</button>
                     </div>
                   </div>
                 </div>
@@ -79,19 +66,19 @@
           <!-- Data rows -->
           <template x-if="!meta.loading && !meta.error">
             <template x-for="cause in causes" :key="cause.id">
-              <tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
-                <td class="py-3 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                  <a :href="'/causes/detail/?name=' + encodeURIComponent(cause.name) + '&bill_type=general'" class="text-dbn-blue-700 hover:text-dbn-blue-900 hover:underline" x-text="cause.name"></a></td>
-                <td class="py-3 px-6 text-sm text-center whitespace-nowrap font-mono"
-                    :class="(cause.count == null) ? 'bg-amber-50' : (cause.illegible ? 'bg-orange-50' : '')">
-                  <span x-show="cause.count == null" class="text-xs text-amber-700">data missing from record</span>
-                  <span x-show="cause.illegible && cause.count != null" class="text-orange-700" x-text="cause.count"></span>
-                  <span x-show="cause.illegible && cause.count != null" class="ml-1 text-xs text-orange-500">illegible</span>
-                  <span x-show="cause.count != null && !cause.illegible && cause.count != null" class="text-gray-900 dark:text-white" x-text="cause.count"></span>
+              <tr>
+                <td class="col-name">
+                  <a :href="'/causes/detail/?name=' + encodeURIComponent(cause.name) + '&bill_type=general'" x-text="cause.name"></a></td>
+                <td class="col-num"
+                    :class="(cause.count == null) ? 'is-missing' : (cause.illegible ? 'is-illegible' : '')">
+                  <span x-show="cause.count == null" class="flag-missing">data missing from record</span>
+                  <span x-show="cause.illegible && cause.count != null" class="val-illegible" x-text="cause.count"></span>
+                  <span x-show="cause.illegible && cause.count != null" class="flag-illegible">illegible</span>
+                  <span x-show="cause.count != null && !cause.illegible && cause.count != null" x-text="cause.count"></span>
                 </td>
-                <td class="py-3 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400"
+                <td class="col-note"
                   x-text="cause.death !== cause.name ? cause.death : ''"></td>
-                <td class="py-3 px-6 text-sm text-center text-gray-900 whitespace-nowrap dark:text-white font-mono"
+                <td class="col-num"
                   x-text="cause.year"></td>
               </tr>
             </template>
@@ -100,22 +87,13 @@
       </table>
     </div>
 
-      <div id="control-deaths-general" class="mt-4">
-        <div class="flex items-center justify-between">
-          <p class="text-sm text-gray-700 py-1" x-html="getSummary"></p>
-          <div class="flex items-center space-x-1">
-            <button
-              class="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 rounded-l-lg leading-tight py-2 px-3 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-              :class="{'disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none': page === 1}"
-              @click="changePage(1)" :disabled="page === 1">First</button>
-            <button
-              class="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 leading-tight py-2 px-3 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-              :class="{'disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none': page === 1}"
-              @click="changePage(page - 1)" :disabled="page === 1">Previous</button>
-            <button
-              class="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 rounded-r-lg leading-tight py-2 px-3 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-              :class="{'disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none': page === pagination.lastPage}"
-              @click="changePage(page + 1)" :disabled="page === pagination.lastPage">Next</button>
+      <div id="control-deaths-general" class="db-controls db-controls-end">
+        <div class="db-controls-row">
+          <p class="db-summary" x-html="getSummary"></p>
+          <div class="db-pager">
+             <button @click="changePage(1)" :disabled="page === 1">First</button>
+             <button @click="changePage(page - 1)" :disabled="page === 1">Previous</button>
+             <button @click="changePage(page + 1)" :disabled="page === pagination.lastPage">Next</button>
           </div>
         </div>
       </div>

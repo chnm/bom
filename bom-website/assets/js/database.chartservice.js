@@ -113,7 +113,7 @@ const ChartService = {
       return chart;
     } catch (error) {
       console.error("Error creating chart:", error);
-      container.innerHTML = `<div class="text-red-500">Error creating chart: ${error.message}</div>`;
+      container.innerHTML = `<div class="chart-error">Error creating chart: ${error.message}</div>`;
     }
   },
 
@@ -143,7 +143,7 @@ const ChartService = {
       }
     } catch (error) {
       console.error("Error creating modal chart:", error);
-      container.innerHTML = `<div class="text-center text-red-500 py-4">Error drawing chart: ${error.message}</div>`;
+      container.innerHTML = `<div class="chart-error">Error drawing chart: ${error.message}</div>`;
     }
   },
 
@@ -158,30 +158,27 @@ const ChartService = {
     const validData = data.filter(d => d.total_buried > 0).sort((a, b) => a.year - b.year);
     
     if (validData.length === 0) {
-      container.innerHTML = '<div class="text-center py-8 text-gray-500">No burial data available for this parish</div>';
+      container.innerHTML = '<div class="chart-empty">No burial data available for this parish</div>';
       return;
     }
 
-    // Create main container with flexbox layout
+    // Create main container
     const mainContainer = document.createElement("div");
-    mainContainer.className = "flex flex-col gap-4";
 
     // Create faceted chart layout
     const chartsContainer = document.createElement("div");
-    chartsContainer.className = "flex flex-col gap-6";
+    chartsContainer.className = "chart-facets";
 
     // Create individual chart containers
     const buriedContainer = document.createElement("div");
     buriedContainer.className = "facet-chart";
     const buriedTitle = document.createElement("h4");
-    buriedTitle.className = "text-sm font-semibold text-gray-700 mb-2 text-center";
     buriedTitle.textContent = "Total Buried";
     buriedContainer.appendChild(buriedTitle);
 
     const plagueContainer = document.createElement("div");
     plagueContainer.className = "facet-chart";
     const plagueTitle = document.createElement("h4");
-    plagueTitle.className = "text-sm font-semibold text-gray-700 mb-2 text-center";
     plagueTitle.textContent = "Plague Deaths";
     plagueContainer.appendChild(plagueTitle);
 
@@ -342,7 +339,7 @@ const ChartService = {
     }
 
     if (!allData || allData.length === 0) {
-      container.innerHTML = `<div class="text-center py-8 text-gray-500">${noDataMessage}</div>`;
+      container.innerHTML = `<div class="chart-empty">${noDataMessage}</div>`;
       return;
     }
 
@@ -438,7 +435,7 @@ const ChartService = {
         .sort((a, b) => a.year - b.year);
 
       if (chartData.length === 0) {
-        container.innerHTML = '<div class="text-center py-8 text-gray-500">No data available</div>';
+        container.innerHTML = '<div class="chart-empty">No data available</div>';
         return;
       }
 
@@ -511,7 +508,7 @@ const ChartService = {
       return chart;
     } catch (error) {
       console.error("Error creating data counts chart:", error);
-      container.innerHTML = `<div class="text-red-500 text-center py-4">Error creating chart: ${error.message}</div>`;
+      container.innerHTML = `<div class="chart-error">Error creating chart: ${error.message}</div>`;
     }
   },
 };

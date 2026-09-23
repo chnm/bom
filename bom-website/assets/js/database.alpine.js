@@ -1395,7 +1395,7 @@ document.addEventListener("alpine:init", () => {
       if (this.meta.error && !this.meta.loading) {
         return (
           this.messages.connectionError +
-          ' <a href="https://github.com/YOUR_USERNAME/YOUR_REPO/tree/main/data" class="text-blue-600 hover:text-blue-800 underline" target="_blank" rel="noopener">Download CSV files instead</a>'
+          ' <a href="https://github.com/YOUR_USERNAME/YOUR_REPO/tree/main/data" target="_blank" rel="noopener">Download CSV files instead</a>'
         );
       }
 
@@ -1404,14 +1404,14 @@ document.addEventListener("alpine:init", () => {
         if (this.meta.slowConnection) {
           return (
             this.messages.slowConnection +
-            ' <a href="https://github.com/YOUR_USERNAME/YOUR_REPO/tree/main/data" class="text-blue-600 hover:text-blue-800 underline" target="_blank" rel="noopener">Download CSV files instead</a>'
+            ' <a href="https://github.com/YOUR_USERNAME/YOUR_REPO/tree/main/data" target="_blank" rel="noopener">Download CSV files instead</a>'
           );
         }
         return this.messages.loading;
       }
 
       // Helper for formatted numbers
-      const fmt = (n) => `<span class="font-sans font-semibold tabular-nums">${Number(n).toLocaleString()}</span>`;
+      const fmt = (n) => `<span class="num">${Number(n).toLocaleString()}</span>`;
 
       // Handle different summary types
       if (type && type.toLowerCase() === "pages") {
@@ -1527,7 +1527,6 @@ document.addEventListener("alpine:init", () => {
       if (loadingIndicator) loadingIndicator.style.display = "block";
       if (errorMessage) {
         errorMessage.style.display = "none";
-        errorMessage.classList.add("hidden");
       }
 
       // Use ChartService to load the chart
@@ -1598,7 +1597,6 @@ document.addEventListener("alpine:init", () => {
               errorMessage.textContent =
                 error.message || "Error loading chart data";
               errorMessage.style.display = "block";
-              errorMessage.classList.remove("hidden");
             }
 
             // Hide loading indicator
