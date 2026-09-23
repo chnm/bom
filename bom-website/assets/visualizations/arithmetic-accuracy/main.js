@@ -88,8 +88,9 @@ function replacePlot(selector, plot, label) {
   plot.setAttribute("aria-label", label);
 }
 
-function summaryCard(label, value, note = "") {
-  return `<div class="summary-card"><span>${label}</span><strong>${value}</strong>${note ? `<small>${note}</small>` : ""}</div>`;
+// One figure in the stats bar, styled like the data quality page's.
+function summaryCard(label, value, note = "", tone = "") {
+  return `<div><div class="viz-stat-value ${tone}">${value}</div><div class="viz-stat-label">${label}</div>${note ? `<div class="viz-stat-note">${note}</div>` : ""}</div>`;
 }
 
 function setSummary(selector, cards) {
@@ -243,7 +244,7 @@ function renderWeeklyOverview() {
   const mixed = visibleRows.filter((row) => row.mixed_copies).length;
   setSummary("#weekly-summary", [
     summaryCard("Comparable weeks", d3.format(",")(visibleRows.length)),
-    summaryCard("Arithmetic errors", d3.format(",")(errors.length), `${d3.format(".1f")(100 * errors.length / visibleRows.length)}% of comparable weeks`),
+    summaryCard("Arithmetic errors", d3.format(",")(errors.length), `${d3.format(".1f")(100 * errors.length / visibleRows.length)}% of comparable weeks`, "is-warning"),
     summaryCard("Exact matches", d3.format(",")(exact), `${d3.format(".1f")(100 * exact / visibleRows.length)}% of comparable weeks`),
     summaryCard("Calendar coverage", `${d3.format(".1f")(coverage)}%`, "Missing weeks remain explicit"),
     ...(API_URL ? [summaryCard("Mixed-copy weeks", d3.format(",")(mixed), "Figures from more than one surviving copy")] : []),

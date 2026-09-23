@@ -29,55 +29,19 @@
   font-size: 0.875rem;
 }
 
-/* Summary cards */
-
-.summary-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
-  gap: 0.75rem;
-  margin-bottom: 1rem;
+/* Stats bar: the shared .viz-stats, fitted to four or five figures */
+#weekly-summary {
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
 }
 
-.summary-card {
-  padding: 0.75rem 1rem;
-  border: 1px solid var(--gray-200);
-  border-top: 3px solid var(--negative);
-  border-radius: var(--radius-lg);
-  font-family: var(--font-ui);
-}
-
-.summary-card > span {
-  display: block;
-  color: var(--muted);
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.summary-card > strong {
-  display: block;
-  margin-block: 0.125rem;
-  font-family: var(--font-display);
-  font-size: 1.5rem;
-  font-weight: 500;
-  line-height: 1.2;
-}
-
-.summary-card > small {
-  display: block;
+.viz-stat-note {
   color: var(--muted);
   font-size: 0.8125rem;
   line-height: 1.35;
 }
 
-/* Chart cards */
-
 .chart-card {
-  margin-top: 1rem;
-  padding: clamp(0.75rem, 2vw, 1.5rem);
-  border: 1px solid var(--gray-200);
-  border-radius: var(--radius-lg);
+  margin-top: 2.5rem;
 }
 
 .chart-heading {
@@ -91,9 +55,6 @@
 
 #arithmetic-explorer .chart-heading h3 {
   margin: 0;
-  font-family: var(--font-display);
-  font-size: clamp(1.25rem, 2.4vw, 1.75rem);
-  font-weight: 500;
 }
 
 .difference-legend {
@@ -126,14 +87,6 @@
 .plot-container {
   min-height: 12rem;
   overflow-x: auto;
-}
-
-#arithmetic-explorer .chart-note {
-  max-width: 80ch;
-  margin: 0.75rem 0 0;
-  color: var(--muted);
-  font-size: 0.875rem;
-  line-height: 1.45;
 }
 
 /* Table of the selected year */

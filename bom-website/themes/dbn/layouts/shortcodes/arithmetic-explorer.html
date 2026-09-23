@@ -26,7 +26,7 @@
     {{ if $api }}Loading data from the Death by Numbers API…{{ else }}Loading the archived article data…{{ end }}
   </p>
   <section id="weekly-panel" class="explorer-panel">
-    <div id="weekly-summary" class="summary-grid" aria-label="Weekly data summary"></div>
+    <div id="weekly-summary" class="viz-stats" aria-label="Weekly data summary"></div>
     <div class="chart-card">
       <div class="chart-heading">
         <div>
@@ -40,7 +40,7 @@
         </div>
       </div>
       <div id="weekly-overview" class="plot-container"></div>
-      <p class="chart-note">
+      <p class="viz-note">
         Color intensity represents the logarithmic difference, allowing small and unusually large
         discrepancies to remain visible together. The outlined column is the selected detail year.
         Click any column to select it.
