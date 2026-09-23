@@ -41,8 +41,8 @@ This visualization shows the data quality patterns for Bills of Mortality record
         <strong>Color Legend:</strong> 
         <span style="color: #047857;">■ Good</span> (no data quality issues),
         <span style="color: #b45309;">■ Partial Issues</span> (some records have issues),
-        <span style="color: #b91c1c;">■ All Issues</span> (all records have issues),
-        <span style="color: #6b7280;">■ No Data</span> (no records available).
+        <span style="color: #b91c1c;">■ All Issues</span> (all records have issues).
+        Weeks with no records are left blank.
     </div>
     <figcaption>This visualization helps identify temporal patterns in data quality, which may correspond to different scribes, paper quality issues, or historical events affecting record-keeping. The number of records refers to whether one of the "buried" values or "plague" values or both are missing for a given parish. The data updates regularly as new transcriptions are added to the database.</figcaption>
     <p><a href="#top">Return to top</a></p>
