@@ -43,6 +43,21 @@ Before importing data, ensure your database is prepared:
 make db-up
 ```
 
+On the shared server, run migrations as the same role each time (currently
+`jheppler`). Migration 15 sets default privileges for that role, so tables
+and views it creates in `bom` are readable by `apiary_service` and
+`apiary_exports` and writable by `apiary_dev`. Objects created by any other
+role get no grants, and the API will return 500 errors until they are
+granted. New tables are owned by the role that created them; to match the
+rest of the schema, change the owner to `apiary_admin`:
+
+```sql
+ALTER TABLE bom.new_table OWNER TO apiary_admin;
+```
+
+Take a backup with `make db-backup` before running migrations or imports
+against production.
+
 ## Usage
 
 ### Import Commands
