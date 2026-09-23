@@ -16,10 +16,4 @@ build-prod :
 	npx -y pagefind --site public
 	@echo "Website finished building."
 
-tailwind :
-	@echo "\nBuilding the tailwind css ..."
-	cd themes/dbn && npm run build-tw
-	@echo "Tailwind css finished building."
-	cd ../../
-
 .PHONY : preview build-prod

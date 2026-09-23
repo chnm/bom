@@ -1,118 +1,88 @@
 import * as d3 from "d3";
 import * as Plot from "@observablehq/plot";
-import Visualization from "../common/visualization";
+import { chartStyle as style, textWidth } from "../common/responsive";
 
-export default class CalendarChart extends Visualization {
-  constructor(id, data, dim) {
-    const margin = {
-      top: 0,
-      right: 40,
-      bottom: 40,
-      left: 10,
-    };
-    super(id, data, dim, margin);
-    this.dim = dim;
-  }
+const ROW = 18; // height of one cause row
+const MIN_CELL = 14; // narrowest a week column may get before the grid scrolls sideways
+const MARGIN_Y = 36; // room for the week axes above and below
 
-  // Draw the plot
-  render() {
-    const data = this.data;
+// Draws the calendar into `container`: a color legend, then a fixed column of
+// cause names beside a grid of weekly cells that scrolls sideways when narrow.
+export default function renderCalendar(container, data) {
+  const cells = data.filter((d) => d.week_number !== 90);
+  const causes = d3.sort(new Set(cells.map((d) => d.death)));
+  const weeks = d3.sort(new Set(cells.map((d) => d.week_number)), d3.ascending);
+  const maxCount = d3.max(cells, (d) => d.count);
 
-    // Remove week_number 90 
-    const filteredData = data.filter(d => d.week_number !== 90);
+  const labelsW = textWidth(causes) + 14;
+  const frameW = container.clientWidth;
+  const gridW = Math.max(frameW - labelsW, weeks.length * MIN_CELL + 8);
+  const height = causes.length * ROW + MARGIN_Y * 2;
 
-    const plot = Plot.plot({
-      padding: 0,
-      width: this.dim.width,
-      height: this.dim.height,
-      marginLeft: 120,
-      // grid: true,
-      x: {
-        axis: "top",
-        label: "Week Number",
-        //   tickFormat: d3.format("d"), // remove commas
-        ticks: 10,
-        tickSize: 6,
-        tickPadding: 3,
-        tickValues: d3.range(
-          d3.min(filteredData, (d) => d.week_number),
-          d3.max(filteredData, (d) => d.week_number) + 1,
-        ),
-      },
-      y: { label: "Cause of Death" },
-      color: { type: "linear", scheme: "Reds" },
-      marks: [
-        Plot.cell(filteredData, {
-          x: "week_number",
-          y: "death",
-          fill: "count",
-          inset: 0.5,
-        }),
-        Plot.axisX({
-          // Add an additional x-axis at the bottom
-          label: "Week Number",
-          // tickFormat: d3.format("d"), // remove commas
-          ticks: 10,
-          tickSize: 6,
-          tickPadding: 3,
-          tickValues: d3.range(
-            d3.min(filteredData, (d) => d.week_number),
-            d3.max(filteredData, (d) => d.week_number) + 1,
-          ),
-          anchor: "bottom",
-        }),
-      ],
-    });
+  const y = { domain: causes, label: null };
+  const color = { type: "linear", scheme: "Reds", domain: [0, maxCount] };
+  const weekAxis = { tickSize: 4, tickPadding: 3, label: "Week", labelAnchor: "left" };
 
-    d3.select(".loading_chart").remove();
-    this.svg.node().append(plot);
+  const legend = Plot.legend({
+    color: { ...color, label: "Deaths in the week" },
+    style,
+    width: 300,
+    marginLeft: 12,
+  });
 
-    const tooltip = d3
-      .select("body")
-      .append("div")
-      .attr("class", "tooltip")
-      .style("position", "absolute")
-      .style("visibility", "hidden")
-      .style("background", "#fff")
-      .style("border", "1px solid #ccc")
-      .style("padding", "10px")
-      .style("border-radius", "4px")
-      .style("box-shadow", "0 0 10px rgba(0, 0, 0, 0.1)");
+  const labels = Plot.plot({
+    width: labelsW,
+    height,
+    marginTop: MARGIN_Y,
+    marginBottom: MARGIN_Y,
+    marginLeft: labelsW,
+    marginRight: 0,
+    style,
+    y,
+    marks: [Plot.axisY({ tickSize: 0, tickPadding: 6 })],
+  });
 
-    this.svg
-      .selectAll("rect")
-      .data(filteredData)
-      .on("mouseover", (event, d) => {
-        tooltip
-          .style("visibility", "visible")
-          .html(`Week number: ${d.week_number}<br>Count: ${d.count}`);
-        d3.select(event.currentTarget)
-          .style("stroke", "#3E3E32")
-          .style("stroke-width", "2px");
-      })
-      .on("mousemove", (event) => {
-        // Show the tooltip to the right of the mouse, unless we are
-        // on the rightmost 25% of the browser.
-        if (event.clientX / this.width >= 0.75) {
-          tooltip
-            .style("top", `${event.pageY - 10}px`)
-            .style(
-              "left",
-              `${
-                event.pageX - tooltip.node().getBoundingClientRect().width - 10
-              }px`,
-            );
-        } else {
-          tooltip
-            .style("top", `${event.pageY - 10}px`)
-            .style("left", `${event.pageX + 10}px`);
-        }
-      })
-      .on("mouseout", () => {
-        tooltip.style("visibility", "hidden");
-        d3.select(event.currentTarget)
-          .style("stroke", null)
-          .style("stroke-width", null);
-      });
-  }
+  const grid = Plot.plot({
+    width: gridW,
+    height,
+    marginTop: MARGIN_Y,
+    marginBottom: MARGIN_Y,
+    marginLeft: 0,
+    marginRight: 8,
+    padding: 0,
+    style,
+    x: { type: "band", domain: weeks, axis: null },
+    y: { ...y, axis: null },
+    color,
+    marks: [
+      Plot.axisX({ ...weekAxis, anchor: "top" }),
+      Plot.axisX({ ...weekAxis, anchor: "bottom" }),
+      Plot.cell(cells, {
+        x: "week_number",
+        y: "death",
+        fill: "count",
+        inset: 0.5,
+        tip: true,
+        title: (d) => `${d.death}\nWeek ${d.week_number}: ${d3.format(",")(d.count)} ${d.count === 1 ? "death" : "deaths"}`,
+      }),
+    ],
+  });
+
+  const labelsCol = document.createElement("div");
+  labelsCol.className = "chart-labels";
+  labelsCol.append(labels);
+
+  const scroller = document.createElement("div");
+  scroller.className = "chart-scroll";
+  scroller.tabIndex = 0; // lets keyboard users scroll the grid
+  scroller.setAttribute("role", "region");
+  scroller.setAttribute("aria-label", "Weekly counts by cause; scroll sideways for more weeks");
+  scroller.append(grid);
+
+  const body = document.createElement("div");
+  body.className = "chart-body";
+  body.append(labelsCol, scroller);
+
+  container.replaceChildren(legend, body);
+  container.classList.toggle("is-scrollable", gridW > frameW - labelsW);
 }

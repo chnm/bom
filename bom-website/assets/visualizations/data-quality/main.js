@@ -1,5 +1,9 @@
 import * as d3 from "d3";
-import DataQualityCalendar from "./data-quality-calendar";
+import renderDataQuality from "./data-quality-calendar";
+import { redrawOnResize } from "../common/responsive";
+
+const chart = document.getElementById("chart");
+let current = null; // data and quality type on screen, kept for redraws on resize
 
 // Function to populate the year dropdown with available years
 function populateYearDropdown() {
@@ -40,79 +44,48 @@ function populateQualityTypeDropdown() {
   qualityTypeSelect.value = "missing";
 }
 
+function showMessage(text) {
+  current = null;
+  chart.innerHTML = "";
+  d3.select(chart).append("p").attr("class", "viz-message is-error").text(text);
+}
+
 // Function to fetch data and render the calendar
 function fetchDataAndRender(year, qualityType = "missing") {
   if (!year) return;
 
   // Show loading indicator
-  d3.select("#chart").selectAll("*").remove();
-  d3.select("#chart")
-    .append("div")
-    .attr("class", "loading_chart")
-    .text("Loading data quality information...");
+  d3.select("#summary-stats").selectAll("*").remove();
+  chart.innerHTML = "";
+  d3.select(chart).append("div").attr("class", "loading_chart").text("Loading data quality information...");
 
   const url = `https://data.chnm.org/bom/${DATA_TYPE}?start-year=${year}&end-year=${year}&limit=10000`;
 
   d3.json(url)
     .then((response) => {
       const data = response.data || response; // Handle different response formats
-      d3.select("#chart").selectAll("*").remove();
+      d3.selectAll(".loading_chart").remove();
 
       if (!data || data.length === 0) {
-        // Display a message if no data is available
-        d3.select("#chart")
-          .append("div")
-          .style("text-align", "center")
-          .style("padding", "60px 20px")
-          .style("font-size", "18px")
-          .style("color", "#dc2626")
-          .text("No data available for this year and data type.");
+        showMessage("No data available for this year and data type.");
       } else {
         // Filter out records without week_number as they can't be plotted
-        const validData = data.filter(
-          (d) => d.week_number && d.week_number > 0,
-        );
+        const validData = data.filter((d) => d.week_number && d.week_number > 0);
 
         if (validData.length === 0) {
-          d3.select("#chart")
-            .append("div")
-            .style("text-align", "center")
-            .style("padding", "60px 20px")
-            .style("font-size", "18px")
-            .style("color", "#dc2626")
-            .text(
-              "No valid weekly data available for this year and data type.",
-            );
+          showMessage("No valid weekly data available for this year and data type.");
           return;
         }
 
         // Calculate summary statistics
         const totalRecords = validData.length;
-        const qualityIssueRecords = validData.filter(
-          (d) => d[qualityType] === true,
-        ).length;
-        const overallRate =
-          totalRecords > 0 ? (qualityIssueRecords / totalRecords) * 100 : 0;
+        const qualityIssueRecords = validData.filter((d) => d[qualityType] === true).length;
+        const overallRate = totalRecords > 0 ? (qualityIssueRecords / totalRecords) * 100 : 0;
 
-        // Update summary statistics
-        updateSummaryStats(
-          totalRecords,
-          qualityIssueRecords,
-          overallRate,
-          qualityType,
-        );
+        updateSummaryStats(totalRecords, qualityIssueRecords, overallRate, qualityType);
 
-        // Calculate height based on number of unique parishes
-        const uniqueParishes = [...new Set(validData.map((d) => d.name))];
-        const dynamicHeight = Math.max(600, uniqueParishes.length * 35 + 200);
-
-        const calendar = new DataQualityCalendar(
-          "#chart",
-          validData,
-          { width: 960, height: dynamicHeight },
-          qualityType,
-        );
-        calendar.render();
+        current = { data: validData, qualityType };
+        renderDataQuality(chart, validData, qualityType);
       }
 
       // Update the chart title
@@ -121,19 +94,9 @@ function fetchDataAndRender(year, qualityType = "missing") {
     })
     .catch((error) => {
       console.error("There was an error fetching the data.", error);
-      d3.select("#chart").selectAll("*").remove();
-      d3.select("#chart")
-        .append("div")
-        .style("text-align", "center")
-        .style("padding", "60px 20px")
-        .style("font-size", "18px")
-        .style("color", "#dc2626")
-        .text("Error loading data. Please try again or contact support.");
+      showMessage("Error loading data. Please try again or contact support.");
     });
 }
-
-// Data type is fixed to parish records
-const DATA_TYPE_LABEL = "Parish Records";
 
 // Helper function to get quality type label
 function getQualityTypeLabel(qualityType) {
@@ -146,57 +109,39 @@ function getQualityTypeLabel(qualityType) {
 
 // Function to update chart title
 function updateChartTitle(year, qualityTypeLabel) {
-  d3.select("#chart-title").html(
-    `${qualityTypeLabel} in Weekly Bills Data for <span class="underline">${year}</span>`,
-  );
+  d3.select("#chart-title").html(`${qualityTypeLabel} in Weekly Bills Data for <u>${year}</u>`);
 }
 
 // Function to update summary statistics
 function updateSummaryStats(total, qualityIssueCount, rate, qualityType) {
-  const summaryContainer = d3.select("#summary-stats");
-
-  if (summaryContainer.empty()) {
-    // Create summary container if it doesn't exist
-    d3.select("#chart")
-      .insert("div", ":first-child")
-      .attr("id", "summary-stats")
-      .attr(
-        "class",
-        "bg-gray-50 rounded-lg p-4 mb-6 grid grid-cols-3 gap-4 text-center",
-      );
-  }
-
   const summary = d3.select("#summary-stats");
   summary.selectAll("*").remove();
 
   const qualityLabel = qualityType === "illegible" ? "Illegible" : "Missing";
-  const qualityRateLabel =
-    qualityType === "illegible" ? "Illegibility Rate" : "Missing Data Rate";
+  const qualityRateLabel = qualityType === "illegible" ? "Illegibility Rate" : "Missing Data Rate";
 
   // Total records
   summary.append("div").html(`
-      <div class="text-2xl font-bold text-gray-900">${total.toLocaleString()}</div>
-      <div class="text-sm text-gray-600">Total Records</div>
+      <div class="viz-stat-value">${total.toLocaleString()}</div>
+      <div class="viz-stat-label">Total Records</div>
     `);
 
   // Quality issue records
   summary.append("div").html(`
-      <div class="text-2xl font-bold text-amber-600">${qualityIssueCount.toLocaleString()}</div>
-      <div class="text-sm text-gray-600">${qualityLabel} Records</div>
+      <div class="viz-stat-value is-warning">${qualityIssueCount.toLocaleString()}</div>
+      <div class="viz-stat-label">${qualityLabel} Records</div>
     `);
 
   // Quality issue rate
-  const rateColor =
-    rate > 20
-      ? "text-red-600"
-      : rate > 10
-        ? "text-amber-600"
-        : "text-green-600";
+  const rateColor = rate > 20 ? "is-bad" : rate > 10 ? "is-warning" : "";
   summary.append("div").html(`
-      <div class="text-2xl font-bold ${rateColor}">${rate.toFixed(1)}%</div>
-      <div class="text-sm text-gray-600">${qualityRateLabel}</div>
+      <div class="viz-stat-value ${rateColor}">${rate.toFixed(1)}%</div>
+      <div class="viz-stat-label">${qualityRateLabel}</div>
     `);
 }
+
+// Redraw at the new width when the chart's box changes size
+redrawOnResize(chart, () => current && renderDataQuality(chart, current.data, current.qualityType));
 
 // Initialize the page
 populateYearDropdown();
@@ -211,4 +156,3 @@ document.getElementById("update-button").addEventListener("click", () => {
   const qualityType = document.getElementById("quality-type").value;
   fetchDataAndRender(year, qualityType);
 });
-

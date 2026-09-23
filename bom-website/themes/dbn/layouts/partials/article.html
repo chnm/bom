@@ -1,0 +1,34 @@
+{{- /* Long-form post. Called with dict "page" (the page), "back" (section URL), "label" (link text). */ -}}
+{{- $p := .page -}}
+<article class="article">
+  <a href="{{ .back }}" class="eyebrow back-link">&larr; Back to {{ .label }}</a>
+
+  <div class="article-meta">
+    <p class="meta">
+      {{ $p.Params.date | dateFormat "January 2, 2006" }}
+      {{ range $p.Params.categories }}&middot; {{ . }}{{ end }}
+    </p>
+  </div>
+
+  <h2 class="article-title">{{ $p.Title }}</h2>
+
+  <div class="article-byline">
+    <p>
+      <span class="muted">By</span>
+      {{ range $key, $value := $p.Params.author }}
+        <strong>{{ $value }}</strong>{{ if ne $key (sub (len $p.Params.author) 1) }} &amp; {{ end }}
+      {{ end }}
+    </p>
+    {{ with $p.Params.tags }}
+    <div class="tag-list">
+      {{ range . }}
+        <a href="/tags/{{ . }}" class="tag">{{ . }}</a>
+      {{ end }}
+    </div>
+    {{ end }}
+  </div>
+
+  {{- partial "coins.html" $p -}}
+
+  <div class="prose prose-lg">{{ $p.Content }}</div>
+</article>

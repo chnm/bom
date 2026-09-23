@@ -1,44 +1,42 @@
 {{ define "main" }}
-<div class="relative px-6 py-12 bg-white mx-auto w-full max-w-screen-xl">
-  <div class="mx-auto" x-data="causeDetailData">
+<div class="detail-page">
+  <div x-data="causeDetailData">
     <!-- Back link -->
-    <a href="/database/" class="text-sm text-gray-500 hover:text-gray-700">&larr; Back to database</a>
+    <a href="/database/" class="detail-back">&larr; Back to database</a>
 
     <!-- Loading state -->
-    <div x-show="loading" class="text-center py-16">
-      <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-3"></div>
-      <p class="text-gray-500">Loading cause data...</p>
+    <div x-show="loading" class="detail-status">
+      <div class="spinner"></div>
+      <p>Loading cause data...</p>
     </div>
 
     <!-- Error state -->
-    <div x-show="error && !loading" class="text-center py-16">
-      <p class="text-red-600" x-text="error"></p>
+    <div x-show="error && !loading" class="detail-status">
+      <p class="is-error" x-text="error"></p>
     </div>
 
     <!-- Header (always visible once initialized) -->
     <div x-show="initialized" x-cloak>
-      <h2 class="text-4xl font-medium mt-4 mb-1" x-text="causeName"></h2>
-      <div class="flex flex-wrap items-center gap-3 text-sm text-gray-500 mb-2">
+      <h2 class="detail-title" x-text="causeName"></h2>
+      <div class="detail-meta is-tight">
         <span x-show="originalName && originalName !== causeName">
-          Original transcription: <span class="font-mono" x-text="originalName"></span>
+          Original transcription: <span class="transcription" x-text="originalName"></span>
         </span>
       </div>
-      <p x-show="definition" class="text-gray-900 text-sm mb-2">
+      <p x-show="definition" class="detail-definition">
         <strong>Definition:</strong> <span x-text="definition"></span>
-        <a href="/dictionary/" class="text-dbn-blue-700 hover:text-dbn-blue-900 hover:underline ml-1 text-xs">See full dictionary &rarr;</a>
+        <a href="/dictionary/" class="detail-link">See full dictionary &rarr;</a>
       </p>
 
       <!-- Bill type toggle -->
-      <div class="flex items-center gap-2 mb-6">
-        <span class="text-sm text-gray-600">Bill type:</span>
+      <div class="detail-toggle">
+        <span>Bill type:</span>
         <button @click="setBillType('weekly')"
-                class="px-3 py-1 text-sm rounded"
-                :class="billType === 'weekly' ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'">
+                :aria-pressed="billType === 'weekly'">
           Weekly
         </button>
         <button @click="setBillType('general')"
-                class="px-3 py-1 text-sm rounded"
-                :class="billType === 'general' ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'">
+                :aria-pressed="billType === 'general'">
           General (Annual)
         </button>
       </div>
@@ -47,48 +45,48 @@
     <!-- Data content -->
     <div x-show="!loading && !error" x-cloak>
       <!-- Summary cards -->
-      <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
-        <div class="border border-gray-200 rounded-lg p-4">
-          <div class="text-xs text-gray-500 uppercase tracking-wide">Total Deaths</div>
-          <div class="text-2xl font-mono font-semibold mt-1" x-text="totalCount.toLocaleString()"></div>
+      <div class="stat-grid is-summary">
+        <div class="stat-card">
+          <div class="stat-label">Total Deaths</div>
+          <div class="stat-value" x-text="totalCount.toLocaleString()"></div>
         </div>
-        <div class="border border-gray-200 rounded-lg p-4">
-          <div class="text-xs text-gray-500 uppercase tracking-wide">Years of Data</div>
-          <div class="text-2xl font-mono font-semibold mt-1" x-text="yearData.length"></div>
+        <div class="stat-card">
+          <div class="stat-label">Years of Data</div>
+          <div class="stat-value" x-text="yearData.length"></div>
         </div>
-        <div class="border border-gray-200 rounded-lg p-4">
-          <div class="text-xs text-gray-500 uppercase tracking-wide">Bill Type</div>
-          <div class="text-2xl font-semibold mt-1 capitalize" x-text="billType"></div>
+        <div class="stat-card">
+          <div class="stat-label">Bill Type</div>
+          <div class="stat-value is-text" x-text="billType"></div>
         </div>
       </div>
 
       <!-- Chart -->
-      <div class="border border-gray-200 rounded-lg p-6 mb-6">
-        <h3 class="text-lg font-semibold mb-2">Deaths by Year</h3>
+      <div class="chart-panel">
+        <h3>Deaths by Year</h3>
         <div id="causeChart"></div>
-        <div x-show="yearData.length === 0" class="text-gray-400 text-sm py-4">No data available for this cause and bill type.</div>
+        <div x-show="yearData.length === 0" class="empty">No data available for this cause and bill type.</div>
       </div>
 
       <!-- Year-by-year table -->
-      <div class="border border-gray-200 rounded-lg overflow-hidden">
-        <div class="px-4 py-3 border-b border-gray-200 bg-gray-50">
-          <h3 class="font-semibold">Year-by-Year Breakdown</h3>
+      <div class="table-panel">
+        <div class="table-panel-header">
+          <h3>Year-by-Year Breakdown</h3>
         </div>
-        <div class="overflow-y-auto" style="max-height: 500px;">
-          <table class="w-full text-sm">
-            <thead class="sticky top-0 bg-white">
-              <tr class="border-b text-gray-600">
-                <th class="px-4 py-2 text-left font-medium">Year</th>
-                <th class="px-4 py-2 text-right font-medium">Count</th>
-                <th class="px-4 py-2 text-right font-medium">Weeks</th>
+        <div class="table-scroll">
+          <table class="detail-table is-hoverable">
+            <thead>
+              <tr>
+                <th>Year</th>
+                <th class="num">Count</th>
+                <th class="num">Weeks</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-gray-100">
+            <tbody>
               <template x-for="y in yearData" :key="y.year">
-                <tr class="hover:bg-gray-50">
-                  <td class="px-4 py-1.5 font-mono" x-text="y.year"></td>
-                  <td class="px-4 py-1.5 text-right font-mono" x-text="y.total.toLocaleString()"></td>
-                  <td class="px-4 py-1.5 text-right font-mono text-gray-500" x-text="y.weeks"></td>
+                <tr>
+                  <td class="year" x-text="y.year"></td>
+                  <td class="num" x-text="y.total.toLocaleString()"></td>
+                  <td class="num weeks" x-text="y.weeks"></td>
                 </tr>
               </template>
             </tbody>

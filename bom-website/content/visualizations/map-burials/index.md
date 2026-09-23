@@ -23,32 +23,32 @@ category: "geographic-mapping"
 
 <div id="row">
     <h3>Mapping Burials and Plague Deaths</h3>
-    <div class="flex flex-wrap items-center space-x-4 mb-6">
-          <div class="flex flex-col space-y-2">
-            <label class="block text-gray-700 text-base font-bold" for="start-year">
+    <div class="viz-controls is-wrapping">
+          <div class="viz-field is-spaced">
+            <label class="viz-label is-large" for="start-year">
               Start Year:
             </label>
-            <select class="shadow appearance-none border rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="start-year"></select>
+            <select class="viz-select" id="start-year"></select>
           </div>
-          <div class="flex flex-col space-y-2">
-            <label class="block text-gray-700 text-base font-bold" for="end-year">
+          <div class="viz-field is-spaced">
+            <label class="viz-label is-large" for="end-year">
               End Year:
             </label>
-            <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="end-year"></select>
+            <select class="viz-select" id="end-year"></select>
           </div>
-          <div class="flex flex-col space-y-2">
-            <label class="block text-gray-700 text-base font-bold" for="count-type">
+          <div class="viz-field is-spaced">
+            <label class="viz-label is-large" for="count-type">
               Count Type:
             </label>
-            <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="count-type"></select>
+            <select class="viz-select" id="count-type"></select>
           </div>
-          <div class="flex flex-col space-y-2 ml-auto">
-            <label class="block text-gray-700 text-base font-bold invisible">
+          <div class="viz-field is-spaced">
+            <label class="viz-label is-large" aria-hidden="true">
               Actions
             </label>
-            <div class="flex space-x-2">
-              <button id="update-button" type="button" class="rounded-l-lg border border-gray-200 bg-white text-base font-medium px-4 py-2 text-gray-900 hover:bg-dbn-blue hover:text-black focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">Update</button>
-              <button id="reset-button" type="button" class="rounded-r-md border border-gray-200 bg-white text-base font-medium px-4 py-2 text-gray-900 hover:bg-dbn-blue hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">Reset</button>
+            <div class="viz-actions is-pair">
+              <button id="update-button" type="button" class="viz-button is-large">Update</button>
+              <button id="reset-button" type="button" class="viz-button is-large">Reset</button>
             </div>
           </div>
     </div>

@@ -6,14 +6,13 @@
 {{ $upper_limit := (sub $paginator.TotalPages $adjacent_links) }}
 
 {{ if gt $paginator.TotalPages 1 }}
-<nav class="pagination max-w-2xl mx-auto p-9" role="navigation" aria-label="Pagination">
-  <ul class="inline-flex -space-x-px">
+<nav class="pagination" aria-label="Pagination">
+  <ul>
     
     <!-- First page -->
     {{ if ne $paginator.PageNumber 1 }}
     <li>
       <a href="{{ $paginator.First.URL }}" 
-         class="bg-white border border-dbn-yellow-300 text-dbn-green-600 hover:bg-dbn-yellow-100 hover:text-dbn-green-700 ml-0 rounded-l-lg leading-tight py-2 px-3 transition-colors"
          aria-label="Go to first page">
         ««
       </a>
@@ -24,7 +23,6 @@
     {{ if $paginator.HasPrev }}
     <li>
       <a href="{{ $paginator.Prev.URL }}" 
-         class="bg-white border border-dbn-yellow-300 text-dbn-green-600 hover:bg-dbn-yellow-100 hover:text-dbn-green-700 leading-tight py-2 px-3 transition-colors"
          aria-label="Go to previous page">
         «
       </a>
@@ -56,12 +54,11 @@
       {{ if eq ($.Scratch.Get "page_number_flag") true }}
         <li>
           {{ if eq . $paginator }}
-            <span class="bg-dbn-yellow-100 border border-dbn-yellow-400 text-dbn-green-700 leading-tight py-2 px-3 font-medium" aria-current="page">
+            <span aria-current="page">
               {{ .PageNumber }}
             </span>
           {{ else }}
             <a href="{{ .URL }}" 
-               class="bg-white border border-dbn-yellow-300 text-dbn-green-600 hover:bg-dbn-yellow-100 hover:text-dbn-green-700 leading-tight py-2 px-3 transition-colors"
                aria-label="Go to page {{ .PageNumber }}">
               {{ .PageNumber }}
             </a>
@@ -74,7 +71,6 @@
     {{ if $paginator.HasNext }}
     <li>
       <a href="{{ $paginator.Next.URL }}" 
-         class="bg-white border border-dbn-yellow-300 text-dbn-green-600 hover:bg-dbn-yellow-100 hover:text-dbn-green-700 leading-tight py-2 px-3 transition-colors"
          aria-label="Go to next page">
         »
       </a>
@@ -85,7 +81,6 @@
     {{ if ne $paginator.PageNumber $paginator.TotalPages }}
     <li>
       <a href="{{ $paginator.Last.URL }}" 
-         class="bg-white border border-dbn-yellow-300 text-dbn-green-600 hover:bg-dbn-yellow-100 hover:text-dbn-green-700 rounded-r-lg leading-tight py-2 px-3 transition-colors"
          aria-label="Go to last page">
         »»
       </a>

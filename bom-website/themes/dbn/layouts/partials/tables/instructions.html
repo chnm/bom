@@ -1,52 +1,48 @@
 <instructions
   x-show="instructionsOpen"
-  class="fixed inset-0 z-50 overflow-y-auto"
+  class="db-modal"
   aria-labelledby="instructions-title"
   role="dialog"
   aria-modal="true"
 >
   <div
-    class="flex items-end justify-center min-h-screen px-4 text-center md:items-center sm:block sm:p-0"
+    class="db-modal-center"
   >
     <div
       x-cloak
       @click="instructionsOpen = false"
       x-show="instructionsOpen"
-      x-transition:enter="transition ease-out duration-300 transform"
-      x-transition:enter-start="opacity-0"
-      x-transition:enter-end="opacity-100"
-      x-transition:leave="transition ease-in duration-200 transform"
-      x-transition:leave-start="opacity-100"
-      x-transition:leave-end="opacity-0"
-      class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-40"
+      x-transition:enter="t-enter"
+      x-transition:enter-start="t-hidden"
+      x-transition:enter-end="t-shown"
+      x-transition:leave="t-leave"
+      x-transition:leave-start="t-shown"
+      x-transition:leave-end="t-hidden"
+      class="db-modal-backdrop"
       aria-hidden="true"
     ></div>
     <div
       x-cloak
       x-show="instructionsOpen"
-      x-transition:enter="transition ease-out duration-300 transform"
-      x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-      x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
-      x-transition:leave="transition ease-in duration-200 transform"
-      x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
-      x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-      class="inline-block w-full max-w-xl p-8 my-20 overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl 2xl:max-w-2xl"
+      x-transition:enter="t-enter"
+      x-transition:enter-start="t-dialog-hidden"
+      x-transition:enter-end="t-shown"
+      x-transition:leave="t-leave"
+      x-transition:leave-start="t-shown"
+      x-transition:leave-end="t-dialog-hidden"
+      class="db-modal-dialog"
     >
-      <div class="flex items-center justify-between space-x-4">
-        <h3
-          class="text-lg font-medium leading-6 text-gray-900"
-          id="instructions-title"
-        >
+      <div class="db-modal-head">
+        <h3 id="instructions-title">
           How to use this table
         </h3>
         <button
           @click="instructionsOpen = false"
           aria-label="Close"
-          class="text-gray-600 focus:outline-none hover:text-gray-700"
+          class="db-modal-close"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="w-6 h-6"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -60,17 +56,17 @@
           </svg>
         </button>
       </div>
-      <p class="mt-2 text-base text-gray-800">
+      <p>
         Use the main tabs to switch between <strong>Weekly Data</strong> (detailed week-by-week records) and <strong>Annual Data</strong> (yearly summaries). Each main tab has secondary tabs to view data organized <strong>By Parish</strong>, <strong>By Cause of Death</strong>, or <strong>By Christening</strong>.
       </p>
-      <p class="mt-2 text-base text-gray-800">
+      <p>
         Click the <strong>Filters</strong> button to refine your data by parishes, years, and count types. You can search parishes by typing in the search box, and select multiple options from each filter category.
       </p>
-      <p class="mt-2 text-base text-gray-800">
+      <p>
         You can click on an individual row to view additional information.
       </p>
-      <p class="mt-2 text-base text-gray-800">
-        When data is missing from the original records, empty count values are displayed as <span class="px-2 py-1 bg-amber-100 text-amber-800 rounded font-mono">-</span> to indicate unavailable data. Similarly, records marked as missing or illegible in our dataset will show <span class="px-2 py-0.5 bg-amber-100 text-amber-800 text-xs rounded-full">missing data</span> or <span class="px-2 py-0.5 bg-amber-100 text-amber-800 text-xs rounded-full">illegible data</span> labels in the detailed view.
+      <p>
+        When data is missing from the original records, empty count values are displayed as <span class="sample-empty">-</span> to indicate unavailable data. Similarly, records marked as missing or illegible in our dataset will show <span class="sample-flag">missing data</span> or <span class="sample-flag">illegible data</span> labels in the detailed view.
       </p>
     </div>
   </div>

@@ -14,20 +14,16 @@ The deployment of the site is handled by Ansible notebooks and can only be deplo
 
 ## Theme updates
 
-The theme is custom-designed using TailwindCSS. To get started with developing the theme, you'll need to install the necessary dependencies. **Navigate to `themes/dbn/` before running these commands**.
+The theme is styled with plain CSS; there is no build step. The stylesheets live in `themes/dbn/assets/css/` and Hugo concatenates them (in the order listed in `layouts/partials/head.html`) into a single `site.css`, minified and fingerprinted in production:
 
-```
-npm install -y
-```
+- `base.css`: design tokens (colors, fonts, spacing) as custom properties, a small reset, element defaults, and a few utilities
+- `prose.css`: typography for Markdown content (`.prose`, `.prose-lg`)
+- `layout.css`: header, navigation, home hero, footer
+- `components.css`: buttons, tags, panels, pagination, shortcodes
+- `pages.css`: page-specific layouts (home, articles, section lists, authors, visualizations index)
+- `database.css`: the database explorer
+- `detail.css`: parish and cause detail pages, and controls on visualization pages
 
-Then, anytime TailwindCSS components are added to a layout or content file, you can re-generate the side-wide CSS using the script in `package.js`. Note, again, you need to be in `themes/dbn` for this to work:
+Change colors and fonts through the tokens at the top of `base.css`.
 
-```
-npm run build-tw
-```
-
-or 
-
-```
-make tailwind
-```
+Note: Hugo's dev server does not notice a newly created stylesheet in `assets/css/`; restart `hugo serve` after adding one.

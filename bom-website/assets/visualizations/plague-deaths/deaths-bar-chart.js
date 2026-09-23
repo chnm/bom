@@ -1,183 +1,99 @@
 import * as d3 from "d3";
 import * as Plot from "@observablehq/plot";
-import Visualization from "../common/visualization";
+import { chartStyle as style, textWidth } from "../common/responsive";
 
-export default class DeathsChart extends Visualization {
-  constructor(id, data, dim) {
-    const margin = {
-      top: 40,
-      right: 40,
-      bottom: 60,
-      left: 10,
-    };
-    super(id, data, dim, margin);
-    this.dim = dim;
-  }
+const ROW = 16; // height of one cause row
+const MIN_CELL = 4.5; // narrowest a year column may get before the grid scrolls sideways
+const MARGIN_Y = 36; // room for the year axes above and below
+const MAX_LABEL = 25; // longer cause names are cut short; the full name shows on hover
 
-  // Draw the plot
-  render() {
-    const aggregatedData = Array.from(
-      d3.rollup(
-        this.data.causes,
-        (v) => d3.sum(v, (d) => d.count), // Sum the count for each (year, death) combination
-        (d) => d.year,
-        (d) => d.name,
-      ),
-      ([year, deaths]) =>
-        Array.from(deaths, ([name, count]) => ({ year, name, count })),
-    ).flat();
+const truncate = (s) => (s.length > MAX_LABEL ? s.slice(0, MAX_LABEL) + "…" : s);
 
-    const colorThreshold = d3
-      .scaleThreshold()
-      .domain([5000])
-      .range(["black", "white"]);
+// Sum the counts for each (year, cause) pair.
+export function aggregate(causes) {
+  return Array.from(
+    d3.rollup(causes, (v) => d3.sum(v, (d) => d.count), (d) => d.year, (d) => d.name),
+    ([year, deaths]) => Array.from(deaths, ([name, count]) => ({ year, name, count })),
+  ).flat();
+}
 
-    // Calculate tick values for every 5 years
-    const minYear = d3.min(aggregatedData, (d) => d.year);
-    const maxYear = d3.max(aggregatedData, (d) => d.year);
-    const startYear = Math.floor(minYear / 5) * 5;
-    const yearTicks = d3.range(startYear, maxYear + 1, 5);
-    console.log("Year ticks:", yearTicks);
+// Draws the heatmap into `container`: a fixed column of cause names beside a
+// grid of yearly cells that scrolls sideways when narrow.
+export default function renderDeaths(container, data) {
+  const causes = d3.sort(new Set(data.map((d) => d.name)));
+  // Every year in the span, so years with no bills show as gaps rather than vanish
+  const years = d3.range(d3.min(data, (d) => d.year), d3.max(data, (d) => d.year) + 1);
 
-    const plot = Plot.plot({
-      padding: 0,
-      width: this.dim.width,
-      height: this.dim.height,
-      marginLeft: 260,
-      marginTop: 60,
-      marginBottom: 80,
-      marginRight: 20,
-      grid: true,
-      style: {
-        fontSize: "16px", // Increase base font size
-        ".axis text": {
-          fontSize: "18px", // Larger axis text
-        },
-        ".axis-label": {
-          fontSize: "22px", // Even larger axis labels
-          fontWeight: "bold",
-        },
-        ".tick text": {
-          fontSize: "16px", // Larger tick text
-        },
-        ".plot-d-tip": {
-          fontSize: "16px",
-          background: "rgba(0, 0, 0, 0.8)",
-          color: "white",
-          padding: "10px",
-          borderRadius: "5px",
-          textAlign: "left",
-          lineHeight: "1.4",
-        },
-      },
-      x: {
-        axis: "top",
-        label: "Year",
-        labelAnchor: "right",
-        labelOffset: 80,
-        tickFormat: d3.format("d"), // remove commas
-        tickSize: 8,
-        tickPadding: 12,
-        ticks: yearTicks,
-        tickRotate: 90,
-      },
-      y: {
-        label: null, // Remove y-axis label
-        tickSize: 8,
-        tickPadding: 12,
-      },
-      color: {
-        type: "log", // Use log scale for the wide range of values
-        scheme: "Reds",
-      },
-      marks: [
-        Plot.cell(aggregatedData, {
-          x: "year",
-          y: "name",
-          fill: "count",
-          stroke: "#444",
-          strokeOpacity: 0,
-          strokeWidth: 1,
-        }),
-        Plot.tip(
-          aggregatedData,
-          Plot.pointer({
-            x: "year",
-            y: "name",
-            title: (d) =>
-              `Year: ${d.year}\nCause: ${d.name}\nDeaths: ${d.count.toLocaleString()}`,
-          }),
-        ),
-        Plot.axisX({
-          // Add an additional x-axis at the bottom
-          labelAnchor: "right",
-          labelOffset: 80,
-          tickFormat: d3.format("d"),
-          tickSize: 8,
-          tickPadding: 12,
-          ticks: yearTicks,
-          anchor: "bottom",
-          tickRotate: 90,
-        }),
-      ],
-    });
+  const labelsW = textWidth(causes.map(truncate)) + 14;
+  const frameW = container.clientWidth;
+  const gridW = Math.max(frameW - labelsW, years.length * MIN_CELL + 16);
+  const height = causes.length * ROW + MARGIN_Y * 2;
 
-    d3.select(".loading_chart").remove();
-    this.svg.node().append(plot);
+  // A tick every 5 years, or every 10 when the columns are too narrow for that
+  const step = (gridW / years.length) * 5 < 40 ? 10 : 5;
+  const yearAxis = {
+    ticks: years.filter((y) => y % step === 0),
+    tickFormat: "d",
+    tickSize: 4,
+    tickPadding: 3,
+    label: "Year",
+    labelAnchor: "left",
+  };
+  const y = { domain: causes, label: null };
 
-    // Set cursor to pointer on cells and handle label truncation
-    setTimeout(() => {
-      const cells = d3.selectAll("rect.plot-cell");
-      cells.style("cursor", "pointer");
+  const labels = Plot.plot({
+    width: labelsW,
+    height,
+    marginTop: MARGIN_Y,
+    marginBottom: MARGIN_Y,
+    marginLeft: labelsW,
+    marginRight: 0,
+    style,
+    y,
+    marks: [Plot.axisY({ tickSize: 0, tickPadding: 6, tickFormat: truncate, title: (d) => d })],
+  });
 
-      // Create tooltip div for labels
-      let labelTooltip = d3.select("body").select(".label-tooltip");
-      if (labelTooltip.empty()) {
-        labelTooltip = d3.select("body").append("div")
-          .attr("class", "label-tooltip")
-          .style("position", "absolute")
-          .style("background", "rgba(0, 0, 0, 0.9)")
-          .style("color", "white")
-          .style("padding", "8px 12px")
-          .style("border-radius", "4px")
-          .style("font-size", "14px")
-          .style("pointer-events", "none")
-          .style("opacity", 0)
-          .style("z-index", 1000)
-          .style("max-width", "300px")
-          .style("word-wrap", "break-word");
-      }
+  const grid = Plot.plot({
+    width: gridW,
+    height,
+    marginTop: MARGIN_Y,
+    marginBottom: MARGIN_Y,
+    marginLeft: 0,
+    marginRight: 16,
+    padding: 0,
+    grid: true,
+    style,
+    x: { type: "band", domain: years, axis: null },
+    y: { ...y, axis: null },
+    color: { type: "log", scheme: "Reds" },
+    marks: [
+      Plot.axisX({ ...yearAxis, anchor: "top" }),
+      Plot.axisX({ ...yearAxis, anchor: "bottom" }),
+      Plot.cell(data, {
+        x: "year",
+        y: "name",
+        fill: "count",
+        tip: true,
+        title: (d) => `Year: ${d.year}\nCause: ${d.name}\nDeaths: ${d.count.toLocaleString()}`,
+      }),
+    ],
+  });
 
-      // Truncate y-axis labels and add custom tooltips
-      const maxLabelLength = 25; // Maximum characters before truncation
-      d3.selectAll('g[aria-label="y-axis tick label"] text').each(function() {
-        const textElement = d3.select(this);
-        const fullText = textElement.text();
+  const labelsCol = document.createElement("div");
+  labelsCol.className = "chart-labels";
+  labelsCol.append(labels);
 
-        // Truncate if too long
-        if (fullText.length > maxLabelLength) {
-          textElement.text(fullText.substring(0, maxLabelLength) + "...");
+  const scroller = document.createElement("div");
+  scroller.className = "chart-scroll";
+  scroller.tabIndex = 0; // lets keyboard users scroll the grid
+  scroller.setAttribute("role", "region");
+  scroller.setAttribute("aria-label", "Deaths by cause and year; scroll sideways for more years");
+  scroller.append(grid);
 
-          // Add hover events for custom tooltip
-          textElement
-            .style("cursor", "help")
-            .on("mouseover", function(event) {
-              labelTooltip
-                .html(fullText)
-                .style("opacity", 1)
-                .style("left", (event.pageX + 10) + "px")
-                .style("top", (event.pageY - 10) + "px");
-            })
-            .on("mousemove", function(event) {
-              labelTooltip
-                .style("left", (event.pageX + 10) + "px")
-                .style("top", (event.pageY - 10) + "px");
-            })
-            .on("mouseout", function() {
-              labelTooltip.style("opacity", 0);
-            });
-        }
-      });
-    }, 100);
-  }
+  const body = document.createElement("div");
+  body.className = "chart-body";
+  body.append(labelsCol, scroller);
+
+  container.replaceChildren(body);
+  container.classList.toggle("is-scrollable", gridW > frameW - labelsW);
 }

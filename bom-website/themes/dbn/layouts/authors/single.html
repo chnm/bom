@@ -1,24 +1,26 @@
 {{ define "main" }}
-<main class="container mx-auto px-4 py-8">
-  <div class="flex flex-col items-center">
-    {{ $headshot := .Params.headshot | default "/images/headshot.png" }}
-    <img src="{{ $headshot }}" alt="{{ .Params.title }}" class="w-32 h-32 rounded-full mb-4">
-    <h1 class="text-4xl font-bold mb-2">{{ .Params.name }}</h1>
-    <p class="text-lg text-gray-600 mb-8">{{ .Params.bio }}</p>
-  </div>
+<div class="wrap authors">
+  <header class="author-header">
+    <img src="{{ .Params.headshot | default "/images/headshot.png" }}" alt="{{ .Params.title }}" class="avatar avatar-lg">
+    <h1>{{ .Params.name }}</h1>
+    <p>{{ .Params.bio }}</p>
+  </header>
 
-  <div class="max-w-3xl mx-auto prose">
-    <div class="space-y-8">
-      {{ range where .Site.RegularPages "Params.author" "intersect" (slice .Params.name) }}
-      <article>
-        <h3 class="text-xl font-semibold"><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
-        <p class="text-gray-600">{{ .Date.Format "2006-01-02" }}</p>
-        <p class="mt-2">{{ if eq .Section "visualizations" }}{{ .Params.abstract }}{{ else }}{{ .Summary | plainify | truncate 300 }}<p><a href="{{ .Permalink }}">Read more...</a></p>{{ end }}</p>
-      </article>
+  <div class="prose author-posts">
+    {{ range where .Site.RegularPages "Params.author" "intersect" (slice .Params.name) }}
+    <article>
+      <h3><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
+      <p class="author-post-date">{{ .Date.Format "2006-01-02" }}</p>
+      {{ if eq .Section "visualizations" }}
+      <p>{{ .Params.abstract }}</p>
       {{ else }}
-      <p>No posts for this author.</p>
+      <p>{{ .Summary | plainify | truncate 300 }}</p>
+      <p><a href="{{ .Permalink }}">Read more...</a></p>
       {{ end }}
-    </div>
+    </article>
+    {{ else }}
+    <p>No posts for this author.</p>
+    {{ end }}
   </div>
-</main>
+</div>
 {{ end }}

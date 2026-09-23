@@ -1,5 +1,9 @@
 import * as d3 from "d3";
-import HistogramChart from "./causes-histogram";
+import renderHistogram from "./causes-histogram";
+import { redrawOnResize } from "../common/responsive";
+
+const chart = document.getElementById("chart");
+let current = null; // data and cause on screen, kept for redraws on resize
 
 // Function to fetch the list of causes and populate the dropdown
 function populateCausesDropdown(billType = 'weekly') {
@@ -60,36 +64,26 @@ function fetchDataAndRender(year, cause, billType = 'weekly') {
 
   d3.json(url)
     .then((data) => {
-      d3.select("#chart").selectAll("*").remove();
-
-      if (data.length === 0) {
-        // Display a message if no data is available
-        d3.select("#chart")
-          .append("text")
-          .attr("x", 480) // Center the text horizontally
-          .attr("y", 300) // Center the text vertically
-          .attr("text-anchor", "middle")
-          .style("font-size", "24px")
-          .style("fill", "red")
-          .text("No data available for this year.");
+      d3.select(".loading_chart").remove();
+      current = data.length ? { data, cause } : null;
+      if (current) {
+        renderHistogram(chart, data, cause);
       } else {
-        const histogram = new HistogramChart("#chart", data, {
-          width: 960,
-          height: 500,
-        });
-        histogram.selectedCause = cause; // Set the selected cause
-        histogram.render();
+        chart.innerHTML = '<p class="viz-message">No data available for this year.</p>';
       }
 
       // Update the chart title
       d3.select("#chart-title").html(
-        `Cause of death <span class="underline">${cause}</span> for the year <span class="underline">${year}</span>`,
+        `Cause of death <u>${cause}</u> for the year <u>${year}</u>`,
       );
     })
     .catch((error) => {
       console.error("There was an error fetching the data.", error);
     });
 }
+
+// Redraw at the new width when the chart's box changes size
+redrawOnResize(chart, () => current && renderHistogram(chart, current.data, current.cause));
 
 // Initial population of the dropdowns
 populateCausesDropdown();

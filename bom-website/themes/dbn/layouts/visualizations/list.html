@@ -1,118 +1,76 @@
 {{ define "main" }}
-<main>
-<div class="min-h-screen pt-7 bg-white">
-    <!-- Header Section -->
-    <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="mb-8">
-        <h2 class="text-4xl font-medium pt-4">{{.Title}}</h2>
-        <div class="prose prose-lg text-gray-600 max-w-none">
-          {{.Content}}
-        </div>
-      </div>
+{{- $filters := slice
+  (dict "key" "all" "label" "All Visualizations")
+  (dict "key" "temporal" "label" "Temporal Analysis")
+  (dict "key" "geographic-mapping" "label" "Geographic Mapping")
+  (dict "key" "cause-analysis" "label" "Cause Analysis")
+  (dict "key" "project-data" "label" "Project Data")
+-}}
+<div class="viz-index">
+  <div class="wrap">
+    <header class="viz-header">
+      <h2 class="page-title">{{ .Title }}</h2>
+      <div class="prose prose-lg prose-wide">{{ .Content }}</div>
+    </header>
 
-      <!-- Filter Dashboard -->
-      <div class="mb-8">
-        <div class="flex flex-wrap justify-center gap-3 mb-6">
-          <button class="filter-btn active rounded border border-gray-200 bg-dbn-blue-500 text-sm font-medium px-4 py-2 text-black hover:bg-dbn-blue-500 hover:text-black focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700" data-filter="all">
-            All Visualizations
-          </button>
-          <button class="filter-btn rounded border border-gray-200 bg-white text-sm font-medium px-4 py-2 text-gray-900 hover:bg-dbn-blue-500 hover:text-black focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700" data-filter="temporal">
-            Temporal Analysis
-          </button>
-          <button class="filter-btn rounded border border-gray-200 bg-white text-sm font-medium px-4 py-2 text-gray-900 hover:bg-dbn-blue-500 hover:text-black focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700" data-filter="geographic-mapping">
-            Geographic Mapping
-          </button>
-          <button class="filter-btn rounded border border-gray-200 bg-white text-sm font-medium px-4 py-2 text-gray-900 hover:bg-dbn-blue-500 hover:text-black focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700" data-filter="cause-analysis">
-            Cause Analysis
-          </button>
-          <button class="filter-btn rounded border border-gray-200 bg-white text-sm font-medium px-4 py-2 text-gray-900 hover:bg-dbn-blue-500 hover:text-black focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700" data-filter="project-data">
-            Project Data
-          </button>
-        </div>
-      </div>
+    <div class="viz-filters">
+      {{ range $filters }}
+      <button class="filter-btn" data-filter="{{ .key }}" aria-pressed="{{ eq .key "all" }}">{{ .label }}</button>
+      {{ end }}
+    </div>
 
-      <!-- Visualizations Grid -->
-      <div id="viz-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-16">
-        {{ range .Pages.ByTitle }}
-        <div class="viz-card bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden group transform hover:-translate-y-1" 
-             data-category="{{ .Params.category }}">
-          <div class="overflow-hidden">
-            <a href="{{.Permalink}}" class="block relative h-64">
-              <img class="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500" 
-                   src="/images/viz/{{.Params.thumbnail}}" 
-                   alt="{{.Params.thumbdesc}}" 
-                   title="{{.Params.thumbdesc}}" />
-              <div class="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+    <div id="viz-grid" class="viz-grid">
+      {{ range .Pages.ByTitle }}
+      <div class="viz-card" data-category="{{ .Params.category }}">
+        <a href="{{ .Permalink }}" class="viz-thumb">
+          <img src="/images/viz/{{ .Params.thumbnail }}" alt="{{ .Params.thumbdesc }}" title="{{ .Params.thumbdesc }}" />
+        </a>
+        <div class="viz-card-body">
+          <h3><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
+          <p class="viz-card-abstract">{{ .Params.abstract }}</p>
+          <div class="viz-card-meta">
+            <div>{{ .Params.date | dateFormat "Jan 2006" }}</div>
+            {{ with .Params.author }}
+            <div>{{ if reflect.IsSlice . }}{{ delimit . ", " " & " }}{{ else }}{{ . }}{{ end }}</div>
+            {{ end }}
+          </div>
+          <div class="viz-card-footer">
+            <a href="{{ .Permalink }}" class="viz-card-link">
+              Explore
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+              </svg>
             </a>
           </div>
-          <div class="p-6 flex flex-col flex-grow">
-            <h3 class="text-xl mb-3 leading-tight line-clamp-2">
-              <a href="{{.Permalink}}" class="text-black hover:text-dbn-blue-700transition-colors duration-200">{{.Title}}</a>
-            </h3>
-            <p class="text-gray-600 mb-4 text-sm leading-relaxed line-clamp-3 flex-grow">{{.Params.abstract}}</p>
-            <div class="mt-auto">
-              <div class="text-xs text-gray-500 mb-2">
-                <div>{{ .Params.date | dateFormat "Jan 2006" }}</div>
-              </div>
-              {{ if .Params.author }}
-              <div class="text-xs text-gray-500 mb-4">
-                {{ if reflect.IsSlice .Params.author }}
-                {{ delimit .Params.author ", " " & " }}
-                {{ else }}
-                {{ .Params.author }}
-                {{ end }}
-              </div>
-              {{ else }}
-              <div class="mb-4"></div>
-              {{ end }}
-              <div class="pt-2 border-t border-gray-100">
-                <a href="{{.Permalink}}" class="inline-flex items-center text-dbn-blue-700 font-medium text-sm hover:underline">
-                  Explore
-                  <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                  </svg>
-                </a>
-              </div>
-            </div>
-          </div>
         </div>
-        {{end}}
       </div>
+      {{ end }}
     </div>
+  </div>
 </div>
 
-<!-- Filter functionality -->
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    const vizCards = document.querySelectorAll('.viz-card');
-    
-    filterBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-            const filter = this.dataset.filter;
-            
-            // Update active button
-            filterBtns.forEach(b => {
-                b.classList.remove('active', 'bg-dbn-blue-500', 'text-black');
-                b.classList.add('bg-white', 'text-gray-900');
-            });
-            this.classList.add('active', 'bg-dbn-blue-500', 'text-black');
-            this.classList.remove('bg-white', 'text-gray-900');
-            
-            // Filter cards
-            vizCards.forEach(card => {
-                if (filter === 'all' || card.dataset.category === filter) {
-                    card.style.display = 'block';
-                    card.style.opacity = '0';
-                    setTimeout(() => card.style.opacity = '1', 50);
-                } else {
-                    card.style.opacity = '0';
-                    setTimeout(() => card.style.display = 'none', 300);
-                }
-            });
-        });
+document.addEventListener('DOMContentLoaded', function () {
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const vizCards = document.querySelectorAll('.viz-card');
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', function () {
+      const filter = this.dataset.filter;
+      filterBtns.forEach(b => b.setAttribute('aria-pressed', b === this));
+
+      vizCards.forEach(card => {
+        if (filter === 'all' || card.dataset.category === filter) {
+          card.style.display = 'block';
+          card.style.opacity = '0';
+          setTimeout(() => card.style.opacity = '1', 50);
+        } else {
+          card.style.opacity = '0';
+          setTimeout(() => card.style.display = 'none', 300);
+        }
+      });
     });
+  });
 });
 </script>
-</main>
 {{ end }}

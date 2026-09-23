@@ -1,0 +1,436 @@
+/* ==========================================================================
+   Page shell
+   ========================================================================== */
+
+#content {
+  flex-grow: 1;
+  background: var(--white);
+  color: var(--ink);
+}
+
+/* ==========================================================================
+   Site navigation
+   ========================================================================== */
+
+.site-nav {
+  font-family: var(--font-ui);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: var(--page-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  background: var(--green-900);
+}
+
+.site-brand {
+  width: 100%;
+  flex-grow: 1;
+}
+
+.site-brand img {
+  width: 11rem;
+  object-fit: scale-down;
+}
+
+#site-title {
+  font-family: var(--font-display);
+  display: inline-block;
+  margin-right: 1rem;
+  padding-block: 0.5rem;
+  white-space: nowrap;
+  color: var(--white);
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.625;
+}
+
+#site-title span {
+  color: var(--brand-blue);
+}
+
+.site-menus {
+  width: 100%;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+@media (min-width: 1024px) {
+  .site-brand {
+    display: flex;
+    align-items: center;
+    width: auto;
+  }
+
+  .site-menus {
+    width: auto;
+  }
+}
+
+.menu {
+  display: inline-block;
+  position: relative;
+}
+
+.menu-button {
+  display: inline-block;
+  margin-left: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  color: var(--white);
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.375;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+}
+
+.menu-button:hover {
+  opacity: 0.75;
+}
+
+.menu-button svg {
+  display: inline;
+  width: 1rem;
+  height: 1rem;
+  margin-left: 0.25rem;
+  vertical-align: middle;
+}
+
+.menu-panel {
+  position: absolute;
+  z-index: 50;
+  min-width: 200px;
+  margin-top: 0.5rem;
+  border-radius: var(--radius);
+  background: var(--white);
+  box-shadow: var(--shadow-lg);
+}
+
+.menu-panel a {
+  display: block;
+  padding: 0.5rem 1rem;
+  color: var(--green-800);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.menu-panel a:hover {
+  background: var(--gray-200);
+}
+
+.menu-panel i {
+  font-size: 0.75rem;
+}
+
+.menu-panel hr {
+  border-color: var(--gray-300);
+}
+
+.nav-toggle {
+  display: none;
+}
+
+/* Below 1152px (where the five menus stop fitting beside the brand) they
+   collapse behind a toggle and open as a stacked list */
+@media (max-width: 1151.98px) {
+  .site-brand {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    width: auto;
+    min-width: 0;
+    gap: 0.5rem;
+  }
+
+  .site-brand img {
+    width: 6rem;
+  }
+
+  #site-title {
+    margin-right: 0;
+    font-size: 1.25rem;
+  }
+
+  .nav-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid rgb(255 255 255 / 0.35);
+    border-radius: var(--radius);
+    color: var(--white);
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.025em;
+    text-transform: uppercase;
+  }
+
+  .nav-toggle svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .nav-toggle:focus-visible,
+  .menu-button:focus-visible {
+    outline: 2px solid var(--white);
+    outline-offset: 2px;
+  }
+
+  .site-menus {
+    display: none;
+    padding-bottom: 1rem;
+  }
+
+  .site-nav.is-open .site-menus {
+    display: block;
+  }
+
+  .menu {
+    display: block;
+  }
+
+  .menu-button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-left: 0;
+    padding: 0.875rem 0;
+    border-top: 1px solid rgb(255 255 255 / 0.15);
+    text-align: left;
+  }
+
+  .menu-button[aria-expanded="true"] svg {
+    rotate: 180deg;
+  }
+
+  .menu-panel {
+    position: static;
+    min-width: 0;
+    margin: 0 0 0.5rem;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .menu-panel a {
+    padding: 0.625rem 1rem;
+    color: var(--gray-200);
+    font-size: 1rem;
+  }
+
+  .menu-panel a:hover {
+    background: rgb(255 255 255 / 0.1);
+  }
+
+  .menu-panel hr {
+    margin-inline: 1rem;
+    border-color: rgb(255 255 255 / 0.15);
+  }
+}
+
+/* Phones: tighten the brand row so the toggle always fits; the title may wrap */
+@media (max-width: 479.98px) {
+  .site-nav {
+    padding: 0.375rem 1rem;
+  }
+
+  .site-brand img {
+    width: 4rem;
+  }
+
+  #site-title {
+    font-size: 1.0625rem;
+    line-height: 1.2;
+    white-space: normal;
+  }
+
+  .nav-toggle {
+    flex-shrink: 0;
+    gap: 0.25rem;
+    padding: 0.375rem 0.5rem;
+  }
+}
+
+/* ==========================================================================
+   Home hero
+   ========================================================================== */
+
+.hero {
+  background: var(--green-900);
+  color: var(--white);
+}
+
+.hero-grid {
+  display: grid;
+  gap: 3rem;
+  align-items: center;
+  padding-block: 4rem;
+}
+
+.hero h1 {
+  margin-bottom: 1.5rem;
+  font-size: 2.25rem;
+  line-height: 1.25;
+}
+
+.hero p {
+  margin-bottom: 2rem;
+  color: var(--gray-300);
+  line-height: 1.625;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.hero-image {
+  height: 18rem;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-2xl);
+}
+
+.hero-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  scale: 1.25;
+}
+
+@media (min-width: 1024px) {
+  .hero-grid {
+    grid-template-columns: 1fr 1fr;
+    padding-block: 6rem;
+  }
+
+  .hero h1 {
+    font-size: 3.75rem;
+    line-height: 1;
+  }
+
+  .hero-image {
+    height: 24rem;
+  }
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+
+.site-footer {
+  border-top: 4px solid var(--red-700);
+  background: var(--white);
+}
+
+.site-footer .wrap {
+  padding-block: 3rem;
+}
+
+.footer-top {
+  display: grid;
+  gap: 2.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.site-footer p {
+  font-size: 0.875rem;
+  line-height: 1.625;
+}
+
+.footer-about p {
+  margin-bottom: 1rem;
+}
+
+.footer-bottom p {
+  line-height: 1.25rem;
+}
+
+.site-footer .footer-name {
+  margin-bottom: 1rem;
+  color: inherit;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
+.site-footer h4 {
+  font-family: var(--font-ui);
+  margin-bottom: 0.75rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.site-footer ul {
+  font-family: var(--font-ui);
+  display: grid;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.site-footer ul a {
+  color: var(--ink);
+}
+
+.site-footer ul a:hover {
+  text-decoration: underline;
+}
+
+.footer-bottom {
+  display: grid;
+  gap: 1.5rem;
+  align-items: center;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--gray-200);
+}
+
+.footer-bottom a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--red-700);
+}
+
+.footer-bottom a:hover {
+  color: var(--red-700);
+}
+
+.footer-logos {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 2rem;
+}
+
+.footer-logos img {
+  height: 3rem;
+  width: auto;
+  object-fit: contain;
+}
+
+.footer-logos .logo-short {
+  height: 2.5rem;
+}
+
+@media (min-width: 1024px) {
+  .footer-top,
+  .footer-bottom {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  .footer-about {
+    grid-column: span 2;
+  }
+
+  .footer-bottom p {
+    grid-column: span 3;
+  }
+
+  .footer-logos {
+    grid-column: span 2;
+  }
+}
