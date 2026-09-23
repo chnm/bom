@@ -1,7 +1,9 @@
 import * as d3 from "d3";
 import * as Plot from "@observablehq/plot";
+import { chartStyle, redrawOnResize } from "../common/responsive";
 
 const DATA_URL = "/data/arithmetic-accuracy/data.json";
+// Data colors, shared with the custom properties in style.css
 const COLORS = {
   positive: "#c44e35",
   positiveLight: "#f2ddd5",
@@ -9,9 +11,8 @@ const COLORS = {
   negativeLight: "#d8ecee",
   exact: "#f7f1e6",
   missing: "#d9dde0",
-  ink: "#27231f",
-  muted: "#6d665e",
-  grid: "#ded8cf",
+  ink: "currentColor",
+  grid: "#e5e7eb",
 };
 
 const root = document.querySelector("#arithmetic-explorer");
@@ -37,7 +38,6 @@ const state = {
 };
 
 let dataset;
-let resizeTimer;
 
 function differenceLabel(value) {
   if (value === 0) return "Exact match";
@@ -181,7 +181,7 @@ function renderWeeklyOverview() {
     height: 470,
     marginLeft: 58,
     marginBottom: 52,
-    style: { fontSize: "12px", background: "transparent" },
+    style: chartStyle,
     x: {
       label: "Year",
       domain: [dataset.metadata.year_min, dataset.metadata.year_max + 1],
@@ -266,7 +266,7 @@ function renderWeeklyDetail() {
     height: 360,
     marginLeft: 72,
     marginBottom: 52,
-    style: { fontSize: "12px", background: "transparent" },
+    style: chartStyle,
     x: { domain: [1, 55], label: "Week number", ticks: 11 },
     y: {
       type: "symlog",
@@ -307,7 +307,7 @@ function renderWeeklyDetail() {
   tableBody.replaceChildren(...rows.map((row) => {
     const tr = document.createElement("tr");
     const dates = weekDates(row);
-    tr.innerHTML = `<td>${row.week_number}${dates ? ` <small>(${dates})</small>` : ""}</td><td>${d3.format(",")(row.subtotal_sum)}</td><td>${d3.format(",")(row.parish_sum)}</td><td class="${row.difference > 0 ? "positive-value" : row.difference < 0 ? "negative-value" : ""}">${d3.format("+,")(row.difference)}</td><td>${row.legible ? "Yes" : "No"}</td>${API_URL ? `<td>${row.mixed_copies ? "Yes" : "No"}</td>` : ""}`;
+    tr.innerHTML = `<td>${row.week_number}${dates ? ` <small>(${dates})</small>` : ""}</td><td>${d3.format(",")(row.subtotal_sum)}</td><td>${d3.format(",")(row.parish_sum)}</td><td class="${row.difference > 0 ? "positive-value" : row.difference < 0 ? "negative-value" : ""}">${row.difference === 0 ? "0" : d3.format("+,")(row.difference)}</td><td>${row.legible ? "Yes" : "No"}</td>${API_URL ? `<td>${row.mixed_copies ? "Yes" : "No"}</td>` : ""}`;
     return tr;
   }));
 }
@@ -339,9 +339,12 @@ yearSelect.addEventListener("change", () => {
   updateUrl();
 });
 
-window.addEventListener("resize", () => {
-  window.clearTimeout(resizeTimer);
-  resizeTimer = window.setTimeout(render, 180);
+// Redraw at the new width; only a width change triggers it, so phones
+// scrolling past their address bar don't redraw.
+redrawOnResize(root, () => {
+  if (!dataset) return;
+  renderWeeklyOverview();
+  renderWeeklyDetail();
 });
 
 function loadLive() {
