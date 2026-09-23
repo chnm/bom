@@ -169,8 +169,10 @@ function render(d) {
 
   let filteredData = filterData(data);
   console.log(filteredData);
-  d3.json("https://data.chnm.org/bom/shapefiles")
+  showLoading(true);
+  parishShapes()
     .then((parish_shp) => {
+      showLoading(false);
       let filtered_shp = {
         type: "FeatureCollection",
         features: parish_shp.features.filter(
@@ -413,5 +415,32 @@ function render(d) {
         return this._div;
       };
       legend.addTo(map);
+    })
+    .catch((error) => {
+      console.error("There was an error fetching the parish shapes.", error);
+      showLoading("Couldn't load the parish boundaries. Please try again.");
     });
+}
+
+// The parish boundaries don't change between updates, so fetch them once. The
+// API can take many seconds to answer when its cache is cold.
+let shapes;
+function parishShapes() {
+  shapes ??= d3.json("https://data.chnm.org/bom/shapefiles");
+  shapes.catch(() => (shapes = null)); // let Update retry
+  return shapes;
+}
+
+// Centered message over the map: true shows "Loading", a string shows that
+// text, false hides it.
+function showLoading(state) {
+  let el = document.getElementById("loading");
+  if (!state) return el?.remove();
+  if (!el) {
+    el = document.createElement("div");
+    el.id = "loading";
+    el.setAttribute("role", "status");
+    document.getElementById("map").append(el);
+  }
+  el.textContent = state === true ? "Loading parish boundaries…" : state;
 }
