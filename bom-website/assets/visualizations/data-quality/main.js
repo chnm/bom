@@ -50,6 +50,20 @@ function showMessage(text) {
   d3.select(chart).append("p").attr("class", "viz-message is-error").text(text);
 }
 
+// Busy years exceed one page, so keep requesting until the API says there's no more.
+// (The API caps cursor pages at 100 rows; offset pages honour the full limit.)
+async function fetchYear(year) {
+  const limit = 10000;
+  const rows = [];
+  for (let offset = 0; ; offset += limit) {
+    const url = `https://data.chnm.org/bom/${DATA_TYPE}?start-year=${year}&end-year=${year}&limit=${limit}&offset=${offset}`;
+    const response = await d3.json(url);
+    const page = response.data || response; // Handle different response formats
+    rows.push(...page);
+    if (!response.has_more || page.length === 0) return rows;
+  }
+}
+
 // Function to fetch data and render the calendar
 function fetchDataAndRender(year, qualityType = "missing") {
   if (!year) return;
@@ -59,11 +73,8 @@ function fetchDataAndRender(year, qualityType = "missing") {
   chart.innerHTML = "";
   d3.select(chart).append("div").attr("class", "loading_chart").text("Loading data quality information...");
 
-  const url = `https://data.chnm.org/bom/${DATA_TYPE}?start-year=${year}&end-year=${year}&limit=10000`;
-
-  d3.json(url)
-    .then((response) => {
-      const data = response.data || response; // Handle different response formats
+  fetchYear(year)
+    .then((data) => {
       d3.selectAll(".loading_chart").remove();
 
       if (!data || data.length === 0) {
