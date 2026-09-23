@@ -5,7 +5,6 @@ updated: 2025-06-24
 abstract: "Charting the completeness of our transcriptions"
 summary: "Dashboard visualization showing transcription progress with bar charts indicating total weeks versus transcribed weeks by year, updating regularly as new bills are added to the database."
 script: visualizations/counts/main.js
-styles: visualizations/counts/style.css
 layout: visualizations
 thumbnail: plaguechart.png
 thumbdesc: "A screenshot showing a bar chart of transcribed bills counts."

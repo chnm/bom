@@ -8,12 +8,18 @@ import { redrawOnResize } from "../common/responsive";
 export default function causeSparklines(url, field) {
   const chart = document.getElementById("facets");
   let draw = null; // redraws the chart on screen, kept for resizes
+  let loading = null; // the tidied data, fetched once and reused on Update/Reset
 
   function fetchDataAndRender(dataFormat) {
-    chart.innerHTML = '<p class="viz-message">Loading data…</p>';
-    d3.json(url)
-      .then((data) => {
-        const tidy = tidyFormat(data, field).sort((a, b) => a.death.localeCompare(b.death));
+    if (!loading) {
+      chart.innerHTML = '<p class="viz-message">Loading data…</p>';
+      loading = d3
+        .json(url)
+        .then((data) => tidyFormat(data, field).sort((a, b) => a.death.localeCompare(b.death)));
+      loading.catch(() => (loading = null)); // let a later click retry
+    }
+    loading
+      .then((tidy) => {
         const noPlague = document.getElementById("plague").checked;
         const rows = noPlague ? tidy.filter((d) => d.death != "plague") : tidy;
         draw = () => makeGraphs(dataFormat, noPlague, rows);

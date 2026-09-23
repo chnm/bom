@@ -30,19 +30,18 @@ function populateCausesDropdown(billType = 'weekly') {
     });
 }
 
-// Function to fetch available years and populate the year dropdown
-function populateYearsDropdown(billType = 'weekly') {
-  const url = `https://data.chnm.org/bom/causes?bill-type=${billType}&start-year=1636&end-year=1754&id=aged`;
+// Fill the year dropdown with the years that have data for `cause`, keeping the
+// chosen year when the new cause has it.
+function populateYearsDropdown(cause, billType = 'weekly') {
+  const url = `https://data.chnm.org/bom/causes?bill-type=${billType}&start-year=1636&end-year=1754&id=${encodeURIComponent(cause)}`;
 
   d3.json(url)
     .then((data) => {
       const yearDropdown = d3.select("#year");
+      const chosen = yearDropdown.property("value") || "1668";
       yearDropdown.selectAll("option").remove(); // Clear existing options
 
-      // Extract unique years and sort them
       const years = [...new Set(data.map(d => d.year))].sort((a, b) => a - b);
-
-      // Populate the dropdown with years
       years.forEach((year) => {
         yearDropdown
           .append("option")
@@ -50,8 +49,7 @@ function populateYearsDropdown(billType = 'weekly') {
           .text(year);
       });
 
-      // Set default value to "1668"
-      yearDropdown.property("value", "1668");
+      if (years.map(String).includes(chosen)) yearDropdown.property("value", chosen);
     })
     .catch((error) => {
       console.error("There was an error fetching the list of years.", error);
@@ -87,7 +85,8 @@ redrawOnResize(chart, () => current && renderHistogram(chart, current.data, curr
 
 // Initial population of the dropdowns
 populateCausesDropdown();
-populateYearsDropdown();
+populateYearsDropdown("aged");
+document.getElementById("cause").addEventListener("change", (e) => populateYearsDropdown(e.target.value));
 
 // Initial fetch and render
 fetchDataAndRender(1668, "aged");

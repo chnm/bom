@@ -72,14 +72,21 @@ function renderPage(format, count) {
         : format === "log10(x+1)"
           ? "Data has been transformed by log10(x+1)"
           : "Original data",
-    marks: (rows, facet) => [
+    marks: (rows, facet, peak = peakYear(rows)) => [
       format === "normalized"
-        ? Plot.barY(rows, Plot.normalizeY("extent", { ...bar, ...facet }))
+        ? Plot.barY(rows, { ...bar, ...facet, y: (d) => d.amount / peak })
         : format === "log10(x+1)"
           ? Plot.barY(rows, { ...bar, ...facet, y: (d) => Math.log10(d.amount + 1) })
           : Plot.barY(rows, { ...bar, ...facet }),
     ],
   });
+}
+
+// A parish's largest yearly total, summing the stacked counts. Dividing by it
+// puts the busiest year at 1 even when plague and burials are stacked.
+function peakYear(rows) {
+  const totals = d3.rollup(rows, (v) => d3.sum(v, (d) => d.amount), (d) => d.year);
+  return d3.max(totals.values()) || 1;
 }
 
 redrawOnResize(chart, () => renderPage(...current));
