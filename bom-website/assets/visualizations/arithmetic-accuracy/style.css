@@ -1,0 +1,216 @@
+/* Arithmetic accuracy explorer. Layout comes from .chart-frame and the
+   .viz-* controls in the theme; this file adds the explorer's own parts. */
+
+#arithmetic-explorer {
+  /* Data colors, shared with COLORS in main.js */
+  --positive: #c44e35;
+  --negative: #087e8b;
+  --exact: #f7f1e6;
+  --missing: #d9dde0;
+
+  font-variant-numeric: tabular-nums;
+}
+
+#arithmetic-explorer select:focus-visible,
+#arithmetic-explorer a:focus-visible,
+#arithmetic-explorer summary:focus-visible {
+  outline: 3px solid var(--blue-700);
+  outline-offset: 2px;
+}
+
+#arithmetic-explorer .is-hidden {
+  display: none;
+}
+
+.explorer-status {
+  margin: 0 0 1rem;
+  color: var(--muted);
+  font-family: var(--font-ui);
+  font-size: 0.875rem;
+}
+
+/* Stats bar: the shared .viz-stats, fitted to four or five figures */
+#weekly-summary {
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+}
+
+.viz-stat-note {
+  color: var(--muted);
+  font-size: 0.8125rem;
+  line-height: 1.35;
+}
+
+.chart-card {
+  margin-top: 2.5rem;
+}
+
+/* Title, then the legend beneath it */
+.chart-heading {
+  display: grid;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+#arithmetic-explorer .chart-heading h3 {
+  margin: 0;
+}
+
+.difference-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  color: var(--muted);
+  font-family: var(--font-ui);
+  font-size: 0.8125rem;
+}
+
+.difference-legend span {
+  display: inline-flex;
+  gap: 0.375rem;
+  align-items: center;
+}
+
+.legend-swatch {
+  width: 0.875rem;
+  height: 0.875rem;
+  border: 1px solid rgb(0 0 0 / 0.2);
+}
+
+.legend-swatch.negative { background: var(--negative); }
+.legend-swatch.positive { background: var(--positive); }
+.legend-swatch.exact { background: var(--exact); }
+.legend-swatch.missing { background: var(--missing); }
+
+/* Charts draw at the card's width, with a floor; below it they scroll sideways */
+.plot-container {
+  min-height: 12rem;
+  overflow-x: auto;
+}
+
+/* Table of the selected year */
+
+.data-table-disclosure {
+  margin-top: 1rem;
+  border-top: 1px solid var(--gray-200);
+  font-family: var(--font-ui);
+}
+
+.data-table-disclosure summary {
+  padding-block: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.table-scroll {
+  max-height: 28rem;
+  overflow: auto;
+}
+
+#arithmetic-explorer .table-scroll table {
+  width: 100%;
+  margin: 0;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+#arithmetic-explorer .table-scroll :is(th, td) {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--gray-200);
+  text-align: right;
+  white-space: nowrap;
+}
+
+#arithmetic-explorer .table-scroll :is(th, td):is(:first-child, :last-child) {
+  text-align: left;
+}
+
+.table-scroll thead {
+  position: sticky;
+  top: 0;
+  z-index: 1; /* keeps the header hint above the rows */
+  background: var(--white);
+}
+
+/* Column hint: a "?" that shows its explanation on hover or keyboard focus */
+.th-hint {
+  position: relative;
+  display: inline-flex;
+  gap: 0.375rem;
+  align-items: center;
+}
+
+.hint-button {
+  width: 1.125rem;
+  height: 1.125rem;
+  border: 1px solid var(--gray-400);
+  border-radius: 50%;
+  background: var(--white);
+  color: var(--gray-600);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  line-height: 1;
+  cursor: help;
+}
+
+.hint-text {
+  position: absolute;
+  top: calc(100% + 0.375rem);
+  right: 0; /* last column, so open leftward and stay inside the table */
+  width: 16rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius);
+  background: var(--gray-900);
+  color: var(--white);
+  font-size: 0.8125rem;
+  font-weight: 400;
+  line-height: 1.4;
+  white-space: normal;
+  text-align: left;
+  visibility: hidden;
+}
+
+.th-hint:hover .hint-text,
+.hint-button:focus-visible + .hint-text {
+  visibility: visible;
+}
+
+.positive-value {
+  color: var(--positive);
+  font-weight: 700;
+}
+
+.negative-value {
+  color: var(--negative);
+  font-weight: 700;
+}
+
+.explorer-error {
+  margin-block: 1rem;
+  padding: 1rem;
+  border: 1px solid #fecaca;
+  border-radius: var(--radius-lg);
+  background: #fef2f2;
+  color: #7f1d1d;
+}
+
+.explorer-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 2rem;
+  justify-content: space-between;
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--gray-200);
+  color: var(--muted);
+  font-family: var(--font-ui);
+  font-size: 0.8125rem;
+}
+
+.explorer-footer strong,
+.explorer-footer span {
+  display: block;
+}
+
+.explorer-footer strong {
+  color: var(--gray-900);
+}

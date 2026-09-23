@@ -7,6 +7,9 @@ bom-db/node_modules/
 .env.local
 bom-processing/db/updater/bin
 .smbdelete*
+*.docx
+.venv/
+bom-processing/notebooks/arithmetic-accuracy/data-cache/
 
 CLAUDE.md
 .claude/

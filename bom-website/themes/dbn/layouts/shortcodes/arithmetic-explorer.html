@@ -1,0 +1,98 @@
+{{- /* Weekly arithmetic explorer. Pass api="URL" to load live rows from
+  /bom/arithmetic; without it the page loads the archived article snapshot. */ -}}
+{{- $api := .Get "api" -}}
+<div id="arithmetic-explorer" class="chart-frame" aria-busy="true"{{ with $api }} data-api="{{ . }}"{{ end }}>
+  <div class="viz-controls is-gapped">
+    <div class="viz-field is-spaced">
+      <label class="viz-label" for="count-type">Count</label>
+      <select class="viz-select" id="count-type">
+        <option value="buried">Burial counts</option>
+        <option value="plague">Plague counts</option>
+      </select>
+    </div>
+    <div class="viz-field is-spaced">
+      <label class="viz-label" for="data-scope">Include</label>
+      <select class="viz-select" id="data-scope">
+        <option value="all">All comparable weeks</option>
+        <option value="legible">Legible weeks only</option>
+      </select>
+    </div>
+    <div class="viz-field is-spaced">
+      <label class="viz-label" for="detail-year">Detail year</label>
+      <select class="viz-select" id="detail-year"></select>
+    </div>
+  </div>
+  <p id="explorer-status" class="explorer-status" role="status" aria-live="polite">
+    {{ if $api }}Loading data from the Death by Numbers API…{{ else }}Loading the archived article data…{{ end }}
+  </p>
+  <section id="weekly-panel" class="explorer-panel">
+    <div id="weekly-summary" class="viz-stats" aria-label="Weekly data summary"></div>
+    <div class="chart-card">
+      <div class="chart-heading">
+        <div>
+          <h3 id="weekly-overview-title">Arithmetic differences by year and week</h3>
+        </div>
+        <div class="difference-legend" aria-label="Difference color legend">
+          <span><i class="legend-swatch negative"></i> Parish sum larger</span>
+          <span><i class="legend-swatch exact"></i> Exact match</span>
+          <span><i class="legend-swatch positive"></i> Printed subtotal larger</span>
+          <span><i class="legend-swatch missing"></i> Unavailable or excluded</span>
+        </div>
+      </div>
+      <div id="weekly-overview" class="plot-container"></div>
+      <p class="viz-note">
+        Color intensity represents the logarithmic difference, allowing small and unusually large
+        discrepancies to remain visible together. The outlined column is the selected detail year.
+        Click any column to select it.
+      </p>
+    </div>
+    <div class="chart-card detail-card">
+      <div class="chart-heading">
+        <div>
+          <h3 id="weekly-detail-title">Weekly differences</h3>
+        </div>
+      </div>
+      <div id="weekly-detail" class="plot-container"></div>
+      <details class="data-table-disclosure">
+        <summary>View the selected year as a table</summary>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Week</th>
+                <th scope="col">Printed subtotal</th>
+                <th scope="col">Parish sum</th>
+                <th scope="col">Difference</th>
+                <th scope="col">Legible</th>
+                {{- if $api }}
+                <th scope="col">
+                  <span class="th-hint">Mixed copies
+                    <button type="button" class="hint-button" aria-describedby="mixed-copies-hint" onkeydown="if (event.key === 'Escape') this.blur()">?</button>
+                    <span role="tooltip" id="mixed-copies-hint" class="hint-text">More than one copy of this week's bill survives, and its figures come from different copies (the largest readable value for each parish and subtotal). A difference here may reflect disagreement between copies rather than an error on one printed bill.</span>
+                  </span>
+                </th>
+                {{- end }}
+              </tr>
+            </thead>
+            <tbody id="weekly-table-body"></tbody>
+          </table>
+        </div>
+      </details>
+    </div>
+  </section>
+  <div id="explorer-error" class="explorer-error is-hidden" role="alert"></div>
+  <footer class="explorer-footer">
+    <div>
+      <strong>{{ if $api }}Live data{{ else }}Publication snapshot{{ end }}</strong>
+      <span id="snapshot-label">Loading version information…</span>
+    </div>
+    <nav aria-label="Download explorer data">
+      {{- if $api }}
+      <a href="{{ $api }}">JSON from the API</a>
+      {{- else }}
+      <a href="/data/arithmetic-accuracy/weekly-differences.csv" download>Weekly CSV</a>
+      {{- end }}
+    </nav>
+  </footer>
+  <noscript>This explorer requires JavaScript. {{ if $api }}The data are available as JSON from the API link above.{{ else }}The complete derived data remain available from the CSV download link above.{{ end }}</noscript>
+</div>
