@@ -1395,7 +1395,7 @@ document.addEventListener("alpine:init", () => {
       if (this.meta.error && !this.meta.loading) {
         return (
           this.messages.connectionError +
-          ' <a href="https://github.com/YOUR_USERNAME/YOUR_REPO/tree/main/data" target="_blank" rel="noopener">Download CSV files instead</a>'
+          ' <a href="https://github.com/chnm/bom/tree/main/bom-data/" target="_blank" rel="noopener">Download CSV files instead</a>'
         );
       }
 
@@ -1404,7 +1404,7 @@ document.addEventListener("alpine:init", () => {
         if (this.meta.slowConnection) {
           return (
             this.messages.slowConnection +
-            ' <a href="https://github.com/YOUR_USERNAME/YOUR_REPO/tree/main/data" target="_blank" rel="noopener">Download CSV files instead</a>'
+            ' <a href="https://github.com/chnm/bom/tree/main/bom-data/" target="_blank" rel="noopener">Download CSV files instead</a>'
           );
         }
         return this.messages.loading;
