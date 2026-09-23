@@ -3,6 +3,7 @@ import renderSeasonality from "./causes-seasonality";
 import { redrawOnResize } from "../common/responsive";
 
 const chart = document.getElementById("chart");
+const DEFAULT_YEAR = 1648; // shown in the dropdown and drawn on load
 let current = null; // data and causes on screen, kept for redraws on resize
 
 // Function to fetch the list of causes and populate the dropdowns
@@ -74,7 +75,7 @@ function populateYearDropdown() {
   }
 
   // Set default year
-  yearDropdown.property("value", 1636);
+  yearDropdown.property("value", DEFAULT_YEAR);
 }
 
 // Function to fetch data and render the seasonality chart
@@ -119,7 +120,7 @@ populateCausesDropdowns();
 populateYearDropdown();
 
 // Initial fetch and render
-fetchDataAndRender(1648, "aged", "consumption");
+fetchDataAndRender(DEFAULT_YEAR, "aged", "consumption");
 
 // Add event listener to the update button
 document.getElementById("update-button").addEventListener("click", () => {
