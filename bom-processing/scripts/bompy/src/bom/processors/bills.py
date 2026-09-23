@@ -18,6 +18,25 @@ from ..utils.validation import SchemaValidator
 from .general_bills import GeneralBillsProcessor
 
 
+def normalize_variants(text: str) -> str:
+    """Normalize common spelling variations in a cause name."""
+    text = text.lower().strip()
+    # Normalize separators
+    text = text.replace(" and ", " & ")
+    text = text.replace(",", " &")
+    # Normalize hyphens and spaces
+    text = text.replace("-", "")
+    # Normalize common spelling variants
+    text = text.replace("stilborn", "stillborn")
+    text = text.replace("stillborne", "stillborn")
+    text = text.replace("bloodyflux", "bloody flux")
+    text = text.replace("flox", "flux")
+    # Normalize double spaces
+    while "  " in text:
+        text = text.replace("  ", " ")
+    return text.strip()
+
+
 class BillsProcessor:
     """Processes parish datasets into individual BillOfMortalityRecord objects."""
 
@@ -44,6 +63,14 @@ class BillsProcessor:
 
         # Load edited causes controlled vocabulary
         self.edited_causes_lookup = self._load_edited_causes(edited_causes_path)
+
+        # Spelling-variant fallbacks; first entry wins, as in a linear scan
+        self.edited_causes_by_year_variant: Dict[Tuple[int, str], str] = {}
+        self.edited_causes_by_variant: Dict[str, str] = {}
+        for (year, cause), edited_cause in self.edited_causes_lookup.items():
+            variant = normalize_variants(cause)
+            self.edited_causes_by_year_variant.setdefault((year, variant), edited_cause)
+            self.edited_causes_by_variant.setdefault(variant, edited_cause)
 
     def _load_dictionary(
         self, dictionary_path: Optional[str]
@@ -147,47 +174,11 @@ class BillsProcessor:
         if key in self.edited_causes_lookup:
             return self.edited_causes_lookup[key]
 
-        # Try fuzzy matching with common spelling variations
-        # This handles cases where edited_causes.csv doesn't have all variants
-        def normalize_variants(text: str) -> str:
-            """Normalize common spelling variations"""
-            text = text.lower().strip()
-            # Normalize separators
-            text = text.replace(" and ", " & ")
-            text = text.replace(",", " &")
-            # Normalize hyphens and spaces
-            text = text.replace("-", "")
-            # Normalize common spelling variants
-            text = text.replace("stilborn", "stillborn")
-            text = text.replace("stillborne", "stillborn")
-            text = text.replace("bloodyflux", "bloody flux")
-            text = text.replace("flox", "flux")
-            # Normalize double spaces
-            while "  " in text:
-                text = text.replace("  ", " ")
-            return text.strip()
-
+        # Fall back to spelling-variant matches, same year first
         fuzzy_normalized = normalize_variants(normalized_death)
-
-        # Try to find a matching normalized form for this year
-        for (
-            lookup_year,
-            lookup_cause,
-        ), edited_cause in self.edited_causes_lookup.items():
-            if lookup_year == year:
-                if normalize_variants(lookup_cause) == fuzzy_normalized:
-                    return edited_cause
-
-        # If still no match, try without year constraint
-        # This helps when a cause appears in new years not in edited_causes.csv
-        for (
-            lookup_year,
-            lookup_cause,
-        ), edited_cause in self.edited_causes_lookup.items():
-            if normalize_variants(lookup_cause) == fuzzy_normalized:
-                return edited_cause
-
-        return None
+        return self.edited_causes_by_year_variant.get(
+            (year, fuzzy_normalized)
+        ) or self.edited_causes_by_variant.get(fuzzy_normalized)
 
     def _normalize_cause_name(self, cause_name: str) -> str:
         """Normalize cause name for dictionary lookup."""
