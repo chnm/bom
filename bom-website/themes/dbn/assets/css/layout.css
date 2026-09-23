@@ -48,7 +48,7 @@
 }
 
 #site-title span {
-  color: var(--blue-400);
+  color: var(--brand-blue);
 }
 
 .site-menus {
@@ -126,6 +126,132 @@
 
 .menu-panel hr {
   border-color: var(--gray-300);
+}
+
+.nav-toggle {
+  display: none;
+}
+
+/* Below 1152px (where the five menus stop fitting beside the brand) they
+   collapse behind a toggle and open as a stacked list */
+@media (max-width: 1151.98px) {
+  .site-brand {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    width: auto;
+    min-width: 0;
+    gap: 0.5rem;
+  }
+
+  .site-brand img {
+    width: 6rem;
+  }
+
+  #site-title {
+    margin-right: 0;
+    font-size: 1.25rem;
+  }
+
+  .nav-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid rgb(255 255 255 / 0.35);
+    border-radius: var(--radius);
+    color: var(--white);
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.025em;
+    text-transform: uppercase;
+  }
+
+  .nav-toggle svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .nav-toggle:focus-visible,
+  .menu-button:focus-visible {
+    outline: 2px solid var(--white);
+    outline-offset: 2px;
+  }
+
+  .site-menus {
+    display: none;
+    padding-bottom: 1rem;
+  }
+
+  .site-nav.is-open .site-menus {
+    display: block;
+  }
+
+  .menu {
+    display: block;
+  }
+
+  .menu-button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-left: 0;
+    padding: 0.875rem 0;
+    border-top: 1px solid rgb(255 255 255 / 0.15);
+    text-align: left;
+  }
+
+  .menu-button[aria-expanded="true"] svg {
+    rotate: 180deg;
+  }
+
+  .menu-panel {
+    position: static;
+    min-width: 0;
+    margin: 0 0 0.5rem;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .menu-panel a {
+    padding: 0.625rem 1rem;
+    color: var(--gray-200);
+    font-size: 1rem;
+  }
+
+  .menu-panel a:hover {
+    background: rgb(255 255 255 / 0.1);
+  }
+
+  .menu-panel hr {
+    margin-inline: 1rem;
+    border-color: rgb(255 255 255 / 0.15);
+  }
+}
+
+/* Phones: tighten the brand row so the toggle always fits; the title may wrap */
+@media (max-width: 479.98px) {
+  .site-nav {
+    padding: 0.375rem 1rem;
+  }
+
+  .site-brand img {
+    width: 4rem;
+  }
+
+  #site-title {
+    font-size: 1.0625rem;
+    line-height: 1.2;
+    white-space: normal;
+  }
+
+  .nav-toggle {
+    flex-shrink: 0;
+    gap: 0.25rem;
+    padding: 0.375rem 0.5rem;
+  }
 }
 
 /* ==========================================================================

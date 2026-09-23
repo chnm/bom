@@ -28,12 +28,21 @@
     (dict "title" "Search" "url" "/search/")))
 -}}
 
-<nav id="top" class="site-nav" aria-label="Main navigation">
+<nav id="top" class="site-nav" aria-label="Main navigation"
+  x-data="{ navOpen: false }" :class="{ 'is-open': navOpen }" @keydown.escape="if (navOpen) { navOpen = false; $refs.toggle.focus() }">
   <div class="site-brand">
     <img src="/images/death-by-numbers.jpg" alt="Death by Numbers" />
     <a id="site-title" href="/">Death by <span>Numbers</span></a>
   </div>
-  <div class="site-menus">
+  {{- /* Small screens only; the menus sit inline from 1024px up */}}
+  <button class="nav-toggle" x-ref="toggle" @click="navOpen = !navOpen" :aria-expanded="navOpen" aria-expanded="false" aria-controls="site-menus">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+      <path x-show="!navOpen" d="M4 6h16M4 12h16M4 18h16" />
+      <path x-show="navOpen" x-cloak d="M6 6l12 12M18 6L6 18" />
+    </svg>
+    Menu
+  </button>
+  <div class="site-menus" id="site-menus">
     {{- range $menus }}
     <div class="menu" x-data="{ open: false }" @keydown.escape.prevent="open = false">
       <button class="menu-button" @click="open = !open" :aria-expanded="open" aria-haspopup="true">
