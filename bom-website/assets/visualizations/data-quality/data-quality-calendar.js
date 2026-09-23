@@ -15,19 +15,17 @@ function processData(data, qualityType) {
       const totalRecords = records.length;
       const qualityIssueRecords = records.filter((d) => d[qualityType] === true).length;
 
+      // Colors match the key in content/visualizations/data-quality/index.md.
       let status, statusColor;
-      if (totalRecords === 0) {
-        status = "No Data";
-        statusColor = "#f3f4f6";
-      } else if (qualityIssueRecords === 0) {
+      if (qualityIssueRecords === 0) {
         status = "Good";
-        statusColor = "#10b981";
+        statusColor = "#047857";
       } else if (qualityIssueRecords < totalRecords) {
         status = "Partial Issues";
-        statusColor = "#f59e0b";
+        statusColor = "#b45309";
       } else {
         status = "All Issues";
-        statusColor = "#ef4444";
+        statusColor = "#b91c1c";
       }
 
       processedData.push({
