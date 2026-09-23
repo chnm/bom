@@ -1,5 +1,9 @@
 import * as d3 from "d3";
-import CalendarChart from "./calendar";
+import renderCalendar from "./calendar";
+import { redrawOnResize } from "../common/responsive";
+
+const chart = document.getElementById("chart");
+let current = null; // data for the year on screen, kept for redraws on resize
 
 // Function to populate the year dropdown with available years
 function populateYearDropdown() {
@@ -41,7 +45,7 @@ function populateYearDropdown() {
     });
 }
 
-// Function to fetch data and render the histogram
+// Fetch one year of weekly causes and draw it
 function fetchDataAndRender(year) {
   if (!year) return;
 
@@ -49,31 +53,21 @@ function fetchDataAndRender(year) {
 
   d3.json(url)
     .then((data) => {
-      d3.select("#chart").selectAll("*").remove();
-
-      if (data.length === 0) {
-        // Display a message if no data is available
-        d3.select("#chart")
-          .append("text")
-          .attr("x", 480) // Center the text horizontally
-          .attr("y", 300) // Center the text vertically
-          .attr("text-anchor", "middle")
-          .style("font-size", "24px")
-          .style("fill", "red")
-          .text("No data available for this year.");
+      d3.select(".loading_chart").remove();
+      current = data.length ? data : null;
+      if (current) {
+        renderCalendar(chart, current);
       } else {
-        const calendar = new CalendarChart("#chart", data, {
-          width: 960,
-          height: 2000,
-        });
-        calendar.selectedYear = year; // Set the selected year
-        calendar.render();
+        chart.innerHTML = '<p class="viz-message">No data available for this year.</p>';
       }
     })
     .catch((error) => {
       console.error("There was an error fetching the data.", error);
     });
 }
+
+// Redraw at the new width when the chart's box changes size
+redrawOnResize(chart, () => current && renderCalendar(chart, current));
 
 // Initialize the page
 populateYearDropdown();

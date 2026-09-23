@@ -1,160 +1,53 @@
 import * as d3 from "d3";
-import Visualization from "../common/visualization";
+import * as Plot from "@observablehq/plot";
+import { chartStyle as style, textWidth } from "../common/responsive";
 
-export default class PlagueBillsBarChartWeekly extends Visualization {
-  constructor(el, data, options) {
-    const margin = {
-      top: 0,
-      right: 40,
-      bottom: 40,
-      left: 10,
-    };
-    super(el, data, options, margin);
+const TICK_STEPS = [5, 10, 20, 25, 50]; // years between x labels, thinned as the chart narrows
 
-    this.xScale = d3
-      .scaleBand()
-      .domain(d3.range(this.data.plagueByWeek.length))
-      .range([0, this.width])
-      .padding(0.1);
+// Draws one bar per year into `container`: the full bar is the weeks in the
+// data, filled by the weeks transcribed, with a dotted line at 52 weeks.
+export default function renderCounts(container, data) {
+  const width = container.clientWidth;
+  const years = data.map((d) => d.year);
+  const marginLeft = 8;
+  const marginRight = textWidth(["52"]) + 14; // y axis sits on the right
 
-    // Show years every 5 years to reduce clutter
-    const tickIndices = this.xScale.domain().filter((d, i) => {
-      const year = this.data.plagueByWeek[d].year;
-      return year % 5 === 0; // Show years divisible by 5 (1640, 1645, 1650, etc.)
-    });
+  // Thin the year labels until each fits in the space between them
+  const step = (width - marginLeft - marginRight) / years.length;
+  const labelW = textWidth(["0000"]) + 10;
+  const every = TICK_STEPS.find((n) => n * step >= labelW) ?? 100;
 
-    this.xAxis = d3
-      .axisBottom()
-      .scale(this.xScale)
-      .tickValues(tickIndices)
-      .tickFormat((d) => this.data.plagueByWeek[d].year);
+  const plot = Plot.plot({
+    width,
+    height: width < 600 ? 300 : 420,
+    marginLeft,
+    marginRight,
+    marginBottom: 32,
+    style,
+    x: {
+      type: "band",
+      domain: years,
+      padding: 0.1,
+      label: null,
+      ticks: years.filter((y) => y % every === 0),
+      tickFormat: "d",
+    },
+    y: { axis: "right", domain: [0, d3.max(data, (d) => Math.max(d.totalCount, d.weeksCompleted))], label: null },
+    marks: [
+      Plot.barY(data, { x: "year", y: "totalCount", fill: "#f7f4f3" }),
+      Plot.barY(data, { x: "year", y: (d) => d.weeksCompleted || 0, fill: "#7f5a83" }),
+      Plot.ruleY([52], { stroke: "#666", strokeDasharray: "3,3" }),
+      Plot.tip(
+        data,
+        Plot.pointerX({
+          x: "year",
+          y: "totalCount",
+          title: (d) =>
+            `Transcribed bills for ${d.year}\nTotal weeks in the data: ${d.totalCount}\nWeeks completed: ${d.weeksCompleted}`,
+        }),
+      ),
+    ],
+  });
 
-    this.yScale = d3
-      .scaleLinear()
-      .domain([0, d3.max(this.data.plagueByWeek, (d) => d.totalCount)])
-      .range([this.height, 0]);
-
-    this.yAxis = d3.axisRight().scale(this.yScale).ticks(10);
-
-    this.tooltipRender = (e, d) => {
-      // tooltip gets data from the stack, not the original data
-      // so we need to find the original data
-      const originalData = this.data.plagueByWeek.find(
-        (item) => item.year === d.data.year,
-      );
-      const text = `Transcribed bills for <strong>${d.data.year}</strong>
-        <br>Total weeks in the data: ${originalData.totalCount}
-        <br>Weeks completed: ${originalData.weeksCompleted}`;
-      this.tooltip.html(text);
-      this.tooltip.style("visibility", "visible");
-    };
-  }
-
-  render() {
-    // Transform the data to have proper stacking fields
-    const transformedData = this.data.plagueByWeek.map(d => ({
-      ...d,
-      weeksCompleted: d.weeksCompleted || 0,
-      remainingWeeks: Math.max(0, (d.totalCount || 0) - (d.weeksCompleted || 0))
-    }));
-
-    const stack = d3.stack().keys(["weeksCompleted", "remainingWeeks"])(
-      transformedData,
-    );
-
-    console.log("stack", stack);
-
-    this.viz
-      .append("g")
-      .attr("class", "x axis")
-      .attr("transform", `translate(0, ${this.height})`)
-      .call(this.xAxis)
-      .selectAll("text")
-      .attr("y", 0)
-      .attr("x", 9)
-      .attr("dy", ".35em")
-      .attr("transform", "rotate(90)")
-      .style("text-anchor", "start");
-
-    this.viz
-      .append("g")
-      .attr("class", "y axis")
-      .attr("transform", `translate(${this.width},0)`)
-      .call(this.yAxis);
-
-    // Remove the loading message.
-    d3.select(".loading_stack").remove();
-
-    // Render the stacked bars.
-    this.viz
-      .append("g")
-      .selectAll("g")
-      // Enter in the stack data = loop key per key = group per group
-      .data(stack)
-      .enter()
-      .append("g")
-      .attr("fill", (d) => {
-        if (d.key === "weeksCompleted") {
-          return "#7f5a83";
-        }
-        return "#f7f4f3";
-      })
-      .selectAll("rect")
-      // enter a second time = loop subgroup per subgroup to add all rectangles
-      .data(function (d) {
-        return d;
-      })
-      .enter()
-      .append("rect")
-      .attr("x", (d, i) => this.xScale(i))
-      .attr("y", (d) => this.yScale(d[1]))
-      .attr("height", (d) => this.yScale(d[0]) - this.yScale(d[1]))
-      .attr("width", this.xScale.bandwidth());
-
-    // Add the tooltip.
-    this.tooltip = d3
-      .select("body")
-      .append("div")
-      .attr("class", "tooltip")
-      .attr("id", "chart-tooltip")
-      .style("position", "absolute")
-      .style("visibility", "hidden");
-
-    this.viz
-      .selectAll("rect")
-      .on("mouseover", this.tooltipRender)
-      .on("mousemove", () => {
-        // Show the tooltip to the right of the mouse, unless we are
-        // on the rightmost 25% of the browser.
-        if (event.clientX / this.width >= 0.75) {
-          this.tooltip
-            .style("top", `${event.pageY - 10}px`)
-            .style(
-              "left",
-              `${
-                event.pageX -
-                this.tooltip.node().getBoundingClientRect().width -
-                10
-              }px`,
-            );
-        } else {
-          this.tooltip
-            .style("top", `${event.pageY - 10}px`)
-            .style("left", `${event.pageX + 10}px`);
-        }
-      })
-      .on("mouseout", () => this.tooltip.style("visibility", "hidden"));
-
-    // Add dotted baseline at 52 weeks
-    this.viz
-      .append("line")
-      .attr("class", "baseline-52")
-      .attr("x1", 0)
-      .attr("x2", this.width)
-      .attr("y1", this.yScale(52))
-      .attr("y2", this.yScale(52))
-      .attr("stroke", "#666")
-      .attr("stroke-width", 1)
-      .attr("stroke-dasharray", "3,3");
-  }
+  container.replaceChildren(plot);
 }

@@ -365,26 +365,17 @@ p.detail-definition {
 .viz-controls {
   font-family: var(--font-ui);
   display: flex;
+  flex-wrap: wrap; /* controls drop to a new line on narrow screens */
+  gap: 1rem;
   margin-bottom: 1.5rem;
 }
 
-.viz-controls > :not([hidden]) ~ :not([hidden]) {
-  margin-left: 1rem;
-}
-
 .viz-controls.is-wrapping {
-  flex-wrap: wrap;
   align-items: center;
 }
 
 .viz-controls.is-gapped {
-  flex-wrap: wrap;
   align-items: flex-end;
-  gap: 1rem;
-}
-
-.viz-controls.is-gapped > :not([hidden]) ~ :not([hidden]) {
-  margin-left: 0;
 }
 
 /* One label + control (a div or fieldset) */
@@ -543,4 +534,82 @@ p.viz-hint {
   color: var(--gray-600);
   font-size: 0.875rem;
   line-height: 1.25rem;
+}
+
+/* --------------------------------------------------------------------------
+   Wide charts (calendar): breaks out of the text column, draws at real size,
+   and scrolls the cell grid sideways beside a fixed column of row labels.
+   -------------------------------------------------------------------------- */
+
+.chart-frame {
+  position: relative;
+  left: 50%;
+  width: min(70rem, 100vw - 2rem);
+  margin-block: 1.5rem;
+  translate: -50% 0;
+}
+
+.chart-frame svg {
+  max-width: none; /* drawn at its true size; never shrink the text */
+}
+
+.chart-body {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+}
+
+.chart-scroll {
+  overflow-x: auto;
+}
+
+.chart-scroll:focus-visible {
+  outline: 2px solid var(--blue-700);
+  outline-offset: 2px;
+}
+
+/* Fade at the right edge hints that more weeks are off-screen */
+.chart-frame.is-scrollable .chart-body {
+  mask-image: linear-gradient(to right, #000 calc(100% - 1.5rem), transparent);
+}
+
+/* Observable Plot tooltips default to 10px; match the 12px chart text */
+svg g[aria-label="tip"] {
+  font-size: 12px;
+}
+
+/* Small multiples (sparkline pages): one plot per facet, see sparklines/facets.js */
+
+.facet-head h4 {
+  margin: 0 0 0.25rem;
+  font-family: var(--font-ui);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.facet-head .viz-hint {
+  margin: 0 0 0.75rem;
+}
+
+.facet-grid {
+  display: grid;
+  gap: 8px; /* keep in step with GAP in facets.js */
+}
+
+.facet {
+  display: block; /* not the centered column that article figures get */
+  min-width: 0;
+  margin: 0;
+}
+
+.facet figcaption {
+  overflow: hidden;
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.4;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: none;
+  color: var(--ink);
 }

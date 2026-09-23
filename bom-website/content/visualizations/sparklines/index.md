@@ -17,9 +17,9 @@ category: "temporal"
 <p>Because the range of total deaths varies significantly, it can be difficult to see the smaller counts on these graphs. Normalizing the data can improve visibility by removing drastic range differences. The two normalization options are log<sub>10</sub>(x+1) and normalized. <strong>Log<sub>10</sub>(x+1)</strong> transforms the data by adding one before taking the logarithm, which preserves zero values and mitigates right-skewed datasets, making them a more normal distribution. <strong>Normalized</strong> standardizes the data with extent normalization, which maps the minimum to zero and the maximum to one. Both make smaller values more visible, and make comparison easier.</p>
 <div id="row">
     <h4>Modify data:</h4>
-    <div class="flex flex-wrap items-center space-x-4 mb-6">
-          <fieldset class="flex flex-col space-y-2" id="data-format">
-            <legend class="block text-gray-700 text-base font-bold" for="data-format">
+    <div class="viz-controls is-wrapping">
+          <fieldset class="viz-field is-spaced" id="data-format">
+            <legend class="viz-label is-large" for="data-format">
               Data Format:
             </legend>
             <div>
@@ -37,8 +37,8 @@ category: "temporal"
                 </div>
             </div>
           </fieldset>
-          <fieldset class="flex flex-col space-y-2" id="count-type">
-            <legend class="block text-gray-700 text-base font-bold" for="count-type">
+          <fieldset class="viz-field is-spaced" id="count-type">
+            <legend class="viz-label is-large" for="count-type">
               Count Type:
             </legend>
             <div>
@@ -54,13 +54,13 @@ category: "temporal"
                 <label for="both">both</label>
             </div>
           </fieldset>
-          <div class="flex space-x-2 ml-auto mt-5">
-            <button id="update-button" type="button" class="rounded-l-lg border border-gray-200 bg-white text-base font-medium px-4 py-2 text-gray-900 hover:bg-dbn-blue hover:text-black focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">Update</button>
-            <button id="reset-button" type="button" class="rounded-r-md border border-gray-200 bg-white text-base font-medium px-4 py-2 text-gray-900 hover:bg-dbn-blue hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">Reset</button>
+          <div class="viz-actions is-pair">
+            <button id="update-button" type="button" class="viz-button is-large">Update</button>
+            <button id="reset-button" type="button" class="viz-button is-large">Reset</button>
           </div>
     </div>
 </div><br>
-<div id="facets"></div>
+<div id="facets" class="chart-frame"></div>
 
 ### Suggested citation
 

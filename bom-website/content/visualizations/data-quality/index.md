@@ -18,26 +18,26 @@ This visualization shows the data quality patterns for Bills of Mortality record
 
 <div id="row">
     <h3 id="chart-title">Data Quality by Week</h3>
-    <div class="flex flex-row space-x-4 mb-6">
-        <div class="flex flex-col w-32">
-            <label for="year" class="block text-gray-700 text-sm font-bold">Year:</label>
-            <select id="year" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+    <div class="viz-controls">
+        <div class="viz-field is-narrow">
+            <label for="year" class="viz-label">Year:</label>
+            <select id="year" class="viz-select">
                 <option value="">Loading years...</option>
             </select>
         </div>
-        <div class="flex flex-col w-40">
-            <label for="quality-type" class="block text-gray-700 text-sm font-bold">Quality Issue:</label>
-            <select id="quality-type" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        <div class="viz-field">
+            <label for="quality-type" class="viz-label">Quality Issue:</label>
+            <select id="quality-type" class="viz-select">
                 <option value="">Loading...</option>
             </select>
         </div>
-        <div class="flex items-end">
-            <button id="update-button" type="button" class="rounded-lg border border-gray-200 bg-white text-sm font-medium px-4 py-2 text-gray-900 hover:bg-dbn-blue hover:text-black focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">Update</button>
+        <div class="viz-actions">
+            <button id="update-button" type="button" class="viz-button is-rounded">Update</button>
         </div>
     </div>
-    <div class="loading_chart">Loading data quality information...</div>
-    <svg id="chart"></svg>
-    <div class="bg-gray-50 rounded-lg p-4 mt-4 text-sm text-gray-600">
+    <div id="summary-stats" class="viz-stats"></div>
+    <div id="chart" class="chart-frame"></div>
+    <div class="viz-note">
         <strong>Color Legend:</strong> 
         <span style="color: #047857;">■ Good</span> (no data quality issues),
         <span style="color: #b45309;">■ Partial Issues</span> (some records have issues),

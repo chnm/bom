@@ -5,26 +5,13 @@
   margin: 20px 0;
 }
 
-.tooltip {
-  position: absolute;
-  background: rgba(0, 0, 0, 0.8);
-  color: white;
-  padding: 8px;
-  border-radius: 4px;
-  font-size: 12px;
-  pointer-events: none;
-  z-index: 1000;
-}
-
-#chart {
-  width: 100%;
-  height: auto;
-}
-
 .comparison-legend {
   display: flex;
-  gap: 20px;
-  margin-bottom: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem 1.25rem;
+  margin: 1.25rem 0 0.5rem;
+  font-family: var(--font-ui);
   font-size: 14px;
 }
 
@@ -32,6 +19,7 @@
   display: flex;
   align-items: center;
   gap: 5px;
+  font-weight: 500;
 }
 
 .legend-color {

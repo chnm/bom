@@ -1,10 +1,5 @@
 /* Data Quality Calendar Visualization Styles */
 
-.data-quality-tooltip {
-  pointer-events: none;
-  z-index: 1000;
-}
-
 .loading_chart {
   display: flex;
   justify-content: center;
@@ -18,20 +13,7 @@
   margin: 20px 0;
 }
 
-/* Summary statistics styling */
-#summary-stats {
-  border: 1px solid #e5e7eb;
-}
-
-#summary-stats > div {
-  padding: 16px;
-}
-
-/* Chart container */
-#chart svg {
-  display: block;
-  margin: 0 auto;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  background-color: #fff;
+/* Filled in once data loads */
+#summary-stats:empty {
+  display: none;
 }

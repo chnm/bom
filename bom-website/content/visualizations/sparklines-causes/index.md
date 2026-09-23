@@ -19,9 +19,9 @@ summary: "Because the range of total deaths varies significantly, it can be diff
 <p>The <strong>remove plague deaths</strong> option graphs all causes of death except plague. Plague deaths are the primary outlier due to the outbreak in 1665. Removing the plague deaths allows greater visibility for smaller values with the original dataset.</p>
 <div id="row">
     <h4>Choose your preferences</h4>
-    <div class="flex flex-wrap items-center space-x-4 mb-6">
-          <fieldset class="flex flex-col space-y-2" id="data-format">
-            <legend class="block text-gray-700 text-base font-bold" for="data-format">
+    <div class="viz-controls is-wrapping">
+          <fieldset class="viz-field is-spaced" id="data-format">
+            <legend class="viz-label is-large" for="data-format">
               Data Format:
             </legend>
             <div>
@@ -46,13 +46,13 @@ summary: "Because the range of total deaths varies significantly, it can be diff
                 <label for="plague">Remove Plague Deaths</label>
             </div>
         </fieldset>
-          <div class="flex space-x-2 ml-auto mt-5">
-            <button id="update-button" type="button" class="rounded-l-lg border border-gray-200 bg-white text-base font-medium px-4 py-2 text-gray-900 hover:bg-dbn-blue hover:text-black focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">Update</button>
-            <button id="reset-button" type="button" class="rounded-r-md border border-gray-200 bg-white text-base font-medium px-4 py-2 text-gray-900 hover:bg-dbn-blue hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">Reset</button>
+          <div class="viz-actions is-pair">
+            <button id="update-button" type="button" class="viz-button is-large">Update</button>
+            <button id="reset-button" type="button" class="viz-button is-large">Reset</button>
           </div>
     </div>
 </div><br>
-<div id="facets"></div>
+<div id="facets" class="chart-frame"></div>
 
 ### Suggested citation
 

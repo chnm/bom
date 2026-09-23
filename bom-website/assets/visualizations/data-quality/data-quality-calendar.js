@@ -1,235 +1,132 @@
 import * as d3 from "d3";
 import * as Plot from "@observablehq/plot";
-import Visualization from "../common/visualization";
+import { chartStyle as style, textWidth } from "../common/responsive";
 
-export default class DataQualityCalendar extends Visualization {
-  constructor(id, data, dim, qualityType = "missing") {
-    const margin = {
-      top: 0,
-      right: 40,
-      bottom: 40,
-      left: 10,
-    };
-    super(id, data, dim, margin);
-    this.dim = dim;
-    this.qualityType = qualityType; // 'illegible' or 'missing'
-  }
+const ROW = 18; // height of one parish row
+const MIN_CELL = 16; // narrowest a week column may get before the grid scrolls sideways
+const MARGIN_Y = 36; // room for the week axes above and below
 
-  // Process the data to calculate data quality status by parish and week
-  processData(data) {
-    // Group data by parish name and week_number (bills data only)
-    const parishWeekStats = d3.group(
-      data,
-      (d) => d.name,
-      (d) => d.week_number,
-    );
+// Quality status of each parish in each week. qualityType is 'illegible' or 'missing'.
+function processData(data, qualityType) {
+  const processedData = [];
 
-    const processedData = [];
+  d3.group(data, (d) => d.name, (d) => d.week_number).forEach((weekData, parish) => {
+    weekData.forEach((records, weekNumber) => {
+      const totalRecords = records.length;
+      const qualityIssueRecords = records.filter((d) => d[qualityType] === true).length;
 
-    parishWeekStats.forEach((weekData, parishName) => {
-      weekData.forEach((records, weekNumber) => {
-        const totalRecords = records.length;
-        const qualityIssueRecords = records.filter(
-          (d) => d[this.qualityType] === true,
-        ).length;
+      let status, statusColor;
+      if (totalRecords === 0) {
+        status = "No Data";
+        statusColor = "#f3f4f6";
+      } else if (qualityIssueRecords === 0) {
+        status = "Good";
+        statusColor = "#10b981";
+      } else if (qualityIssueRecords < totalRecords) {
+        status = "Partial Issues";
+        statusColor = "#f59e0b";
+      } else {
+        status = "All Issues";
+        statusColor = "#ef4444";
+      }
 
-        // Determine categorical status
-        let status, statusValue, statusColor;
-        if (totalRecords === 0) {
-          status = "No Data";
-          statusValue = 0;
-          statusColor = "#f3f4f6";
-        } else if (qualityIssueRecords === 0) {
-          status = "Good";
-          statusValue = 1;
-          statusColor = "#10b981";
-        } else if (qualityIssueRecords < totalRecords) {
-          status = "Partial Issues";
-          statusValue = 2;
-          statusColor = "#f59e0b";
-        } else {
-          status = "All Issues";
-          statusValue = 3;
-          statusColor = "#ef4444";
-        }
-
-        processedData.push({
-          parish: parishName,
-          week_number: parseInt(weekNumber),
-          total_records: totalRecords,
-          quality_issue_records: qualityIssueRecords,
-          quality_type: this.qualityType,
-          status: status,
-          status_value: statusValue,
-          status_color: statusColor,
-        });
+      processedData.push({
+        parish,
+        week_number: parseInt(weekNumber),
+        total_records: totalRecords,
+        quality_issue_records: qualityIssueRecords,
+        status,
+        status_color: statusColor,
       });
     });
+  });
 
-    return processedData;
+  return processedData;
+}
+
+// Draws the parish × week grid into `container`: a fixed column of parish names
+// beside a grid of weekly cells that scrolls sideways when narrow.
+export default function renderDataQuality(container, data, qualityType = "missing") {
+  const cells = processData(data, qualityType);
+  if (cells.length === 0) {
+    container.innerHTML = '<p class="viz-message is-error">No data available after processing.</p>';
+    return;
   }
 
-  // Get color scheme for categorical data
-  getColorScale() {
-    return d3
-      .scaleOrdinal()
-      .domain(["No Data", "Good", "Partial Issues", "All Issues"])
-      .range(["#f3f4f6", "#10b981", "#f59e0b", "#ef4444"]); // Gray, Green, Amber, Red
-  }
+  const parishes = d3.sort(new Set(cells.map((d) => d.parish)));
+  const weeks = d3.sort(new Set(cells.map((d) => d.week_number)));
+  const recordsLabel = qualityType === "illegible" ? "Illegible Records" : "Missing Records";
 
-  // Draw the plot
-  render() {
-    const processedData = this.processData(this.data);
-    console.log("Processed data quality data:", processedData);
-    console.log("Raw data:", this.data);
+  const labelsW = textWidth(parishes) + 14;
+  const frameW = container.clientWidth;
+  const gridW = Math.max(frameW - labelsW, weeks.length * MIN_CELL + 8);
+  const height = parishes.length * ROW + MARGIN_Y * 2;
 
-    if (processedData.length === 0) {
-      console.error("No processed data available");
-      d3.select(".loading_chart").remove();
-      d3.select("#chart")
-        .append("div")
-        .style("text-align", "center")
-        .style("padding", "60px 20px")
-        .style("font-size", "18px")
-        .style("color", "#dc2626")
-        .text("No data available after processing.");
-      return;
-    }
+  const y = { domain: parishes, label: null };
+  // Label every week when there's room, else every 2nd, 3rd… so labels never overlap
+  const every = Math.ceil(24 / (gridW / weeks.length));
+  const weekAxis = {
+    ticks: weeks.filter((w, i) => i % every === 0),
+    tickSize: 4,
+    tickPadding: 3,
+    label: "Week Number",
+    labelAnchor: "left",
+  };
 
-    // Get unique parishes for height calculation
-    const uniqueParishes = [...new Set(processedData.map((d) => d.parish))];
-    const qualityTypeLabel =
-      this.qualityType === "illegible" ? "Illegibility" : "Missing Data";
-    const colorScale = this.getColorScale();
+  const labels = Plot.plot({
+    width: labelsW,
+    height,
+    marginTop: MARGIN_Y,
+    marginBottom: MARGIN_Y,
+    marginLeft: labelsW,
+    marginRight: 0,
+    style,
+    y,
+    marks: [Plot.axisY({ tickSize: 0, tickPadding: 6 })],
+  });
 
-    // Use the height passed from main.js
-    console.log(
-      `Parishes: ${uniqueParishes.length}, Using height: ${this.dim.height}`,
-    );
+  const grid = Plot.plot({
+    width: gridW,
+    height,
+    marginTop: MARGIN_Y,
+    marginBottom: MARGIN_Y,
+    marginLeft: 0,
+    marginRight: 8,
+    padding: 0,
+    style,
+    x: { type: "band", domain: weeks, axis: null },
+    y: { ...y, axis: null },
+    marks: [
+      Plot.axisX({ ...weekAxis, anchor: "top" }),
+      Plot.axisX({ ...weekAxis, anchor: "bottom" }),
+      Plot.cell(cells, {
+        x: "week_number",
+        y: "parish",
+        fill: "status_color",
+        inset: 0.5,
+        tip: true,
+        title: (d) =>
+          `${d.parish}\nWeek: ${d.week_number}\nStatus: ${d.status}\n` +
+          `${recordsLabel}: ${d.quality_issue_records}\nTotal Records: ${d.total_records}`,
+      }),
+    ],
+  });
 
-    const plot = Plot.plot({
-      padding: 0,
-      width: this.dim.width,
-      height: this.dim.height, // Use passed height
-      marginLeft: 200, // More space for parish names
-      marginBottom: 60,
-      x: {
-        axis: "top",
-        label: "Week Number",
-        tickSize: 6,
-        tickPadding: 3,
-        ticks: 10,
-        tickValues: d3.range(
-          d3.min(processedData, (d) => d.week_number),
-          d3.max(processedData, (d) => d.week_number) + 1,
-        ),
-      },
-      y: {
-        label: "Parish",
-        tickSize: 6,
-        fontSize: 12,
-      },
-      marks: [
-        Plot.cell(processedData, {
-          x: "week_number",
-          y: "parish",
-          fill: "status_color",
-          inset: 0.5,
-        }),
-        Plot.axisX({
-          label: "Week Number",
-          tickSize: 6,
-          tickPadding: 3,
-          ticks: 10,
-          tickValues: d3.range(
-            d3.min(processedData, (d) => d.week_number),
-            d3.max(processedData, (d) => d.week_number) + 1,
-          ),
-          anchor: "bottom",
-        }),
-      ],
-    });
+  const labelsCol = document.createElement("div");
+  labelsCol.className = "chart-labels";
+  labelsCol.append(labels);
 
-    // Remove loading indicator and add the plot
-    d3.select(".loading_chart").remove();
-    this.svg.node().append(plot);
+  const scroller = document.createElement("div");
+  scroller.className = "chart-scroll";
+  scroller.tabIndex = 0; // lets keyboard users scroll the grid
+  scroller.setAttribute("role", "region");
+  scroller.setAttribute("aria-label", "Data quality by parish and week; scroll sideways for more weeks");
+  scroller.append(grid);
 
-    // Add enhanced tooltip functionality
-    this.addTooltipInteraction(processedData);
-  }
+  const body = document.createElement("div");
+  body.className = "chart-body";
+  body.append(labelsCol, scroller);
 
-  addTooltipInteraction(data) {
-    // Create tooltip
-    const tooltip = d3
-      .select("body")
-      .append("div")
-      .attr("class", "data-quality-tooltip")
-      .style("position", "absolute")
-      .style("visibility", "hidden")
-      .style("background", "#fff")
-      .style("border", "1px solid #ccc")
-      .style("padding", "12px")
-      .style("border-radius", "6px")
-      .style("box-shadow", "0 4px 12px rgba(0, 0, 0, 0.15)")
-      .style("font-size", "14px")
-      .style("line-height", "1.4")
-      .style("max-width", "300px");
-
-    const qualityTypeLabel =
-      this.qualityType === "illegible" ? "Illegible" : "Missing";
-    const recordsLabel =
-      this.qualityType === "illegible"
-        ? "Illegible Records"
-        : "Missing Records";
-
-    // Add interaction to cells
-    this.svg
-      .selectAll("rect")
-      .data(data)
-      .on("mouseover", (event, d) => {
-        const content = `
-          <div style="margin-bottom: 8px;">
-            <strong>${d.parish}</strong>
-          </div>
-          <div style="margin-bottom: 4px;">
-            <strong>Week:</strong> ${d.week_number}
-          </div>
-          <div style="margin-bottom: 4px;">
-            <strong>Status:</strong> ${d.status}
-          </div>
-          <div style="margin-bottom: 4px;">
-            <strong>${recordsLabel}:</strong> ${d.quality_issue_records}
-          </div>
-          <div style="margin-bottom: 4px;">
-            <strong>Total Records:</strong> ${d.total_records}
-          </div>
-        `;
-
-        tooltip.style("visibility", "visible").html(content);
-
-        d3.select(event.currentTarget)
-          .style("stroke", "#d97706")
-          .style("stroke-width", "2px");
-      })
-      .on("mousemove", (event) => {
-        // Position tooltip intelligently
-        const tooltipWidth = tooltip.node().getBoundingClientRect().width;
-        const windowWidth = window.innerWidth;
-
-        let leftPosition = event.pageX + 10;
-        if (event.clientX + tooltipWidth + 20 > windowWidth) {
-          leftPosition = event.pageX - tooltipWidth - 10;
-        }
-
-        tooltip
-          .style("top", `${event.pageY - 10}px`)
-          .style("left", `${leftPosition}px`);
-      })
-      .on("mouseout", (event) => {
-        tooltip.style("visibility", "hidden");
-        d3.select(event.currentTarget)
-          .style("stroke", null)
-          .style("stroke-width", null);
-      });
-  }
+  container.replaceChildren(body);
+  container.classList.toggle("is-scrollable", gridW > frameW - labelsW);
 }

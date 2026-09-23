@@ -19,7 +19,7 @@ This visualization is our "dashboard" for visualizing our progress transcribing 
 <div id="row">
     <h3>Transcribed Bills by Year</h3>
     <div class="loading_stack">Loading data...</div>
-    <svg id="barchart-multiple" width="100%"></svg>
+    <div id="barchart-multiple" class="chart-frame"></div>
     <figcaption>This figure updates regularly as new data is transcribed and added to the database.</figcaption>
 </div>
 

@@ -73,7 +73,7 @@ export default class PlagueBillsBarChart {
       const chartData = this.data.plague || [];
       
       if (chartData.length === 0) {
-        container.innerHTML = '<div class="text-center py-8 text-gray-500">No data available</div>';
+        container.innerHTML = '<div class="viz-message">No data available</div>';
         return;
       }
 
@@ -136,7 +136,7 @@ export default class PlagueBillsBarChart {
       console.error("Error rendering chart:", error);
       const container = document.querySelector(this.selector);
       if (container) {
-        container.innerHTML = `<div class="text-center text-red-500 py-4">Error rendering chart: ${error.message}</div>`;
+        container.innerHTML = `<div class="viz-message is-error">Error rendering chart: ${error.message}</div>`;
       }
       throw error;
     }

@@ -18,21 +18,21 @@ This visualization illustrates the causes of death per week for a given year. Th
 
 <div id="row">
     <h3 id="chart-title">Individual Causes of Death by Week</h3>
-    <div class="flex flex-row space-x-4 mb-6">
-    <div class="flex flex-col">
-        <label for="year" class="block text-gray-700 text-sm font-bold">Year:</label>
-        <select id="year" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></select>
+    <div class="viz-controls is-gapped">
+    <div class="viz-field">
+        <label for="year" class="viz-label">Year:</label>
+        <select id="year" class="viz-select"></select>
     </div>
-    <div class="flex flex-col">
-        <label for="cause" class="block text-gray-700 text-sm font-bold">Cause of death:</label>
-        <select id="cause" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></select>
+    <div class="viz-field">
+        <label for="cause" class="viz-label">Cause of death:</label>
+        <select id="cause" class="viz-select"></select>
     </div>
-    <div class="flex items-end">
-        <button id="update-button" type="button" class="rounded border border-gray-200 bg-white text-sm font-medium px-4 py-2 text-gray-900 hover:bg-dbn-blue hover:text-black focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">Update</button>
+    <div class="viz-actions">
+        <button id="update-button" type="button" class="viz-button">Update</button>
     </div>
 </div>
     <div class="loading_chart">Loading data...</div>
-    <svg id="chart"></svg>
+    <div id="chart"></div>
     <figcaption>This figure updates regularly as new data is transcribed and added to the database.</figcaption>
     <p><a href="#top">Return to top</a></p>
 </div>

@@ -1,5 +1,9 @@
 import * as d3 from "d3";
-import SeasonalityChart from "./causes-seasonality";
+import renderSeasonality from "./causes-seasonality";
+import { redrawOnResize } from "../common/responsive";
+
+const chart = document.getElementById("chart");
+let current = null; // data and causes on screen, kept for redraws on resize
 
 // Function to fetch the list of causes and populate the dropdowns
 function populateCausesDropdowns(billType = 'weekly') {
@@ -79,27 +83,12 @@ function fetchDataAndRender(year, cause1, cause2, billType = 'weekly') {
 
   d3.json(url)
     .then((data) => {
-      d3.select("#chart").selectAll("*").remove();
-      d3.select(".comparison-legend").remove();
-
-      if (data.length === 0) {
-        // Display a message if no data is available
-        d3.select("#chart")
-          .append("text")
-          .attr("x", 480)
-          .attr("y", 300)
-          .attr("text-anchor", "middle")
-          .style("font-size", "18px")
-          .style("fill", "#666")
-          .text("No data available for the selected year.");
+      d3.select(".loading_chart").remove();
+      current = data.length ? [data, cause1, cause2 || null] : null;
+      if (current) {
+        renderSeasonality(chart, ...current);
       } else {
-        const seasonalityChart = new SeasonalityChart("#chart", data, {
-          width: 960,
-          height: 500,
-        });
-        seasonalityChart.selectedCause1 = cause1;
-        seasonalityChart.selectedCause2 = cause2 || null;
-        seasonalityChart.render();
+        chart.innerHTML = '<p class="viz-message">No data available for the selected year.</p>';
       }
 
       // Update the chart title with colored text
@@ -121,6 +110,9 @@ function fetchDataAndRender(year, cause1, cause2, billType = 'weekly') {
       console.error("There was an error fetching the data.", error);
     });
 }
+
+// Redraw at the new width when the chart's box changes size
+redrawOnResize(chart, () => current && renderSeasonality(chart, ...current));
 
 // Initial population of the dropdowns
 populateCausesDropdowns();
